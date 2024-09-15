@@ -26,6 +26,7 @@
 		133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */; };
 		1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889292C899BF90023CED5 /* NegguTabBar.swift */; };
 		1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338892C2C89E7A70023CED5 /* ClosetView.swift */; };
+		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
 		136470CE2C8A34FC00A0D545 /* Clothes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* Clothes.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
 		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
@@ -92,6 +93,7 @@
 		133889292C899BF90023CED5 /* NegguTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguTabBar.swift; sourceTree = "<group>"; };
 		1338892C2C89E7A70023CED5 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		133927392C7F1D3C009E623B /* neggu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = neggu.entitlements; sourceTree = "<group>"; };
+		1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* Clothes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clothes.swift; sourceTree = "<group>"; };
 		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		1302FE572C86E9E80076D015 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */,
 				1302FE592C86EA180076D015 /* Pretendard-Medium.otf */,
 				1302FE582C86EA180076D015 /* Pretendard-Regular.otf */,
 			);
@@ -510,6 +513,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1302FE5B2C86EA180076D015 /* Pretendard-Medium.otf in Resources */,
+				1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */,
 				1386EB022C5D416D0085655D /* Colors.xcassets in Resources */,
 				1302FE5A2C86EA180076D015 /* Pretendard-Regular.otf in Resources */,
 				1386EAD52C5D3F9C0085655D /* Assets.xcassets in Resources */,
