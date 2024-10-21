@@ -22,17 +22,20 @@ struct NegguTabBar: View {
                         selection = 0
                     }
                 } label: {
-                    Text("내 의상 등록하기")
-                        .contentShape(.rect)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        Text("내 의상 등록하기")
+                            .contentShape(.rect)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Image(systemName: "chevron.right")
+                    }
                 }
-                .negguFont(.body2)
                 .padding([.horizontal, .top])
                 
                 Rectangle()
                     .fill(.white.opacity(0.2))
                     .frame(height: 1)
-                    .padding(.horizontal)
+                    .padding()
                 
                 Button {
                     withAnimation {
@@ -40,17 +43,21 @@ struct NegguTabBar: View {
                         selection = 0
                     }
                 } label: {
-                    Text("룩북 등록하기")
-                        .contentShape(.rect)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        Text("룩북 등록하기")
+                            .contentShape(.rect)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        Image(systemName: "chevron.right")
+                    }
                 }
-                .negguFont(.body2)
                 .padding([.horizontal, .bottom])
             }
+            .negguFont(.body2b)
             .foregroundStyle(.white)
             .background {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(.black)
+                    .fill(.orange40)
             }
             .opacity(showList ? 1 : 0)
             

@@ -32,24 +32,25 @@ struct negguApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if showTabFlow {
-                ContentView()
-            } else {
-                NavigationStack(path: $authCoordinator.path) {
-                    authCoordinator.buildScene(.login)
-                        .navigationDestination(for: AuthCoordinator.Destination.self) { destination in
-                            authCoordinator.buildScene(destination)
-                        }
-                }
-                .environmentObject(authCoordinator)
-                .onOpenURL { url in
-                    if AuthApi.isKakaoTalkLoginUrl(url) {
-                        _ = AuthController.handleOpenUrl(url: url)
-                    } else {
-                        GIDSignIn.sharedInstance.handle(url)
-                    }
-                }
-            }
+//            if showTabFlow {
+//                ContentView()
+//            } else {
+//                NavigationStack(path: $authCoordinator.path) {
+//                    authCoordinator.buildScene(.login)
+//                        .navigationDestination(for: AuthCoordinator.Destination.self) { destination in
+//                            authCoordinator.buildScene(destination)
+//                        }
+//                }
+//                .environmentObject(authCoordinator)
+//                .onOpenURL { url in
+//                    if AuthApi.isKakaoTalkLoginUrl(url) {
+//                        _ = AuthController.handleOpenUrl(url: url)
+//                    } else {
+//                        GIDSignIn.sharedInstance.handle(url)
+//                    }
+//                }
+//            }
+            LookBookEditView()
         }
     }
 }
