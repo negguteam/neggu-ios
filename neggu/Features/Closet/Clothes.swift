@@ -11,7 +11,8 @@ protocol Clothesable: Decodable {
     func toProduct(urlString: String) -> Clothes
 }
 
-struct Clothes: Equatable, Hashable {
+struct Clothes: Equatable, Hashable, Identifiable {
+    let id: String = UUID().uuidString
     var urlString: String
     var name: String
     var image: String
