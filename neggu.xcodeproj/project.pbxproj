@@ -214,8 +214,8 @@
 				136470CD2C8A34FC00A0D545 /* Clothes.swift */,
 				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
-				13FD7D542CBB874400D21143 /* LookBookView.swift */,
 				13DBA7E62CC433E6003A10AE /* LookBook.swift */,
+				13FD7D542CBB874400D21143 /* LookBookView.swift */,
 				13DBA7E82CC434DD003A10AE /* LookBookListView.swift */,
 			);
 			path = Closet;
