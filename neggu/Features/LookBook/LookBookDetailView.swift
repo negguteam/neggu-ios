@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LookBookView: View {
+struct LookBookDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var clothes: Clothes?
@@ -140,7 +140,7 @@ struct LookBookView: View {
 
 #Preview {
     NavigationStack {
-        LookBookView()
+        LookBookDetailView()
     }
 }
 

@@ -116,7 +116,7 @@ struct LookBookListView: View {
                     ) {
                         ForEach(0..<8, id: \.self) { index in
                             NavigationLink {
-                                LookBookView()
+                                LookBookDetailView()
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.white)

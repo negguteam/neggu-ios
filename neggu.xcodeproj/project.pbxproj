@@ -65,7 +65,7 @@
 		13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */; };
 		13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E772C64AB1100DB5600 /* DIContainer.swift */; };
 		13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */; };
-		13FD7D552CBB874400D21143 /* LookBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD7D542CBB874400D21143 /* LookBookView.swift */; };
+		13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD7D542CBB874400D21143 /* LookBookDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,7 +139,7 @@
 		13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationDependency.swift; sourceTree = "<group>"; };
 		13DC5E772C64AB1100DB5600 /* DIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEditView.swift; sourceTree = "<group>"; };
-		13FD7D542CBB874400D21143 /* LookBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookView.swift; sourceTree = "<group>"; };
+		13FD7D542CBB874400D21143 /* LookBookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,7 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				13DBA7E62CC433E6003A10AE /* LookBook.swift */,
-				13FD7D542CBB874400D21143 /* LookBookView.swift */,
+				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
 				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
 				13DBA7E82CC434DD003A10AE /* LookBookListView.swift */,
 			);
@@ -582,7 +582,7 @@
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
 				13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */,
-				13FD7D552CBB874400D21143 /* LookBookView.swift in Sources */,
+				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13659CE02C5F8F1E00BB6B91 /* APIError.swift in Sources */,
 				1364C8782C61370700F67E3C /* CheckNicknameEntity.swift in Sources */,
