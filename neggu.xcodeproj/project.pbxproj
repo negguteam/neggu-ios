@@ -198,6 +198,16 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
+		1337B7092CDCF7200052BFF2 /* LookBook */ = {
+			isa = PBXGroup;
+			children = (
+				13DBA7E62CC433E6003A10AE /* LookBook.swift */,
+				13FD7D542CBB874400D21143 /* LookBookView.swift */,
+				13DBA7E82CC434DD003A10AE /* LookBookListView.swift */,
+			);
+			path = LookBook;
+			sourceTree = "<group>";
+		};
 		133889262C898ABB0023CED5 /* ImageSegmentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,9 +224,6 @@
 				136470CD2C8A34FC00A0D545 /* Clothes.swift */,
 				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
-				13DBA7E62CC433E6003A10AE /* LookBook.swift */,
-				13FD7D542CBB874400D21143 /* LookBookView.swift */,
-				13DBA7E82CC434DD003A10AE /* LookBookListView.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -366,6 +373,7 @@
 				133889292C899BF90023CED5 /* NegguTabBar.swift */,
 				1308D26F2C6274D0003F50F3 /* Auth */,
 				1338892B2C89E73B0023CED5 /* Closet */,
+				1337B7092CDCF7200052BFF2 /* LookBook */,
 			);
 			path = Features;
 			sourceTree = "<group>";
