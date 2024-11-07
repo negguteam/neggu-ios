@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ClosetAddView: View {
+    @State var clothes: Clothes
+    @Binding var segmentedImage: UIImage?
+    
     @State private var bigCategory: Int?
     @State private var smallCategory: Int?
     
@@ -31,21 +34,31 @@ struct ClosetAddView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 Text("의상 등록하기")
-                    .font(.system(size: 24))
-                    .bold()
+                    .negguFont(.title3)
                     .padding(.horizontal, -14)
                 
-                Button("링크", systemImage: "link") {
+                HStack {
+                    Image(.link)
                     
+                    Text(clothes.urlString)
                 }
-                .padding(.vertical, 32)
+                .negguFont(.body3)
                 .foregroundStyle(.gray)
+                .padding(.vertical, 32)
                 
                 VStack(alignment: .leading) {
                     ZStack(alignment: .bottomTrailing) {
-                        Rectangle()
-                            .fill(.gray10)
-                            .frame(width: 259, height: 343)
+                        if let segmentedImage {
+                            Image(uiImage: segmentedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 259, height: 343)
+                        } else {
+                            Image(.dummyClothes1)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 259, height: 343)
+                        }
                         
                         Circle()
                             .frame(width: 42)
@@ -58,16 +71,13 @@ struct ClosetAddView: View {
                 VStack {
                     HStack {
                         Text("카테고리")
-                            .font(.system(size: 20))
-                            .bold()
                         
                         Text("*")
                             .foregroundStyle(.red)
-                            .font(.system(size: 20))
-                            .bold()
                         
                         Spacer()
                     }
+                    .negguFont(.body1b)
                     
                     ScrollView(.horizontal) {
                         HStack {
@@ -78,8 +88,8 @@ struct ClosetAddView: View {
                                         .foregroundStyle(bigCategory == index ? .white : .primary)
                                     
                                     Text("카테고리\(index)")
+                                        .negguFont(.body2)
                                         .foregroundStyle(bigCategory == index ? .white : .primary)
-                                        .bold()
                                 }
                                 .padding(8)
                                 .background {
@@ -154,6 +164,7 @@ struct ClosetAddView: View {
                         HStack {
                             ForEach(0..<3, id: \.self) { index in
                                 Text("카테고리\(index)")
+                                    .negguFont(.body2b)
                                     .padding(8)
                                     .background {
                                         Capsule()
@@ -170,11 +181,10 @@ struct ClosetAddView: View {
                 
                 VStack(alignment: .leading) {
                     Text("브랜드")
-                        .font(.system(size: 20))
-                        .bold()
+                        .negguFont(.body1b)
                     
                     HStack {
-                        Text("아디다스")
+                        Text(clothes.brand)
                         
                         Spacer()
                         
@@ -190,7 +200,7 @@ struct ClosetAddView: View {
                     }
                     
                     HStack {
-                        TextField("모델명", text: $modelName)
+                        TextField("모델명", text: $clothes.name)
                         
                         Spacer()
                     }
@@ -206,13 +216,13 @@ struct ClosetAddView: View {
                 
                 VStack(alignment: .leading) {
                     Text("가격")
-                        .font(.system(size: 20))
-                        .bold()
+                        .negguFont(.body1b)
                     
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(priceList.indices, id: \.self) { index in
                                 Text("\(priceList[index])")
+                                    .negguFont(.body2b)
                                     .foregroundStyle(priceIndex == index ? .white : .primary)
                                     .padding(8)
                                     .background {
@@ -233,8 +243,7 @@ struct ClosetAddView: View {
                 
                 VStack(alignment: .leading) {
                     Text("그 외 정보")
-                        .font(.system(size: 20))
-                        .bold()
+                        .negguFont(.body1b)
                     
                     HStack {
                         Circle()
@@ -308,7 +317,7 @@ struct ClosetAddView: View {
                 
                 VStack(spacing: 16) {
                     Toggle("구매한 제품이에요", isOn: $alreadyPurchase)
-//                        .tint(.toggleTint)
+                        .tint(.safe)
                         .frame(maxWidth: .infinity)
                         .frame(height: 55)
                         .padding(.horizontal, 14)
@@ -331,9 +340,19 @@ struct ClosetAddView: View {
             }
             .padding(44)
         }
+        .background(.white)
     }
 }
 
 #Preview {
-    ClosetAddView()
+    ClosetAddView(
+        clothes: .init(
+            urlString: "https://www.neggu.com",
+            name: "dummy clothes",
+            image: "",
+            brand: "neggu",
+            price: 12345
+        ),
+        segmentedImage: .constant(nil)
+    )
 }
