@@ -222,11 +222,11 @@
 		1338892B2C89E73B0023CED5 /* Closet */ = {
 			isa = PBXGroup;
 			children = (
+				136470CD2C8A34FC00A0D545 /* Clothes.swift */,
 				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
 				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
-				136470CD2C8A34FC00A0D545 /* Clothes.swift */,
-				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
+				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
