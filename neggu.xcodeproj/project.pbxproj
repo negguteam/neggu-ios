@@ -24,6 +24,7 @@
 		1322471B2C5E931A004557EF /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 1322471A2C5E931A004557EF /* GoogleSignIn */; };
 		1322471F2C5E9430004557EF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1322471E2C5E9430004557EF /* GoogleService-Info.plist */; };
 		1334DBF92CAA73AA00928C4C /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */; };
+		1337B70B2CDD009C0052BFF2 /* ClothesDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */; };
 		133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */; };
 		1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889292C899BF90023CED5 /* NegguTabBar.swift */; };
 		1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338892C2C89E7A70023CED5 /* ClosetView.swift */; };
@@ -96,6 +97,7 @@
 		132247202C5E946A004557EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		132247232C5E972F004557EF /* NegguKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NegguKeys.xcconfig; sourceTree = "<group>"; };
 		1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
+		1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesDetailView.swift; sourceTree = "<group>"; };
 		133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnalyzeManager.swift; sourceTree = "<group>"; };
 		133889292C899BF90023CED5 /* NegguTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguTabBar.swift; sourceTree = "<group>"; };
 		1338892C2C89E7A70023CED5 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			children = (
 				13DBA7E62CC433E6003A10AE /* LookBook.swift */,
 				13FD7D542CBB874400D21143 /* LookBookView.swift */,
+				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
 				13DBA7E82CC434DD003A10AE /* LookBookListView.swift */,
 			);
 			path = LookBook;
@@ -222,8 +225,8 @@
 				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
 				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
 				136470CD2C8A34FC00A0D545 /* Clothes.swift */,
-				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
+				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				13659CE02C5F8F1E00BB6B91 /* APIError.swift in Sources */,
 				1364C8782C61370700F67E3C /* CheckNicknameEntity.swift in Sources */,
 				1302FE5F2C8709C50076D015 /* EditNicknameView.swift in Sources */,
+				1337B70B2CDD009C0052BFF2 /* ClothesDetailView.swift in Sources */,
 				1364C8732C61031E00F67E3C /* LoginEntity.swift in Sources */,
 				1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */,
 				1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */,
