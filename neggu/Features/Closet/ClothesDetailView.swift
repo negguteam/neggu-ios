@@ -11,6 +11,7 @@ struct ClothesDetailView: View {
     let clothes: Clothes
     
     @State private var clothesText: String = ""
+    @State private var showLookBookEditView: Bool = false
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -40,7 +41,7 @@ struct ClothesDetailView: View {
                                 .buttonStyle(PlainButtonStyle())
                                 
                                 Button {
-                                    
+                                    showLookBookEditView = true
                                 } label: {
                                     HStack(spacing: 4) {
                                         Text("룩북 만들기")
@@ -68,6 +69,7 @@ struct ClothesDetailView: View {
                                             .fill(.bgAlt)
                                     }
                             }
+                            .foregroundStyle(.black)
                         }
                         .padding(.horizontal, 20)
                     }
@@ -81,6 +83,9 @@ struct ClothesDetailView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 300, height: 400)
+        }
+        .fullScreenCover(isPresented: $showLookBookEditView) {
+            LookBookEditView()
         }
     }
 }
