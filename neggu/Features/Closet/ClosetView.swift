@@ -20,7 +20,6 @@ struct ClosetView: View {
     @State private var horizontalScrolledID: Int? = 0
     @State private var scrolledID: Int? = 0
     @State private var closetScrollOffset: CGPoint = .zero
-//    @State private var showCategory: Bool = true
     
     var body: some View {
         NavigationStack {
@@ -128,8 +127,6 @@ struct ClosetView: View {
                                                 Spacer()
                                                 
                                                 Image(.bannerBG1)
-//                                                    .resizable()
-//                                                    .scaledToFill()
                                                     .frame(width: 150)
                                             }
                                         }
@@ -190,16 +187,13 @@ struct ClosetView: View {
                                 Spacer()
                             }
                             .frame(height: 50)
-//                            .frame(height: showCategory ? 50 : 0)
-//                            .opacity(showCategory ? 1 : 0)
-                            //                        .padding(.horizontal, 20)
                             .padding(.vertical, 8)
                             
                             CustomScrollView(scrollOffset: $closetScrollOffset) { _ in
                                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]) {
                                     ForEach(0...20, id: \.self) { index in
                                         NavigationLink {
-                                            LookBookView()
+                                            ClothesDetailView(clothes: .init(urlString: "www.neggu.com", name: "멋진 옷", image: "", brand: "넦", price: 12345))
                                         } label: {
                                             Image("dummy_clothes\(index % 3)")
                                                 .frame(height: 122)
@@ -208,12 +202,9 @@ struct ClosetView: View {
                                 }
                                 .padding(.vertical)
                             }
-                            .disabled(scrolledID == 0)
+                            .scrollDisabled(scrolledID == 0)
                             .onChange(of: closetScrollOffset) { oldValue, newValue in
                                 print(closetScrollOffset.y)
-//                                withAnimation(.smooth) {
-//                                    showCategory = closetScrollOffset.y < 10 || (oldValue.y > newValue.y)
-//                                }
                             }
                         }
                         .containerRelativeFrame(.vertical)
@@ -238,6 +229,9 @@ struct ClosetView: View {
                         .opacity(scrolledID == 0 ? 0 : 1)
                         .offset(y: scrolledID == 0 ? 0 : -86)
                         .animation(.smooth, value: scrolledID)
+                        .onTapGesture {
+                            
+                        }
                 }
             }
             .background {
@@ -247,9 +241,9 @@ struct ClosetView: View {
                         isFocused = false
                     }
             }
-            .sheet(item: $clothes) { clothes in
-                ClosetAddView(clothes: clothes, segmentedImage: $segmentedImage)
-            }
+        }
+        .sheet(item: $clothes) { clothes in
+            ClosetAddView(clothes: clothes, segmentedImage: $segmentedImage)
         }
     }
     
