@@ -25,6 +25,8 @@ struct ClothesItem: Identifiable {
 }
 
 struct LookBookEditView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var categories: [String] = ["전체보기", "상의", "하의", "아우터", "신발", "기타"]
     @State private var clothes: [ClothesItem] = [
         .init(
@@ -49,20 +51,11 @@ struct LookBookEditView: View {
     
     @State private var order: String = "최신 순"
     
-    @State private var offset: CGSize = .zero
-    @State private var lastOffset: CGSize = .zero
-    
-    @State private var scale: CGFloat = 1.0
-    @State private var lastScale: CGFloat = 1.0
-    
-    @State private var angle: Angle = .zero
-    @State private var lastAngle: Angle = .zero
-    
     var body: some View {
         VStack(spacing: 16) {
             HStack {
                 Button("취소하기") {
-                    
+                    dismiss()
                 }
                 .foregroundStyle(.red)
                 
@@ -180,11 +173,11 @@ struct LookBookEditView: View {
             }
             .background {
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(.background)
                     .shadow(color: .black.opacity(0.1), radius: 12, y: -4)
                     .ignoresSafeArea(edges: .bottom)
             }
         }
+        .background(.white)
     }
     
     var collageView: some View {
@@ -213,7 +206,7 @@ struct LookBookEditView: View {
                             .overlay {
                                 if editingClothes == clothes.id {
                                     RoundedRectangle(cornerRadius: 18)
-                                        .strokeBorder(lineWidth: 8)
+                                        .strokeBorder(.black, lineWidth: 8)
                                         .frame(width: proxy.size.width / 2 * clothes.wrappedValue.scale, height: proxy.size.height / 2 * clothes.wrappedValue.scale)
                                         .rotationEffect(clothes.wrappedValue.angle)
                                     
@@ -239,6 +232,7 @@ struct LookBookEditView: View {
                                         .padding(4)
                                         .background {
                                             Circle()
+                                                .fill(.black)
                                         }
                                         .offset(
                                             x: proxy.size.width / 2 * clothes.wrappedValue.scale / 2,
@@ -246,11 +240,10 @@ struct LookBookEditView: View {
                                         )
                                         .rotationEffect(clothes.wrappedValue.angle)
                                         .gesture(
-                                            rotationGesture(clothes)
-//                                            SimultaneousGesture(
-//                                                scaleGesture(clothes),
-//                                                rotationGesture(clothes)
-//                                            )
+                                            SimultaneousGesture(
+                                                scaleGesture(clothes),
+                                                rotationGesture(clothes)
+                                            )
                                         )
                                 }
                             }
@@ -261,7 +254,6 @@ struct LookBookEditView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            .background(.gray)
             .onTapGesture {
                 editingClothes = ""
             }
@@ -285,10 +277,22 @@ struct LookBookEditView: View {
     func scaleGesture(_ clothes: Binding<ClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
-                let scaleValue = max(value.translation.width, value.translation.height) / 100.0
                 // TODO: [!] 최소, 최대 확대 범위 설정
-                clothes.wrappedValue.scale = max(0.5, clothes.wrappedValue.lastScale + scaleValue)
-//                scale = max(lastScale + value.magnification - (lastScale == 0 ? 0 : 1), 0.05)
+                
+                let center = CGPoint(x: 0, y: 0)
+                let currentPoint = value.location
+                
+                // 드래그 시작 시 거리 설정
+                if clothes.wrappedValue.lastScale == 1 {
+                    clothes.wrappedValue.lastScale = distanceBetween(center: center, point: currentPoint)
+                } else {
+                    // 현재 거리와 시작 거리 비교하여 스케일 계산
+                    let currentDistance = distanceBetween(center: center, point: currentPoint)
+                    let scaleChange = currentDistance / clothes.wrappedValue.lastScale
+                    
+                    // 새로운 스케일 적용
+                    clothes.wrappedValue.scale = clothes.wrappedValue.lastScale * scaleChange
+                }
             }
             .onEnded { value in
                 clothes.wrappedValue.lastScale = clothes.wrappedValue.scale
@@ -297,41 +301,47 @@ struct LookBookEditView: View {
                 print(value.translation)
             }
     }
+        
+    // 두 점 사이의 거리 계산
+    func distanceBetween(center: CGPoint, point: CGPoint) -> CGFloat {
+        return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 100
+    }
     
     func rotationGesture(_ clothes: Binding<ClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
-                let center = CGPoint(x: 0, y: 0) // 뷰의 중심 좌표
+                let center = CGPoint(x: 0, y: 0) // 뷰의 중심
                 let currentPoint = value.location
-                let previousPoint = CGPoint(x: currentPoint.x - value.translation.width,
-                                            y: currentPoint.y - value.translation.height)
                 
-                // 중심과 현재/이전 좌표 간 각도 계산
-                let angleValue = angleBetween(center: center, pointA: previousPoint, pointB: currentPoint)
+                // 드래그 시작 시 기준 각도를 설정
+                if clothes.wrappedValue.lastAngle == .degrees(0) {
+                    clothes.wrappedValue.lastAngle = angleForPoint(center: center, point: currentPoint)
+                }
                 
-                clothes.wrappedValue.angle = clothes.wrappedValue.lastAngle + angleValue
+                // 현재 각도와 시작 각도 비교하여 각도 변화 계산
+                let currentAngle = angleForPoint(center: center, point: currentPoint)
+                let angleDelta = currentAngle.degrees - clothes.wrappedValue.lastAngle.degrees
+                
+                // lastDegree에 현재 각도 변화량을 누적
+                clothes.wrappedValue.angle += .degrees(angleDelta)
+                clothes.wrappedValue.angle = .degrees(clothes.wrappedValue.angle.degrees.truncatingRemainder(dividingBy: 360)) // 360도 기준으로 각도 유지
+                
+                // 기준 각도를 현재 각도로 업데이트
+                clothes.wrappedValue.lastAngle = currentAngle
             }
             .onEnded { _ in
-                clothes.wrappedValue.lastAngle = clothes.wrappedValue.angle
-//                print(clothes.wrappedValue.angle, clothes.wrappedValue.lastAngle)
+                // 드래그 종료 시 기준 각도를 초기화
+//                clothes.wrappedValue.lastAngle = .degrees(0)
+                print(clothes.wrappedValue.angle)
             }
     }
     
-    func angleBetween(center: CGPoint, pointA: CGPoint, pointB: CGPoint) -> Angle {
-        let vectorA = CGVector(dx: pointA.x - center.x, dy: pointA.y - center.y)
-        let vectorB = CGVector(dx: pointB.x - center.x, dy: pointB.y - center.y)
-        
-        let dotProduct = vectorA.dx * vectorB.dx + vectorA.dy * vectorB.dy
-        let magnitudeA = sqrt(vectorA.dx * vectorA.dx + vectorA.dy * vectorA.dy)
-        let magnitudeB = sqrt(vectorB.dx * vectorB.dx + vectorB.dy * vectorB.dy)
-        let cosineAngle = dotProduct / (magnitudeA * magnitudeB)
-        
-        var angle = acos(min(max(cosineAngle, -1.0), 1.0))
-        let crossProduct = vectorA.dx * vectorB.dy - vectorA.dy * vectorB.dx
-        print(angle)
-
-        return Angle(radians: crossProduct >= 0 ? angle : -angle)
-//        return Angle(radians: angle)
+    // 주어진 점과 뷰의 중심 사이의 각도 계산 (degrees)
+    func angleForPoint(center: CGPoint, point: CGPoint) -> Angle {
+        let deltaX = point.x - center.x
+        let deltaY = point.y - center.y
+        let radians = atan2(deltaY, deltaX)
+        return Angle(radians: Double(radians))
     }
 }
 
