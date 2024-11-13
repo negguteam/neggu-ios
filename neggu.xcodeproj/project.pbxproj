@@ -17,6 +17,7 @@
 		1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D26D2C6274C9003F50F3 /* LoginView.swift */; };
 		1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D2722C62790C003F50F3 /* AuthCoordinator.swift */; };
 		1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D2742C62801F003F50F3 /* Coordinator.swift */; };
+		1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4662CE3688D007264C7 /* OnboardingView.swift */; };
 		132247122C5E924F004557EF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 132247112C5E924F004557EF /* FirebaseAnalytics */; };
 		132247142C5E924F004557EF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 132247132C5E924F004557EF /* FirebaseAuth */; };
 		132247162C5E924F004557EF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 132247152C5E924F004557EF /* FirebaseCrashlytics */; };
@@ -93,6 +94,7 @@
 		1308D26D2C6274C9003F50F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		1308D2722C62790C003F50F3 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		1308D2742C62801F003F50F3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		1317A4662CE3688D007264C7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		1322471E2C5E9430004557EF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		132247202C5E946A004557EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		132247232C5E972F004557EF /* NegguKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NegguKeys.xcconfig; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */,
 				1308D26D2C6274C9003F50F3 /* LoginView.swift */,
 				1302FE5E2C8709C50076D015 /* EditNicknameView.swift */,
+				1317A4662CE3688D007264C7 /* OnboardingView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -599,6 +602,7 @@
 				13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */,
 				13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */,
 				1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */,
+				1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */,
 				1386EB0E2C5D41FA0085655D /* NegguDS.swift in Sources */,
 				1364C8762C61281200F67E3C /* UserDefaultsManager.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* Clothes.swift in Sources */,
