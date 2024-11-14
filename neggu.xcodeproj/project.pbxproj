@@ -18,6 +18,7 @@
 		1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D2722C62790C003F50F3 /* AuthCoordinator.swift */; };
 		1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D2742C62801F003F50F3 /* Coordinator.swift */; };
 		1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4662CE3688D007264C7 /* OnboardingView.swift */; };
+		1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4682CE4E758007264C7 /* BannerCarousel.swift */; };
 		132247122C5E924F004557EF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 132247112C5E924F004557EF /* FirebaseAnalytics */; };
 		132247142C5E924F004557EF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 132247132C5E924F004557EF /* FirebaseAuth */; };
 		132247162C5E924F004557EF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 132247152C5E924F004557EF /* FirebaseCrashlytics */; };
@@ -95,6 +96,7 @@
 		1308D2722C62790C003F50F3 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		1308D2742C62801F003F50F3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		1317A4662CE3688D007264C7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		1317A4682CE4E758007264C7 /* BannerCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCarousel.swift; sourceTree = "<group>"; };
 		1322471E2C5E9430004557EF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		132247202C5E946A004557EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		132247232C5E972F004557EF /* NegguKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NegguKeys.xcconfig; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
 				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
+				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 				1337B70B2CDD009C0052BFF2 /* ClothesDetailView.swift in Sources */,
 				1364C8732C61031E00F67E3C /* LoginEntity.swift in Sources */,
 				1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */,
+				1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */,
 				1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */,
 				1334DBF92CAA73AA00928C4C /* CustomScrollView.swift in Sources */,
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,

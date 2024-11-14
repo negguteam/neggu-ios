@@ -57,92 +57,9 @@ struct ClosetView: View {
                                 .foregroundStyle(.bgAlt)
                         }
                         .padding(.bottom, 20)
-                        
-                        ScrollView(.horizontal) {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 16) {
-                                    HStack {
-                                        VStack(alignment: .leading) {
-                                            Text("오늘 입을 룩북이")
-                                            
-                                            Text("1벌 ")
-                                                .foregroundStyle(.orange40)
-                                            +
-                                            Text("있어요")
-                                            
-                                            Image(systemName: "arrow.right")
-                                                .resizable()
-                                                .fontWeight(.light)
-                                                .frame(width: 54, height: 30)
-                                        }
-                                        
-                                        Spacer()
-                                    }
-                                    .negguFont(.title4)
-                                    .foregroundStyle(.labelAlt)
-                                }
-                                .padding(.horizontal, 40)
-                                .containerRelativeFrame(.horizontal)
-                                .frame(height: 172)
-                                .padding(.horizontal, -20)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .fill(.white)
-                                        .overlay {
-                                            HStack {
-                                                Spacer()
-                                                
-                                                Image(.dummyLookbook)
-                                                    .resizable()
-                                                    .scaledToFill()
-                                                    .frame(width: 150)
-                                            }
-                                        }
-                                }
-                                .clipped()
-                                .id(0)
-                                
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text("빠르게 옷장에\n담아보세요!")
-                                            .negguFont(.title4)
-                                            .foregroundStyle(.white)
-                                        
-                                        Text("링크를 붙여넣어 내 옷장에 저장할 수 있어요")
-                                            .negguFont(.body2b)
-                                            .foregroundStyle(.white)
-                                    }
-                                    
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 40)
-                                .containerRelativeFrame(.horizontal)
-                                .frame(height: 172)
-                                .padding(.horizontal, -20)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 36)
-                                        .fill(.black)
-                                        .overlay {
-                                            HStack {
-                                                Spacer()
-                                                
-                                                Image(.bannerBG1)
-                                                    .frame(width: 150)
-                                            }
-                                        }
-                                }
-                                .clipped()
-                                .id(1)
-                            }
-                            .padding(.horizontal, 20)
-                            .scrollTargetLayout()
-                        }
-                        .scrollTargetBehavior(.paging)
-                        .scrollPosition(id: $horizontalScrolledID)
-                        .animation(.smooth, value: horizontalScrolledID)
-                        .scrollIndicators(.hidden)
-                        .padding(.horizontal, -20)
-                        .id(0)
+    
+                        BannerCarousel(scrollID: $horizontalScrolledID)
+                            .id(0)
                         
                         HStack(spacing: 4) {
                             ForEach(0..<2, id: \.self) { index in
