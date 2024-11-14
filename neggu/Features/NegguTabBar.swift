@@ -13,52 +13,142 @@ struct NegguTabBar: View {
     @Binding var selection: Int
     @Binding var showList: Bool
     
+    @State private var scrollPosition: Int? = 0
+    @State private var tapType: String = ""
+    
     var body: some View {
         VStack(spacing: 8) {
             VStack(spacing: 0) {
-                Button {
-                    withAnimation {
-                        showList = false
-                        selection = 0
-                    }
-                } label: {
-                    HStack {
-                        Text("내 의상 등록하기")
-                            .contentShape(.rect)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                ScrollView(.horizontal) {
+                    HStack(spacing: 0) {
+                        VStack(spacing: 12) {
+                            Button {
+                                scrollPosition = 1
+                                tapType = "closet"
+                            } label: {
+                                HStack(spacing: 12) {
+                                    Image(.shirtFill)
+                                    
+                                    Text("내 의상 등록하기")
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.right")
+                                }
+                            }
+                            
+                            Rectangle()
+                                .fill(.white.opacity(0.2))
+                                .frame(height: 1)
+                            
+                            Button {
+                                scrollPosition = 1
+                                tapType = "lookbook"
+                            } label: {
+                                HStack(spacing: 12) {
+                                    Image(.closetFill)
+                                    
+                                    Text("룩북 등록하기")
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.right")
+                                }
+                            }
+                        }
+                        .containerRelativeFrame(.horizontal, { length, _ in
+                            length - 56
+                        })
+                        .padding(28)
+                        .negguFont(.body1b)
+                        .id(0)
                         
-                        Image(systemName: "chevron.right")
+                        HStack(alignment: .top, spacing: 10) {
+                            Button {
+                                scrollPosition = 0
+                                tapType = ""
+                            } label: {
+                                Image(systemName: "chevron.left")
+                            }
+                            .negguFont(.body1b)
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                if tapType == "closet" {
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(.link)
+                                        
+                                        Text("링크로 등록하기")
+                                    }
+                                    .padding(.horizontal, 22)
+                                    
+                                    Rectangle()
+                                        .fill(.white.opacity(0.2))
+                                        .frame(height: 1)
+                                    
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(.link)
+                                        
+                                        Text("지금 촬영하고 등록하기")
+                                    }
+                                    .padding(.horizontal, 22)
+                                    
+                                    Rectangle()
+                                        .fill(.white.opacity(0.2))
+                                        .frame(height: 1)
+                                    
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(.link)
+                                        
+                                        Text("갤러리에서 등록하기")
+                                    }
+                                    .padding(.horizontal, 22)
+                                } else {
+                                    Button {
+                                        
+                                    } label: {
+                                        Text("네가 좀 꾸며줘")
+                                    }
+                                    .negguFont(.body1b)
+                                    .padding(.horizontal, 22)
+
+                                    Rectangle()
+                                        .fill(.white.opacity(0.2))
+                                        .frame(height: 1)
+                                    
+                                    Button {
+                                        
+                                    } label: {
+                                        Text("내가 꾸며줄게")
+                                    }
+                                    .negguFont(.body1b)
+                                    .padding(.horizontal, 22)
+                                }
+                            }
+                        }
+                        .containerRelativeFrame(.horizontal, { length, _ in
+                            length - 56
+                        })
+                        .padding(28)
+                        .negguFont(.body2b)
+                        .id(1)
                     }
                 }
-                .padding([.horizontal, .top])
-                
-                Rectangle()
-                    .fill(.white.opacity(0.2))
-                    .frame(height: 1)
-                    .padding()
-                
-                Button {
-                    withAnimation {
-                        showList = false
-                        selection = 0
-                    }
-                } label: {
-                    HStack {
-                        Text("룩북 등록하기")
-                            .contentShape(.rect)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        Image(systemName: "chevron.right")
-                    }
-                }
-                .padding([.horizontal, .bottom])
+                .frame(height: tapType == "closet" ? 200 : 152)
+                .scrollDisabled(true)
+                .scrollIndicators(.hidden)
+                .scrollTargetBehavior(.paging)
+                .scrollPosition(id: $scrollPosition)
             }
             .negguFont(.body2b)
             .foregroundStyle(.white)
-            .background {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.orange40)
-            }
+            .background(.orange40)
+            .clipShape(.rect(cornerRadius: 20))
             .opacity(showList ? 1 : 0)
             
             RoundedRectangle(cornerRadius: 20)
@@ -75,10 +165,10 @@ struct NegguTabBar: View {
                             
                             selection = 0
                         } label: {
-                            RoundedRectangle(cornerRadius: 20)
+                            RoundedRectangle(cornerRadius: 16)
                                 .fill(.clear)
                                 .overlay {
-                                    Image(systemName: "cabinet")
+                                    Image(selection == 0 ? .shirtFill : .shirt)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 24, height: 24)
@@ -87,11 +177,11 @@ struct NegguTabBar: View {
                                 .background {
                                     if selection == 0 {
                                         Color.white.opacity(0.2)
-                                            .clipShape(.rect(cornerRadius: 20))
+                                            .clipShape(.rect(cornerRadius: 16))
                                             .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                                     }
                                 }
-                                .contentShape(.rect(cornerRadius: 20))
+                                .contentShape(.rect(cornerRadius: 16))
                                 .padding([.leading, .vertical], 4)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -109,7 +199,7 @@ struct NegguTabBar: View {
                                     Image(systemName: "plus")
                                         .resizable()
                                         .foregroundStyle(.white)
-                                        .padding(10)
+                                        .frame(width: 24, height: 24)
                                 }
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -122,10 +212,10 @@ struct NegguTabBar: View {
                             
                             selection = 1
                         } label: {
-                            RoundedRectangle(cornerRadius: 20)
+                            RoundedRectangle(cornerRadius: 16)
                                 .fill(.clear)
                                 .overlay {
-                                    Image(systemName: "person")
+                                    Image(selection == 1 ? .closetFill : .closet)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 24, height: 24)
@@ -134,11 +224,11 @@ struct NegguTabBar: View {
                                 .background {
                                     if selection == 1 {
                                         Color.white.opacity(0.2)
-                                            .clipShape(.rect(cornerRadius: 20))
+                                            .clipShape(.rect(cornerRadius: 16))
                                             .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                                     }
                                 }
-                                .contentShape(.rect(cornerRadius: 20))
+                                .contentShape(.rect(cornerRadius: 16))
                                 .padding([.trailing, .vertical], 4)
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -184,5 +274,5 @@ extension UIView {
 
 
 #Preview {
-    NegguTabBar(selection: .constant(0), showList: .constant(true))
+    ContentView()
 }
