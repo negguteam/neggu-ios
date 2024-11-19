@@ -8,18 +8,22 @@
 import SwiftUI
 
 struct ClosetAddView: View {
+    @Environment(\.dismiss) private var dismiss
     @State var clothes: Clothes
     @Binding var segmentedImage: UIImage?
     
-    @State private var bigCategory: Int?
-    @State private var smallCategory: Int?
+    @State private var priceRange: PriceRange? = .first
     
-    @State private var showMoodDropDown: Bool = false
-    @State private var selectedMoodIndex: Int?
+    @State private var showNameEditView: Bool = false
+    @State private var showAlert: Bool = false
     
-    @State private var modelName: String = ""
-    @State private var priceIndex: Int?
+    @State private var modelName: String = "후드"
+    @State private var editedModelName: String = ""
+    
+    @State private var brandName: String = "아디다스"
     @State private var alreadyPurchase: Bool = false
+    @State private var purchaseLink: String = ""
+    @State private var memoString: String = ""
     
     var priceList: [String] = [
         "직접입력",
@@ -31,316 +35,283 @@ struct ClosetAddView: View {
     ]
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("의상 등록하기")
-                    .negguFont(.title3)
-                    .padding(.horizontal, -14)
-                
-                HStack {
-                    Image(.link)
-                    
-                    Text(clothes.urlString)
+        VStack(spacing: 0) {
+            HStack {
+                Button("취소하기") {
+                    showAlert = true
                 }
-                .negguFont(.body3)
-                .foregroundStyle(.gray)
-                .padding(.vertical, 32)
+                .negguFont(.body2)
+                .foregroundStyle(.red)
                 
-                VStack(alignment: .leading) {
-                    ZStack(alignment: .bottomTrailing) {
-                        if let segmentedImage {
-                            Image(uiImage: segmentedImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 259, height: 343)
-                        } else {
-                            Image(.dummyClothes1)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 259, height: 343)
-                        }
-                        
-                        Circle()
-                            .frame(width: 42)
-                            .offset(x: 10, y: 20)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 50)
+                Spacer()
                 
-                VStack {
-                    HStack {
-                        Text("카테고리")
-                        
-                        Text("*")
-                            .foregroundStyle(.red)
-                        
-                        Spacer()
-                    }
-                    .negguFont(.body1b)
-                    
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(0..<3, id: \.self) { index in
-                                HStack {
-                                    Circle()
-                                        .frame(width: 20)
-                                        .foregroundStyle(bigCategory == index ? .white : .primary)
-                                    
-                                    Text("카테고리\(index)")
-                                        .negguFont(.body2)
-                                        .foregroundStyle(bigCategory == index ? .white : .primary)
-                                }
-                                .padding(8)
-                                .background {
-                                    Capsule()
-                                        .fill(bigCategory == index ? .gray70 : .clear)
-                                        .strokeBorder(.gray70)
-                                }
-                                .onTapGesture {
-                                    if bigCategory == index {
-                                        bigCategory = nil
-                                    } else {
-                                        bigCategory = index
-                                    }
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 44)
-                    }
-                    .padding(.horizontal, -44)
-                    .scrollIndicators(.hidden)
-                    
-                    HStack {
-                        Circle()
-                            .frame(width: 21)
-                        
-                        Text("빨간색")
-                        
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                    
-//                    DropDownMenu(
-//                        "스타일",
-//                        dropDownList: ["아메카지", "스트릿", "고프코어", "미니멀"],
-//                        showDropDown: $showMoodDropDown,
-//                        selectedIndex: $selectedMoodIndex
-//                    )
-                    
-                    Menu {
-                        Button("A") {
-                            
-                        }
-                        
-                        Button("B") {
-                            
-                        }
-                    } label: {
-                        HStack {
-                            Text("분위기")
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.down")
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 55)
-                        .padding(.horizontal, 14)
-                        .background {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.gray.opacity(0.1))
-                        }
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(0..<3, id: \.self) { index in
-                                Text("카테고리\(index)")
-                                    .negguFont(.body2b)
-                                    .padding(8)
-                                    .background {
-                                        Capsule()
-                                            .fill(.gray.opacity(0.1))
-                                    }
-                            }
-                        }
-                        .padding(.horizontal, 44)
-                    }
-                    .padding(.horizontal, -44)
-                    .scrollIndicators(.hidden)
+                Button("저장하기") {
+                    // TODO: 필드값 검증
+                    validateField()
                 }
-                .padding(.bottom, 50)
-                
-                VStack(alignment: .leading) {
-                    Text("브랜드")
-                        .negguFont(.body1b)
-                    
-                    HStack {
-                        Text(clothes.brand)
-                        
-                        Spacer()
-                        
-                        Circle()
-                            .frame(width: 21)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                    
-                    HStack {
-                        TextField("모델명", text: $clothes.name)
-                        
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                }
-                .padding(.bottom, 50)
-                
-                VStack(alignment: .leading) {
-                    Text("가격")
-                        .negguFont(.body1b)
-                    
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(priceList.indices, id: \.self) { index in
-                                Text("\(priceList[index])")
-                                    .negguFont(.body2b)
-                                    .foregroundStyle(priceIndex == index ? .white : .primary)
-                                    .padding(8)
-                                    .background {
-                                        Capsule()
-                                            .fill(priceIndex == index ? .gray70 : .gray.opacity(0.1))
-                                    }
-                                    .onTapGesture {
-                                        priceIndex = index
-                                    }
-                            }
-                        }
-                        .padding(.horizontal, 44)
-                    }
-                    .padding(.horizontal, -44)
-                    .scrollIndicators(.hidden)
-                }
-                .padding(.bottom, 50)
-                
-                VStack(alignment: .leading) {
-                    Text("그 외 정보")
-                        .negguFont(.body1b)
-                    
-                    HStack {
-                        Circle()
-                            .frame(width: 20)
-                        
-                        Text("URL")
-                        
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                    
-                    HStack {
-                        Circle()
-                            .frame(width: 20)
-                        
-                        Text("사이즈")
-                        
-                        Spacer()
-                        
-                        Image(systemName: "chevron.down")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                    
-                    HStack {
-                        Circle()
-                            .frame(width: 20)
-                        
-                        Text("소재")
-                        
-                        Spacer()
-                        
-                        Image(systemName: "chevron.down")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                    
-                    HStack {
-                        Circle()
-                            .frame(width: 20)
-                        
-                        Text("메모")
-                        
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 110)
-                    .padding(.horizontal, 14)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.gray.opacity(0.1))
-                    }
-                }
-                .padding(.bottom, 50)
-                
-                VStack(spacing: 16) {
-                    Toggle("구매한 제품이에요", isOn: $alreadyPurchase)
-                        .tint(.safe)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 55)
-                        .padding(.horizontal, 14)
-                        .background {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.gray.opacity(0.1))
-                        }
-                    
-                    Button("저장하기") {
-                        
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.black)
-                    }
-                }
+                .negguFont(.body2b)
+                .foregroundStyle(.black)
             }
-            .padding(44)
+            .frame(height: 40)
+            .padding(.horizontal, 20)
+            
+            ScrollView {
+                Group {
+                    if let image = segmentedImage {
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFit()
+                    } else {
+                        Rectangle()
+                            .fill(.bgNormal)
+                    }
+                }
+                .frame(height: 366)
+                .padding(.bottom, 20)
+                
+                LazyVStack(
+                    spacing: 20,
+                    pinnedViews: [.sectionHeaders]
+                ) {
+                    Section {
+                        VStack(alignment: .leading) {
+                            HStack(spacing: 0) {
+                                Text("어떤 종류의 옷인가요?")
+                                
+                                Text("*")
+                                    .foregroundStyle(.red)
+                            }
+                            .negguFont(.body1b)
+                            
+                            HStack {
+                                Text("옷의 종류")
+                                    .negguFont(.body2b)
+                                    .foregroundStyle(.labelInactive)
+                                
+                                Spacer()
+                                
+                                Image(systemName: "chevron.down")
+                            }
+                            .padding()
+                            .background() {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .strokeBorder(.lineAlt)
+                            }
+                            
+                            HStack {
+                                Text("옷의 분위기")
+                                    .negguFont(.body2b)
+                                    .foregroundStyle(.labelInactive)
+                                
+                                Spacer()
+                                
+                                Image(systemName: "chevron.down")
+                            }
+                            .padding()
+                            .background() {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .strokeBorder(.lineAlt)
+                            }
+                        }
+                        .padding(.vertical, 32)
+                        .padding(.horizontal, 28)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.white)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("어느 브랜드인가요?")
+                                .negguFont(.body1b)
+                            
+                            HStack {
+                                Text("옷의 종류")
+                                    .negguFont(.body2b)
+                                    .foregroundStyle(.labelInactive)
+                                
+                                Spacer()
+                                
+                                Image(systemName: "chevron.down")
+                            }
+                            .padding()
+                            .background() {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .strokeBorder(.lineAlt)
+                            }
+                        }
+                        .padding(.vertical, 32)
+                        .padding(.horizontal, 28)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.white)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("얼마인가요?")
+                                .negguFont(.body1b)
+                            
+                            ToggleButtonPicker<PriceRange>(selection: $priceRange)
+                        }
+                        .padding(.vertical, 32)
+                        .padding(.horizontal, 28)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.white)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("어디서 구매하나요?")
+                                .negguFont(.body1b)
+                            
+                            HStack(spacing: 18) {
+                                Button {
+                                    alreadyPurchase = true
+                                } label: {
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(alreadyPurchase ? .negguSecondaryAlt : .labelRAlt)
+                                        .strokeBorder(alreadyPurchase ? .negguSecondary : .labelInactive)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 48)
+                                        .overlay {
+                                            Text("구매함")
+                                                .negguFont(.body2)
+                                                .foregroundStyle(alreadyPurchase ?  .negguSecondary : .labelInactive)
+                                        }
+                                }
+                                
+                                Button {
+                                    alreadyPurchase = false
+                                } label: {
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(alreadyPurchase ? .labelRAlt : .negguSecondaryAlt)
+                                        .strokeBorder(alreadyPurchase ?  .labelInactive : .negguSecondary)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 48)
+                                        .overlay {
+                                            Text("구매하지 않음")
+                                                .negguFont(.body2)
+                                                .foregroundStyle(alreadyPurchase ? .labelInactive : .negguSecondary)
+                                        }
+                                }
+                            }
+                            
+                            HStack(spacing: 16) {
+                                Image(.link)
+                                    .foregroundStyle(.labelAssistive)
+                                    .padding(.leading, 12)
+                                
+                                TextField(
+                                    "",
+                                    text: $purchaseLink,
+                                    prompt: Text(clothes.urlString).foregroundStyle(.labelInactive)
+                                )
+                                .negguFont(.body2)
+                                
+                                Button {
+                                    
+                                } label: {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(.black)
+                                        .frame(width: 40, height: 40)
+                                        .overlay {
+                                            Image(systemName: "arrow.right")
+                                                .foregroundStyle(.white)
+                                        }
+                                }
+                            }
+                            .padding(8)
+                            .background {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .strokeBorder(.lineAlt)
+                            }
+                            
+                            TextField(
+                                "",
+                                text: $memoString,
+                                prompt: Text("메모를 남겨보세요!").foregroundStyle(.labelInactive),
+                                axis: .vertical
+                            )
+                            .negguFont(.body2)
+                            .frame(minHeight: 48, alignment: .top)
+                            .padding()
+                            .background {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .strokeBorder(.lineAlt)
+                            }
+                        }
+                        .padding(.vertical, 32)
+                        .padding(.horizontal, 28)
+                        .background {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.white)
+                        }
+                    } header: {
+                        if Set(clothesName) != [" "] {
+                            HStack {
+                                Text(clothesName)
+                                    .negguFont(.title3)
+                                
+                                Button {
+                                    showNameEditView = true
+                                } label: {
+                                    Image(systemName: "pencil")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 18, height: 18)
+                                }
+                                
+                                Spacer()
+                            }
+                            .padding(.vertical, 14)
+                            .foregroundStyle(.labelNormal)
+                            .background(.bgNormal)
+                        }
+                    }
+                    .foregroundStyle(.black)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 56)
+            }
         }
-        .background(.white)
+        .background(.bgNormal)
+        .sheet(isPresented: $showNameEditView) {
+            ClothesNameEditView(editedModelName: $editedModelName, clothesName: clothesName)
+                .presentationBackground(.white)
+                .presentationDetents([.height(430)])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(20)
+        }
+        .negguAlert(
+            showAlert: $showAlert,
+            title: "의상 등록을 그만둘까요?",
+            description: "지금까지 편집한 내용은 저장되지 않습니다."
+        ) {
+            dismiss()
+        }
+    }
+    
+    private func validateField() {
+        
+    }
+    
+    var clothesName: String {
+        brandName + " " + modelName
+    }
+    
+    enum PriceRange: Selectable {
+        case first
+        case second
+        case third
+        case fourth
+        
+        var title: String {
+            switch self {
+            case .first: "잘 모르겠어요"
+            case .second: "~5만원"
+            case .third: "5~10만원"
+            case .fourth: "10~20만"
+            }
+        }
     }
 }
 

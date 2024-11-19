@@ -49,6 +49,8 @@
 		13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEA2C5FBFA100BB6B91 /* Util.swift */; };
 		13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */; };
 		136C78802CEB0584009DEA76 /* ToggleButtonPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* ToggleButtonPicker.swift */; };
+		136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */; };
+		136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D72CEC9780009DEA76 /* NegguAlert.swift */; };
 		13830E2B2C6FA4C200CA385F /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */; };
 		1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1384FE862CD8FA3E00162AAF /* NegguColor.swift */; };
 		1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EAD02C5D3F9C0085655D /* negguApp.swift */; };
@@ -124,6 +126,8 @@
 		13659CEA2C5FBFA100BB6B91 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEventLogger.swift; sourceTree = "<group>"; };
 		136C787F2CEB0584009DEA76 /* ToggleButtonPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButtonPicker.swift; sourceTree = "<group>"; };
+		136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesNameEditView.swift; sourceTree = "<group>"; };
+		136C79D72CEC9780009DEA76 /* NegguAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguAlert.swift; sourceTree = "<group>"; };
 		1384FE862CD8FA3E00162AAF /* NegguColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguColor.swift; sourceTree = "<group>"; };
 		1386EACD2C5D3F9C0085655D /* neggu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = neggu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1386EAD02C5D3F9C0085655D /* negguApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = negguApp.swift; sourceTree = "<group>"; };
@@ -235,6 +239,7 @@
 				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
+				136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -404,6 +409,7 @@
 			children = (
 				1386EB0D2C5D41FA0085655D /* NegguDS.swift */,
 				136C787F2CEB0584009DEA76 /* ToggleButtonPicker.swift */,
+				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
@@ -606,7 +612,9 @@
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */,
 				1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */,
+				136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */,
 				13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */,
+				136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */,
 				13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */,
 				1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */,
 				1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */,
