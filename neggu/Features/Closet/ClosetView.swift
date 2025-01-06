@@ -58,7 +58,8 @@ struct ClosetView: View {
                         }
                         .padding(.bottom, 20)
     
-                        BannerCarousel(scrollID: $horizontalScrolledID)
+                        BannerCarousel(scrollPosition: $horizontalScrolledID)
+                            .padding(.horizontal, -20)
                             .id(0)
                         
                         HStack(spacing: 4) {
