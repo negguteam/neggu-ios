@@ -413,7 +413,6 @@
 				1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */,
 				1386EAD22C5D3F9C0085655D /* ContentView.swift */,
 				1308D2742C62801F003F50F3 /* Coordinator.swift */,
-				133889292C899BF90023CED5 /* NegguTabBar.swift */,
 				1308D26F2C6274D0003F50F3 /* Auth */,
 				1338892B2C89E73B0023CED5 /* Closet */,
 				1337B7092CDCF7200052BFF2 /* LookBook */,
@@ -440,6 +439,7 @@
 				1386EB0D2C5D41FA0085655D /* NegguDS.swift */,
 				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
+				133889292C899BF90023CED5 /* NegguTabBar.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
