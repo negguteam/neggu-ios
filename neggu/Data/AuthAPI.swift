@@ -16,9 +16,10 @@ enum SocialType: String, Codable {
 }
 
 enum AuthAPI {
-    case login(socialType: SocialType, socialID: String, fcmToken: String)
-    case updateInfo(nickname: String)
+    case login(socialType: SocialType, idToken: String)
+    case register(parameters: Parameters)
     case checkNickname(nickname: String)
+    case tokenReissuance(refreshToken: String)
 }
 
 extension AuthAPI: BaseAPI {
@@ -27,64 +28,51 @@ extension AuthAPI: BaseAPI {
     
     var path: String {
         switch self {
-        case .login:
-            "/login"
-        case .updateInfo:
-            ""
+        case .login(let socialType, _):
+            "/login/\(socialType)"
+        case .register:
+            "/register"
         case .checkNickname:
             "/check-nickname"
+        case .tokenReissuance:
+            "/token"
         }
     }
     
     var headers: [String: String]? {
         switch self {
-        case .login:
-            return HeaderType.json.value
+        case .register:
+            return HeaderType.jsonWithRegisterToken.value
         default:
-            return HeaderType.jsonWithToken.value
+            return HeaderType.json.value
         }
     }
     
     var method: Moya.Method {
         switch self {
         case .checkNickname: .get
-        case .updateInfo: .patch
         default: .post
-        }
-    }
-    
-    private var bodyParameters: Parameters {
-        var params: Parameters = [:]
-        
-        switch self {
-        case .login(let socialType, let socialID, let fcmToken):
-            params = ["social_type": socialType.rawValue,
-                      "social_id": socialID,
-                      "os": "ios",
-                      "app_version": Util.appVersion,
-                      "device_id": Util.deviceID,
-                      "fcm_token": fcmToken]
-        case .updateInfo(let nickname):
-            params = ["nickname": nickname]
-        case .checkNickname(let nickname):
-            params = ["nickname": nickname]
-        }
-        
-        return params
-    }
-    
-    private var parameterEncoding: ParameterEncoding {
-        switch self {
-        default: JSONEncoding.default
         }
     }
     
     var task: Moya.Task {
         switch self {
-        case .checkNickname:
-            return .requestParameters(parameters: bodyParameters, encoding: URLEncoding.queryString)
-        default:
-            return .requestParameters(parameters: bodyParameters, encoding: parameterEncoding)
+        case .login(_, let idToken):
+                .requestParameters(
+                    parameters: ["idToken": idToken],
+                    encoding: JSONEncoding.default
+                )
+        case .register(let parameters):
+                .requestParameters(
+                    parameters: parameters,
+                    encoding: JSONEncoding.default
+                )
+        case .tokenReissuance(let refreshToken):
+                .requestParameters(
+                    parameters: ["refreshToken": refreshToken],
+                    encoding: JSONEncoding.default
+                )
+        default: .requestPlain
         }
     }
     

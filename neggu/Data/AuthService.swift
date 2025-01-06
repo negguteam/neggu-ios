@@ -11,23 +11,24 @@ import Combine
 typealias DefaultAuthService = BaseService<AuthAPI>
 
 protocol AuthService {
-    func login(socialType: SocialType, socialID: String, fcmToken: String) -> AnyPublisher<LoginEntity, Error>
-    func updateInfo(nickname: String) -> AnyPublisher<LoginEntity, Error>
+    func login(socialType: SocialType, idToken: String) -> AnyPublisher<TokenEntity, Error>
+    func register(userProfile: [String: Any]) -> AnyPublisher<TokenEntity, Error>
     func checkNickname(nickname: String) -> AnyPublisher<CheckNicknameEntity, Error>
 }
 
 extension DefaultAuthService: AuthService {
 
-    func login(socialType: SocialType, socialID: String, fcmToken: String) -> AnyPublisher<LoginEntity, Error> {
+    func login(socialType: SocialType, idToken: String) -> AnyPublisher<TokenEntity, Error> {
         return requestObjectWithNetworkError(.login(
             socialType: socialType,
-            socialID: socialID,
-            fcmToken: fcmToken
+            idToken: idToken
         ))
     }
     
-    func updateInfo(nickname: String) -> AnyPublisher<LoginEntity, Error> {
-        return requestObjectWithNetworkError(.updateInfo(nickname: nickname))
+    func register(userProfile: [String: Any]) -> AnyPublisher<TokenEntity, Error> {
+        return requestObjectWithNetworkError(.register(
+            parameters: userProfile
+        ))
     }
     
     func checkNickname(nickname: String) -> AnyPublisher<CheckNicknameEntity, Error> {

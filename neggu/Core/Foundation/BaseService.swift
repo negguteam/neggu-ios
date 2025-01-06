@@ -99,7 +99,7 @@ extension BaseService {
 
 extension BaseService {
     
-    func requestObjectWith<T: Decodable>(_ target: API) -> AnyPublisher<T, Error> {
+    func requestObject<T: Decodable>(_ target: API) -> AnyPublisher<T, Error> {
         return Future { [weak self] promise in
             self?.provider.request(target) { result in
                 switch result {
@@ -132,21 +132,14 @@ extension BaseService {
                             let body = try JSONDecoder().decode(T.self, from: value.data)
                             promise(.success(body))
                         case 400..<500:
-                            let body = try JSONDecoder().decode(ErrorResponse.self, from: value.data)
-                            let apiError = APIError(
-                                error: NSError(domain: "임시에러", code: -1001),
-                                statusCode: response.statusCode,
-                                response: body
-                            )
-                            
-                            throw apiError
+                            let error = try JSONDecoder().decode(ErrorEntity.self, from: value.data)
+                            throw error
                         default: break
                         }
                     } catch {
                         promise(.failure(error))
                     }
                 case .failure(let error):
-                    // 여기서 필요에 의해 error 처리 가능
                     promise(.failure(error))
                 }
             }

@@ -20,7 +20,9 @@ extension BaseAPI {
         
         switch Self.apiType {
         case .auth:
-            base += "/accounts"
+            base += "/auth"
+        case .health:
+            base += "/health"
         default:
             base += ""
         }
@@ -45,6 +47,7 @@ extension BaseAPI {
 enum APIType {
     case auth
     case notification
+    case health
 }
 
 enum HeaderType {
