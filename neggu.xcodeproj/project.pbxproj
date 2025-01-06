@@ -47,7 +47,7 @@
 		13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */; };
 		13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEA2C5FBFA100BB6B91 /* Util.swift */; };
 		13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */; };
-		136C78802CEB0584009DEA76 /* ToggleButtonPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* ToggleButtonPicker.swift */; };
+		136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* BorderedChip.swift */; };
 		136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */; };
 		136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D72CEC9780009DEA76 /* NegguAlert.swift */; };
 		13830E2B2C6FA4C200CA385F /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */; };
@@ -74,6 +74,10 @@
 		13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */; };
 		13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E772C64AB1100DB5600 /* DIContainer.swift */; };
 		13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */; };
+		13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */; };
+		13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */; };
+		13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */; };
+		13F8ABD82D19DF5600E08057 /* TitleForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD72D19DF5600E08057 /* TitleForm.swift */; };
 		13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD7D542CBB874400D21143 /* LookBookDetailView.swift */; };
 		13FE61FB2D2AA1DD00578BB5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */; };
 		13FE61FD2D2ABDF100578BB5 /* SignUpCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FE61FC2D2ABDF100578BB5 /* SignUpCompleteView.swift */; };
@@ -130,7 +134,7 @@
 		13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguEnv.swift; sourceTree = "<group>"; };
 		13659CEA2C5FBFA100BB6B91 /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEventLogger.swift; sourceTree = "<group>"; };
-		136C787F2CEB0584009DEA76 /* ToggleButtonPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButtonPicker.swift; sourceTree = "<group>"; };
+		136C787F2CEB0584009DEA76 /* BorderedChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedChip.swift; sourceTree = "<group>"; };
 		136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesNameEditView.swift; sourceTree = "<group>"; };
 		136C79D72CEC9780009DEA76 /* NegguAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguAlert.swift; sourceTree = "<group>"; };
 		1384FE862CD8FA3E00162AAF /* NegguColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguColor.swift; sourceTree = "<group>"; };
@@ -159,6 +163,10 @@
 		13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationDependency.swift; sourceTree = "<group>"; };
 		13DC5E772C64AB1100DB5600 /* DIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEditView.swift; sourceTree = "<group>"; };
+		13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpendableTextView.swift; sourceTree = "<group>"; };
+		13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedRectangle.swift; sourceTree = "<group>"; };
+		13F8ABD72D19DF5600E08057 /* TitleForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleForm.swift; sourceTree = "<group>"; };
 		13FD7D542CBB874400D21143 /* LookBookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDetailView.swift; sourceTree = "<group>"; };
 		13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		13FE61FC2D2ABDF100578BB5 /* SignUpCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCompleteView.swift; sourceTree = "<group>"; };
@@ -359,6 +367,7 @@
 			children = (
 				13DC5E752C64AB0900DB5600 /* ContainerDependencies */,
 				1386EAD02C5D3F9C0085655D /* negguApp.swift */,
+				13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -425,8 +434,11 @@
 		1386EB0A2C5D41C40085655D /* NegguDS */ = {
 			isa = PBXGroup;
 			children = (
+				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
+				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
+				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
 				1386EB0D2C5D41FA0085655D /* NegguDS.swift */,
-				136C787F2CEB0584009DEA76 /* ToggleButtonPicker.swift */,
+				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
 			);
 			path = NegguDS;
@@ -614,6 +626,7 @@
 				13659CDB2C5F613500BB6B91 /* BaseService.swift in Sources */,
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
+				13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */,
 				13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */,
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
@@ -625,7 +638,10 @@
 				1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */,
 				1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */,
 				1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */,
+				13F8ABD82D19DF5600E08057 /* TitleForm.swift in Sources */,
 				1334DBF92CAA73AA00928C4C /* CustomScrollView.swift in Sources */,
+				13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */,
+				13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */,
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
@@ -652,7 +668,7 @@
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,
 				13DBA7E92CC434DD003A10AE /* LookBookListView.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
-				136C78802CEB0584009DEA76 /* ToggleButtonPicker.swift in Sources */,
+				136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
