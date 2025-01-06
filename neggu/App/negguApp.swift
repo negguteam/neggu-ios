@@ -16,8 +16,7 @@ import KakaoSDKAuth
 struct negguApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    @AppStorage("accountToken") private var accountToken: String?
-    @AppStorage("showTabFlow") private var showTabFlow: Bool = false
+    @AppStorage("isLogined") private var isLogined: Bool = false
     
     @StateObject private var authCoordinator = AuthCoordinator()
     
@@ -124,7 +123,7 @@ extension AppDelegate: MessagingDelegate {
         print("Firebase registration token: \(String(describing: fcmToken))")
         #endif
         
-        UserDefaultsManager.fcmToken = fcmToken ?? ""
+        UserDefaultsKey.User.fcmToken = fcmToken
         
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
         

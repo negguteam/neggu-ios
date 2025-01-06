@@ -50,18 +50,22 @@ enum APIType {
 enum HeaderType {
     case json
     case jsonWithToken
+    case jsonWithRegisterToken
     case multipartWithToken
     
     public var value: [String: String] {
         switch self {
         case .json:
-            return ["Content-Type": "application/json"]
+            ["Content-Type": "application/json"]
         case .jsonWithToken:
-            return ["Content-Type": "application/json",
-                    "Authorization": UserDefaultsManager.accountToken ?? ""]
+            ["Content-Type": "application/json",
+             "Authorization": UserDefaultsKey.Auth.accessToken ?? "none"]
+        case .jsonWithRegisterToken:
+            ["Content-Type": "application/json",
+             "RegisterToken": UserDefaultsKey.Auth.registerToken ?? "none"]
         case .multipartWithToken:
-            return ["Content-Type": "multipart/form-data",
-                    "Authorization": UserDefaultsManager.accountToken ?? ""]
+            ["Content-Type": "multipart/form-data",
+             "Authorization": UserDefaultsKey.Auth.accessToken ?? "none"]
         }
     }
 }

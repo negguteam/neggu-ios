@@ -28,7 +28,10 @@ class NegguInterceptor: RequestInterceptor {
     private func validateHeader(_ urlRequest: inout URLRequest) {
         let headers = urlRequest.headers.map {
             guard $0.name == "Authorization" else { return $0 }
-            return HTTPHeader(name: $0.name, value: UserDefaultsManager.accountToken ?? "")
+            return HTTPHeader(
+                name: $0.name,
+                value: UserDefaultsKey.Auth.accessToken ?? "none"
+            )
         }
         
         urlRequest.headers = HTTPHeaders(headers)
