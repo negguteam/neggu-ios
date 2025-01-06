@@ -67,6 +67,7 @@ final class AuthViewModel: NSObject, ObservableObject {
                 UserDefaultsKey.Auth.accessTokenExpiresIn = Date.now.addingTimeInterval(Double(accessTokenExpiresIn))
                 UserDefaultsKey.Auth.refreshToken = refreshToken
                 UserDefaultsKey.Auth.refreshTokenExpiresIn = Date.now.addingTimeInterval(Double(refreshTokenExpiresIn))
+                UserDefaultsKey.Auth.isLogined = true
             }
         }.store(in: &cancelBag)
     }
