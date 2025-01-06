@@ -9,11 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject private var authCoordinator: AuthCoordinator
-    @StateObject private var authViewModel: AuthViewModel
-    
-    init(authViewModel: AuthViewModel) {
-        self._authViewModel = StateObject(wrappedValue: authViewModel)
-    }
+    @EnvironmentObject private var authViewModel: AuthViewModel
     
     var body: some View {
         VStack {
@@ -101,14 +97,14 @@ struct LoginView: View {
         .padding(.horizontal, 48)
         .frame(maxHeight: .infinity)
         .background(.bgNormal)
-        .onChange(of: authViewModel.needEditNickname) { oldValue, newValue in
-            if newValue {
-                authCoordinator.push(.editNickname)
-            }
+        .onChange(of: authViewModel.needEditNickname) { _, newValue in
+            if !newValue { return }
+            authCoordinator.push(.signUp)
         }
     }
 }
 
 #Preview {
-    LoginView(authViewModel: AuthViewModel())
+    LoginView()
+        .environmentObject(AuthViewModel())
 }
