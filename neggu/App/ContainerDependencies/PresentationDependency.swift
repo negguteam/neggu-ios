@@ -11,13 +11,15 @@ extension DIContainer {
     
     func registerPresentationDependencies() {
         register(LoginView.self) {
-            let authViewModel = AuthViewModel()
-            return LoginView(authViewModel: authViewModel)
+            return LoginView()
         }
         
-        register(EditNicknameView.self) {
-            let viewModel = NicknameEditViewModel()
-            return EditNicknameView(viewModel: viewModel)
+        register(SignUpView.self) {
+            return SignUpView()
+        }
+        
+        register(SignUpCompleteView.self) {
+            return SignUpCompleteView()
         }
     }
     

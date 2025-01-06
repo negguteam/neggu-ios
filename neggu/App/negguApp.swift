@@ -20,6 +20,8 @@ struct negguApp: App {
     
     @StateObject private var authCoordinator = AuthCoordinator()
     
+    @StateObject private var authViewModel: AuthViewModel = .init()
+    
     init() {
         DIContainer.shared.registerPresentationDependencies()
         

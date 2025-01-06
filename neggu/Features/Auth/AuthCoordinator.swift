@@ -19,14 +19,17 @@ final class AuthCoordinator: Coordinator {
         switch scene {
         case .login:
             container.resolve(LoginView.self)
-        case .editNickname:
-            container.resolve(EditNicknameView.self)
+        case .signUp:
+            container.resolve(SignUpView.self)
+        case .complete:
+            container.resolve(SignUpCompleteView.self)
         }
     }
     
     enum Destination: Sceneable {
         case login
-        case editNickname
+        case signUp
+        case complete
         
         var id: String { "\(self)" }
     }
