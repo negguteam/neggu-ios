@@ -20,17 +20,29 @@ final class AuthViewModel: NSObject, ObservableObject {
     
     @Published private(set) var needEditNickname: Bool = false
     
+    @Published var step: Int = 1
+    @Published var canNextStep: Bool = false
+    @Published var showAgeField: Bool = false
+    @Published var nextAction: () -> Void = { }
+    @Published var beforeAction: () -> Void = { }
+    
+    @Published var nickname: String = ""
+    @Published private(set) var isDuplicatedNickname: Bool = true
+    
+    @Published var age: String = ""
+    @Published var gender: Gender = .unknown
+    @Published var moodList: Set<Mood> = []
+    
     init(authService: AuthService = DefaultAuthService()) {
         self.authService = authService
     }
     
-    private func login(_ socialType: SocialType, socialID: String) {
+    private func login(_ socialType: SocialType, idToken: String) {
         needEditNickname = false
         
         authService.login(
             socialType: socialType,
-            socialID: socialID,
-            fcmToken: UserDefaultsManager.fcmToken ?? ""
+            idToken: idToken
         ).sink { event in
             switch event {
             case .finished:
@@ -38,15 +50,74 @@ final class AuthViewModel: NSObject, ObservableObject {
             case .failure(let error):
                 print(error.localizedDescription)
             }
-        } receiveValue: { [weak self] entity in
-            UserDefaultsManager.accountToken = entity.accountToken
-            
-            if entity.nickname == nil {
-                self?.needEditNickname = true
+        } receiveValue: { entity in
+            if let registerToken = entity.registerToken {
+                print("회원가입 플로우 !", registerToken)
+                self.needEditNickname = entity.status == "pending"
+                UserDefaultsKey.Auth.registerToken = registerToken
             } else {
-                UserDefaultsManager.showTabFlow = true
+                print("로그인 완료")
+                guard let accessToken = entity.accessToken,
+                      let accessTokenExpiresIn = entity.accessTokenExpiresIn,
+                      let refreshToken = entity.refreshToken,
+                      let refreshTokenExpiresIn = entity.refreshTokenExpiresIn
+                else { return }
+                
+                UserDefaultsKey.Auth.accessToken = accessToken
+                UserDefaultsKey.Auth.accessTokenExpiresIn = Date.now.addingTimeInterval(Double(accessTokenExpiresIn))
+                UserDefaultsKey.Auth.refreshToken = refreshToken
+                UserDefaultsKey.Auth.refreshTokenExpiresIn = Date.now.addingTimeInterval(Double(refreshTokenExpiresIn))
             }
         }.store(in: &cancelBag)
+    }
+    
+    func requestCheckNickname() {
+        authService.checkNickname(nickname: nickname)
+            .sink { event in
+                switch event {
+                case .finished:
+                    print("AuthViewModel: \(event)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            } receiveValue: { [weak self] entity in
+                self?.isDuplicatedNickname = entity.isDuplicated
+            }.store(in: &cancelBag)
+    }
+    
+    func register(completion: @escaping (Bool) -> Void) {
+        authService.register(userProfile: [
+            "nickname": nickname,
+            "age": Int(age) ?? 0,
+            "gender": "\(gender)".uppercased(),
+            "mood": moodList.map { "\($0)".uppercased() }
+        ])
+        .sink { event in
+            switch event {
+            case .finished:
+                print("AuthViewModel: \(event)")
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        } receiveValue: { entity in
+            guard let accessToken = entity.accessToken,
+                  let accessTokenExpiresIn = entity.accessTokenExpiresIn,
+                  let refreshToken = entity.refreshToken,
+                  let refreshTokenExpiresIn = entity.refreshTokenExpiresIn
+            else {
+                print("회원가입 실패")
+                completion(false)
+                return
+            }
+            
+            print("회원가입 완료")
+            UserDefaultsKey.Auth.accessToken = accessToken
+            UserDefaultsKey.Auth.accessTokenExpiresIn = Date.now.addingTimeInterval(Double(accessTokenExpiresIn))
+            UserDefaultsKey.Auth.refreshToken = refreshToken
+            UserDefaultsKey.Auth.refreshTokenExpiresIn = Date.now.addingTimeInterval(Double(refreshTokenExpiresIn))
+            completion(true)
+        }
+        .store(in: &cancelBag)
     }
     
 }
@@ -63,9 +134,9 @@ extension AuthViewModel {
             return
         }
         
-        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { [weak self] result, error in
-            guard let userID = result?.user.userID else { return }
-            self?.login(.google, socialID: userID)
+        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { result, error in
+            guard let idToken = result?.user.idToken?.tokenString else { return }
+            self.login(.google, idToken: idToken)
         }
     }
     
@@ -75,14 +146,8 @@ extension AuthViewModel {
                 if let error {
                     print(error.localizedDescription)
                 } else {
-                    UserApi.shared.me { [weak self] user, error in
-                        if let error {
-                            print(error.localizedDescription)
-                        } else {
-                            guard let userID = user?.id else { return }
-                            self?.login(.kakao, socialID: "\(userID)")
-                        }
-                    }
+                    guard let idToken = oauthToken?.idToken else { return }
+                    self.login(.kakao, idToken: idToken)
                 }
             }
         } else {
@@ -90,14 +155,8 @@ extension AuthViewModel {
                 if let error {
                     print(error.localizedDescription)
                 } else {
-                    UserApi.shared.me { [weak self] user, error in
-                        if let error {
-                            print(error.localizedDescription)
-                        } else {
-                            guard let userID = user?.id else { return }
-                            self?.login(.kakao, socialID: "\(userID)")
-                        }
-                    }
+                    guard let idToken = oauthToken?.idToken else { return }
+                    self.login(.kakao, idToken: idToken)
                 }
             }
         }
@@ -125,8 +184,10 @@ extension AuthViewModel: ASAuthorizationControllerDelegate, ASAuthorizationContr
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
-        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
-        login(.apple, socialID: credential.user)
+        guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential,
+              let identityToken = credential.identityToken else { return }
+        let idToken = String(decoding: identityToken, as: UTF8.self)
+        login(.apple, idToken: idToken)
     }
     
     func authorizationController(
