@@ -93,11 +93,10 @@ struct ClothesDetailView: View {
 #Preview {
     ClothesDetailView(
         clothes: .init(
-            urlString: "www.neggu.com",
             name: "멋진 옷",
-            image: "",
-            brand: "네꾸",
-            price: 1234
+            link: "www.neggu.com",
+            imageUrl: "",
+            brand: "네꾸"
         )
     )
     .background(.black.opacity(0.3))
