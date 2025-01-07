@@ -261,8 +261,6 @@
 				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
 				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
 				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
-				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
-				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
 				136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */,
 			);
 			path = Closet;
@@ -440,6 +438,8 @@
 				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
 				133889292C899BF90023CED5 /* NegguTabBar.swift */,
+				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
+				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";

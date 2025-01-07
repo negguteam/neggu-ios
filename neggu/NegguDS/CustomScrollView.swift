@@ -46,6 +46,7 @@ struct CustomScrollView<Content: View>: View {
                     }
             }
         }
+        .scrollIndicators(.hidden)
         .coordinateSpace(name: coordinateSpaceName)
         .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
             scrollOffset = value
