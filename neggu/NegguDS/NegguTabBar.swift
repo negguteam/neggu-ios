@@ -7,23 +7,28 @@
 
 import SwiftUI
 
+enum NegguTab {
+    case closet
+    case lookbook
+}
+
 struct NegguTabBar: View {
-    enum TabType {
+    enum TabListType {
         case `default`
         case clothes
         case lookbook
     }
     
-    @Binding var selection: Int
-    @Binding var showList: Bool
+    @Binding var activeTab: NegguTab
+    @Binding var showTabBarList: Bool
     
-    @State private var tapType: TabType = .default
+    @State private var tapType: TabListType = .default
     
     @Namespace private var animation
     
     var body: some View {
         VStack(spacing: 8) {
-            if showList {
+            if showTabBarList {
                 HStack(alignment: .top, spacing: 6) {
                     if tapType != .default {
                         Button {
@@ -142,23 +147,24 @@ struct NegguTabBar: View {
             
             HStack(spacing: 16) {
                 Button {
-                    guard selection != 0 && !showList else {
-                        showList = false
-                        return
+                    if showTabBarList {
+                        showTabBarList = false
                     }
                     
-                    selection = 0
+                    if activeTab != .closet {
+                        activeTab = .closet
+                    }
                 } label: {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(.clear)
                         .overlay {
-                            Image(selection == 0 ? .shirtFill : .shirt)
+                            Image(activeTab == .closet ? .shirtFill : .shirt)
                                 .resizable()
                                 .frame(width: 24, height: 24)
                                 .foregroundStyle(.white)
                         }
                         .background {
-                            if selection == 0 {
+                            if activeTab == .closet {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.white.opacity(0.2))
                                     .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
@@ -167,11 +173,11 @@ struct NegguTabBar: View {
                 }
                 
                 Button {
-                    showList.toggle()
+                    showTabBarList.toggle()
                     tapType = .default
                 } label: {
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(showList ? .orange40 : .gray70)
+                        .fill(showTabBarList ? .orange40 : .gray70)
                         .frame(width: 48, height: 48)
                         .overlay {
                             Image(systemName: "plus")
@@ -181,26 +187,28 @@ struct NegguTabBar: View {
                                 .foregroundStyle(.labelRNormal)
                         }
                 }
+                .zIndex(10)
                 
                 Button {
-                    guard selection != 1 && !showList else {
-                        showList = false
-                        return
+                    if showTabBarList {
+                        showTabBarList = false
                     }
                     
-                    selection = 1
+                    if activeTab != .lookbook {
+                        activeTab = .lookbook
+                    }
                 } label: {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(.clear)
                         .overlay {
-                            Image(selection == 1 ? .closetFill : .closet)
+                            Image(activeTab == .lookbook ? .closetFill : .closet)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 24, height: 24)
                                 .foregroundStyle(.white)
                         }
                         .background {
-                            if selection == 1 {
+                            if activeTab == .lookbook {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.white.opacity(0.2))
                                     .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
@@ -216,38 +224,6 @@ struct NegguTabBar: View {
         }
         .frame(width: 328)
     }
-}
-
-struct HideTabBar: UIViewRepresentable {
-    var result: () -> Void
-    
-    func makeUIView(context: Context) -> UIView {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = .clear
-        
-        DispatchQueue.main.async {
-            if let tabController = view.tabController {
-                tabController.tabBar.isHidden = true
-                result()
-            }
-        }
-        
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIView, context: Context) { }
-}
-
-extension UIView {
-    
-    var tabController: UITabBarController? {
-        if let controller = sequence(first: self, next: { $0.next }).first(where: { $0 is UITabBarController }) as? UITabBarController {
-            return controller
-        }
-        
-        return nil
-    }
-    
 }
 
 
