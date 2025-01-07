@@ -18,7 +18,7 @@ struct SignUpNicknameView: View {
     @FocusState private var focusedField: Field?
     
     var validateNickname: Bool {
-        viewModel.nickname.count > 4
+        viewModel.nickname.count >= 1 && viewModel.nickname.count <= 7
     }
     
     var body: some View {
