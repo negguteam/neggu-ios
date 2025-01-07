@@ -25,6 +25,8 @@ struct ExpendableTextView: View {
             axis: .vertical
         )
         .negguFont(.body2)
+        .autocorrectionDisabled()
+        .textInputAutocapitalization(.never)
         .frame(minHeight: 48, alignment: .top)
         .padding()
         .background {
