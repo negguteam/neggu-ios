@@ -258,10 +258,8 @@ struct ClosetAddView: View {
         }
         .background(.bgNormal)
         .sheet(isPresented: $showNameEditView) {
-            ClothesNameEditView(editedModelName: $editedModelName, clothesName: clothesName)
-                .presentationBackground(.white)
-                .presentationDetents([.height(430)])
-                .presentationDragIndicator(.visible)
+            ClothesNameEditView(clothesName: $editedModelName)
+                .presentationDetents([.height(300)])
                 .presentationCornerRadius(20)
         }
         .negguAlert(
