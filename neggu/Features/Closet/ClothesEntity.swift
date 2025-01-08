@@ -65,11 +65,13 @@ enum Mood: String, CaseIterable, Identifiable {
     }
 }
 
-enum Category: String, CaseIterable {
+enum Category: String, CaseIterable, Identifiable {
     case top = "상의"
     case outer = "아우터"
     case bottom = "하의"
     case unknown = ""
+    
+    var id: String { "\(self)" }
     
     init(from decoder: Decoder) throws {
         self = try Category(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
