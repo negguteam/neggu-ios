@@ -61,8 +61,8 @@ final class MainCoordinator: Coordinator {
         case .clothesDetail(let clothes):
             ClothesDetailView(clothes: clothes)
         
-        case .lookbookList:
-            LookBookListView()
+        case .lookbook:
+            LookBookView()
         case .lookbookEdit:
             LookBookEditView()
         case .lookbookDetail:
@@ -75,7 +75,7 @@ final class MainCoordinator: Coordinator {
         case closetAdd(clothes: Clothes, segmentedImage: UIImage)
         case clothesDetail(clothes: Clothes)
         
-        case lookbookList
+        case lookbook
         case lookbookEdit
         case lookbookDetail
         

@@ -70,7 +70,7 @@
 		13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */; };
 		13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */; };
 		13DBA7E72CC433E6003A10AE /* LookBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E62CC433E6003A10AE /* LookBook.swift */; };
-		13DBA7E92CC434DD003A10AE /* LookBookListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E82CC434DD003A10AE /* LookBookListView.swift */; };
+		13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E82CC434DD003A10AE /* LookBookView.swift */; };
 		13DC5E732C64AA3900DB5600 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */; };
 		13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */; };
 		13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E772C64AB1100DB5600 /* DIContainer.swift */; };
@@ -160,7 +160,7 @@
 		13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNicknameView.swift; sourceTree = "<group>"; };
 		13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		13DBA7E62CC433E6003A10AE /* LookBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBook.swift; sourceTree = "<group>"; };
-		13DBA7E82CC434DD003A10AE /* LookBookListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookListView.swift; sourceTree = "<group>"; };
+		13DBA7E82CC434DD003A10AE /* LookBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookView.swift; sourceTree = "<group>"; };
 		13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationDependency.swift; sourceTree = "<group>"; };
 		13DC5E772C64AB1100DB5600 /* DIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
@@ -670,7 +670,7 @@
 				13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */,
 				13659CD92C5F612200BB6B91 /* BaseAPI.swift in Sources */,
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,
-				13DBA7E92CC434DD003A10AE /* LookBookListView.swift in Sources */,
+				13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
 				136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */,
 			);
