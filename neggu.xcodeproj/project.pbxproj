@@ -68,6 +68,7 @@
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
 		13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */; };
 		13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */; };
+		13C09FDE2D30098200A9494B /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C09FDD2D30098200A9494B /* ScrollDetector.swift */; };
 		13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */; };
 		13DBA7E72CC433E6003A10AE /* LookBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E62CC433E6003A10AE /* LookBook.swift */; };
 		13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E82CC434DD003A10AE /* LookBookView.swift */; };
@@ -158,6 +159,7 @@
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
 		13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMoodView.swift; sourceTree = "<group>"; };
 		13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNicknameView.swift; sourceTree = "<group>"; };
+		13C09FDD2D30098200A9494B /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
 		13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		13DBA7E62CC433E6003A10AE /* LookBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBook.swift; sourceTree = "<group>"; };
 		13DBA7E82CC434DD003A10AE /* LookBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookView.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 		1386EB0A2C5D41C40085655D /* NegguDS */ = {
 			isa = PBXGroup;
 			children = (
+				13C09FDD2D30098200A9494B /* ScrollDetector.swift */,
 				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
 				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
 				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
@@ -658,6 +661,7 @@
 				13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */,
 				1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */,
 				1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */,
+				13C09FDE2D30098200A9494B /* ScrollDetector.swift in Sources */,
 				1386EB0E2C5D41FA0085655D /* NegguDS.swift in Sources */,
 				1364C8762C61281200F67E3C /* UserDefaultsKey.swift in Sources */,
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
