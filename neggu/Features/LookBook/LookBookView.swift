@@ -10,18 +10,39 @@ import SwiftUI
 struct LookBookView: View {
     @EnvironmentObject private var lookbookCoordinator: MainCoordinator
     
-    @State private var offset: CGFloat = .zero
+    @State private var scrollOffset: CGFloat = .zero
+    
+    let minimumHeaderHeight: CGFloat = 48
     
     var body: some View {
         GeometryReader { proxy in
-            let safeArea = proxy.safeAreaInsets
+            let headerHeight: CGFloat = proxy.size.width * 0.4 + minimumHeaderHeight + 20 * 2 + 28
             
             ScrollViewReader { scrollProxy in
                 ScrollView {
                     VStack(spacing: 24) {
-                        headerView(safeArea: safeArea)
-                            .padding(.horizontal, -20)
-                            .zIndex(100)
+                        VStack(spacing: 20) {
+                            Circle()
+                                .frame(
+                                    width: proxy.size.width * 0.4,
+                                    height: proxy.size.width * 0.4
+                                )
+                            
+                            Capsule()
+                                .fill(.white)
+                                .frame(width: 180, height: 28)
+                                .overlay {
+                                    Text("뱃지 영역")
+                                        .negguFont(.body2b)
+                                        .foregroundStyle(.labelAlt)
+                                }
+                            
+                            Text("홍길동의 룩북")
+                                .negguFont(.title2)
+                                .foregroundStyle(.labelNormal)
+                                .frame(height: 48)
+                        }
+                        .padding(.top, 68)
                         
                         VStack(spacing: 14) {
                             HStack(spacing: 14) {
@@ -30,7 +51,7 @@ struct LookBookView: View {
                                         .negguFont(.body3)
                                         .foregroundStyle(.labelAssistive)
                                     
-                                    Text("9개")
+                                    Text("9벌")
                                         .negguFont(.body1b)
                                         .foregroundStyle(.labelAlt)
                                 }
@@ -73,7 +94,7 @@ struct LookBookView: View {
                                 
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(.bgNormal)
+                                    .fill(.labelAssistive)
                                     .frame(width: 320, height: 48)
                                     .overlay {
                                         HStack {
@@ -82,7 +103,7 @@ struct LookBookView: View {
                                             
                                             Image(systemName: "chevron.right")
                                         }
-                                        .foregroundStyle(.labelAssistive)
+                                        .foregroundStyle(.labelRNormal)
                                     }
                             }
                         }
@@ -98,31 +119,12 @@ struct LookBookView: View {
                                 HStack {
                                     ForEach(0..<5, id: \.self) { index in
                                         let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+                                        let (dateString, dateColor) = date.generateLookBookDate()
                                         
-                                        ZStack(alignment: .topTrailing) {
-                                            Image(.dummyLookbook)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 90, height: 120)
-                                                .background {
-                                                    RoundedRectangle(cornerRadius: 20)
-                                                        .fill(.white)
-                                                }
-                                                .padding(.top, 7)
-                                            
-                                            Text(date.test())
-                                                .negguFont(.caption)
-                                                .foregroundStyle(.white)
-                                                .padding(.horizontal, 12)
-                                                .frame(height: 24)
-                                                .background {
-                                                    UnevenRoundedRectangle(
-                                                        topLeadingRadius: 8,
-                                                        bottomLeadingRadius: 8,
-                                                        topTrailingRadius: 8
-                                                    )
-                                                    .fill(.negguSecondary)
-                                                }
+                                        Button {
+                                            lookbookCoordinator.push(.lookbookDetail)
+                                        } label: {
+                                            LookBookCell(dateString: dateString, dateColor: dateColor)
                                         }
                                     }
                                     
@@ -182,41 +184,14 @@ struct LookBookView: View {
                             spacing: 16
                         ) {
                             ForEach(0..<8, id: \.self) { index in
+                                let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
+                                let (dateString, dateColor) = date.generateLookBookDate()
+                                
                                 Button {
                                     lookbookCoordinator.push(.lookbookDetail)
                                 } label: {
-                                    let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-                                    
-                                    ZStack(alignment: .topTrailing) {
-                                        Image(.dummyLookbook)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .padding(10)
-                                        
-                                        HStack(spacing: 4) {
-                                            Image(systemName: "alarm")
-                                            
-                                            Text(date.test())
-                                        }
-                                        .negguFont(.caption)
-                                        .foregroundStyle(.white)
-                                        .padding(.horizontal, 12)
-                                        .frame(height: 24)
-                                        .background {
-                                            UnevenRoundedRectangle(
-                                                topLeadingRadius: 8,
-                                                bottomLeadingRadius: 8,
-                                                topTrailingRadius: 8
-                                            )
-                                            .fill(.negguSecondary)
-                                        }
-                                    }
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(.white)
-                                    }
+                                    LookBookCell(dateString: dateString, dateColor: dateColor, isNeggu: index % 4 == 0, isGridItem: true)
                                 }
-                                .buttonStyle(.plain)
                             }
                         }
                     }
@@ -224,46 +199,33 @@ struct LookBookView: View {
                     .padding(.horizontal, 20)
                     .padding(.bottom, 56)
                     .background {
-                        ScrollDetector { offset in
-                            self.offset = -offset
-                        } onDraggingEnd: { offset, velocity in
-                            let headerHeight: CGFloat = 368 + safeArea.top
-                            let minimumHeaderHeight: CGFloat = 60 + safeArea.top
-                            let targetEnd = offset + (velocity * 45)
-                            
-                            if targetEnd < (headerHeight - minimumHeaderHeight) && targetEnd > 0 {
-                                withAnimation(.interactiveSpring(response: 0.55, dampingFraction: 0.65, blendDuration: 0.65)) {
-                                    scrollProxy.scrollTo("ScrollView", anchor: .top)
-                                }
-                            }
-                        }
+                        ScrollDetector { scrollOffset = -$0 }
                     }
                 }
                 .background(.gray5)
                 .scrollIndicators(.hidden)
-            }
-        }
-    }
-    
-    @ViewBuilder
-    func headerView(safeArea: EdgeInsets) -> some View {
-        let headerHeight: CGFloat = 368 + safeArea.top
-        let minimumHeaderHeight: CGFloat = 48 + safeArea.top
-        let progress = max(min(-offset / (headerHeight - minimumHeaderHeight), 1), 0)
-        
-        GeometryReader { _ in
-            VStack(spacing: 16) {
-                GeometryReader {
-                    let rect = $0.frame(in: .global)
-                    let midY = rect.midY
-                    let halfScaledHeight = (rect.height * 0.2) * 0.5
-                    let resizedOffset = (midY - (minimumHeaderHeight - halfScaledHeight - 48))
-                    
-                    HStack {
+                .overlay(alignment: .top) {
+                    HStack(spacing: 20) {
+                        Group {
+                            Circle()
+                                .frame(width: 48, height: 48)
+                            
+                            Text("홍길동의 룩북")
+                                .negguFont(.title4)
+                                .foregroundStyle(.labelNormal)
+                        }
+                        .opacity(-scrollOffset >= (headerHeight - minimumHeaderHeight) ? 1 : 0)
+                        
                         Spacer()
                         
-                        Button {
+                        Menu {
+                            Button("환경설정") {
+                                
+                            }
                             
+                            Button("프로필 편집") {
+                                
+                            }
                         } label: {
                             Image(systemName: "ellipsis")
                                 .bold()
@@ -271,50 +233,12 @@ struct LookBookView: View {
                                 .frame(width: 44, height: 44)
                         }
                     }
-                    .frame(height: 48)
-                    .offset(y: -resizedOffset * progress)
+                    .frame(height: minimumHeaderHeight)
+                    .padding(.horizontal, 20)
+                    .background(.gray5)
                 }
-                
-                GeometryReader {
-                    let rect = $0.frame(in: .global)
-                    let halfScaledHeight = (rect.height * 0.2) * 0.5
-                    let midY = rect.midY
-                    let resizedOffset = (midY - (minimumHeaderHeight - halfScaledHeight - 2))
-                    
-                    Circle()
-                        .fill(.gray10)
-                        .frame(width: rect.width, height: rect.height)
-                        .scaleEffect(1 - (progress * 0.8), anchor: .leading)
-                        .offset(
-                            x: -(rect.minX - 20) * progress,
-                            y: -resizedOffset * progress
-                        )
-                }
-                .frame(width: headerHeight * 0.5, height: headerHeight * 0.5)
-                
-                Text("아메카지 러버")
-                    .negguFont(.body2b)
-                    .foregroundStyle(.labelNormal)
-                
-                Text("길동의 룩북")
-                    .negguFont(.title2)
-                    .scaleEffect(1 - (progress * 0.3))
             }
-            .padding(.horizontal, 20)
-            .padding(.top, safeArea.top)
-            .frame(
-                height: (headerHeight + offset) < minimumHeaderHeight ? minimumHeaderHeight : (headerHeight + offset),
-                alignment: .bottom
-            )
-            .background {
-                Rectangle()
-                    .fill(.clear)
-                    .blendMode(.colorBurn)
-            }
-            .offset(y: -offset)
-            .offset(y: -offset)
         }
-        .frame(height: headerHeight)
     }
 }
 
