@@ -50,6 +50,7 @@
 		136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* BorderedChip.swift */; };
 		136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */; };
 		136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D72CEC9780009DEA76 /* NegguAlert.swift */; };
+		136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */; };
 		13830E2B2C6FA4C200CA385F /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */; };
 		1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1384FE862CD8FA3E00162AAF /* NegguColor.swift */; };
 		1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EAD02C5D3F9C0085655D /* negguApp.swift */; };
@@ -63,6 +64,8 @@
 		1386EB082C5D419B0085655D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB072C5D419B0085655D /* Localizable.xcstrings */; };
 		1386EB0E2C5D41FA0085655D /* NegguDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EB0D2C5D41FA0085655D /* NegguDS.swift */; };
 		13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */; };
+		13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD442D30E8E30041C10A /* DateSelectButton.swift */; };
+		13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD462D30EC2C0041C10A /* LookBookCell.swift */; };
 		13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365A2D2797200033DE7B /* ErrorEntity.swift */; };
 		13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365C2D27975D0033DE7B /* HealthAPI.swift */; };
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
@@ -139,6 +142,7 @@
 		136C787F2CEB0584009DEA76 /* BorderedChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedChip.swift; sourceTree = "<group>"; };
 		136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesNameEditView.swift; sourceTree = "<group>"; };
 		136C79D72CEC9780009DEA76 /* NegguAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguAlert.swift; sourceTree = "<group>"; };
+		136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDateEditView.swift; sourceTree = "<group>"; };
 		1384FE862CD8FA3E00162AAF /* NegguColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguColor.swift; sourceTree = "<group>"; };
 		1386EACD2C5D3F9C0085655D /* neggu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = neggu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1386EAD02C5D3F9C0085655D /* negguApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = negguApp.swift; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 		1386EB072C5D419B0085655D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		1386EB0D2C5D41FA0085655D /* NegguDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguDS.swift; sourceTree = "<group>"; };
 		13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetAddView.swift; sourceTree = "<group>"; };
+		13AEFD442D30E8E30041C10A /* DateSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectButton.swift; sourceTree = "<group>"; };
+		13AEFD462D30EC2C0041C10A /* LookBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookCell.swift; sourceTree = "<group>"; };
 		13BE365A2D2797200033DE7B /* ErrorEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorEntity.swift; sourceTree = "<group>"; };
 		13BE365C2D27975D0033DE7B /* HealthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAPI.swift; sourceTree = "<group>"; };
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
@@ -242,10 +248,12 @@
 		1337B7092CDCF7200052BFF2 /* LookBook */ = {
 			isa = PBXGroup;
 			children = (
+				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
 				13DBA7E62CC433E6003A10AE /* LookBook.swift */,
 				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
 				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
-				13DBA7E82CC434DD003A10AE /* LookBookListView.swift */,
+				13DBA7E82CC434DD003A10AE /* LookBookView.swift */,
+				136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */,
 			);
 			path = LookBook;
 			sourceTree = "<group>";
@@ -436,6 +444,7 @@
 		1386EB0A2C5D41C40085655D /* NegguDS */ = {
 			isa = PBXGroup;
 			children = (
+				13AEFD442D30E8E30041C10A /* DateSelectButton.swift */,
 				13C09FDD2D30098200A9494B /* ScrollDetector.swift */,
 				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
 				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
@@ -636,6 +645,7 @@
 				13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */,
 				13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */,
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
+				136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13659CE02C5F8F1E00BB6B91 /* APIError.swift in Sources */,
 				1364C8782C61370700F67E3C /* CheckNicknameEntity.swift in Sources */,
@@ -668,8 +678,10 @@
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
 				13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */,
 				133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */,
+				13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */,
 				1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */,
 				13FE61FD2D2ABDF100578BB5 /* SignUpCompleteView.swift in Sources */,
+				13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */,
 				13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */,
 				13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */,
 				13659CD92C5F612200BB6B91 /* BaseAPI.swift in Sources */,
