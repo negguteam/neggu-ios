@@ -66,6 +66,7 @@
 		13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */; };
 		13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD442D30E8E30041C10A /* DateSelectButton.swift */; };
 		13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD462D30EC2C0041C10A /* LookBookCell.swift */; };
+		13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD492D30F1FD0041C10A /* ColorFilter.swift */; };
 		13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365A2D2797200033DE7B /* ErrorEntity.swift */; };
 		13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365C2D27975D0033DE7B /* HealthAPI.swift */; };
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
@@ -160,6 +161,7 @@
 		13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetAddView.swift; sourceTree = "<group>"; };
 		13AEFD442D30E8E30041C10A /* DateSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectButton.swift; sourceTree = "<group>"; };
 		13AEFD462D30EC2C0041C10A /* LookBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookCell.swift; sourceTree = "<group>"; };
+		13AEFD492D30F1FD0041C10A /* ColorFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFilter.swift; sourceTree = "<group>"; };
 		13BE365A2D2797200033DE7B /* ErrorEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorEntity.swift; sourceTree = "<group>"; };
 		13BE365C2D27975D0033DE7B /* HealthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAPI.swift; sourceTree = "<group>"; };
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 		1386EB092C5D41B80085655D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				13AEFD482D30F1F20041C10A /* Enum */,
 				13DC5E782C64AB1100DB5600 /* DI */,
 				13659CE12C5FA13C00BB6B91 /* Foundation */,
 				1364C8742C61280000F67E3C /* Util */,
@@ -457,6 +460,14 @@
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 			);
 			path = NegguDS;
+			sourceTree = "<group>";
+		};
+		13AEFD482D30F1F20041C10A /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				13AEFD492D30F1FD0041C10A /* ColorFilter.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 		13DC5E752C64AB0900DB5600 /* ContainerDependencies */ = {
@@ -647,6 +658,7 @@
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
 				136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
+				13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */,
 				13659CE02C5F8F1E00BB6B91 /* APIError.swift in Sources */,
 				1364C8782C61370700F67E3C /* CheckNicknameEntity.swift in Sources */,
 				1302FE5F2C8709C50076D015 /* SignUpView.swift in Sources */,
