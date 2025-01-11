@@ -261,12 +261,11 @@ struct LookBookEditView: View {
         .clipped()
     }
     
-    func drag(clothes: Binding<ClothesItem>) -> some Gesture {
+    func drag(clothes: Binding<Clothes>) -> some Gesture {
         DragGesture()
             .onChanged { value in
                 guard editingClothes == clothes.id else { return }
-                // TODO: [!] 기기마다 알맞게 범위 설정
-//                if value.location.y < 0 || value.location.y > 400 { return }
+                
                 clothes.wrappedValue.offset = clothes.wrappedValue.lastOffset + value.translation
             }
             .onEnded { _ in
