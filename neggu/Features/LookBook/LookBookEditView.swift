@@ -307,41 +307,29 @@ struct LookBookEditView: View {
         return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 100
     }
     
-    func rotationGesture(_ clothes: Binding<ClothesItem>) -> some Gesture {
+    func rotationGesture(_ clothes: Binding<Clothes>) -> some Gesture {
         DragGesture()
             .onChanged { value in
-                let center = CGPoint(x: 0, y: 0) // 뷰의 중심
-                let currentPoint = value.location
-                
                 // 드래그 시작 시 기준 각도를 설정
                 if clothes.wrappedValue.lastAngle == .degrees(0) {
-                    clothes.wrappedValue.lastAngle = angleForPoint(center: center, point: currentPoint)
+                    clothes.wrappedValue.lastAngle = angleForPoint(start: .zero, end: value.location)
                 }
                 
                 // 현재 각도와 시작 각도 비교하여 각도 변화 계산
-                let currentAngle = angleForPoint(center: center, point: currentPoint)
-                let angleDelta = currentAngle.degrees - clothes.wrappedValue.lastAngle.degrees
-                
-                // lastDegree에 현재 각도 변화량을 누적
-                clothes.wrappedValue.angle += .degrees(angleDelta)
-                clothes.wrappedValue.angle = .degrees(clothes.wrappedValue.angle.degrees.truncatingRemainder(dividingBy: 360)) // 360도 기준으로 각도 유지
-                
-                // 기준 각도를 현재 각도로 업데이트
-                clothes.wrappedValue.lastAngle = currentAngle
+                clothes.wrappedValue.angle = angleForPoint(start: .zero, end: value.location) - clothes.wrappedValue.lastAngle
             }
             .onEnded { _ in
-                // 드래그 종료 시 기준 각도를 초기화
-//                clothes.wrappedValue.lastAngle = .degrees(0)
-                print(clothes.wrappedValue.angle)
+                print(clothes.wrappedValue.angle.degrees)
             }
     }
     
     // 주어진 점과 뷰의 중심 사이의 각도 계산 (degrees)
-    func angleForPoint(center: CGPoint, point: CGPoint) -> Angle {
-        let deltaX = point.x - center.x
-        let deltaY = point.y - center.y
+    func angleForPoint(start: CGPoint, end: CGPoint) -> Angle {
+        let deltaX = end.x - start.x
+        let deltaY = end.y - start.y
         let radians = atan2(deltaY, deltaX)
-        return Angle(radians: Double(radians))
+        let degrees = radians * 180 / .pi
+        return Angle(degrees: degrees)
     }
 }
 
