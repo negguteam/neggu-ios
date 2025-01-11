@@ -273,37 +273,20 @@ struct LookBookEditView: View {
             }
     }
     
-    func scaleGesture(_ clothes: Binding<ClothesItem>) -> some Gesture {
+    func scaleGesture(_ clothes: Binding<Clothes>) -> some Gesture {
         DragGesture()
             .onChanged { value in
                 // TODO: [!] 최소, 최대 확대 범위 설정
-                
-                let center = CGPoint(x: 0, y: 0)
-                let currentPoint = value.location
-                
-                // 드래그 시작 시 거리 설정
-                if clothes.wrappedValue.lastScale == 1 {
-                    clothes.wrappedValue.lastScale = distanceBetween(center: center, point: currentPoint)
-                } else {
-                    // 현재 거리와 시작 거리 비교하여 스케일 계산
-                    let currentDistance = distanceBetween(center: center, point: currentPoint)
-                    let scaleChange = currentDistance / clothes.wrappedValue.lastScale
-                    
-                    // 새로운 스케일 적용
-                    clothes.wrappedValue.scale = clothes.wrappedValue.lastScale * scaleChange
-                }
+                let distance = distanceBetween(center: .zero, point: value.location)
+                clothes.wrappedValue.scale = max(distance / clothes.wrappedValue.lastScale, 0.1)
             }
             .onEnded { value in
                 clothes.wrappedValue.lastScale = clothes.wrappedValue.scale
-                
-                print(clothes.wrappedValue.angle, clothes.wrappedValue.lastAngle)
-                print(value.translation)
             }
     }
         
-    // 두 점 사이의 거리 계산
     func distanceBetween(center: CGPoint, point: CGPoint) -> CGFloat {
-        return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 100
+        return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 200
     }
     
     func rotationGesture(_ clothes: Binding<Clothes>) -> some Gesture {
