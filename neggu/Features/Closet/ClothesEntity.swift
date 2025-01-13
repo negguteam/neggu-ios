@@ -295,32 +295,32 @@ struct ZigzagProduct: Clothesable {
 }
 
 struct QueenitProduct: Clothesable {
-    var props: Props
+    let props: Props
     
     struct Props: Decodable {
-        var pageProps: PageProps
+        let pageProps: PageProps
         
         struct PageProps: Decodable {
-            var dehydratedState: DehydratedState
+            let dehydratedState: DehydratedState
             
             struct DehydratedState: Decodable {
-                var queries: [Query]
+                let queries: [Query]
                 
                 struct Query: Decodable {
-                    var state: State
+                    let state: State
                     
                     struct State: Decodable {
-                        var data: StateData
+                        let data: StateData
                         
                         struct StateData: Decodable {
-                            var product: Product
+                            let product: Product
                             
                             struct Product: Decodable {
-                                var productId: String
-                                var imageUrl: String
-                                var name: String
-                                var originalPrice: Int
-                                var brand: String
+                                let productId: String
+                                let imageUrl: String
+                                let name: String
+                                let originalPrice: Int
+                                let brand: String
                             }
                         }
                     }
@@ -330,49 +330,49 @@ struct QueenitProduct: Clothesable {
     }
     
     func toProduct(urlString: String) -> Clothes {
-        let goods = props.pageProps.dehydratedState.queries[0].state.data.product
+        let product = props.pageProps.dehydratedState.queries[0].state.data.product
         
         return .init(
-            name: goods.name,
+            name: product.name,
             link: urlString,
-            imageUrl: goods.imageUrl,
-            brand: goods.brand
+            imageUrl: product.imageUrl,
+            brand: product.brand
         )
     }
 }
 
 struct TwentyNineCMProduct: Clothesable {
-    var props: Props
+    let props: Props
     
     struct Props: Decodable {
-        var pageProps: PageProps
+        let pageProps: PageProps
         
         struct PageProps: Decodable {
-            var dehydratedState: DehydratedState
+            let dehydratedState: DehydratedState
             
             struct DehydratedState: Decodable {
-                var queries: [Query]
+                let queries: [Query]
                 
                 struct Query: Decodable {
-                    var state: State
+                    let state: State
                     
                     struct State: Decodable {
-                        var data: StateData
+                        let data: StateData
                         
                         struct StateData: Decodable {
-                            var itemNo: Int
-                            var itemName: String
-                            var sellPrice: Int
-                            var itemImages: [ItemImage]
-                            var frontBrand: FrontBrand
+                            let itemNo: Int
+                            let itemName: String
+                            let sellPrice: Int
+                            let itemImages: [ItemImage]
+                            let frontBrand: FrontBrand
                             
                             struct ItemImage: Decodable {
-                                var imageUrl: String
+                                let imageUrl: String
                             }
                             
                             struct FrontBrand: Decodable {
-                                var brandNameEng: String
-                                var brandNameKor: String
+                                let brandNameEng: String
+                                let brandNameKor: String
                             }
                         }
                     }
