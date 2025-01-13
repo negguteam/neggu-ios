@@ -68,6 +68,7 @@
 		13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD462D30EC2C0041C10A /* LookBookCell.swift */; };
 		13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD492D30F1FD0041C10A /* ColorFilter.swift */; };
 		13B3757A2D34E37D001D009E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B375792D34E37D001D009E /* Date+Extension.swift */; };
+		13B3757F2D34E795001D009E /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B3757E2D34E795001D009E /* CGSize+Extension.swift */; };
 		13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365A2D2797200033DE7B /* ErrorEntity.swift */; };
 		13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365C2D27975D0033DE7B /* HealthAPI.swift */; };
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
@@ -164,6 +165,7 @@
 		13AEFD462D30EC2C0041C10A /* LookBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookCell.swift; sourceTree = "<group>"; };
 		13AEFD492D30F1FD0041C10A /* ColorFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFilter.swift; sourceTree = "<group>"; };
 		13B375792D34E37D001D009E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		13B3757E2D34E795001D009E /* CGSize+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		13BE365A2D2797200033DE7B /* ErrorEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorEntity.swift; sourceTree = "<group>"; };
 		13BE365C2D27975D0033DE7B /* HealthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAPI.swift; sourceTree = "<group>"; };
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
@@ -477,6 +479,7 @@
 			isa = PBXGroup;
 			children = (
 				13B375792D34E37D001D009E /* Date+Extension.swift */,
+				13B3757E2D34E795001D009E /* CGSize+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -706,6 +709,7 @@
 				1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */,
 				13FE61FD2D2ABDF100578BB5 /* SignUpCompleteView.swift in Sources */,
 				13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */,
+				13B3757F2D34E795001D009E /* CGSize+Extension.swift in Sources */,
 				13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */,
 				13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */,
 				13659CD92C5F612200BB6B91 /* BaseAPI.swift in Sources */,

@@ -315,12 +315,15 @@ struct LookBookEditView: View {
     }
 }
 
-extension CGSize {
+extension View {
     
-    static func + (lhs: Self, rhs: Self) -> Self {
-        CGSize(width: lhs.width + rhs.width, height: lhs.height + rhs.height)
+    @MainActor
+    func snapshot(scale: CGFloat? = nil) -> UIImage? {
+        let renderer = ImageRenderer(content: self)
+        renderer.scale = scale ?? UIScreen.main.scale
+        return renderer.uiImage
     }
-    
+
 }
 
 #Preview {
