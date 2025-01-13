@@ -163,31 +163,31 @@ struct Clothes: Equatable, Hashable, Identifiable {
 
 
 struct AblyProduct: Clothesable {
-    var props: Props
+    let props: Props
     
     struct Props: Decodable {
-        var serverQueryClient: QueryClient
+        let serverQueryClient: QueryClient
         
         struct QueryClient: Decodable {
-            var queries: [Query]
+            let queries: [Query]
             
             struct Query: Decodable {
-                var state: State
+                let state: State
                 
                 struct State: Decodable {
-                    var data: StateData
+                    let data: StateData
                     
                     struct StateData: Decodable {
-                        var goods: Good
+                        let goods: Good
                         
                         struct Good: Decodable {
-                            var name: String
-                            var image: String
-                            var price: Int
-                            var market: Market
+                            let name: String
+                            let image: String
+                            let price: Int
+                            let market: Market
                             
                             struct Market: Decodable {
-                                var name: String
+                                let name: String
                             }
                         }
                     }
@@ -208,65 +208,88 @@ struct AblyProduct: Clothesable {
 }
 
 struct MusinsaProduct: Clothesable {
-    var name: String
-    var image: String
-    var brand: Brand
-    var offers: Offers
-    var aggregateRating: AggregateRating
+    let props: Props
     
-    struct Brand: Decodable {
-        var name: String
-    }
-    
-    struct Offers: Decodable {
-        var price: String
-        var priceCurrency: String
-    }
-    
-    struct AggregateRating: Decodable {
-        var ratingValue: String
-        var reviewCount: String
+    struct Props: Decodable {
+        let pageProps: PageProps
+        
+        struct PageProps: Decodable {
+            let meta: Meta
+            
+            struct Meta: Decodable {
+                let data: ProductData
+                
+                struct ProductData: Decodable {
+                    let goodsNo: Int
+                    let goodsNm: String
+                    let goodsNmEng: String
+                    let thumbnailImageUrl: String
+                    let brand: String
+                    let category: Category
+                    
+                    struct Category: Decodable {
+                        let categoryDepth1Title: String
+                    }
+                    
+                    struct Price: Decodable {
+                        let originPrice: Int
+                    }
+                }
+            }
+        }
     }
     
     func toProduct(urlString: String) -> Clothes {
+        let product = props.pageProps.meta.data
+        
         return .init(
-            name: self.name,
+            name: product.goodsNm,
             link: urlString,
-            imageUrl: image,
-            brand: brand.name
+            imageUrl: "https://image.msscdn.net/thumbnails" + product.thumbnailImageUrl,
+            brand: product.brand
         )
-//        return .init(
-//            link: urlString,
-//            name: name,
-//            imageUrl: image,
-//            brand: brand.name,
-//            price: Int(offers.price) ?? 0
-//        )
     }
 }
 
 struct ZigzagProduct: Clothesable {
-    var name: String
-    var description: String
-    var image: [String]
-    var brand: Brand
-    var offers: [Offers]
+    let props: Props
     
-    struct Brand: Decodable {
-        var name: String
-    }
-    
-    struct Offers: Decodable {
-        var price: Int
-        var priceCurrency: String
+    struct Props: Decodable {
+        let pageProps: PageProps
+        
+        struct PageProps: Decodable{
+            let product: Product
+            
+            struct Product: Decodable {
+                let id: String
+                let name: String
+                let brand: String
+                let productURL: String
+                let description: String
+                let imageList: [ProductImage]
+                
+                struct ProductImage: Decodable {
+                    let url: String
+                }
+                
+                enum CodingKeys: String, CodingKey {
+                    case id, name, description
+                    case brand = "shop_main_domain"
+                    case productURL = "product_url"
+                    case imageList = "product_image_list"
+                }
+            }
+        }
     }
     
     func toProduct(urlString: String) -> Clothes {
+        let product = props.pageProps.product
+        
         return .init(
-            name: name,
+            name: product.name,
             link: urlString,
-            imageUrl: image[0],
-            brand: brand.name
+            imageUrl: product.imageList[0].url,
+            brand: product.brand
         )
     }
 }
@@ -384,8 +407,6 @@ struct KreamProduct: Clothesable {
     struct Offers: Decodable {
         var url: String
         var price: Int
-        var lowPrice: Int
-        var highPrice: Int
         var priceCurrency: String
     }
     

@@ -185,7 +185,7 @@ struct ClosetView: View {
         var request = URLRequest(url: url)
         
         if urlString.contains("kream") || urlString.contains("goodw") {
-            request.setValue("iPhone Pro 12", forHTTPHeaderField: "User-Agent")
+            request.setValue("iPhone", forHTTPHeaderField: "User-Agent")
         } else {
             request.setValue("Chrome/92.0.4515.107", forHTTPHeaderField: "User-Agent")
         }
@@ -200,7 +200,7 @@ struct ClosetView: View {
             
             let document = try SwiftSoup.parse(htmlString)
             
-            let scriptElements = try document.select("script[type=application/\(urlString.contains("a-bly") || urlString.contains("queenit.kr") || urlString.contains("29cm.") ? "" : "ld+")json]")
+            let scriptElements = try document.select("script[type=application/\(urlString.contains("a-bly") || urlString.contains("queenit.kr") || urlString.contains("29cm.") || urlString.contains("musinsaapp") || urlString.contains("zigzag")  ? "" : "ld+")json]")
             
             for element in scriptElements {
                 let jsonString = try element.html()//.replacingOccurrences(of: "\"\"", with: "\"")
