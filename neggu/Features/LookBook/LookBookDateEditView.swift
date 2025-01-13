@@ -12,6 +12,10 @@ struct LookBookDateEditView: View {
     @State private var selectedMonth: Date = .currentMonth
     @Binding var selectedDate: Date?
     
+    var selectedMonthDates: [Day] {
+        extractDates(selectedMonth)
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
             RoundedRectangle(cornerRadius: 100)
@@ -81,7 +85,7 @@ struct LookBookDateEditView: View {
                 columns: [GridItem](repeating: .init(spacing: 4), count: 7),
                 spacing: 2
             ) {
-                ForEach(weekdaySymbols, id: \.self) { symbol in
+                ForEach(Date.weekdaySymbols, id: \.self) { symbol in
                     Text(symbol)
                         .negguFont(.caption)
                         .foregroundStyle(
@@ -142,16 +146,6 @@ struct LookBookDateEditView: View {
         .background(.bgNormal)
     }
     
-    var weekdaySymbols: [String] {
-        var calendar = Calendar.current
-        calendar.locale = .init(identifier: "en-US")
-        return calendar.weekdaySymbols.map { String($0.prefix(3)) }
-    }
-    
-    var selectedMonthDates: [Day] {
-        return extractDates(selectedMonth)
-    }
-    
     func updateMonth(_ increment: Bool = true) {
         let calendar = Calendar.current
         guard let month = calendar.date(
@@ -174,10 +168,6 @@ struct LookBookDateEditView: View {
             return .labelNormal
         }
     }
-}
-
-
-extension View {
     
     func extractDates(_ month: Date) -> [Day] {
         var days: [Day] = []
@@ -217,113 +207,12 @@ extension View {
         return days
     }
     
-}
-
-extension Date {
-    
-    static var currentMonth: Date {
-        let calendar = Calendar.current
-        guard let currentMonth = calendar.date(
-            from: Calendar.current.dateComponents(
-                [.month, .year],
-                from: .now
-            )
-        ) else {
-            return .now
-        }
-        
-        return currentMonth
+    struct Day: Identifiable {
+        var id: UUID = .init()
+        var shortSymbol: String
+        var date: Date
+        var ignored: Bool = false
     }
-    
-    static var yearMonthDayFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }
-    
-    func yearMonthDayFormatted() -> String {
-        Self.yearMonthDayFormatter.string(from: self)
-    }
-    
-    func yearMonthDay() -> Date {
-        Self.yearMonthDayFormatter.date(from: self.yearMonthDayFormatted())!// ?? .now
-    }
-    
-    static var yearMonthFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy년 M월"
-        return formatter
-    }
-    
-    func yearMonthFormatted() -> String {
-        Self.yearMonthFormatter.string(from: self)
-    }
-    
-    static var monthDayFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "M월 d일"
-        return formatter
-    }
-    
-    func monthDayFormatted() -> String {
-        Self.monthDayFormatter.string(from: self)
-    }
-    
-    static var dayFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d"
-        return formatter
-    }
-    
-    func dayFormatted() -> String {
-        Self.dayFormatter.string(from: self)
-    }
-    
-    func daySymbol() -> String {
-        let formatter = DateFormatter()
-        formatter.locale = .init(identifier: "ko-KR")
-        formatter.dateFormat = "EEE"
-        
-        return formatter.string(from: self)
-    }
-    
-    func generateLookBookDate() -> (String, Color) {
-        let twoDaysAfter = Calendar.current.date(byAdding: .day, value: 2, to: Date.now.yearMonthDay())!
-        
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2
-        let today = calendar.startOfDay(for: Date.now)
-        var week: [Date] = []
-        
-        if let weekInterval = calendar.dateInterval(of: .weekOfYear, for: today) {
-            for i in 0...6 {
-                if let day = calendar.date(byAdding: .day, value: i, to: weekInterval.start) {
-                    week += [day]
-                }
-            }
-        }
-        
-        if self.yearMonthDay() == Date.now.yearMonthDay() {
-            return ("오늘", .negguSecondary)
-        } else if self.yearMonthDay() <= twoDaysAfter {
-            let formatter = RelativeDateTimeFormatter()
-            formatter.dateTimeStyle = .named
-            let dayString = formatter.localizedString(for: self.yearMonthDay(), relativeTo: .now.yearMonthDay())
-            return (dayString, .labelNormal)
-        } else if week.contains(self.yearMonthDay()) {
-            return (self.daySymbol(), .labelNormal)
-        } else {
-            return (self.monthDayFormatted(), .labelNormal)
-        }
-    }
-    
-}
-
-struct Day: Identifiable {
-    var id: UUID = .init()
-    var shortSymbol: String
-    var date: Date
-    var ignored: Bool = false
 }
 
 #Preview {

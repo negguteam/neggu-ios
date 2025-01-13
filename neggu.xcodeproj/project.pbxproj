@@ -67,6 +67,7 @@
 		13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD442D30E8E30041C10A /* DateSelectButton.swift */; };
 		13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD462D30EC2C0041C10A /* LookBookCell.swift */; };
 		13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD492D30F1FD0041C10A /* ColorFilter.swift */; };
+		13B3757A2D34E37D001D009E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B375792D34E37D001D009E /* Date+Extension.swift */; };
 		13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365A2D2797200033DE7B /* ErrorEntity.swift */; };
 		13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365C2D27975D0033DE7B /* HealthAPI.swift */; };
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
@@ -162,6 +163,7 @@
 		13AEFD442D30E8E30041C10A /* DateSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectButton.swift; sourceTree = "<group>"; };
 		13AEFD462D30EC2C0041C10A /* LookBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookCell.swift; sourceTree = "<group>"; };
 		13AEFD492D30F1FD0041C10A /* ColorFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFilter.swift; sourceTree = "<group>"; };
+		13B375792D34E37D001D009E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		13BE365A2D2797200033DE7B /* ErrorEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorEntity.swift; sourceTree = "<group>"; };
 		13BE365C2D27975D0033DE7B /* HealthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAPI.swift; sourceTree = "<group>"; };
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 		1386EB092C5D41B80085655D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				13B375782D34E36A001D009E /* Extension */,
 				13AEFD482D30F1F20041C10A /* Enum */,
 				13DC5E782C64AB1100DB5600 /* DI */,
 				13659CE12C5FA13C00BB6B91 /* Foundation */,
@@ -468,6 +471,14 @@
 				13AEFD492D30F1FD0041C10A /* ColorFilter.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		13B375782D34E36A001D009E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				13B375792D34E37D001D009E /* Date+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		13DC5E752C64AB0900DB5600 /* ContainerDependencies */ = {
@@ -689,6 +700,7 @@
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
 				13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */,
+				13B3757A2D34E37D001D009E /* Date+Extension.swift in Sources */,
 				133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */,
 				13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */,
 				1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */,
