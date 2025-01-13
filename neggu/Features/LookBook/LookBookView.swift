@@ -28,14 +28,8 @@ struct LookBookView: View {
                                     height: proxy.size.width * 0.4
                                 )
                             
-                            Capsule()
-                                .fill(.white)
-                                .frame(width: 180, height: 28)
-                                .overlay {
-                                    Text("뱃지 영역")
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(.labelAlt)
-                                }
+                            Image("title_badge")
+                                .frame(height: 28)
                             
                             Text("홍길동의 룩북")
                                 .negguFont(.title2)
