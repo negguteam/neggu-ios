@@ -30,6 +30,8 @@
 		1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889292C899BF90023CED5 /* NegguTabBar.swift */; };
 		1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338892C2C89E7A70023CED5 /* ClosetView.swift */; };
 		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
+		134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A02D363F4D00B18C1B /* LinkBanner.swift */; };
+		134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
 		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
@@ -127,6 +129,8 @@
 		1338892C2C89E7A70023CED5 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		133927392C7F1D3C009E623B /* neggu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = neggu.entitlements; sourceTree = "<group>"; };
 		1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		134AD9A02D363F4D00B18C1B /* LinkBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBanner.swift; sourceTree = "<group>"; };
+		134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguCTAButton.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
 		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
@@ -452,6 +456,8 @@
 		1386EB0A2C5D41C40085655D /* NegguDS */ = {
 			isa = PBXGroup;
 			children = (
+				134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */,
+				134AD9A02D363F4D00B18C1B /* LinkBanner.swift */,
 				13AEFD442D30E8E30041C10A /* DateSelectButton.swift */,
 				13C09FDD2D30098200A9494B /* ScrollDetector.swift */,
 				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
@@ -661,6 +667,7 @@
 				1302FE5D2C86EA6B0076D015 /* NegguFont.swift in Sources */,
 				13DC5E732C64AA3900DB5600 /* AuthViewModel.swift in Sources */,
 				13DBA7E72CC433E6003A10AE /* LookBook.swift in Sources */,
+				134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */,
 				1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */,
 				13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */,
 				13659CDB2C5F613500BB6B91 /* BaseService.swift in Sources */,
@@ -685,6 +692,7 @@
 				1334DBF92CAA73AA00928C4C /* CustomScrollView.swift in Sources */,
 				13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */,
 				13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */,
+				134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */,
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
