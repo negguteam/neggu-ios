@@ -41,6 +41,7 @@ struct ClosetView: View {
                             
                             Button("완료") {
                                 if clothesURLString.isEmpty { return }
+                                clothesURLString = clothesURLString.split(separator: " ").filter { $0.contains("https://") }.joined()
                                 Task { await segmentation() }
                             }
                         }
@@ -171,11 +172,7 @@ struct ClosetView: View {
     }
     
     private func segmentation() async {
-        var urlString = clothesURLString
-        
-        if urlString.contains("a-bly") {
-            urlString = urlString.replacingOccurrences(of: "a-bly.com/app", with: "m.a-bly.com")
-        }
+        let urlString = clothesURLString
         
         guard let url = URL(string: urlString) else {
             print("invalid url")
@@ -184,10 +181,12 @@ struct ClosetView: View {
         
         var request = URLRequest(url: url)
         
-        if urlString.contains("kream") || urlString.contains("goodw") {
-            request.setValue("iPhone", forHTTPHeaderField: "User-Agent")
-        } else {
+        // 지그재그의 경우 랜딩 페이지로 이동하기 때문에 웹으로 들어간 것으로 처리해야함
+        switch urlString {
+        case _ where urlString.contains("zigzag"):
             request.setValue("Chrome/92.0.4515.107", forHTTPHeaderField: "User-Agent")
+        default:
+            request.setValue(UIDevice.current.name, forHTTPHeaderField: "User-Agent")
         }
         
         do {
@@ -200,10 +199,18 @@ struct ClosetView: View {
             
             let document = try SwiftSoup.parse(htmlString)
             
-            let scriptElements = try document.select("script[type=application/\(urlString.contains("a-bly") || urlString.contains("queenit.kr") || urlString.contains("29cm.") || urlString.contains("musinsaapp") || urlString.contains("zigzag")  ? "" : "ld+")json]")
+            // 무신사, 에이블리, 지그재그, 29cm, 퀸잇 -> application/json
+            // 크림 -> application/ld+json
+            let scriptElements =
+            switch urlString {
+            case _ where urlString.contains("kream"):
+                try document.select("script[type=application/ld+json]")
+            default:
+                try document.select("script[type=application/json]")
+            }
             
             for element in scriptElements {
-                let jsonString = try element.html()//.replacingOccurrences(of: "\"\"", with: "\"")
+                let jsonString = try element.html()
                 
                 guard let data = jsonString.data(using: .utf8) else { return }
                 
@@ -213,25 +220,25 @@ struct ClosetView: View {
                 ]
                 
                 let attributedString = try NSAttributedString(data: data, options: options, documentAttributes: nil)
-                print(attributedString)
-                print()
+                debugPrint(attributedString)
                 
                 guard let parsedData = attributedString.string.data(using: .utf8) else { return }
                 var product: Clothesable?
                 
-                if urlString.contains("kream") {
+                switch urlString {
+                case _ where urlString.contains("kream"):
                     product = try? JSONDecoder().decode(KreamProduct.self, from: parsedData)
-                } else if urlString.contains("musinsa") {
+                case _ where urlString.contains("musinsa"):
                     product = try? JSONDecoder().decode(MusinsaProduct.self, from: parsedData)
-                } else if urlString.contains("zigzag") {
+                case _ where urlString.contains("zigzag"):
                     product = try? JSONDecoder().decode(ZigzagProduct.self, from: parsedData)
-                } else if urlString.contains("a-bly") {
+                case _ where urlString.contains("a-bly"):
                     product = try? JSONDecoder().decode(AblyProduct.self, from: parsedData)
-                } else if urlString.contains("queenit.") {
+                case _ where urlString.contains("queenit."):
                     product = try? JSONDecoder().decode(QueenitProduct.self, from: parsedData)
-                } else if urlString.contains("29cm.") {
+                case _ where urlString.contains("29cm."):
                     product = try? JSONDecoder().decode(TwentyNineCMProduct.self, from: parsedData)
-                } else {
+                default:
                     product = nil
                 }
                 
@@ -242,18 +249,19 @@ struct ClosetView: View {
                       let segmentedImage = await ImageAnalyzeManager.shared.segmentation(image)
                 else {
                     // 시뮬레이터는 segmentation을 지원하지 않아서 테스트를 위한 임시 처리
-                    let clothes = Clothes(
-                        name: "루즈핏 V넥 베스트 CRYSTAL BEIGE",
-                        link:  "https://musinsaapp.page.link/v1St9cWw5h291zfBA",
-                        imageUrl: "https://image.msscdn.net/images/goods_img/20230809/3454995/3454995_16915646154097_500.jpg",
-                        brand: "내셔널지오그래픽"
-                    )
-                    
-                    await MainActor.run {
-                        closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: .dummyClothes1)
-                    }
-                    
-                    return
+//                    let clothes = Clothes(
+//                        name: "루즈핏 V넥 베스트 CRYSTAL BEIGE",
+//                        link:  "https://musinsaapp.page.link/v1St9cWw5h291zfBA",
+//                        imageUrl: "https://image.msscdn.net/images/goods_img/20230809/3454995/3454995_16915646154097_500.jpg",
+//                        brand: "내셔널지오그래픽"
+//                    )
+//                    
+//                    await MainActor.run {
+//                        closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: .dummyClothes1)
+//                    }
+//                    
+//                    print("시뮬레이터 세그먼테이션 이슈")
+                    continue
                 }
                 
                 await MainActor.run {
