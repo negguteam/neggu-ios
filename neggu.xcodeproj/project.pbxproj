@@ -73,6 +73,7 @@
 		13B3757F2D34E795001D009E /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B3757E2D34E795001D009E /* CGSize+Extension.swift */; };
 		13BA78A02D376A5400ADB1C1 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BA789F2D376A5400ADB1C1 /* FilterButton.swift */; };
 		13BA78A22D376B0800ADB1C1 /* CategorySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BA78A12D376B0800ADB1C1 /* CategorySheet.swift */; };
+		13BA78A42D378B0000ADB1C1 /* ColorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BA78A32D378B0000ADB1C1 /* ColorSheet.swift */; };
 		13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365A2D2797200033DE7B /* ErrorEntity.swift */; };
 		13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365C2D27975D0033DE7B /* HealthAPI.swift */; };
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
@@ -174,6 +175,7 @@
 		13B3757E2D34E795001D009E /* CGSize+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		13BA789F2D376A5400ADB1C1 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		13BA78A12D376B0800ADB1C1 /* CategorySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySheet.swift; sourceTree = "<group>"; };
+		13BA78A32D378B0000ADB1C1 /* ColorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSheet.swift; sourceTree = "<group>"; };
 		13BE365A2D2797200033DE7B /* ErrorEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorEntity.swift; sourceTree = "<group>"; };
 		13BE365C2D27975D0033DE7B /* HealthAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAPI.swift; sourceTree = "<group>"; };
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 				136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */,
 				13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */,
 				13BA78A12D376B0800ADB1C1 /* CategorySheet.swift */,
+				13BA78A32D378B0000ADB1C1 /* ColorSheet.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -705,6 +708,7 @@
 				13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */,
 				13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */,
 				1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */,
+				13BA78A42D378B0000ADB1C1 /* ColorSheet.swift in Sources */,
 				13BA78A02D376A5400ADB1C1 /* FilterButton.swift in Sources */,
 				136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */,
 				13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */,

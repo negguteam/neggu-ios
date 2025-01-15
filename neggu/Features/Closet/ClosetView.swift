@@ -16,6 +16,7 @@ struct ClosetView: View {
     
     @State private var selectedCategory: Category?
     @State private var selectedSubCategory: SubCategory?
+    @State private var selectedColor: ColorFilter?
     
     @FocusState private var isFocused: Bool
     @State private var filterType: FilterType?
@@ -24,6 +25,10 @@ struct ClosetView: View {
     
     var categoryTitle: String {
         selectedSubCategory?.rawValue ?? selectedCategory?.rawValue ?? "카테고리"
+    }
+    
+    var colorTitle: String {
+        selectedColor?.id.uppercased() ?? "색상"
     }
     
     var body: some View {
@@ -51,7 +56,7 @@ struct ClosetView: View {
                             filterType = .mood
                         }
                         
-                        FilterButton(title: "색상") {
+                        FilterButton(title: colorTitle) {
                             filterType = .color
                         }
                     }
@@ -132,7 +137,7 @@ struct ClosetView: View {
                 Text("필터")
                     .presentationDetents([.fraction(0.85)])
             case .color:
-                Text("필터")
+                ColorSheet(selectedColor: $selectedColor)
                     .presentationDetents([.fraction(0.85)])
             }
         }
