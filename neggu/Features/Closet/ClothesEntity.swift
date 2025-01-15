@@ -67,8 +67,12 @@ enum Mood: String, CaseIterable, Identifiable {
 
 enum Category: String, CaseIterable, Identifiable {
     case top = "상의"
-    case outer = "아우터"
     case bottom = "하의"
+    case outer = "아우터"
+    case onePiece = "원피스"
+    case accessory = "악세서리"
+    case bag = "가방"
+    case shoes = "신발"
     case unknown = ""
     
     var id: String { "\(self)" }
@@ -80,9 +84,31 @@ enum Category: String, CaseIterable, Identifiable {
     static var allCasesArray: [Self] {
         allCases.filter { $0 != .unknown }
     }
+    
+    var subCategoryArray: [SubCategory] {
+        switch self {
+        case .top:
+            [.sweatShirt, .shirtBlouse, .hoodie, .knit, .tShirt, .sleeveless]
+        case .bottom:
+            [.jeans, .slacks, .shorts, .jumpsuit, .skirt]
+        case .outer:
+            [.jacket, .zipUpHoodie, .cardigan, .fleece, .coat, .puffer, .vest]
+        case .onePiece:
+            []
+        case .accessory:
+            []
+        case .bag:
+            []
+        case .shoes:
+            []
+        case .unknown:
+            []
+        }
+    }
 }
 
-enum SubCategory: String, CaseIterable {
+enum SubCategory: String, CaseIterable, Identifiable {
+    // 상의
     case sweatShirt = "맨투맨"
     case shirtBlouse = "셔츠/블라우스"
     case hoodie = "후드"
@@ -90,6 +116,14 @@ enum SubCategory: String, CaseIterable {
     case tShirt = "티셔츠"
     case sleeveless = "민소매"
     
+    // 하의
+    case jeans = "데님팬츠"
+    case slacks = "슬랙스"
+    case shorts = "솟팬츠"
+    case jumpsuit = "점프슈트"
+    case skirt = "스커트"
+    
+    // 아우터
     case jacket = "자켓"
     case zipUpHoodie = "후드집업"
     case cardigan = "가디건"
@@ -98,13 +132,9 @@ enum SubCategory: String, CaseIterable {
     case puffer = "패딩"
     case vest = "베스트"
     
-    case jeans = "데님팬츠"
-    case slacks = "슬랙스"
-    case shorts = "솟팬츠"
-    case jumpsuit = "점프슈트"
-    case skirt = "스커트"
-    
     case unknown = ""
+    
+    var id: String { "\(self)" }
     
     init(from decoder: Decoder) throws {
         self = try SubCategory(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown

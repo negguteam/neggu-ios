@@ -12,6 +12,10 @@ struct FilterButton: View {
     let title: String
     let buttonAction: () -> Void
     
+    var isFiltered: Bool {
+        title != "카테고리" && title != "분위기" && title != "색상"
+    }
+    
     var body: some View {
         Button {
             buttonAction()
@@ -23,13 +27,13 @@ struct FilterButton: View {
                 Image(systemName: "chevron.down")
                     .frame(width: 20, height: 20)
             }
-            .foregroundStyle(.labelAssistive)
+            .foregroundStyle(isFiltered ? .negguSecondary : .labelAssistive)
             .frame(height: 35)
             .padding(.leading, 12)
             .padding(.trailing, 8)
             .background {
                 RoundedRectangle(cornerRadius: 100)
-                    .fill(.bgAlt)
+                    .fill(isFiltered ? .negguSecondaryAlt : .bgAlt)
             }
         }
     }
