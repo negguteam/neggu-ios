@@ -14,7 +14,17 @@ struct ClosetView: View {
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
     
+    @State private var selectedCategory: Category?
+    @State private var selectedSubCategory: SubCategory?
+    
     @FocusState private var isFocused: Bool
+    @State private var filterType: FilterType?
+    
+    @State private var categoryFilterSheetHeight: CGFloat = .zero
+    
+    var categoryTitle: String {
+        selectedSubCategory?.rawValue ?? selectedCategory?.rawValue ?? "카테고리"
+    }
     
     var body: some View {
         ScrollView {
@@ -109,6 +119,22 @@ struct ClosetView: View {
                 .onTapGesture {
                     isFocused = false
                 }
+        }
+        .sheet(item: $filterType) { filterType in
+            switch filterType {
+            case .category:
+                CategorySheet(
+                    selectedCategory: $selectedCategory,
+                    selectedSubCategory: $selectedSubCategory
+                )
+                .presentationDetents([.fraction(0.85)])
+            case .mood:
+                Text("필터")
+                    .presentationDetents([.fraction(0.85)])
+            case .color:
+                Text("필터")
+                    .presentationDetents([.fraction(0.85)])
+            }
         }
     }
     
@@ -219,6 +245,14 @@ struct ClosetView: View {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    enum FilterType: Identifiable {
+        case category
+        case mood
+        case color
+        
+        var id: String { "\(self)" }
     }
 }
 
