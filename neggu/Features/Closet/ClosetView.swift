@@ -17,153 +17,94 @@ struct ClosetView: View {
     @FocusState private var isFocused: Bool
     
     var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Image(.negguLogo)
+        ScrollView {
+            VStack(spacing: 48) {
+                LinkBanner(urlString: $clothesURLString) {
+                    if clothesURLString.isEmpty { return }
+                    clothesURLString = clothesURLString.split(separator: " ").filter { $0.contains("https://") }.joined()
+                    Task { await segmentation() }
+                }
+                .focused($isFocused)
+                .id(0)
                 
-                Spacer()
-            }
-            .frame(height: 68)
-            .padding(.horizontal, 20)
-            
-            ScrollView {
-                VStack(spacing: 28) {
-                    VStack(spacing: 20) {
-                        HStack {
-                            Image(.link)
-                            
-                            TextField(
-                                "",
-                                text: $clothesURLString,
-                                prompt: Text("링크를 입력해 옷장에 담아보세요!").foregroundStyle(.labelAssistive)
-                            )
-                            .focused($isFocused)
-                            
-                            Button("완료") {
-                                if clothesURLString.isEmpty { return }
-                                clothesURLString = clothesURLString.split(separator: " ").filter { $0.contains("https://") }.joined()
-                                Task { await segmentation() }
-                            }
-                        }
-                        .negguFont(.body2)
-                        .foregroundStyle(.labelAssistive)
-                        .padding(.horizontal)
-                        .padding(.vertical, 18)
-                        .background {
-                            RoundedRectangle(cornerRadius: 24)
-                                .foregroundStyle(.bgAlt)
-                        }
-                        
-                        BannerCarousel()
-                            .padding(.horizontal, -20)
-                    }
-                    .id(0)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("내 옷장")
+                        .negguFont(.title2)
+                        .foregroundStyle(.labelNormal)
                     
-                    VStack(alignment: .leading, spacing: 0) {
-                        Text("내 옷장")
-                            .negguFont(.title2)
-                            .foregroundStyle(.labelNormal)
-                            .padding(.horizontal, 8)
-                        
-                        HStack {
-                            ForEach(0..<3, id: \.self) { _ in
-                                HStack {
-                                    Text("카테고리")
-                                    
-                                    Image(systemName: "chevron.down")
-                                }
-                                .negguFont(.body3b)
-                                .foregroundStyle(.labelAssistive)
-                                .padding(8)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(.bgAlt)
-                                }
-                            }
+                    HStack {
+                        FilterButton(title: categoryTitle) {
+                            filterType = .category
                         }
-                        .frame(height: 50)
-                        .padding(.vertical, 8)
                         
-                        ScrollView {
-                            LazyVGrid(
-                                columns: [GridItem](repeating: GridItem(.flexible(), spacing: 18), count: 3),
-                                spacing: 16
-                            ) {
-                                ForEach(0...20, id: \.self) { index in
-                                    Button {
-                                        let clothes = Clothes(
-                                            name: "멋진 옷",
-                                            link: "www.neggu.com",
-                                            imageUrl: "",
-                                            brand: "넦"
-                                        )
-                                        
-                                        closetCoordinator.push(.clothesDetail(clothes: clothes))
-                                    } label: {
-                                        Rectangle()
-                                            .fill(.clear)
-                                            .aspectRatio(9/11, contentMode: .fit)
-                                            .overlay {
-                                                Image("dummy_clothes\(index % 3)")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                            }
-                                    }
-                                }
-                            }
+                        FilterButton(title: "분위기") {
+                            filterType = .mood
                         }
-                        .scrollIndicators(.hidden)
-                        .scrollDisabled(scrollPosition == 0)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 20)
-                        .background {
-                            RoundedRectangle(cornerRadius: 32)
-                                .fill(.white)
+                        
+                        FilterButton(title: "색상") {
+                            filterType = .color
                         }
                     }
-                    .containerRelativeFrame(.vertical)
-                    .id(1)
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 14)
-                .scrollTargetLayout()
-            }
-            .scrollTargetBehavior(.paging)
-            .scrollPosition(id: $scrollPosition)
-            .scrollIndicators(.hidden)
-            .scrollDismissesKeyboard(.immediately)
-            .overlay(alignment: .bottom) {
-                Button {
-                    closetCoordinator.fullScreenCover = .lookbookEdit
-                } label: {
-                    Text("네가 좀 꾸며줘! ✨")
-                        .negguFont(.body2b)
-                        .foregroundStyle(.white)
-                        .frame(height: 44)
-                        .padding(.horizontal)
-                        .background {
-                            RoundedRectangle(cornerRadius: 100)
-                                .fill(.negguSecondary)
-                                .shadow(
-                                    color: .black.opacity(0.05),
-                                    radius: 4,
-                                    x: 4,
-                                    y: 4
-                                )
-                                .shadow(
-                                    color: .black.opacity(0.1),
-                                    radius: 10,
-                                    y: 4
-                                )
+                    .padding(.top)
+                    .padding(.bottom, 24)
+                    
+                    ScrollView {
+                        LazyVGrid(
+                            columns: [GridItem](repeating: GridItem(.flexible(), spacing: 18), count: 3),
+                            spacing: 16
+                        ) {
+                            ForEach(0...20, id: \.self) { index in
+                                Button {
+                                    let clothes = Clothes(
+                                        name: "멋진 옷",
+                                        link: "www.neggu.com",
+                                        imageUrl: "",
+                                        brand: "넦"
+                                    )
+                                    
+                                    closetCoordinator.push(.clothesDetail(clothes: clothes))
+                                } label: {
+                                    Rectangle()
+                                        .fill(.clear)
+                                        .aspectRatio(5/6, contentMode: .fit)
+                                        .overlay {
+                                            Image("dummy_clothes\(index % 3)")
+                                                .resizable()
+                                                .scaledToFit()
+                                        }
+                                }
+                            }
                         }
+                        .padding(.bottom, 64)
+                    }
+                    .scrollIndicators(.hidden)
+                    .scrollDisabled(scrollPosition == 0)
+                    .padding(.horizontal, 12)
                 }
-                .opacity(scrollPosition == 0 ? 0 : 1)
-                .offset(y: scrollPosition == 0 ? 0 : -86)
-                .animation(.smooth, value: scrollPosition)
+                .containerRelativeFrame(.vertical)
+                .id(1)
             }
+            .scrollTargetLayout()
+            .padding(.horizontal, 20)
+            .padding(.top, 28)
         }
+        .scrollTargetBehavior(.paging)
+        .scrollPosition(id: $scrollPosition)
+        .scrollIndicators(.hidden)
+        .scrollDismissesKeyboard(.immediately)
+        .overlay(alignment: .bottom) {
+            Button {
+                closetCoordinator.fullScreenCover = .lookbookEdit
+            } label: {
+                NegguCTAButton()
+            }
+            .opacity(scrollPosition == 0 ? 0 : 1)
+            .offset(y: scrollPosition == 0 ? 0 : -84)
+            .animation(.smooth, value: scrollPosition)
+        }
+        .padding(.top, 1)
         .background {
-            Color(.bgNormal)
+            Color.bgNormal
                 .ignoresSafeArea()
                 .onTapGesture {
                     isFocused = false
