@@ -9,33 +9,33 @@
 import SwiftUI
 
 enum ColorFilter: CaseIterable, Identifiable {
-    case white
-    case gray
-    case black
-    case red
-    case orange
-    case yellow
-    case green
-    case blue
-    case purple
-    case pink
-    case brown
+    case WHITE
+    case GRAY
+    case BLACK
+    case RED
+    case ORANGE
+    case YELLOW
+    case GREEN
+    case BLUE
+    case PURPLE
+    case PINK
+    case BROWN
     
     var id: String { "\(self)" }
     
     var color: Color {
         switch self {
-        case .white: .white
-        case .gray: .gray30
-        case .black: .black
-        case .red: .red
-        case .orange: .orange
-        case .yellow: .yellow
-        case .green: .green
-        case .blue: .blue
-        case .purple: .purple
-        case .pink: .pink
-        case .brown: .brown
+        case .WHITE: .white
+        case .GRAY: .gray30
+        case .BLACK: .black
+        case .RED: .red
+        case .ORANGE: .orange
+        case .YELLOW: .yellow
+        case .GREEN: .green
+        case .BLUE: .blue
+        case .PURPLE: .purple
+        case .PINK: .pink
+        case .BROWN: .brown
         }
     }
 }

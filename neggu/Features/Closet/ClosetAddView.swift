@@ -68,9 +68,9 @@ struct ClosetAddView: View {
                                 }
                             } label: {
                                 HStack {
-                                    Text(clothes.category == .unknown ? "옷의 종류" : clothes.category.rawValue)
+                                    Text(clothes.category == .UNKNOWN ? "옷의 종류" : clothes.category.rawValue)
                                         .negguFont(.body2b)
-                                        .foregroundStyle(clothes.category == .unknown ? .labelInactive : .labelNormal)
+                                        .foregroundStyle(clothes.category == .UNKNOWN ? .labelInactive : .labelNormal)
                                     
                                     Spacer()
                                     
@@ -79,11 +79,11 @@ struct ClosetAddView: View {
                                 .padding()
                                 .background() {
                                     RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(clothes.category == .unknown ? .warning : .lineAlt)
+                                        .strokeBorder(clothes.category == .UNKNOWN ? .warning : .lineAlt)
                                 }
                             }
                             
-                            if clothes.category == .unknown {
+                            if clothes.category == .UNKNOWN {
                                 Text("옷의 종류를 알려주세요!")
                                     .negguFont(.body2)
                                     .foregroundStyle(.warning)
@@ -97,9 +97,9 @@ struct ClosetAddView: View {
                                 }
                             } label: {
                                 HStack {
-                                    Text(clothes.mood == .unknown ? "옷의 분위기" : clothes.mood.rawValue)
+                                    Text(clothes.mood == .UNKNOWN ? "옷의 분위기" : clothes.mood.rawValue)
                                         .negguFont(.body2b)
-                                        .foregroundStyle(clothes.mood == .unknown ? .labelInactive : .labelNormal)
+                                        .foregroundStyle(clothes.mood == .UNKNOWN ? .labelInactive : .labelNormal)
                                     
                                     Spacer()
                                     
@@ -108,11 +108,11 @@ struct ClosetAddView: View {
                                 .padding()
                                 .background() {
                                     RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(clothes.mood == .unknown ? .warning : .lineAlt)
+                                        .strokeBorder(clothes.mood == .UNKNOWN ? .warning : .lineAlt)
                                 }
                             }
                             
-                            if clothes.mood == .unknown {
+                            if clothes.mood == .UNKNOWN {
                                 Text("옷의 분위기를 알려주세요!")
                                     .negguFont(.body2)
                                     .foregroundStyle(.warning)
@@ -276,7 +276,7 @@ struct ClosetAddView: View {
             editedModelName = [
                 newValue.brand,
                 (newValue.colorCode ?? "").uppercased(),
-                newValue.subCategory == .unknown ? newValue.category.rawValue : newValue.subCategory.rawValue
+                newValue.subCategory == .UNKNOWN ? newValue.category.rawValue : newValue.subCategory.rawValue
             ].filter { !$0.isEmpty }.joined(separator: " ")
         }
     }

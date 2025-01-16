@@ -32,6 +32,14 @@
 		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
 		134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A02D363F4D00B18C1B /* LinkBanner.swift */; };
 		134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */; };
+		1350810C2D38BC95005E2491 /* ClosetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350810B2D38BC95005E2491 /* ClosetAPI.swift */; };
+		1350810E2D38C760005E2491 /* ClosetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350810D2D38C760005E2491 /* ClosetService.swift */; };
+		135081122D38CC84005E2491 /* PriceRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081112D38CC84005E2491 /* PriceRange.swift */; };
+		135081142D38CC94005E2491 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081132D38CC94005E2491 /* Gender.swift */; };
+		135081162D38CCA1005E2491 /* Mood.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081152D38CCA1005E2491 /* Mood.swift */; };
+		135081182D38CCB2005E2491 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081172D38CCB2005E2491 /* Category.swift */; };
+		1350811A2D38CCBF005E2491 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081192D38CCBF005E2491 /* SubCategory.swift */; };
+		1350811C2D38D5A4005E2491 /* BrandEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350811B2D38D5A4005E2491 /* BrandEntity.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
 		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
@@ -134,6 +142,14 @@
 		1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		134AD9A02D363F4D00B18C1B /* LinkBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBanner.swift; sourceTree = "<group>"; };
 		134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguCTAButton.swift; sourceTree = "<group>"; };
+		1350810B2D38BC95005E2491 /* ClosetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetAPI.swift; sourceTree = "<group>"; };
+		1350810D2D38C760005E2491 /* ClosetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetService.swift; sourceTree = "<group>"; };
+		135081112D38CC84005E2491 /* PriceRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceRange.swift; sourceTree = "<group>"; };
+		135081132D38CC94005E2491 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		135081152D38CCA1005E2491 /* Mood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mood.swift; sourceTree = "<group>"; };
+		135081172D38CCB2005E2491 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		135081192D38CCBF005E2491 /* SubCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
+		1350811B2D38D5A4005E2491 /* BrandEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEntity.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
 		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
@@ -285,7 +301,6 @@
 		1338892B2C89E73B0023CED5 /* Closet */ = {
 			isa = PBXGroup;
 			children = (
-				136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */,
 				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
 				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
 				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
@@ -422,6 +437,8 @@
 				1364C86E2C6102F500F67E3C /* AuthAPI.swift */,
 				1364C8702C6102FD00F67E3C /* AuthService.swift */,
 				13BE365C2D27975D0033DE7B /* HealthAPI.swift */,
+				1350810B2D38BC95005E2491 /* ClosetAPI.swift */,
+				1350810D2D38C760005E2491 /* ClosetService.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -432,6 +449,8 @@
 				1364C8722C61031E00F67E3C /* TokenEntity.swift */,
 				1364C8772C61370700F67E3C /* CheckNicknameEntity.swift */,
 				13BE365A2D2797200033DE7B /* ErrorEntity.swift */,
+				136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */,
+				1350811B2D38D5A4005E2491 /* BrandEntity.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -485,6 +504,11 @@
 		13AEFD482D30F1F20041C10A /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				135081192D38CCBF005E2491 /* SubCategory.swift */,
+				135081172D38CCB2005E2491 /* Category.swift */,
+				135081152D38CCA1005E2491 /* Mood.swift */,
+				135081132D38CC94005E2491 /* Gender.swift */,
+				135081112D38CC84005E2491 /* PriceRange.swift */,
 				13AEFD492D30F1FD0041C10A /* ColorFilter.swift */,
 			);
 			path = Enum;
@@ -680,15 +704,18 @@
 				1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */,
 				13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */,
 				13659CDB2C5F613500BB6B91 /* BaseService.swift in Sources */,
+				135081162D38CCA1005E2491 /* Mood.swift in Sources */,
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
 				13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */,
 				13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */,
 				13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */,
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
+				1350811A2D38CCBF005E2491 /* SubCategory.swift in Sources */,
 				136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */,
+				135081142D38CC94005E2491 /* Gender.swift in Sources */,
 				13659CE02C5F8F1E00BB6B91 /* APIError.swift in Sources */,
 				1364C8782C61370700F67E3C /* CheckNicknameEntity.swift in Sources */,
 				1302FE5F2C8709C50076D015 /* SignUpView.swift in Sources */,
@@ -702,14 +729,18 @@
 				13BE365D2D27975D0033DE7B /* HealthAPI.swift in Sources */,
 				13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */,
 				134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */,
+				1350810C2D38BC95005E2491 /* ClosetAPI.swift in Sources */,
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
 				13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */,
 				13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */,
 				1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */,
+				135081122D38CC84005E2491 /* PriceRange.swift in Sources */,
+				1350811C2D38D5A4005E2491 /* BrandEntity.swift in Sources */,
 				13BA78A42D378B0000ADB1C1 /* ColorSheet.swift in Sources */,
 				13BA78A02D376A5400ADB1C1 /* FilterButton.swift in Sources */,
+				135081182D38CCB2005E2491 /* Category.swift in Sources */,
 				136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */,
 				13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */,
 				136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */,
@@ -723,6 +754,7 @@
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
 				13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */,
 				13B3757A2D34E37D001D009E /* Date+Extension.swift in Sources */,
+				1350810E2D38C760005E2491 /* ClosetService.swift in Sources */,
 				133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */,
 				13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */,
 				13BA78A22D376B0800ADB1C1 /* CategorySheet.swift in Sources */,
