@@ -11,7 +11,7 @@ import Combine
 typealias DefaultClosetService = BaseService<ClosetAPI>
 
 protocol ClosetService {
-    func register(image: Data, parameters: [String: Any]) -> AnyPublisher<Data, Error>
+    func register(image: Data, request: ClothesRegisterEntity) -> AnyPublisher<ClothesEntity, Error>
     func clothesDetail(id: String) -> AnyPublisher<ClothesEntity, Error>
     func clothesList(page: Int, size: Int) -> AnyPublisher<ClosetEntity, Error>
     func brandList() -> AnyPublisher<[BrandEntity], Error>
@@ -20,10 +20,24 @@ protocol ClosetService {
 
 extension DefaultClosetService: ClosetService {
     
-    func register(image: Data, parameters: [String : Any]) -> AnyPublisher<Data, Error> {
-        requestObjectWithNetworkError(.register(
+    func register(image: Data, request: ClothesRegisterEntity) -> AnyPublisher<ClothesEntity, Error> {
+        let dictionary: [String: Any] = [
+            "name": request.name,
+            "colorCode": request.colorCode ?? "#FFFFFF",
+            "category": request.category.id,
+            "subCategory": request.subCategory.id,
+            "mood": request.mood.map { $0.id },
+            "brand": request.brand,
+            "priceRange": request.priceRange.id,
+            "memo": request.memo,
+            "isPurchase": request.isPurchase,
+            "link": request.link
+        ]
+        let object = (try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)) ?? .init()
+        print(image.base64EncodedString(), String(data: object, encoding: .utf8))
+        return requestObjectWithNetworkError(.register(
             image: image,
-            parameters: parameters
+            request: object
         ))
     }
     

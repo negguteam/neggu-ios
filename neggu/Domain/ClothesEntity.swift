@@ -29,7 +29,7 @@ struct ClothesRegisterEntity: Codable, Equatable, Hashable {
     var colorCode: String?
     var category: Category = .UNKNOWN
     var subCategory: SubCategory = .UNKNOWN
-    var mood: Mood = .UNKNOWN
+    var mood: [Mood] = []
     var brand: String
     var priceRange: PriceRange = .UNKNOWN
     var memo: String = ""
@@ -42,10 +42,10 @@ struct ClothesRegisterEntity: Codable, Equatable, Hashable {
 }
 
 struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
-    let id: ObjectId
-    let accountId: ObjectId
-    let auditableEntityId: ObjectId
-    let clothId: ObjectId
+    let id: String
+    let accountId: String
+    let auditableEntityId: String
+    let clothId: String
     let name: String
     let link: String
     let imageUrl: String

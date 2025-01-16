@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 enum ClosetAPI {
-    case register(image: Data, parameters: [String: Any])
+    case register(image: Data, request: Data)
     case clothesDetail(id: String)
     case clothesList(page: Int, size: Int)
     case brandList
@@ -54,15 +54,15 @@ extension ClosetAPI: BaseAPI {
     
     var task: Moya.Task {
         switch self {
-        case .register(let image, let parameters):
-            let bodyData = (try? JSONSerialization.data(withJSONObject: parameters)) ?? .init()
-            return .uploadMultipart([
-                MultipartFormData(provider: .data(image), name: "image", mimeType: "image/png"),
-                MultipartFormData(provider: .data(bodyData), name: "clothRegisterRequest")
-            ])
+        case .register(let image, let request):
+            var multipartData: [MultipartFormData] = []
+            multipartData.append(.init(provider: .data(image), name: "image", fileName: "clothesImage", mimeType: "image/png"))
+            multipartData.append(.init(provider: .data(request), name: "clothRegisterRequest"))
+            
+            return .uploadMultipart(multipartData)
         case .clothesList(let page, let size):
             return .requestParameters(
-                parameters: ["page": page, "size": size],
+                parameters: ["size": size, "page": page],
                 encoding: URLEncoding.queryString
             )
         default:
