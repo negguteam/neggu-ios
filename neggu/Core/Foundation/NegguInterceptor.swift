@@ -26,6 +26,12 @@ class NegguInterceptor: RequestInterceptor {
     
     // Note: 토큰 재발급 시 AccessToken 갱신
     private func validateHeader(_ urlRequest: inout URLRequest) {
+        if urlRequest.url?.absoluteString.last == "/" {
+            var urlString = urlRequest.url?.absoluteString
+            urlString?.removeLast()
+            urlRequest.url = URL(string: urlString ?? "")
+        }
+        
         let headers = urlRequest.headers.map {
             guard $0.name == "Authorization" else { return $0 }
             return HTTPHeader(
