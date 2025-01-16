@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Category: String, CaseIterable, Identifiable, Decodable {
+enum Category: String, CaseIterable, Identifiable, Codable {
     case TOP = "상의"
     case BOTTOM = "하의"
     case OUTER = "아우터"

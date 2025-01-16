@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Mood: String, CaseIterable, Identifiable, Decodable {
+enum Mood: String, CaseIterable, Identifiable, Codable {
     case FEMININE = "페미닌"
     case SPORTS = "스포츠"
     case STREETWEAR = "스트릿"

@@ -19,12 +19,29 @@ struct ClosetEntity: Decodable {
     let empty: Bool
 }
 
-struct ObjectId: Decodable {
+struct ObjectId: Decodable, Hashable {
     let timestamp: Int
     let date: String
 }
 
-struct ClothesEntity: Decodable {
+struct ClothesRegisterEntity: Codable, Equatable, Hashable {
+    var name: String
+    var colorCode: String?
+    var category: Category = .UNKNOWN
+    var subCategory: SubCategory = .UNKNOWN
+    var mood: Mood = .UNKNOWN
+    var brand: String
+    var priceRange: PriceRange = .UNKNOWN
+    var memo: String = ""
+    var isPurchase: Bool = false
+    var link: String
+    
+    static var mockData: Self {
+        return .init(name: "멋진 옷", brand: "Neggu", link: "")
+    }
+}
+
+struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     let id: ObjectId
     let accountId: ObjectId
     let auditableEntityId: ObjectId
@@ -38,12 +55,21 @@ struct ClothesEntity: Decodable {
     let brand: String
     let priceRange: PriceRange
     let memo: String
-    let color: String
-    let colorCode: String
+    var color: String
+    var colorCode: String
     let isPurchase: Bool
     let isNew: Bool
     let createdAt: String
     let modifiedAt: String
+    
+    func toLookBookItem() -> Clothes {
+        .init(
+            name: self.name,
+            link: self.link,
+            imageUrl: self.imageUrl,
+            brand: self.brand
+        )
+    }
 }
 
 struct Clothes: Equatable, Hashable, Identifiable {

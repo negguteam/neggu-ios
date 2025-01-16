@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SubCategory: String, CaseIterable, Identifiable, Decodable {
+enum SubCategory: String, CaseIterable, Identifiable, Codable {
     // 상의
     case SWEARSHIRT = "맨투맨"
     case SHIRT_BLOUSE = "셔츠/블라우스"

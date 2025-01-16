@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PriceRange: String, CaseIterable, Decodable {
+enum PriceRange: String, CaseIterable, Codable {
     case UNKNOWN = "잘 모르겠어요"
     case UNDER_3K = "3만원 이하"
     case UNDER_5K = "5만원 이하"
