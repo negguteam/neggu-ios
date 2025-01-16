@@ -237,11 +237,10 @@ struct ClosetView: View {
                 }
                 
                 await MainActor.run {
-                    let clothes = Clothes(
+                    let clothes = ClothesRegisterEntity(
                         name: convertedProduct.name,
-                        link: convertedProduct.link,
-                        imageUrl: convertedProduct.imageUrl,
-                        brand: convertedProduct.brand
+                        brand: convertedProduct.brand,
+                        link: convertedProduct.link
                     )
                     
                     closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: segmentedImage)

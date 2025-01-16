@@ -72,8 +72,8 @@ final class MainCoordinator: Coordinator {
     
     enum Destination: Sceneable {
         case closet
-        case closetAdd(clothes: Clothes, segmentedImage: UIImage)
-        case clothesDetail(clothes: Clothes)
+        case closetAdd(clothes: ClothesRegisterEntity, segmentedImage: UIImage)
+        case clothesDetail(clothes: ClothesEntity)
         
         case lookbook
         case lookbookEdit
