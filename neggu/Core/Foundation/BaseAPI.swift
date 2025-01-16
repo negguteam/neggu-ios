@@ -22,7 +22,7 @@ extension BaseAPI {
         case .auth:
             base += "/auth"
         case .closet:
-            base += "/clothes"
+            base += "/cloth"
         case .health:
             base += "/health"
         default:
