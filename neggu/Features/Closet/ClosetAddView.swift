@@ -139,7 +139,7 @@ struct ClosetAddView: View {
                         TitleForm("얼마인가요?") {
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach(PriceRange.allCases, id: \.self) { select in
+                                    ForEach(PriceRange.allCases) { select in
                                         let isSelected = clothes.priceRange == select
                                         
                                         BorderedChip(title: select.rawValue, isSelected: isSelected)

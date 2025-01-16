@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PriceRange: String, CaseIterable, Codable {
+enum PriceRange: String, Identifiable, CaseIterable, Codable {
     case UNKNOWN = "잘 모르겠어요"
     case UNDER_3K = "3만원 이하"
     case UNDER_5K = "5만원 이하"
@@ -15,6 +15,8 @@ enum PriceRange: String, CaseIterable, Codable {
     case FROM_10K_TO_20K = "10~20만원"
     case FROM_20K_TO_30K = "20~30만원"
     case ABOVE_30K = "30만원 이상"
+    
+    var id: String { "\(self)" }
     
     static var allCasesArray: [Self] {
         allCases.filter { $0 != .UNKNOWN }
