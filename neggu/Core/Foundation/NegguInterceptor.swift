@@ -12,7 +12,7 @@ import Moya
 class NegguInterceptor: RequestInterceptor {
     
     public typealias AdapterResult = Result<URLRequest, Error>
-    private var authService = DefaultAuthService()
+    private let authService = DefaultAuthService()
     
     public func adapt(
         _ urlRequest: URLRequest,
@@ -30,11 +30,33 @@ class NegguInterceptor: RequestInterceptor {
             guard $0.name == "Authorization" else { return $0 }
             return HTTPHeader(
                 name: $0.name,
-                value: UserDefaultsKey.Auth.accessToken ?? "none"
+                value: "Bearer \(UserDefaultsKey.Auth.accessToken ?? "none")"
             )
         }
         
         urlRequest.headers = HTTPHeaders(headers)
+    }
+    
+    func retry(
+        _ request: Request,
+        for session: Session,
+        dueTo error: any Error,
+        completion: @escaping (RetryResult) -> Void
+    ) {
+        guard let pathComponents = request.request?.url?.pathComponents,
+              !pathComponents.contains("token"),
+              request.response?.statusCode == 401 else {
+            completion(.doNotRetryWithError(error))
+            return
+        }
+        
+        authService.tokenReissuance { isSuccessed in
+            if isSuccessed {
+                completion(.retryWithDelay(60))
+            } else {
+                completion(.doNotRetryWithError(error))
+            }
+        }
     }
     
 }

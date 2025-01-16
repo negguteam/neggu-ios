@@ -19,7 +19,7 @@ enum AuthAPI {
     case login(socialType: SocialType, idToken: String)
     case register(parameters: Parameters)
     case checkNickname(nickname: String)
-    case tokenReissuance(refreshToken: String)
+    case tokenReissuance
 }
 
 extension AuthAPI: BaseAPI {
@@ -67,9 +67,9 @@ extension AuthAPI: BaseAPI {
                     parameters: parameters,
                     encoding: JSONEncoding.default
                 )
-        case .tokenReissuance(let refreshToken):
+        case .tokenReissuance:
                 .requestParameters(
-                    parameters: ["refreshToken": refreshToken],
+                    parameters: ["refreshToken": UserDefaultsKey.Auth.refreshToken ?? "none"],
                     encoding: JSONEncoding.default
                 )
         default: .requestPlain

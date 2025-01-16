@@ -41,7 +41,7 @@ extension BaseAPI {
     }
     
     var validationType: ValidationType {
-        return .customCodes(Array(200..<500))
+        return .customCodes(Array(200..<500).filter { $0 != 401 })
     }
     
 }
@@ -55,23 +55,23 @@ enum APIType {
 
 enum HeaderType {
     case json
-    case jsonWithToken
     case jsonWithRegisterToken
+    case jsonWithToken
     case multipartWithToken
     
     public var value: [String: String] {
         switch self {
         case .json:
             ["Content-Type": "application/json"]
-        case .jsonWithToken:
-            ["Content-Type": "application/json",
-             "Authorization": UserDefaultsKey.Auth.accessToken ?? "none"]
         case .jsonWithRegisterToken:
             ["Content-Type": "application/json",
              "RegisterToken": UserDefaultsKey.Auth.registerToken ?? "none"]
+        case .jsonWithToken:
+            ["Content-Type": "application/json",
+             "Authorization": "Bearer \(UserDefaultsKey.Auth.accessToken ?? "none")"]
         case .multipartWithToken:
             ["Content-Type": "multipart/form-data",
-             "Authorization": UserDefaultsKey.Auth.accessToken ?? "none"]
+             "Authorization": "Bearer \(UserDefaultsKey.Auth.accessToken ?? "none")"]
         }
     }
 }
