@@ -13,7 +13,6 @@ struct ClosetAddView: View {
     
     @State private var clothes: ClothesRegisterEntity
     @State private var clothesColor: UIColor = .clear
-    @State private var editedModelName: String = ""
     @State private var selectedMoodList: [Mood] = []
     
     @State private var fieldType: FieldType?
@@ -28,6 +27,17 @@ struct ClosetAddView: View {
     let service = DefaultClosetService()
     
     @State private var bag = Set<AnyCancellable>()
+    
+    var name: String {
+        if clothes.name.isEmpty {
+            [clothes.brand,
+             //         (clothes.colorCode ?? "").uppercased(),
+             clothes.subCategory == .UNKNOWN ? clothes.category.rawValue : clothes.subCategory.rawValue]
+                .filter { !$0.isEmpty }.joined(separator: " ")
+        } else {
+            clothes.name
+        }
+    }
     
     var categoryTitle: String {
         if clothes.subCategory != .UNKNOWN {
@@ -73,11 +83,6 @@ struct ClosetAddView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(height: 366)
-//                    .overlay(alignment: .bottomTrailing) {
-//                        Color(uiColor: clothesColor)
-//                            .frame(width: 30, height: 30)
-//                            .clipShape(.circle)
-//                    }
                     .padding(.bottom, 20)
                 
                 LazyVStack(
@@ -234,12 +239,12 @@ struct ClosetAddView: View {
                                 }
                         }
                     } header: {
-                        if !editedModelName.isEmpty {
+                        if !name.isEmpty {
                             HStack {
                                 Button {
                                     showNameEditView = true
                                 } label: {
-                                    Text(editedModelName)
+                                    Text(name)
                                         .negguFont(.body1b)
                                         .lineLimit(1)
                                     
@@ -266,7 +271,6 @@ struct ClosetAddView: View {
         .background(.bgNormal)
         .overlay(alignment: .bottom) {
             Button {
-//                clothes.name = editedModelName
                 clothes.mood = selectedMoodList
                 dump(clothes)
                 if let image = segmentedImage.pngData() {
@@ -277,6 +281,7 @@ struct ClosetAddView: View {
                         print("ClosetAdd:", event)
                     } receiveValue: { result in
                         debugPrint(result)
+                        dismiss()
                     }.store(in: &bag)
                 }
             } label: {
@@ -306,7 +311,7 @@ struct ClosetAddView: View {
         }
         .ignoresSafeArea(edges: .bottom)
         .sheet(isPresented: $showNameEditView) {
-            ClothesNameEditView(clothesName: $editedModelName)
+            ClothesNameEditView(clothesName: $clothes.name)
                 .presentationDetents([.height(300)])
                 .presentationCornerRadius(20)
         }
@@ -336,12 +341,10 @@ struct ClosetAddView: View {
         .onAppear {
             getMostColor()
         }
-        .onChange(of: clothes) { _, newValue in
-//            editedModelName = [
-//                newValue.brand,
-//                (newValue.colorCode ?? "").uppercased(),
-//                newValue.subCategory == .UNKNOWN ? newValue.category.rawValue : newValue.subCategory.rawValue
-//            ].filter { !$0.isEmpty }.joined(separator: " ")
+        .onChange(of: clothes.memo) { _, newValue in
+            if newValue.count > 200 {
+                clothes.memo = String(newValue.prefix(200))
+            }
         }
     }
     

@@ -92,6 +92,7 @@ struct BrandSheet: View {
                         
                         Button {
                             selectedBrand = brand.en
+                            dismiss()
                         } label: {
                             HStack {
                                 Text(brand.en)

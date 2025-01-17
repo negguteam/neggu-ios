@@ -93,14 +93,15 @@ struct DropDownButton: View {
                     
                     Spacer()
                     
-                    Image(systemName: isSelected ? "chevron.right" : "chevron.down")
+                    Image(systemName: "chevron.down")
+                        .rotationEffect(isSelected ? .degrees(-90) : .degrees(0))
                 }
-                .foregroundStyle(setContentColor())
+                .foregroundStyle(selectedCategory == category ? .negguSecondary : .labelNormal)
                 .frame(height: 52)
                 .padding(.horizontal, 12)
                 .background {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(setBackgroundColor())
+                        .fill(selectedCategory == category ? .negguSecondaryAlt : .clear)
                 }
             }
             
@@ -127,23 +128,6 @@ struct DropDownButton: View {
                     }
                 }
             }
-        }
-        .animation(.smooth, value: isSelected)
-    }
-    
-    func setContentColor() -> Color {
-        if selectedCategory == category && selectedSubCategory == .UNKNOWN {
-            return .negguSecondary
-        } else {
-            return .labelNormal
-        }
-    }
-    
-    func setBackgroundColor() -> Color {
-        if selectedCategory == category && selectedSubCategory == .UNKNOWN {
-            return .negguSecondaryAlt
-        } else {
-            return .clear
         }
     }
 }
