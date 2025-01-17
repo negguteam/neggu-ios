@@ -27,7 +27,7 @@ struct ColorSheet: View {
             }
             
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(spacing: 4) {
                     ForEach(ColorFilter.allCases) { color in
                         Button {
                             if selectedColor == color {
