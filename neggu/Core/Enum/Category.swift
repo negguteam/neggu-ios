@@ -30,7 +30,7 @@ enum Category: String, CaseIterable, Identifiable, Codable {
     var subCategoryArray: [SubCategory] {
         switch self {
         case .TOP:
-            [.SWEARSHIRT, .SHIRT_BLOUSE, .HOODIE, .KNIT, .T_SHIRT, .SLEEVELESS]
+            [.SWEATSHIRT, .SHIRT_BLOUSE, .HOODIE, .KNIT, .T_SHIRT, .SLEEVELESS]
         case .BOTTOM:
             [.JEANS, .SLACKS, .SHORTS, .JUMPSUIT, .SKIRT]
         case .OUTER:
