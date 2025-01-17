@@ -7,9 +7,12 @@
 
 import SwiftUI
 import SwiftSoup
+import Combine
 
 struct ClosetView: View {
     @EnvironmentObject private var closetCoordinator: MainCoordinator
+    
+    private let service = DefaultClosetService()
     
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
@@ -21,7 +24,10 @@ struct ClosetView: View {
     @FocusState private var isFocused: Bool
     @State private var filterType: FilterType?
     
-    @State private var categoryFilterSheetHeight: CGFloat = .zero
+//    @State private var categoryFilterSheetHeight: CGFloat = .zero
+    
+    @State private var clothes: [ClothesEntity] = []
+    @State private var bag = Set<AnyCancellable>()
     
     var categoryTitle: String {
         if selectedSubCategory != .UNKNOWN {
@@ -74,24 +80,21 @@ struct ClosetView: View {
                             columns: [GridItem](repeating: GridItem(.flexible(), spacing: 18), count: 3),
                             spacing: 16
                         ) {
-                            ForEach(0...20, id: \.self) { index in
+                            ForEach(clothes) { item in
                                 Button {
-                                    let clothes = Clothes(
-                                        name: "멋진 옷",
-                                        link: "www.neggu.com",
-                                        imageUrl: "",
-                                        brand: "넦"
-                                    )
-                                    
-                                    closetCoordinator.push(.clothesDetail(clothes: clothes))
+
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
                                         .aspectRatio(5/6, contentMode: .fit)
                                         .overlay {
-                                            Image("dummy_clothes\(index % 3)")
-                                                .resizable()
-                                                .scaledToFit()
+                                            AsyncImage(url: URL(string: item.imageUrl)) { image in
+                                                image
+                                                    .resizable()
+                                                    .scaledToFit()
+                                            } placeholder: {
+                                                ProgressView()
+                                            }
                                         }
                                 }
                             }
@@ -131,6 +134,9 @@ struct ClosetView: View {
                     isFocused = false
                 }
         }
+        .refreshable {
+            getClothes()
+        }
         .sheet(item: $filterType) { filterType in
             switch filterType {
             case .category:
@@ -146,6 +152,10 @@ struct ClosetView: View {
                 ColorSheet(selectedColor: $selectedColor)
                     .presentationDetents([.fraction(0.85)])
             }
+        }
+        .onAppear {
+            if !clothes.isEmpty { return }
+            getClothes()
         }
     }
     
@@ -227,11 +237,11 @@ struct ClosetView: View {
                       let segmentedImage = await ImageAnalyzeManager.shared.segmentation(image)
                 else {
                     // 시뮬레이터는 segmentation을 지원하지 않아서 테스트를 위한 임시 처리
-//                    let clothes = Clothes(
+//                    let clothes = ClothesRegisterEntity(
 //                        name: "루즈핏 V넥 베스트 CRYSTAL BEIGE",
-//                        link:  "https://musinsaapp.page.link/v1St9cWw5h291zfBA",
+//                        brand: "내셔널지오그래픽",
+//                        link:  "https://musinsaapp.page.link/v1St9cWw5h291zfBA"
 //                        imageUrl: "https://image.msscdn.net/images/goods_img/20230809/3454995/3454995_16915646154097_500.jpg",
-//                        brand: "내셔널지오그래픽"
 //                    )
 //                    
 //                    await MainActor.run {
