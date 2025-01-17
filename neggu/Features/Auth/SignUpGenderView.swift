@@ -27,7 +27,7 @@ struct SignUpGenderView: View {
             HStack(spacing: 16) {
                 ForEach(Gender.allCasesArray) { gender in
                     Button {
-                        viewModel.gender = (viewModel.gender == gender) ? .unknown : gender
+                        viewModel.gender = (viewModel.gender == gender) ? .UNKNOWN : gender
                     } label: {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(.lineNormal)
@@ -44,7 +44,7 @@ struct SignUpGenderView: View {
         }
         .onAppear {
             print("GenderView")
-            viewModel.canNextStep = viewModel.gender != .unknown
+            viewModel.canNextStep = viewModel.gender != .UNKNOWN
             
             viewModel.nextAction = {
                 viewModel.step += 1
@@ -52,11 +52,11 @@ struct SignUpGenderView: View {
             
             viewModel.beforeAction = {
                 viewModel.step -= 1
-                viewModel.gender = .unknown
+                viewModel.gender = .UNKNOWN
             }
         }
         .onChange(of: viewModel.gender) { _, newValue in
-            viewModel.canNextStep = newValue != .unknown
+            viewModel.canNextStep = newValue != .UNKNOWN
         }
     }
 }

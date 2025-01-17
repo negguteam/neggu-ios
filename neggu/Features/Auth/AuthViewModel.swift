@@ -30,7 +30,7 @@ final class AuthViewModel: NSObject, ObservableObject {
     @Published private(set) var isDuplicatedNickname: Bool = true
     
     @Published var age: String = ""
-    @Published var gender: Gender = .unknown
+    @Published var gender: Gender = .UNKNOWN
     @Published var moodList: Set<Mood> = []
     
     init(authService: AuthService = DefaultAuthService()) {
@@ -90,8 +90,8 @@ final class AuthViewModel: NSObject, ObservableObject {
         authService.register(userProfile: [
             "nickname": nickname,
             "age": Int(age) ?? 0,
-            "gender": "\(gender)".uppercased(),
-            "mood": moodList.map { "\($0)".uppercased() }
+            "gender": gender.id,
+            "mood": moodList.map { $0.id }
         ])
         .sink { event in
             switch event {

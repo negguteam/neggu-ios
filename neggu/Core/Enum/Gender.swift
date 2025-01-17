@@ -8,17 +8,17 @@
 import Foundation
 
 enum Gender: String, CaseIterable, Identifiable, Decodable {
-    case male = "남성"
-    case female = "여성"
-    case unknown
+    case MALE = "남성"
+    case FEMALE = "여성"
+    case UNKNOWN
     
     var id: String { "\(self)" }
     
     static var allCasesArray: [Self] {
-        allCases.filter { $0 != .unknown }
+        allCases.filter { $0 != .UNKNOWN }
     }
     
     init(from decoder: Decoder) throws {
-        self = try Gender(rawValue: decoder.singleValueContainer().decode(RawValue.self).lowercased()) ?? .unknown
+        self = try Gender(rawValue: decoder.singleValueContainer().decode(RawValue.self).lowercased()) ?? .UNKNOWN
     }
 }
