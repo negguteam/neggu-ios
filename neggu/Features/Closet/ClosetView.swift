@@ -257,6 +257,22 @@ struct ClosetView: View {
         }
     }
     
+    private func testSegmentation() {
+        let image = UIImage(resource: .bannerBG1)
+        let clothes: ClothesRegisterEntity = .mockData
+        
+        closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: image)
+    }
+    
+    private func getClothes() {
+        service.clothesList(page: 0, size: 10)
+            .sink { event in
+                print(event)
+            } receiveValue: { result in
+                self.clothes = result.content
+            }.store(in: &bag)
+    }
+    
     enum FilterType: Identifiable {
         case category
         case mood
