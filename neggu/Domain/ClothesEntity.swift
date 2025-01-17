@@ -37,7 +37,7 @@ struct ClothesRegisterEntity: Codable, Equatable, Hashable {
     var link: String
     
     static var mockData: Self {
-        return .init(name: "멋진 옷", brand: "Neggu", link: "")
+        return .init(name: "멋진 옷", brand: "Neggu", link: "www.neggu.com")
     }
 }
 

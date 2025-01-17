@@ -29,6 +29,6 @@ enum Mood: String, CaseIterable, Identifiable, Codable {
     }
     
     init(from decoder: Decoder) throws {
-        self = try Mood(rawValue: decoder.singleValueContainer().decode(RawValue.self).lowercased()) ?? .UNKNOWN
+        self = try Mood(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .UNKNOWN
     }
 }

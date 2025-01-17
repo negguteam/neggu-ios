@@ -322,7 +322,7 @@ struct ClosetAddView: View {
                 MoodSheet(selectedMoodList: $selectedMoodList)
                     .presentationDetents([.fraction(0.85)])
             case .brand:
-                Text("브랜드")
+                BrandSheet(selectedBrand: $clothes.brand)
                     .presentationDetents([.fraction(0.85)])
             }
         }

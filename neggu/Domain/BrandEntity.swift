@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct BrandEntity: Decodable {
-    let id: ObjectId
+struct BrandEntity: Decodable, Identifiable {
+    let id: String
     let kr: String
     let en: String
-    let genders: [Gender]
-    let moods: [Mood]
+//    let genders: [Gender]
+//    let moods: [Mood]
 }
