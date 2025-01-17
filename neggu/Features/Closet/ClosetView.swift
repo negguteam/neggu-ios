@@ -14,8 +14,8 @@ struct ClosetView: View {
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
     
-    @State private var selectedCategory: Category?
-    @State private var selectedSubCategory: SubCategory?
+    @State private var selectedCategory: Category = .UNKNOWN
+    @State private var selectedSubCategory: SubCategory = .UNKNOWN
     @State private var selectedColor: ColorFilter?
     
     @FocusState private var isFocused: Bool
@@ -24,7 +24,13 @@ struct ClosetView: View {
     @State private var categoryFilterSheetHeight: CGFloat = .zero
     
     var categoryTitle: String {
-        selectedSubCategory?.rawValue ?? selectedCategory?.rawValue ?? "카테고리"
+        if selectedSubCategory != .UNKNOWN {
+            selectedSubCategory.rawValue
+        } else if selectedCategory != .UNKNOWN {
+            selectedCategory.rawValue
+        } else {
+            "카테고리"
+        }
     }
     
     var colorTitle: String {

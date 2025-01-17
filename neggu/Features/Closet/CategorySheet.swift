@@ -11,8 +11,8 @@ struct CategorySheet: View {
     @Environment(\.dismiss) private var dismiss
     
     // 뷰모델로 개선하기
-    @Binding var selectedCategory: Category?
-    @Binding var selectedSubCategory: SubCategory?
+    @Binding var selectedCategory: Category
+    @Binding var selectedSubCategory: SubCategory
     
     var body: some View {
         VStack(spacing: 24) {
@@ -21,16 +21,16 @@ struct CategorySheet: View {
                 .frame(width: 150, height: 8)
             
             HStack {
-                Text("카테고리")
+                Text("옷의 종류")
                     .negguFont(.title3)
                     .foregroundStyle(.labelNormal)
                 
                 Spacer()
                 
-                if selectedCategory != nil {
+                if selectedCategory != .UNKNOWN {
                     Button {
-                        selectedCategory = nil
-                        selectedSubCategory = nil
+                        selectedCategory = .UNKNOWN
+                        selectedSubCategory = .UNKNOWN
                         dismiss()
                     } label: {
                         Image(systemName: "arrow.clockwise")
@@ -67,8 +67,8 @@ struct CategorySheet: View {
 struct DropDownButton: View {
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var selectedCategory: Category?
-    @Binding var selectedSubCategory: SubCategory?
+    @Binding var selectedCategory: Category
+    @Binding var selectedSubCategory: SubCategory
     
     let category: Category
     
@@ -80,10 +80,11 @@ struct DropDownButton: View {
         VStack(spacing: 0) {
             Button {
                 if selectedCategory == category {
-                    selectedCategory = nil
+                    selectedCategory = .UNKNOWN
+                    selectedSubCategory = .UNKNOWN
                 } else {
                     selectedCategory = category
-                    selectedSubCategory = nil
+                    selectedSubCategory = .UNKNOWN
                 }
             } label: {
                 HStack {
@@ -106,9 +107,10 @@ struct DropDownButton: View {
             if isSelected {
                 ForEach(category.subCategoryArray) { subCategory in
                     let subCategoryIsSelected = selectedSubCategory == subCategory
+                    
                     Button {
                         if selectedSubCategory == subCategory {
-                            selectedSubCategory = nil
+                            selectedSubCategory = .UNKNOWN
                         } else {
                             selectedSubCategory = subCategory
                             dismiss()
@@ -130,7 +132,7 @@ struct DropDownButton: View {
     }
     
     func setContentColor() -> Color {
-        if selectedCategory == category && selectedSubCategory == nil {
+        if selectedCategory == category && selectedSubCategory == .UNKNOWN {
             return .negguSecondary
         } else {
             return .labelNormal
@@ -138,7 +140,7 @@ struct DropDownButton: View {
     }
     
     func setBackgroundColor() -> Color {
-        if selectedCategory == category && selectedSubCategory == nil {
+        if selectedCategory == category && selectedSubCategory == .UNKNOWN {
             return .negguSecondaryAlt
         } else {
             return .clear
