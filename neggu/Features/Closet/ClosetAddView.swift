@@ -6,13 +6,17 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ClosetAddView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var clothes: Clothes
+    @State private var clothes: ClothesRegisterEntity
     @State private var clothesColor: UIColor = .clear
     @State private var editedModelName: String = ""
+    @State private var selectedMoodList: [Mood] = []
+    
+    @State private var fieldType: FieldType?
     
     @State private var showNameEditView: Bool = false
     @State private var showAlert: Bool = false
@@ -21,7 +25,29 @@ struct ClosetAddView: View {
     
     private let segmentedImage: UIImage
     
-    init(clothes: Clothes, segmentedImage: UIImage) {
+    let service = DefaultClosetService()
+    
+    @State private var bag = Set<AnyCancellable>()
+    
+    var categoryTitle: String {
+        if clothes.subCategory != .UNKNOWN {
+            clothes.category.rawValue + " > " + clothes.subCategory.rawValue
+        } else if clothes.category != .UNKNOWN {
+            clothes.category.rawValue
+        } else {
+            "옷의 종류"
+        }
+    }
+    
+    var moodTitle: String {
+        selectedMoodList.map { $0.rawValue }.joined(separator: ", ")
+    }
+    
+    var buttonDisabled: Bool {
+        clothes.category == .UNKNOWN || selectedMoodList.isEmpty
+    }
+    
+    init(clothes: ClothesRegisterEntity, segmentedImage: UIImage) {
         self.clothes = clothes
         self.segmentedImage = segmentedImage
     }
@@ -60,15 +86,11 @@ struct ClosetAddView: View {
                 ) {
                     Section {
                         TitleForm("어떤 종류의 옷인가요?") {
-                            Menu {
-                                ForEach(Category.allCasesArray) { category in
-                                    Button(category.rawValue) {
-                                        clothes.category = category
-                                    }
-                                }
+                            Button {
+                                fieldType = .category
                             } label: {
                                 HStack {
-                                    Text(clothes.category == .UNKNOWN ? "옷의 종류" : clothes.category.rawValue)
+                                    Text(categoryTitle)
                                         .negguFont(.body2b)
                                         .foregroundStyle(clothes.category == .UNKNOWN ? .labelInactive : .labelNormal)
                                     
@@ -89,17 +111,13 @@ struct ClosetAddView: View {
                                     .foregroundStyle(.warning)
                             }
                             
-                            Menu {
-                                ForEach(Mood.allCasesArray) { mood in
-                                    Button(mood.rawValue) {
-                                        clothes.mood = mood
-                                    }
-                                }
+                            Button {
+                                fieldType = .mood
                             } label: {
                                 HStack {
-                                    Text(clothes.mood == .UNKNOWN ? "옷의 분위기" : clothes.mood.rawValue)
+                                    Text(selectedMoodList.isEmpty ? "옷의 분위기" : moodTitle)
                                         .negguFont(.body2b)
-                                        .foregroundStyle(clothes.mood == .UNKNOWN ? .labelInactive : .labelNormal)
+                                        .foregroundStyle(selectedMoodList.isEmpty ? .labelInactive : .labelNormal)
                                     
                                     Spacer()
                                     
@@ -108,11 +126,11 @@ struct ClosetAddView: View {
                                 .padding()
                                 .background() {
                                     RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(clothes.mood == .UNKNOWN ? .warning : .lineAlt)
+                                        .strokeBorder(selectedMoodList.isEmpty ? .warning : .lineAlt)
                                 }
                             }
                             
-                            if clothes.mood == .UNKNOWN {
+                            if selectedMoodList.isEmpty {
                                 Text("옷의 분위기를 알려주세요!")
                                     .negguFont(.body2)
                                     .foregroundStyle(.warning)
@@ -120,19 +138,23 @@ struct ClosetAddView: View {
                         }
                         
                         TitleForm("어느 브랜드인가요?") {
-                            HStack {
-                                Text(clothes.brand.isEmpty ? "옷의 종류" : clothes.brand)
-                                    .negguFont(.body2b)
-                                    .foregroundStyle(clothes.brand.isEmpty ? .labelInactive : .labelNormal)
-                                
-                                Spacer()
-                                
-                                Image(systemName: "chevron.down")
-                            }
-                            .padding()
-                            .background() {
-                                RoundedRectangle(cornerRadius: 16)
-                                    .strokeBorder(.lineAlt)
+                            Button {
+                                fieldType = .brand
+                            } label: {
+                                HStack {
+                                    Text(clothes.brand.isEmpty ? "브랜드" : clothes.brand)
+                                        .negguFont(.body2b)
+                                        .foregroundStyle(clothes.brand.isEmpty ? .labelInactive : .labelNormal)
+                                    
+                                    Spacer()
+                                    
+                                    Image(systemName: "chevron.down")
+                                }
+                                .padding()
+                                .background() {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .strokeBorder(.lineAlt)
+                                }
                             }
                         }
                         
@@ -211,22 +233,6 @@ struct ClosetAddView: View {
                                     }
                                 }
                         }
-                        
-                        Button {
-                            clothes.name = editedModelName
-                            debugPrint(clothes)
-                        } label: {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(.negguSecondary)
-                                .frame(height: 56)
-                                .overlay {
-                                    Text("저장하기")
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(.white)
-                                }
-                        }
-                        .padding(.horizontal, 28)
-                        .padding(.top, 56)
                     } header: {
                         if !editedModelName.isEmpty {
                             HStack {
@@ -234,7 +240,7 @@ struct ClosetAddView: View {
                                     showNameEditView = true
                                 } label: {
                                     Text(editedModelName)
-                                        .negguFont(.title3)
+                                        .negguFont(.body1b)
                                         .lineLimit(1)
                                     
                                     Image(systemName: "pencil")
@@ -253,14 +259,72 @@ struct ClosetAddView: View {
                     .foregroundStyle(.labelNormal)
                 }
                 .padding(.horizontal, 20)
+                .padding(.bottom, 140)
             }
             .scrollIndicators(.hidden)
         }
         .background(.bgNormal)
+        .overlay(alignment: .bottom) {
+            Button {
+//                clothes.name = editedModelName
+                clothes.mood = selectedMoodList
+                dump(clothes)
+                if let image = segmentedImage.pngData() {
+                    service.register(
+                        image: image,
+                        request: clothes
+                    ).sink { event in
+                        print("ClosetAdd:", event)
+                    } receiveValue: { result in
+                        debugPrint(result)
+                    }.store(in: &bag)
+                }
+            } label: {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(buttonDisabled ? .bgInactive : .negguSecondary)
+                    .frame(height: 56)
+                    .overlay {
+                        Text("저장하기")
+                            .negguFont(.body1b)
+                            .foregroundStyle(buttonDisabled ? .labelInactive : .labelRNormal)
+                    }
+            }
+            .disabled(buttonDisabled)
+            .padding(.horizontal, 48)
+            .padding(.top, 20)
+            .padding(.bottom, 44)
+            .background {
+                LinearGradient(
+                    colors: [
+                        Color(red: 248, green: 248, blue: 248, opacity: 0),
+                        Color(red: 248, green: 248, blue: 248, opacity: 1)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+        }
+        .ignoresSafeArea(edges: .bottom)
         .sheet(isPresented: $showNameEditView) {
             ClothesNameEditView(clothesName: $editedModelName)
                 .presentationDetents([.height(300)])
                 .presentationCornerRadius(20)
+        }
+        .sheet(item: $fieldType) { fieldType in
+            switch fieldType {
+            case .category:
+                CategorySheet(
+                    selectedCategory: $clothes.category,
+                    selectedSubCategory: $clothes.subCategory
+                )
+                .presentationDetents([.fraction(0.85)])
+            case .mood:
+                MoodSheet(selectedMoodList: $selectedMoodList)
+                    .presentationDetents([.fraction(0.85)])
+            case .brand:
+                Text("브랜드")
+                    .presentationDetents([.fraction(0.85)])
+            }
         }
         .negguAlert(
             showAlert: $showAlert,
@@ -273,11 +337,11 @@ struct ClosetAddView: View {
             getMostColor()
         }
         .onChange(of: clothes) { _, newValue in
-            editedModelName = [
-                newValue.brand,
-                (newValue.colorCode ?? "").uppercased(),
-                newValue.subCategory == .UNKNOWN ? newValue.category.rawValue : newValue.subCategory.rawValue
-            ].filter { !$0.isEmpty }.joined(separator: " ")
+//            editedModelName = [
+//                newValue.brand,
+//                (newValue.colorCode ?? "").uppercased(),
+//                newValue.subCategory == .UNKNOWN ? newValue.category.rawValue : newValue.subCategory.rawValue
+//            ].filter { !$0.isEmpty }.joined(separator: " ")
         }
     }
     
@@ -293,16 +357,19 @@ struct ClosetAddView: View {
         clothesColor = color
         clothes.colorCode = hexString
     }
+    
+    enum FieldType: Identifiable {
+        case category
+        case mood
+        case brand
+        
+        var id: String { "\(self)" }
+    }
 }
 
 #Preview {
     ClosetAddView(
-        clothes: .init(
-            name: "dummy clothes",
-            link: "https://www.neggu.com",
-            imageUrl: "",
-            brand: "neggu"
-        ),
+        clothes: ClothesRegisterEntity.mockData,
         segmentedImage: .bannerBG1
     )
 }

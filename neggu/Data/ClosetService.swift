@@ -34,7 +34,7 @@ extension DefaultClosetService: ClosetService {
             "link": request.link
         ]
         let object = (try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)) ?? .init()
-        print(image.base64EncodedString(), String(data: object, encoding: .utf8))
+        print(String(data: object, encoding: .utf8))
         return requestObjectWithNetworkError(.register(
             image: image,
             request: object
