@@ -90,6 +90,7 @@
 		13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */; };
 		13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */; };
 		13C09FDE2D30098200A9494B /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C09FDD2D30098200A9494B /* ScrollDetector.swift */; };
+		13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */; };
 		13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */; };
 		13DBA7E72CC433E6003A10AE /* LookBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E62CC433E6003A10AE /* LookBook.swift */; };
 		13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E82CC434DD003A10AE /* LookBookView.swift */; };
@@ -202,6 +203,7 @@
 		13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMoodView.swift; sourceTree = "<group>"; };
 		13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNicknameView.swift; sourceTree = "<group>"; };
 		13C09FDD2D30098200A9494B /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
+		13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAgeView.swift; sourceTree = "<group>"; };
 		13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		13DBA7E62CC433E6003A10AE /* LookBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBook.swift; sourceTree = "<group>"; };
 		13DBA7E82CC434DD003A10AE /* LookBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookView.swift; sourceTree = "<group>"; };
@@ -719,6 +721,7 @@
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
 				1350811A2D38CCBF005E2491 /* SubCategory.swift in Sources */,
 				136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */,
+				13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */,
 				135081142D38CC94005E2491 /* Gender.swift in Sources */,
