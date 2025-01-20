@@ -19,19 +19,14 @@ final class AuthViewModel: NSObject, ObservableObject {
     private var cancelBag = Set<AnyCancellable>()
     
     @Published private(set) var needEditNickname: Bool = false
-    
+        
     @Published var step: Int = 1
     @Published var canNextStep: Bool = false
-    @Published var showAgeField: Bool = false
-    @Published var nextAction: () -> Void = { }
-    @Published var beforeAction: () -> Void = { }
-    
     @Published var nickname: String = ""
     @Published private(set) var isDuplicatedNickname: Bool = true
-    
-    @Published var age: String = ""
+    @Published var age: Int = 19
     @Published var gender: Gender = .UNKNOWN
-    @Published var moodList: Set<Mood> = []
+    @Published var moodList: [Mood] = []
     
     init(authService: AuthService = DefaultAuthService()) {
         self.authService = authService
@@ -89,7 +84,7 @@ final class AuthViewModel: NSObject, ObservableObject {
     func register(completion: @escaping (Bool) -> Void) {
         authService.register(userProfile: [
             "nickname": nickname,
-            "age": Int(age) ?? 0,
+            "age": age + 1,
             "gender": gender.id,
             "mood": moodList.map { $0.id }
         ])

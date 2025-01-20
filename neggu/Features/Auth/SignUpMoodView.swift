@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SignUpMoodView: View {
-    @EnvironmentObject private var authCoordinator: AuthCoordinator
     @EnvironmentObject private var viewModel: AuthViewModel
     
     var body: some View {
@@ -33,7 +32,6 @@ struct SignUpMoodView: View {
                     ) {
                         ForEach(Mood.allCasesArray) { mood in
                             Button {
-                                
                                 if viewModel.moodList.contains(mood) {
                                     viewModel.moodList.removeAll(where: { $0 == mood })
                                 } else {

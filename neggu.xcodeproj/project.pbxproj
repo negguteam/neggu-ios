@@ -270,15 +270,16 @@
 		1308D26F2C6274D0003F50F3 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				1302FE5E2C8709C50076D015 /* SignUpView.swift */,
 				13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */,
-				13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */,
+				13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */,
 				13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */,
+				13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */,
+				13FE61FC2D2ABDF100578BB5 /* SignUpCompleteView.swift */,
 				1308D2722C62790C003F50F3 /* AuthCoordinator.swift */,
 				13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */,
 				1308D26D2C6274C9003F50F3 /* LoginView.swift */,
-				1302FE5E2C8709C50076D015 /* SignUpView.swift */,
 				1317A4662CE3688D007264C7 /* OnboardingView.swift */,
-				13FE61FC2D2ABDF100578BB5 /* SignUpCompleteView.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
