@@ -33,7 +33,7 @@ extension AuthAPI: BaseAPI {
         case .register:
             "/register"
         case .checkNickname:
-            "/check-nickname"
+            "/check/nickname"
         case .tokenReissuance:
             "/token"
         }
@@ -50,7 +50,6 @@ extension AuthAPI: BaseAPI {
     
     var method: Moya.Method {
         switch self {
-        case .checkNickname: .get
         default: .post
         }
     }
@@ -67,12 +66,16 @@ extension AuthAPI: BaseAPI {
                     parameters: parameters,
                     encoding: JSONEncoding.default
                 )
+        case .checkNickname(let nickname):
+                .requestParameters(
+                    parameters: ["nickName": nickname],
+                    encoding: JSONEncoding.default
+                )
         case .tokenReissuance:
                 .requestParameters(
                     parameters: ["refreshToken": UserDefaultsKey.Auth.refreshToken ?? "none"],
                     encoding: JSONEncoding.default
                 )
-        default: .requestPlain
         }
     }
     

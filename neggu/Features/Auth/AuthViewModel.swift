@@ -23,7 +23,7 @@ final class AuthViewModel: NSObject, ObservableObject {
     @Published var step: Int = 1
     @Published var canNextStep: Bool = false
     @Published var nickname: String = ""
-    @Published private(set) var isDuplicatedNickname: Bool = true
+    @Published var isDuplicatedNickname: Bool?
     @Published var age: Int = 19
     @Published var gender: Gender = .UNKNOWN
     @Published var moodList: [Mood] = []
@@ -67,7 +67,7 @@ final class AuthViewModel: NSObject, ObservableObject {
         }.store(in: &cancelBag)
     }
     
-    func requestCheckNickname() {
+    func checkNickname() {
         authService.checkNickname(nickname: nickname)
             .sink { event in
                 switch event {
@@ -77,7 +77,7 @@ final class AuthViewModel: NSObject, ObservableObject {
                     print(error.localizedDescription)
                 }
             } receiveValue: { [weak self] entity in
-                self?.isDuplicatedNickname = entity.isDuplicated
+                self?.isDuplicatedNickname = entity.isDuplicate
             }.store(in: &cancelBag)
     }
     

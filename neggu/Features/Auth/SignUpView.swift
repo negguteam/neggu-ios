@@ -56,9 +56,12 @@ struct SignUpView: View {
                 .overlay(alignment: .bottom) {
                     VStack {
                         Button {
-                            if viewModel.step < 4 {
+                            switch viewModel.step {
+                            case 1:
+                                viewModel.checkNickname()
+                            case 2..<4:
                                 viewModel.step += 1
-                            } else {
+                            default:
                                 viewModel.register { isSuccessed in
                                     if isSuccessed {
                                         authCoordinator.push(.complete)

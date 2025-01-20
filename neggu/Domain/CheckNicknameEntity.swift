@@ -6,9 +6,5 @@
 //
 
 struct CheckNicknameEntity: Decodable {
-    var isDuplicated: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case isDuplicated = "is_duplicated"
-    }
+    var isDuplicate: Bool
 }

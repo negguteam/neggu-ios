@@ -10,13 +10,12 @@ import SwiftUI
 struct SignUpNicknameView: View {
     @EnvironmentObject private var viewModel: AuthViewModel
     
-    @State private var nicknameString: String = ""
     @State private var fieldState: InputFieldState = .empty
     
     @FocusState private var isFocused: Bool
     
     var validateNickname: Bool {
-        nicknameString.count >= 1 && nicknameString.count <= 7
+        viewModel.nickname.count >= 1 && viewModel.nickname.count <= 7
     }
     
     var body: some View {
@@ -26,7 +25,7 @@ struct SignUpNicknameView: View {
                 .foregroundStyle(.labelNormal)
             
             HStack {
-                TextField("", text: $nicknameString)
+                TextField("", text: $viewModel.nickname)
                     .focused($isFocused)
                     .negguFont(.body1b)
                     .textInputAutocapitalization(.never)
@@ -38,14 +37,19 @@ struct SignUpNicknameView: View {
                             fieldState = .error(message: "영소문자, 한글, 숫자 포함 7자까지 가능해요")
                         }
                     }
+                    .onChange(of: viewModel.nickname) { _, newValue in
+                        fieldState = newValue.isEmpty ? .empty : .editing
+                        viewModel.canNextStep = validateNickname
+                    }
                 
                 Button {
-                    nicknameString.removeAll()
+                    viewModel.nickname.removeAll()
                 } label: {
                     Image(systemName: "multiply")
+                        .frame(width: 24, height: 24)
                         .foregroundStyle(.labelAlt)
                 }
-                .opacity(fieldState != .empty ? 1 : 0)
+                .opacity(fieldState == .empty ? 0 : 1)
                 .disabled(fieldState == .empty)
             }
             .frame(height: 50)
@@ -82,14 +86,20 @@ struct SignUpNicknameView: View {
                 }
         }
         .onChange(of: viewModel.step) { oldValue, newValue in
-            if oldValue == 1 && newValue == 2 {
-                viewModel.nickname = nicknameString
-            }
-            
+            if oldValue != 1 { return }
             isFocused = false
         }
-        .onChange(of: validateNickname) { _, newValue in
-            viewModel.canNextStep = newValue
+        .onChange(of: viewModel.isDuplicatedNickname) { _, newValue in
+            guard let isDuplicated = newValue else { return }
+    
+            if isDuplicated {
+                fieldState = .error(message: "이미 사용중인 닉네임이에요")
+                viewModel.canNextStep = false
+            } else {
+                viewModel.step += 1
+            }
+            
+            viewModel.isDuplicatedNickname = nil
         }
     }
     
