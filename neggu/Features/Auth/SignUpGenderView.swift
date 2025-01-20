@@ -15,7 +15,6 @@ struct SignUpGenderView: View {
             Text("성별을 알려주세요")
                 .negguFont(.title4)
                 .foregroundStyle(.labelNormal)
-                .padding(.top, 40)
                 .padding(.bottom)
             
             Text("맞춤 경험을 제공해드리기 위해\n홍길동님의 성별 정보가 필요해요")
@@ -32,30 +31,19 @@ struct SignUpGenderView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(.lineNormal)
                             .strokeBorder(viewModel.gender == gender ? .black : .clear)
-                            .frame(height: 256)
+                            .aspectRatio(8/11, contentMode: .fit)
                             .overlay {
                                 Text(gender.rawValue)
                             }
                     }
                 }
             }
-            
-            Spacer()
         }
-        .onAppear {
-            print("GenderView")
-            viewModel.canNextStep = viewModel.gender != .UNKNOWN
-            
-            viewModel.nextAction = {
-                viewModel.step += 1
-            }
-            
-            viewModel.beforeAction = {
-                viewModel.step -= 1
-                viewModel.gender = .UNKNOWN
-            }
-        }
+        .padding(.horizontal, 28)
+        .padding(.bottom, 112)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: viewModel.gender) { _, newValue in
+            if viewModel.step != 3 { return }
             viewModel.canNextStep = newValue != .UNKNOWN
         }
     }
