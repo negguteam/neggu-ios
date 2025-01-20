@@ -49,8 +49,8 @@ enum NegguFont {
     var lineHeight: CGFloat {
         switch self {
         case .title1, .title2, .title3, .title4:
-            return self.fontSize * 1.3
-        default:       
+            return self.fontSize// * 1.3
+        default:
             return self.fontSize
         }
     }
