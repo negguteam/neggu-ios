@@ -8,134 +8,107 @@
 import SwiftUI
 
 struct SignUpNicknameView: View {
-    enum Field: Hashable {
-        case nickname
-        case age
-    }
-    
     @EnvironmentObject private var viewModel: AuthViewModel
     
-    @FocusState private var focusedField: Field?
+    @State private var nicknameString: String = ""
+    @State private var fieldState: InputFieldState = .empty
+    
+    @FocusState private var isFocused: Bool
     
     var validateNickname: Bool {
-        viewModel.nickname.count >= 1 && viewModel.nickname.count <= 7
+        nicknameString.count >= 1 && nicknameString.count <= 7
     }
     
     var body: some View {
-        VStack {
-            Group {
-                Text("닉네임을 입력해주세요!")
-                    .negguFont(.title4)
-                    .foregroundStyle(.labelNormal)
-                    .padding(.top, 40)
-                
-                HStack {
-                    TextField("", text: $viewModel.nickname)
-                        .focused($focusedField, equals: .nickname)
-                        .negguFont(.body1b)
-                        .multilineTextAlignment(.center)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .onSubmit {
-                            if validateNickname {
-                                viewModel.showAgeField = true
-                            } else {
-                                print("잘못된 닉네임입니다.")
-                            }
+        VStack(spacing: 12) {
+            Text("닉네임을 입력해주세요!")
+                .negguFont(.title4)
+                .foregroundStyle(.labelNormal)
+            
+            HStack {
+                TextField("", text: $nicknameString)
+                    .focused($isFocused)
+                    .negguFont(.body1b)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .onSubmit {
+                        if validateNickname {
+                            
+                        } else {
+                            fieldState = .error(message: "영소문자, 한글, 숫자 포함 7자까지 가능해요")
                         }
-                    
-                    Button {
-                        viewModel.nickname.removeAll()
-                    } label: {
-                        Image(systemName: "multiply")
-                            .foregroundStyle(validateNickname ? .lineNormal : .warning)
                     }
-                    .opacity(viewModel.nickname.count > 0 ? 1 : 0)
-                }
-                .padding()
-                .background {
-                    RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(validateNickname ? .lineNormal : .warning)
-                }
-                .padding(.horizontal, 44)
-                .padding(.bottom)
                 
-                if !validateNickname {
-                    Text("한글 최대 7자, 영문 14자까지 가능해요")
-                        .negguFont(.caption)
-                        .foregroundStyle(validateNickname ? .labelAssistive.opacity(0.4) : .warning)
+                Button {
+                    nicknameString.removeAll()
+                } label: {
+                    Image(systemName: "multiply")
+                        .foregroundStyle(.labelAlt)
                 }
+                .opacity(fieldState != .empty ? 1 : 0)
+                .disabled(fieldState == .empty)
             }
-            .offset(y: viewModel.showAgeField ? -36 : 0)
-            .opacity(viewModel.showAgeField ? 0.3 : 1)
-            .disabled(viewModel.showAgeField)
+            .frame(height: 50)
+            .padding(.horizontal)
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(fieldState.lineColor)
+            }
             
-            Group {
-                Text("나이를 알려주세요!")
-                    .negguFont(.title4)
-                    .foregroundStyle(.labelNormal)
-                    .padding(.top, 40)
-                
-                HStack(spacing: 12) {
-                    TextField("", text: $viewModel.age)
-                        .focused($focusedField, equals: .age)
-                        .negguFont(.title4)
-                        .multilineTextAlignment(.center)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .keyboardType(.numberPad)
-                        .frame(width: 100, height: 63)
-                        .background {
-                            RoundedRectangle(cornerRadius: 16)
-                                .strokeBorder(.lineNormal)
-                        }
-                        .onChange(of: viewModel.age) { oldValue, newValue in
-                            if oldValue.count <= newValue.count && newValue.count >= 2 {
-                                viewModel.canNextStep = validateNickname && viewModel.age.count >= 2
-                                focusedField = nil
-                            }
-                        }
-                    
-                    Text("살")
-                        .negguFont(.title4)
-                        .foregroundStyle(.labelNormal)
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.warningAlt)
+                .frame(height: 32)
+                .overlay {
+                    HStack(spacing: 4) {
+                        Image(systemName: "multiply")
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.warning)
+                        
+                        Text(fieldState.description)
+                            .negguFont(.caption)
+                            .foregroundStyle(.warning)
+                    }
+                    .padding(.horizontal, 8)
                 }
-            }
-            .opacity(viewModel.showAgeField ? 1 : 0)
-            .disabled(!viewModel.showAgeField)
-            
-            Spacer()
+                .opacity(fieldState.description.isEmpty ? 0 : 1)
         }
-        .animation(.smooth, value: viewModel.showAgeField)
+        .padding(.horizontal, 48)
+        .padding(.bottom, 80)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             Color.white
                 .onTapGesture {
-                    viewModel.canNextStep = validateNickname && viewModel.age.count >= 2
-                    focusedField = nil
+                    isFocused = false
                 }
         }
-        .onAppear {
-            viewModel.canNextStep = !viewModel.age.isEmpty
-            
-            viewModel.nextAction = {
-                viewModel.step += 1
+        .onChange(of: viewModel.step) { oldValue, newValue in
+            if oldValue == 1 && newValue == 2 {
+                viewModel.nickname = nicknameString
             }
             
-            viewModel.beforeAction = {
-                if viewModel.step > 1 {
-                    viewModel.step -= 1
-                } else {
-                    viewModel.canNextStep = false
-                    viewModel.showAgeField = false
-                    viewModel.age.removeAll()
-                }
+            isFocused = false
+        }
+        .onChange(of: validateNickname) { _, newValue in
+            viewModel.canNextStep = newValue
+        }
+    }
+    
+    enum InputFieldState: Equatable {
+        case empty
+        case editing
+        case error(message: String)
+        
+        var description: String {
+            switch self {
+            case .error(let message): message
+            default: ""
             }
         }
-        .onChange(of: viewModel.showAgeField) { _, newValue in
-            if !newValue {
-                focusedField = .nickname
-            } else {
-                focusedField = .age
+        
+        var lineColor: Color {
+            switch self {
+            case .error: .warning
+            default: .lineNormal
             }
         }
     }
