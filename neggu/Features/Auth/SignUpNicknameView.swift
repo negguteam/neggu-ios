@@ -10,13 +10,9 @@ import SwiftUI
 struct SignUpNicknameView: View {
     @EnvironmentObject private var viewModel: AuthViewModel
     
-    @State private var fieldState: InputFieldState = .empty
+    @Binding var fieldState: InputFieldState
     
     @FocusState private var isFocused: Bool
-    
-    var validateNickname: Bool {
-        viewModel.nickname.count >= 1 && viewModel.nickname.count <= 7
-    }
     
     var body: some View {
         VStack(spacing: 12) {
@@ -31,16 +27,18 @@ struct SignUpNicknameView: View {
                     .foregroundStyle(.labelAlt)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
+                    .submitScope(!viewModel.canNextStep)
                     .onSubmit {
-                        if validateNickname {
-                            
+                        if viewModel.nickname.isValidNickname() {
+                            viewModel.checkNickname()
                         } else {
                             fieldState = .error(message: "영소문자, 한글, 숫자 포함 7자까지 가능해요")
+                            viewModel.canNextStep = false
                         }
                     }
                     .onChange(of: viewModel.nickname) { _, newValue in
                         fieldState = newValue.isEmpty ? .empty : .editing
-                        viewModel.canNextStep = validateNickname
+                        viewModel.canNextStep = true
                     }
                 
                 Button {
@@ -93,8 +91,16 @@ struct SignUpNicknameView: View {
             isFocused = true
         }
         .onChange(of: viewModel.step) { oldValue, newValue in
-            if oldValue != 1 { return }
-            isFocused = false
+            if oldValue != 1 && newValue != 1 { return }
+            
+            if newValue == 1 {
+                Task {
+                    try await Task.sleep(for: .seconds(0.7))
+                    isFocused = true
+                }
+            } else {
+                isFocused = false
+            }
         }
         .onChange(of: viewModel.isDuplicatedNickname) { _, newValue in
             guard let isDuplicated = newValue else { return }
@@ -107,26 +113,6 @@ struct SignUpNicknameView: View {
             }
             
             viewModel.isDuplicatedNickname = nil
-        }
-    }
-    
-    enum InputFieldState: Equatable {
-        case empty
-        case editing
-        case error(message: String)
-        
-        var description: String {
-            switch self {
-            case .error(let message): message
-            default: ""
-            }
-        }
-        
-        var lineColor: Color {
-            switch self {
-            case .error: .warning
-            default: .lineNormal
-            }
         }
     }
 }

@@ -11,6 +11,8 @@ struct SignUpView: View {
     @EnvironmentObject private var authCoordinator: AuthCoordinator
     @EnvironmentObject private var viewModel: AuthViewModel
     
+    @State private var fieldState: InputFieldState = .empty
+    
     var body: some View {
         VStack {
             GeometryReader { proxy in
@@ -32,7 +34,7 @@ struct SignUpView: View {
             
             GeometryReader { proxy in
                 ZStack {
-                    SignUpNicknameView()
+                    SignUpNicknameView(fieldState: $fieldState)
                         .offset(y: viewModel.step == 1 ? 0 : viewModel.step > 1 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 1 ? 1 : 0)
                     
@@ -58,7 +60,12 @@ struct SignUpView: View {
                         Button {
                             switch viewModel.step {
                             case 1:
-                                viewModel.checkNickname()
+                                if viewModel.nickname.isValidNickname() {
+                                    viewModel.checkNickname()
+                                } else {
+                                    fieldState = .error(message: "영소문자, 한글, 숫자 포함 7자까지 가능해요")
+                                    viewModel.canNextStep = false
+                                }
                             case 2..<4:
                                 viewModel.step += 1
                             default:
@@ -131,6 +138,26 @@ struct SignUpView: View {
             }
         }
         .padding(.horizontal, 20)
+    }
+}
+
+enum InputFieldState: Equatable {
+    case empty
+    case editing
+    case error(message: String)
+    
+    var description: String {
+        switch self {
+        case .error(let message): message
+        default: ""
+        }
+    }
+    
+    var lineColor: Color {
+        switch self {
+        case .error: .warning
+        default: .lineNormal
+        }
     }
 }
 
