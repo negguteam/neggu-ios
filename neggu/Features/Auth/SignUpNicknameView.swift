@@ -28,6 +28,7 @@ struct SignUpNicknameView: View {
                 TextField("", text: $viewModel.nickname)
                     .focused($isFocused)
                     .negguFont(.body1b)
+                    .foregroundStyle(.labelAlt)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .onSubmit {
@@ -71,6 +72,8 @@ struct SignUpNicknameView: View {
                         Text(fieldState.description)
                             .negguFont(.caption)
                             .foregroundStyle(.warning)
+                        
+                        Spacer()
                     }
                     .padding(.horizontal, 8)
                 }
@@ -84,6 +87,10 @@ struct SignUpNicknameView: View {
                 .onTapGesture {
                     isFocused = false
                 }
+        }
+        .onAppear {
+            if viewModel.step != 1 { return }
+            isFocused = true
         }
         .onChange(of: viewModel.step) { oldValue, newValue in
             if oldValue != 1 { return }

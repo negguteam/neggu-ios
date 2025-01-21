@@ -46,7 +46,10 @@ struct SignUpAgeView: View {
         }
         .onChange(of: viewModel.step) { oldValue, newValue in
             if oldValue == 1 && newValue == 2 {
-                isFocused = true
+                Task {
+                    try await Task.sleep(for: .seconds(0.7))
+                    isFocused = true
+                }
             } else {
                 isFocused = false
             }
@@ -73,6 +76,7 @@ struct PickerField: UIViewRepresentable {
     func makeUIView(context: UIViewRepresentableContext<PickerField>) -> UITextField {
         textField.placeholder = placeholder
         textField.textAlignment = .center
+        textField.textColor = .gray60
         textField.font = .init(name: "Pretendard-Bold", size: 20)
         return textField
     }
@@ -124,7 +128,7 @@ class PickerTextField: UITextField {
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let doneButton = UIBarButtonItem(
-            title: "Done",
+            title: "완료",
             style: .done,
             target: self,
             action: #selector(donePressed)
