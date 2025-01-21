@@ -14,6 +14,7 @@ import KakaoSDKAuth
 struct negguApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
+    @AppStorage("isFirstVisit") private var isFirstVisit: Bool = true
     @AppStorage("isLogined") private var isLogined: Bool = false
     
     @StateObject private var authCoordinator = AuthCoordinator()
@@ -35,7 +36,7 @@ struct negguApp: App {
                 ContentView()
             } else {
                 NavigationStack(path: $authCoordinator.path) {
-                    authCoordinator.buildScene(.login)
+                    authCoordinator.buildScene(isFirstVisit ? .onboarding : .login)
                         .navigationDestination(for: AuthCoordinator.Destination.self) { destination in
                             authCoordinator.buildScene(destination)
                         }

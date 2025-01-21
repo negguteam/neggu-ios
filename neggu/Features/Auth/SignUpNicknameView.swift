@@ -43,6 +43,7 @@ struct SignUpNicknameView: View {
                 
                 Button {
                     viewModel.nickname.removeAll()
+                    isFocused.toggle()
                 } label: {
                     Image(systemName: "multiply")
                         .frame(width: 24, height: 24)

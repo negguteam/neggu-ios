@@ -17,6 +17,8 @@ final class AuthCoordinator: Coordinator {
     @ViewBuilder
     public func buildScene(_ scene: Destination) -> some View {
         switch scene {
+        case .onboarding:
+            container.resolve(OnboardingView.self)
         case .login:
             container.resolve(LoginView.self)
         case .signUp:
@@ -27,6 +29,7 @@ final class AuthCoordinator: Coordinator {
     }
     
     enum Destination: Sceneable {
+        case onboarding
         case login
         case signUp
         case complete

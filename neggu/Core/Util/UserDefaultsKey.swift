@@ -15,6 +15,7 @@ public enum UserDefaultsKey {
         @UserDefaultsWrapper<Date>("refreshTokenExpiresIn") static var refreshTokenExpiresIn
         @UserDefaultsWrapper<String>("registerToken") static var registerToken
         
+        @UserDefaultsWrapper<Bool>("isFirstVisit") static var isFirstVisit
         @UserDefaultsWrapper<Bool>("isLogined") static var isLogined
     }
     
