@@ -20,6 +20,8 @@
 		130970692D40C1420050D091 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130970682D40C1420050D091 /* UIImage+Extension.swift */; };
 		1309706B2D40C1830050D091 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1309706A2D40C1830050D091 /* UIColor+Extension.swift */; };
 		1309706E2D40C4A20050D091 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1309706D2D40C4A20050D091 /* SettingView.swift */; };
+		130970702D41248D0050D091 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1309706F2D41248D0050D091 /* UserAPI.swift */; };
+		130970722D4126290050D091 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130970712D4126290050D091 /* UserService.swift */; };
 		1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4662CE3688D007264C7 /* OnboardingView.swift */; };
 		1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4682CE4E758007264C7 /* BannerCarousel.swift */; };
 		1318DE552D3F600D0077972D /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318DE542D3F600D0077972D /* PickerField.swift */; };
@@ -140,6 +142,8 @@
 		130970682D40C1420050D091 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		1309706A2D40C1830050D091 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		1309706D2D40C4A20050D091 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		1309706F2D41248D0050D091 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		130970712D4126290050D091 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		1317A4662CE3688D007264C7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		1317A4682CE4E758007264C7 /* BannerCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCarousel.swift; sourceTree = "<group>"; };
 		1318DE542D3F600D0077972D /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
@@ -466,6 +470,8 @@
 				13BE365C2D27975D0033DE7B /* HealthAPI.swift */,
 				1350810B2D38BC95005E2491 /* ClosetAPI.swift */,
 				1350810D2D38C760005E2491 /* ClosetService.swift */,
+				1309706F2D41248D0050D091 /* UserAPI.swift */,
+				130970712D4126290050D091 /* UserService.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -791,6 +797,7 @@
 				1364C8762C61281200F67E3C /* UserDefaultsKey.swift in Sources */,
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
+				130970702D41248D0050D091 /* UserAPI.swift in Sources */,
 				13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */,
 				13B3757A2D34E37D001D009E /* Date+Extension.swift in Sources */,
 				1350810E2D38C760005E2491 /* ClosetService.swift in Sources */,
@@ -808,6 +815,7 @@
 				13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
 				136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */,
+				130970722D4126290050D091 /* UserService.swift in Sources */,
 				133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

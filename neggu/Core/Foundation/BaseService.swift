@@ -147,4 +147,18 @@ extension BaseService {
         .eraseToAnyPublisher()
     }
     
+    func requestEmptyBody(_ target: API) -> AnyPublisher<Void, Error> {
+        return Future { [weak self] promise in
+            self?.provider.request(target) { result in
+                switch result {
+                case .success(_):
+                    promise(.success(()))
+                case .failure(let error):
+                    promise(.failure(error))
+                }
+            }
+        }
+        .eraseToAnyPublisher()
+    }
+    
 }
