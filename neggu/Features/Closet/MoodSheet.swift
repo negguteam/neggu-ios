@@ -46,6 +46,7 @@ struct MoodSheet: View {
                             if isSelected {
                                 selectedMoodList.removeAll(where: { $0 == mood })
                             } else {
+                                if selectedMoodList.count >= 3 { return }
                                 selectedMoodList.append(mood)
                             }
                         } label: {
