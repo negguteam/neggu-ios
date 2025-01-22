@@ -13,6 +13,8 @@ struct ClothesNameEditView: View {
     @Binding var clothesName: String
     @State private var nameString: String = ""
     
+    let placeholder: String
+    
     var validateField: Bool {
         nameString.split(separator: " ").count > 0
     }
@@ -32,7 +34,7 @@ struct ClothesNameEditView: View {
             TextField(
                 "",
                 text: $nameString,
-                prompt: Text(clothesName).foregroundStyle(.labelInactive)
+                prompt: Text(placeholder).foregroundStyle(.labelInactive)
             )
             .negguFont(.body2)
             .padding()
@@ -70,5 +72,5 @@ struct ClothesNameEditView: View {
 }
 
 #Preview {
-    ClothesNameEditView(clothesName: .constant(""))
+    ClothesNameEditView(clothesName: .constant(""), placeholder: "")
 }

@@ -11,6 +11,7 @@ import Combine
 struct ClosetAddView: View {
     @Environment(\.dismiss) private var dismiss
     
+    // TODO: 이름 수정을 했을 때, 카테고리 변경하면 또 이름이 알아서 편집되는지?
     @State private var clothes: ClothesRegisterEntity
     @State private var clothesColor: UIColor = .clear
     @State private var selectedMoodList: [Mood] = []
@@ -20,7 +21,7 @@ struct ClosetAddView: View {
     @State private var showNameEditView: Bool = false
     @State private var showAlert: Bool = false
     
-    @FocusState private var isFocused: Bool
+    @FocusState private var focusedField: FocusField?
     
     private let segmentedImage: UIImage
     
@@ -31,7 +32,7 @@ struct ClosetAddView: View {
     var name: String {
         if clothes.name.isEmpty {
             [clothes.brand,
-             //         (clothes.colorCode ?? "").uppercased(),
+//             (clothes.colorCode ?? "").uppercased(),
              clothes.subCategory == .UNKNOWN ? clothes.category.rawValue : clothes.subCategory.rawValue]
                 .filter { !$0.isEmpty }.joined(separator: " ")
         } else {
@@ -71,209 +72,229 @@ struct ClosetAddView: View {
                     showAlert = true
                 } label: {
                     Image(systemName: "multiply")
-                        .frame(width: 24, height: 24)
+                        .frame(width: 44, height: 44)
                         .foregroundStyle(.labelNormal)
                 }
             }
-            .frame(height: 40)
+            .frame(height: 44)
             .padding(.horizontal, 20)
             
-            ScrollView {
-                Image(uiImage: segmentedImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 366)
-                    .padding(.bottom, 20)
-                
-                LazyVStack(
-                    spacing: 20,
-                    pinnedViews: [.sectionHeaders]
-                ) {
-                    Section {
-                        TitleForm("어떤 종류의 옷인가요?") {
-                            Button {
-                                fieldType = .category
-                            } label: {
-                                HStack {
-                                    Text(categoryTitle)
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(clothes.category == .UNKNOWN ? .labelInactive : .labelNormal)
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "chevron.down")
-                                }
-                                .padding()
-                                .background() {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(clothes.category == .UNKNOWN ? .warning : .lineAlt)
-                                }
-                            }
+            GeometryReader { proxy in
+                ScrollViewReader { scrollProxy in
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            Image(uiImage: segmentedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: proxy.size.width)
+                                .aspectRatio(6/5, contentMode: .fit)
                             
-                            if clothes.category == .UNKNOWN {
-                                Text("옷의 종류를 알려주세요!")
-                                    .negguFont(.body2)
-                                    .foregroundStyle(.warning)
-                            }
-                            
-                            Button {
-                                fieldType = .mood
-                            } label: {
-                                HStack {
-                                    Text(selectedMoodList.isEmpty ? "옷의 분위기" : moodTitle)
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(selectedMoodList.isEmpty ? .labelInactive : .labelNormal)
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "chevron.down")
-                                }
-                                .padding()
-                                .background() {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(selectedMoodList.isEmpty ? .warning : .lineAlt)
-                                }
-                            }
-                            
-                            if selectedMoodList.isEmpty {
-                                Text("옷의 분위기를 알려주세요!")
-                                    .negguFont(.body2)
-                                    .foregroundStyle(.warning)
-                            }
-                        }
-                        
-                        TitleForm("어느 브랜드인가요?") {
-                            Button {
-                                fieldType = .brand
-                            } label: {
-                                HStack {
-                                    Text(clothes.brand.isEmpty ? "브랜드" : clothes.brand)
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(clothes.brand.isEmpty ? .labelInactive : .labelNormal)
-                                    
-                                    Spacer()
-                                    
-                                    Image(systemName: "chevron.down")
-                                }
-                                .padding()
-                                .background() {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(.lineAlt)
-                                }
-                            }
-                        }
-                        
-                        TitleForm("얼마인가요?") {
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(PriceRange.allCases) { select in
-                                        let isSelected = clothes.priceRange == select
-                                        
-                                        BorderedChip(title: select.rawValue, isSelected: isSelected)
-                                            .onTapGesture {
-                                                clothes.priceRange = select
+                            LazyVStack(
+                                spacing: 20,
+                                pinnedViews: [.sectionHeaders]
+                            ) {
+                                Section {
+                                    TitleForm("어떤 종류의 옷인가요?") {
+                                        Button {
+                                            fieldType = .category
+                                        } label: {
+                                            HStack {
+                                                Text(categoryTitle)
+                                                    .negguFont(.body2b)
+                                                    .foregroundStyle(clothes.category == .UNKNOWN ? .labelInactive : .labelNormal)
+                                                
+                                                Spacer()
+                                                
+                                                Image(systemName: "chevron.down")
                                             }
-                                    }
-                                }
-                                .padding(.horizontal, 28)
-                            }
-                            .scrollIndicators(.hidden)
-                            .padding(.horizontal, -28)
-                        }
-                        
-                        TitleForm("어디서 구매하나요?") {
-                            HStack(spacing: 18) {
-                                Button {
-                                    clothes.isPurchase = true
-                                } label: {
-                                    BorderedRectangle("구매함", isSelected: clothes.isPurchase)
-                                }
-                                
-                                Button {
-                                    clothes.isPurchase = false
-                                } label: {
-                                    BorderedRectangle("구매하지 않음", isSelected: !clothes.isPurchase)
-                                }
-                            }
-                            
-                            HStack(spacing: 16) {
-                                Image(.link)
-                                    .foregroundStyle(.labelAssistive)
-                                    .padding(.leading, 12)
-                                
-                                TextField(
-                                    "",
-                                    text: $clothes.link,
-                                    prompt: Text(clothes.link).foregroundStyle(.labelInactive)
-                                )
-                                .negguFont(.body2)
-                                
-                                Button {
-                                    
-                                } label: {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(.black)
-                                        .frame(width: 40, height: 40)
-                                        .overlay {
-                                            Image(systemName: "arrow.right")
-                                                .foregroundStyle(.white)
+                                            .padding()
+                                            .background() {
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .strokeBorder(clothes.category == .UNKNOWN ? .warning : .lineAlt)
+                                            }
                                         }
-                                }
-                            }
-                            .padding(8)
-                            .background {
-                                RoundedRectangle(cornerRadius: 16)
-                                    .strokeBorder(.lineAlt)
-                            }
-                            
-                            ExpendableTextView("메모를 남겨보세요!", text: $clothes.memo)
-                                .focused($isFocused)
-                                .toolbar {
-                                    ToolbarItemGroup(placement: .keyboard) {
-                                        Spacer()
                                         
-                                        Button("완료") {
-                                            isFocused = false
+                                        if clothes.category == .UNKNOWN {
+                                            Text("옷의 종류를 알려주세요!")
+                                                .negguFont(.body2)
+                                                .foregroundStyle(.warning)
+                                        }
+                                        
+                                        Button {
+                                            fieldType = .mood
+                                        } label: {
+                                            HStack {
+                                                Text(selectedMoodList.isEmpty ? "옷의 분위기" : moodTitle)
+                                                    .negguFont(.body2b)
+                                                    .foregroundStyle(selectedMoodList.isEmpty ? .labelInactive : .labelNormal)
+                                                
+                                                Spacer()
+                                                
+                                                Image(systemName: "chevron.down")
+                                            }
+                                            .padding()
+                                            .background() {
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .strokeBorder(selectedMoodList.isEmpty ? .warning : .lineAlt)
+                                            }
+                                        }
+                                        
+                                        if selectedMoodList.isEmpty {
+                                            Text("옷의 분위기를 알려주세요!")
+                                                .negguFont(.body2)
+                                                .foregroundStyle(.warning)
                                         }
                                     }
-                                }
-                        }
-                    } header: {
-                        if !name.isEmpty {
-                            HStack {
-                                Button {
-                                    showNameEditView = true
-                                } label: {
-                                    Text(name)
-                                        .negguFont(.body1b)
-                                        .lineLimit(1)
                                     
-                                    Image(systemName: "pencil")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 24, height: 24)
+                                    TitleForm("어느 브랜드인가요?") {
+                                        Button {
+                                            fieldType = .brand
+                                        } label: {
+                                            HStack {
+                                                Text(clothes.brand.isEmpty ? "브랜드" : clothes.brand)
+                                                    .negguFont(.body2b)
+                                                    .foregroundStyle(clothes.brand.isEmpty ? .labelInactive : .labelNormal)
+                                                
+                                                Spacer()
+                                                
+                                                Image(systemName: "chevron.down")
+                                            }
+                                            .padding()
+                                            .background() {
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .strokeBorder(.lineAlt)
+                                            }
+                                        }
+                                    }
+                                    
+                                    TitleForm("얼마인가요?") {
+                                        ScrollViewReader { priceScrollProxy in
+                                            ScrollView(.horizontal) {
+                                                HStack {
+                                                    ForEach(PriceRange.allCases) { select in
+                                                        let isSelected = clothes.priceRange == select
+                                                        
+                                                        BorderedChip(title: select.rawValue, isSelected: isSelected)
+                                                            .id(select.id)
+                                                            .onTapGesture {
+                                                                priceScrollProxy.scrollTo(select.id, anchor: .center)
+                                                                clothes.priceRange = select
+                                                            }
+                                                    }
+                                                }
+                                                .padding(.horizontal, 28)
+                                            }
+                                            .scrollIndicators(.hidden)
+                                            .padding(.horizontal, -28)
+                                        }
+                                    }
+                                    
+                                    TitleForm("어디서 구매하나요?") {
+                                        HStack(spacing: 18) {
+                                            Button {
+                                                clothes.isPurchase = true
+                                            } label: {
+                                                BorderedRectangle("구매함", isSelected: clothes.isPurchase)
+                                            }
+                                            
+                                            Button {
+                                                clothes.isPurchase = false
+                                            } label: {
+                                                BorderedRectangle("구매하지 않음", isSelected: !clothes.isPurchase)
+                                            }
+                                        }
+                                        .id(FocusField.link)
+                                        
+                                        HStack(spacing: 16) {
+                                            Image(.link)
+                                                .foregroundStyle(.labelAssistive)
+                                                .padding(.leading, 12)
+                                            
+                                            TextField(
+                                                "",
+                                                text: $clothes.link,
+                                                prompt: Text("구매 링크").foregroundStyle(.labelInactive)
+                                            )
+                                            .negguFont(.body2)
+                                            
+                                            Button {
+                                                
+                                            } label: {
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .fill(.black)
+                                                    .frame(width: 40, height: 40)
+                                                    .overlay {
+                                                        Image(systemName: "arrow.right")
+                                                            .foregroundStyle(.white)
+                                                    }
+                                            }
+                                        }
+                                        .id(FocusField.memo)
+                                        .focused($focusedField, equals: .link)
+                                        .padding(8)
+                                        .background {
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .strokeBorder(.lineAlt)
+                                        }
+                                        
+                                        ExpendableTextView("메모를 남겨보세요! (최대 200자)", text: $clothes.memo)
+                                            .focused($focusedField, equals: .memo)
+                                    }
+                                } header: {
+                                    if !name.isEmpty {
+                                        HStack {
+                                            Button {
+                                                showNameEditView = true
+                                            } label: {
+                                                Text(name)
+                                                    .negguFont(.body1b)
+                                                    .lineLimit(1)
+                                                
+                                                Image(systemName: "pencil")
+                                                    .frame(width: 24, height: 24)
+                                            }
+                                            
+                                            Spacer()
+                                        }
+                                        .frame(height: 48)
+                                        .padding(.horizontal, 12)
+                                        .background(.bgNormal)
+                                    }
                                 }
-                                
-                                Spacer()
+                                .foregroundStyle(.labelNormal)
                             }
-                            .frame(height: 48)
-                            .padding(.horizontal, 14)
-                            .background(.bgNormal)
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, focusedField != nil ? proxy.size.height : 140)
                         }
                     }
-                    .foregroundStyle(.labelNormal)
+                    .scrollIndicators(.hidden)
+                    .scrollDismissesKeyboard(.immediately)
+                    .onChange(of: focusedField) { _, newValue in
+                        scrollProxy.scrollTo(newValue, anchor: .top)
+                    }
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 140)
             }
-            .scrollIndicators(.hidden)
         }
         .background(.bgNormal)
         .overlay(alignment: .bottom) {
-            Button {
-                clothes.mood = selectedMoodList
-                dump(clothes)
-                if let image = segmentedImage.pngData() {
+            ZStack(alignment: .bottom) {
+                LinearGradient(
+                    colors: [
+                        Color(red: 248, green: 248, blue: 248, opacity: 0),
+                        Color(red: 248, green: 248, blue: 248, opacity: 1)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
+                .frame(height: 130)
+                .allowsHitTesting(false)
+                
+                Button {
+                    guard let image = segmentedImage.pngData() else { return }
+                    clothes.name = name
+                    clothes.mood = selectedMoodList
+                    
                     service.register(
                         image: image,
                         request: clothes
@@ -283,35 +304,29 @@ struct ClosetAddView: View {
                         debugPrint(result)
                         dismiss()
                     }.store(in: &bag)
+                } label: {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(buttonDisabled ? .bgInactive : .negguSecondary)
+                        .frame(height: 56)
+                        .overlay {
+                            Text("저장하기")
+                                .negguFont(.body1b)
+                                .foregroundStyle(buttonDisabled ? .labelInactive : .labelRNormal)
+                        }
                 }
-            } label: {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(buttonDisabled ? .bgInactive : .negguSecondary)
-                    .frame(height: 56)
-                    .overlay {
-                        Text("저장하기")
-                            .negguFont(.body1b)
-                            .foregroundStyle(buttonDisabled ? .labelInactive : .labelRNormal)
-                    }
-            }
-            .disabled(buttonDisabled)
-            .padding(.horizontal, 48)
-            .padding(.top, 20)
-            .padding(.bottom, 44)
-            .background {
-                LinearGradient(
-                    colors: [
-                        Color(red: 248, green: 248, blue: 248, opacity: 0),
-                        Color(red: 248, green: 248, blue: 248, opacity: 1)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+                .disabled(buttonDisabled)
+                .padding(.horizontal, 48)
             }
         }
-        .ignoresSafeArea(edges: .bottom)
+        .ignoresSafeArea(.keyboard)
+        .onAppear {
+            getMostColor()
+        }
+        .onTapGesture {
+            focusedField = nil
+        }
         .sheet(isPresented: $showNameEditView) {
-            ClothesNameEditView(clothesName: $clothes.name)
+            ClothesNameEditView(clothesName: $clothes.name, placeholder: name)
                 .presentationDetents([.height(300)])
                 .presentationCornerRadius(20)
         }
@@ -338,18 +353,6 @@ struct ClosetAddView: View {
         ) {
             dismiss()
         }
-        .onAppear {
-            getMostColor()
-        }
-        .onChange(of: clothes.memo) { _, newValue in
-            if newValue.count > 200 {
-                clothes.memo = String(newValue.prefix(200))
-            }
-        }
-    }
-    
-    private func validateField() {
-        
     }
     
     private func getMostColor() {
@@ -367,6 +370,11 @@ struct ClosetAddView: View {
         case brand
         
         var id: String { "\(self)" }
+    }
+    
+    enum FocusField {
+        case link
+        case memo
     }
 }
 
