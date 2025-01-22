@@ -214,7 +214,7 @@ struct LookBookView: View {
                         
                         Menu {
                             Button("환경설정") {
-                                
+                                lookbookCoordinator.push(.setting)
                             }
                             
                             Button("프로필 편집") {

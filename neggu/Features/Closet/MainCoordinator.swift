@@ -67,6 +67,9 @@ final class MainCoordinator: Coordinator {
             LookBookEditView()
         case .lookbookDetail:
             LookBookDetailView()
+            
+        case .setting:
+            SettingView()
         }
     }
     
@@ -78,6 +81,8 @@ final class MainCoordinator: Coordinator {
         case lookbook
         case lookbookEdit
         case lookbookDetail
+        
+        case setting
         
         var id: String { "\(self)" }
     }
