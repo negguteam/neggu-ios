@@ -33,5 +33,10 @@ struct ExpendableTextView: View {
             RoundedRectangle(cornerRadius: 16)
                 .strokeBorder(.lineAlt)
         }
+        .onChange(of: text) { _, newValue in
+            if newValue.count > 200 {
+                text = String(newValue.prefix(200))
+            }
+        }
     }
 }
