@@ -45,7 +45,9 @@ struct SignUpAgeView: View {
                 }
         }
         .onChange(of: viewModel.step) { oldValue, newValue in
-            if oldValue == 1 && newValue == 2 {
+            if oldValue != 2 && newValue != 2 { return }
+            
+            if newValue == 2 {
                 Task {
                     try await Task.sleep(for: .seconds(0.7))
                     isFocused = true
