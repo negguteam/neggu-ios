@@ -17,6 +17,8 @@
 		1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D26D2C6274C9003F50F3 /* LoginView.swift */; };
 		1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D2722C62790C003F50F3 /* AuthCoordinator.swift */; };
 		1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1308D2742C62801F003F50F3 /* Coordinator.swift */; };
+		130970692D40C1420050D091 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130970682D40C1420050D091 /* UIImage+Extension.swift */; };
+		1309706B2D40C1830050D091 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1309706A2D40C1830050D091 /* UIColor+Extension.swift */; };
 		1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4662CE3688D007264C7 /* OnboardingView.swift */; };
 		1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4682CE4E758007264C7 /* BannerCarousel.swift */; };
 		1318DE552D3F600D0077972D /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318DE542D3F600D0077972D /* PickerField.swift */; };
@@ -134,6 +136,8 @@
 		1308D26D2C6274C9003F50F3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		1308D2722C62790C003F50F3 /* AuthCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCoordinator.swift; sourceTree = "<group>"; };
 		1308D2742C62801F003F50F3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		130970682D40C1420050D091 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		1309706A2D40C1830050D091 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		1317A4662CE3688D007264C7 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		1317A4682CE4E758007264C7 /* BannerCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCarousel.swift; sourceTree = "<group>"; };
 		1318DE542D3F600D0077972D /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
@@ -534,6 +538,8 @@
 				1318DE562D3F79410077972D /* String+Extension.swift */,
 				13B375792D34E37D001D009E /* Date+Extension.swift */,
 				13B3757E2D34E795001D009E /* CGSize+Extension.swift */,
+				130970682D40C1420050D091 /* UIImage+Extension.swift */,
+				1309706A2D40C1830050D091 /* UIColor+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -713,6 +719,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1302FE5D2C86EA6B0076D015 /* NegguFont.swift in Sources */,
+				1309706B2D40C1830050D091 /* UIColor+Extension.swift in Sources */,
 				13DC5E732C64AA3900DB5600 /* AuthViewModel.swift in Sources */,
 				13DBA7E72CC433E6003A10AE /* LookBook.swift in Sources */,
 				134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */,
@@ -751,6 +758,7 @@
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
+				130970692D40C1420050D091 /* UIImage+Extension.swift in Sources */,
 				13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */,
 				13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */,
 				1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */,
