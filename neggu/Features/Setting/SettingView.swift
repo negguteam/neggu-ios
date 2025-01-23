@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import Combine
 
 struct SettingView: View {
     @EnvironmentObject private var coodinator: MainCoordinator
+    
+    @State private var showAlert: Bool = false
+    @State private var bag = Set<AnyCancellable>()
+    
+    let service: UserService = DefaultUserService()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -94,7 +100,14 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        
+                        service.logout()
+                            .sink { event in
+                                print("SettingView:", event)
+                            } receiveValue: { _ in
+                                UserDefaultsKey.clearUserData()
+                                UserDefaultsKey.clearPushToken()
+                                UserDefaultsKey.Auth.isLogined = false
+                            }.store(in: &bag)
                     } label: {
                         HStack {
                             Text("로그아웃")
@@ -109,7 +122,7 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        
+                        showAlert = true
                     } label: {
                         HStack {
                             Text("회원탈퇴")
@@ -129,6 +142,22 @@ struct SettingView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .padding(.horizontal, 20)
+        .negguAlert(
+            showAlert: $showAlert,
+            title: "탈퇴하시겠습니까?",
+            description: "모든 정보는 즉시 삭제되며, 탈퇴 이후에는 복구할 수 없습니다.",
+            leftContent: "취소하기",
+            rightContent: "탈퇴하기"
+        ) {
+            service.withdraw()
+                .sink { event in
+                    print("SettingView:", event)
+                } receiveValue: { _ in
+                    UserDefaultsKey.clearUserData()
+                    UserDefaultsKey.clearPushToken()
+                    UserDefaultsKey.Auth.isLogined = false
+                }.store(in: &bag)
+        }
     }
 }
 
