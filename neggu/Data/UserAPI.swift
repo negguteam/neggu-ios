@@ -25,7 +25,7 @@ extension UserAPI: BaseAPI {
         case .logout:
             "/logout"
         case .withdraw:
-            "withdraw"
+            "/withdraw"
         }
     }
     
