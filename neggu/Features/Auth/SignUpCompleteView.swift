@@ -8,53 +8,50 @@
 import SwiftUI
 
 struct SignUpCompleteView: View {
-    @EnvironmentObject private var viewModel: AuthViewModel
-    
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
             RoundedRectangle(cornerRadius: 50)
                 .fill(.gray10)
                 .aspectRatio(1, contentMode: .fit)
             
             VStack(alignment: .leading) {
                 Text("모든 준비가 끝났어요")
-                    .negguFont(.body3)
-                    .foregroundStyle(.labelAlt)
+                    .negguFont(.body1)
+                    .foregroundStyle(.labelAssistive)
                 
                 Text("좋아하는 옷부터\n네꾸에 등록해볼까요?")
                     .negguFont(.title2)
                     .foregroundStyle(.labelNormal)
             }
             .padding(.horizontal, 48)
-            .padding(.bottom, 60)
+            .padding(.top, 60)
             
             Spacer()
             
-            VStack {
+            VStack(spacing: 24) {
                 Button {
                     UserDefaultsKey.Auth.isLogined = true
                 } label: {
-                    RoundedRectangle(cornerRadius: 12)
+                    RoundedRectangle(cornerRadius: 16)
                         .fill(.negguSecondary)
-                        .frame(height: 48)
+                        .frame(height: 56)
                         .overlay {
-                            Text("내 옷을 네꾸에 등록하기")
+                            Text("내 옷 등록하기")
                                 .negguFont(.body1b)
-                                .foregroundStyle(.white)
+                                .foregroundStyle(.labelRNormal)
                         }
                 }
-                .padding(.horizontal, 20)
                 
                 Button {
                     
                 } label: {
-                    Text("먼저 둘러보고 싶어요!")
+                    Text("우선 둘러보고 싶어요!")
                         .negguFont(.body2)
                         .foregroundStyle(.labelAlt)
                         .underline()
-                        .frame(height: 11)
                 }
             }
+            .padding(.horizontal, 20)
         }
         .padding(.bottom, 32)
         .toolbar(.hidden, for: .navigationBar)
