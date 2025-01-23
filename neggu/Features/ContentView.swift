@@ -8,49 +8,51 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isTabbarHidden: Bool = false
-    @State private var selection: Int = 0
-    @State private var showList: Bool = false
+    @StateObject private var coordinator = MainCoordinator()
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selection) {
-                ClosetView()
-                    .tag(0)
-                    .ignoresSafeArea(edges: .bottom)
-                    .background {
-                        if !isTabbarHidden {
-                            HideTabBar {
-                                isTabbarHidden = true
-                            }
+            TabView(selection: $coordinator.activeTab) {
+                NavigationStack(path: $coordinator.closetPath) {
+                    coordinator.buildScene(.closet)
+                        .navigationDestination(for: MainCoordinator.Destination.self) { scene in
+                            coordinator.buildScene(scene)
                         }
-                    }
-                
-                VStack {
-                    Button("Logout") {
-                        UserDefaultsManager.accountToken = nil
-                        UserDefaultsManager.fcmToken = nil
-                        UserDefaultsManager.showTabFlow = false
-                    }
                 }
-                .tag(1)
-                .ignoresSafeArea(edges: .bottom)
+                .tag(NegguTab.closet)
+                .toolbar(.hidden, for: .tabBar)
+                
+                NavigationStack(path: $coordinator.lookbookPath) {
+                    coordinator.buildScene(.lookbook)
+                        .navigationDestination(for: MainCoordinator.Destination.self) { scene in
+                            coordinator.buildScene(scene)
+                        }
+                }
+                .tag(NegguTab.lookbook)
+                .toolbar(.hidden, for: .tabBar)
+            }
+            .sheet(item: $coordinator.sheet) { scene in
+                coordinator.buildScene(scene)
+            }
+            .fullScreenCover(item: $coordinator.fullScreenCover) { scene in
+                coordinator.buildScene(scene)
             }
             
-            if showList {
+            if coordinator.showTabbarList {
                 Color.black
-                    .opacity(0.3)
+                    .opacity(0.5)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        withAnimation {
-                            showList = false
-                        }
+                        coordinator.showTabbarList = false
                     }
             }
             
-            NegguTabBar(selection: $selection, showList: $showList)
+            if coordinator.showTabbar {
+                NegguTabBar(activeTab: $coordinator.activeTab, showTabBarList: $coordinator.showTabbarList)
+            }
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .environmentObject(coordinator)
+        .animation(.smooth(duration: 0.2), value: coordinator.showTabbarList)
     }
 }
 
