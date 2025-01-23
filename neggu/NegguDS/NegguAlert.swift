@@ -12,18 +12,23 @@ struct NegguAlert: ViewModifier {
     
     let title: String
     let description: String
-    
+    let leftContent: String
+    let rightContent: String
     let buttonAction: (() -> Void)?
     
     init(
         showAlert: Binding<Bool>,
         title: String,
         description: String,
+        leftContent: String,
+        rightContent: String,
         buttonAction: (() -> Void)? = nil
     ) {
         self._showAlert = showAlert
         self.title = title
         self.description = description
+        self.leftContent = leftContent
+        self.rightContent = rightContent
         self.buttonAction = buttonAction
     }
     
@@ -34,30 +39,32 @@ struct NegguAlert: ViewModifier {
             if showAlert {
                 Color.bgDimmed.opacity(0.5)
                     .ignoresSafeArea()
+                    .onTapGesture {
+                        showAlert = false
+                    }
                 
-                VStack(spacing: 36) {
-                    VStack(alignment: .leading) {
-                        Text(title)
-                            .negguFont(.title4)
-                            .foregroundStyle(.labelNormal)
-                        
-                        if !description.isEmpty {
-                            Text(description)
-                                .negguFont(.body2)
-                                .foregroundStyle(.labelAlt)
-                        }
+                VStack(spacing: 20) {
+                    Text(title)
+                        .negguFont(.title4)
+                        .foregroundStyle(.labelNormal)
+                    
+                    if !description.isEmpty {
+                        Text(description)
+                            .negguFont(.body2)
+                            .foregroundStyle(.labelAlt)
+                            .multilineTextAlignment(.center)
                     }
                     
-                    HStack {
+                    HStack(spacing: 12) {
                         Button {
                             showAlert = false
                         } label: {
-                            RoundedRectangle(cornerRadius: 16)
+                            RoundedRectangle(cornerRadius: 12)
                                 .fill(.clear)
                                 .frame(height: 48)
                                 .overlay {
-                                    Text("이어서 등록하기")
-                                        .negguFont(.body2b)
+                                    Text(leftContent)
+                                        .negguFont(.body2)
                                         .foregroundStyle(.labelInactive)
                                 }
                         }
@@ -65,11 +72,11 @@ struct NegguAlert: ViewModifier {
                         Button {
                             buttonAction?()
                         } label: {
-                            RoundedRectangle(cornerRadius: 16)
+                            RoundedRectangle(cornerRadius: 12)
                                 .fill(.warning)
                                 .frame(height: 48)
                                 .overlay {
-                                    Text("그만하기")
+                                    Text(rightContent)
                                         .negguFont(.body2b)
                                         .foregroundStyle(.white)
                                 }
@@ -77,15 +84,14 @@ struct NegguAlert: ViewModifier {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, 20)
-                .padding(.top, 48)
-                .padding(.bottom, 24)
+                .padding([.horizontal, .bottom], 20)
+                .padding(.top, 40)
                 .background(.white)
-                .clipShape(.rect(cornerRadius: 20))
+                .clipShape(.rect(cornerRadius: 16))
                 .padding(.horizontal, 32)
             }
         }
-        .animation(.smooth, value: showAlert)
+        .animation(.smooth(duration: 0.3), value: showAlert)
     }
 }
 
@@ -95,9 +101,20 @@ extension View {
         showAlert: Binding<Bool>,
         title: String,
         description: String = "",
+        leftContent: String,
+        rightContent: String,
         buttonAction: (() -> Void)? = nil
     ) -> some View {
-        modifier(NegguAlert(showAlert: showAlert, title: title, description: description, buttonAction: buttonAction))
+        modifier(
+            NegguAlert(
+                showAlert: showAlert,
+                title: title,
+                description: description,
+                leftContent: leftContent,
+                rightContent: rightContent,
+                buttonAction: buttonAction
+            )
+        )
     }
     
 }
