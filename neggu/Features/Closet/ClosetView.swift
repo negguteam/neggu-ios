@@ -19,12 +19,14 @@ struct ClosetView: View {
     
     @State private var selectedCategory: Category = .UNKNOWN
     @State private var selectedSubCategory: SubCategory = .UNKNOWN
+    @State private var selectedMoodList: [Mood] = []
     @State private var selectedColor: ColorFilter?
     
     @FocusState private var isFocused: Bool
     @State private var filterType: FilterType?
     
-//    @State private var categoryFilterSheetHeight: CGFloat = .zero
+    @State private var page: Int = 0
+    @State private var canPagenation: Bool = true
     
     @State private var clothes: [ClothesEntity] = []
     @State private var bag = Set<AnyCancellable>()
@@ -99,7 +101,13 @@ struct ClosetView: View {
                                 }
                             }
                         }
-                        .padding(.bottom, 64)
+                        
+                        Rectangle()
+                            .fill(.clear)
+                            .frame(height: 56)
+                            .onAppear {
+                                getClothes()
+                            }
                     }
                     .scrollIndicators(.hidden)
                     .scrollDisabled(scrollPosition == 0)
@@ -135,6 +143,9 @@ struct ClosetView: View {
                 }
         }
         .refreshable {
+            page = 0
+            canPagenation = true
+            clothes.removeAll()
             getClothes()
         }
         .sheet(item: $filterType) { filterType in
@@ -146,16 +157,12 @@ struct ClosetView: View {
                 )
                 .presentationDetents([.fraction(0.85)])
             case .mood:
-                Text("필터")
+                MoodSheet(selectedMoodList: $selectedMoodList)
                     .presentationDetents([.fraction(0.85)])
             case .color:
                 ColorSheet(selectedColor: $selectedColor)
                     .presentationDetents([.fraction(0.85)])
             }
-        }
-        .onAppear {
-            if !clothes.isEmpty { return }
-            getClothes()
         }
     }
     
@@ -275,11 +282,19 @@ struct ClosetView: View {
     }
     
     private func getClothes() {
-        service.clothesList(page: 0, size: 10)
+        if !canPagenation { return }
+        
+        service.clothesList(page: page, size: 10)
             .sink { event in
-                print(event)
+                print("ClosetView:", event)
             } receiveValue: { result in
-                self.clothes = result.content
+                self.clothes += result.content
+                
+                if !result.last {
+                    self.page += 1
+                }
+                
+                self.canPagenation = !result.last
             }.store(in: &bag)
     }
     
