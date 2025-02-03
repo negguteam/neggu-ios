@@ -8,16 +8,29 @@
 import Foundation
 
 enum Category: String, CaseIterable, Identifiable, Codable {
-    case TOP = "상의"
-    case BOTTOM = "하의"
-    case OUTER = "아우터"
-    case ONEPIECE = "원피스"
-    case ACCESSORY = "악세서리"
-    case BAG = "가방"
-    case SHOES = "신발"
-    case UNKNOWN = ""
+    case TOP
+    case BOTTOM
+    case OUTER
+    case ONEPIECE
+    case ACCESSORY
+    case BAG
+    case SHOES
+    case UNKNOWN
     
     var id: String { "\(self)" }
+    
+    var title: String {
+        switch self {
+        case .TOP: "상의"
+        case .BOTTOM: "하의"
+        case .OUTER: "아우터"
+        case .ONEPIECE: "원피스"
+        case .ACCESSORY: "악세서리"
+        case .BAG: "가방"
+        case .SHOES: "신발"
+        case .UNKNOWN: ""
+        }
+    }
     
     init(from decoder: Decoder) throws {
         self = try Category(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .UNKNOWN

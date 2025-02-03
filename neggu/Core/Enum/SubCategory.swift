@@ -9,32 +9,62 @@ import Foundation
 
 enum SubCategory: String, CaseIterable, Identifiable, Codable {
     // 상의
-    case SWEATSHIRT = "맨투맨"
-    case SHIRT_BLOUSE = "셔츠/블라우스"
-    case HOODIE = "후드"
-    case KNIT = "니트"
-    case T_SHIRT = "티셔츠"
-    case SLEEVELESS = "민소매"
+    case SWEATSHIRT
+    case SHIRT_BLOUSE
+    case HOODIE
+    case KNIT
+    case T_SHIRT
+    case SLEEVELESS
     
     // 하의
-    case JEANS = "데님팬츠"
-    case SLACKS = "슬랙스"
-    case SHORTS = "솟팬츠"
-    case JUMPSUIT = "점프슈트"
-    case SKIRT = "스커트"
+    case JEANS
+    case SLACKS
+    case SHORTS
+    case JUMPSUIT
+    case SKIRT
     
     // 아우터
-    case JACKET = "자켓"
-    case ZIP_UP_HOODIE = "후드집업"
-    case CARDIGAN = "가디건"
-    case FLEECE = "플리스"
-    case COAT = "코트"
-    case PUFFER = "패딩"
-    case VEST = "베스트"
+    case JACKET
+    case ZIP_UP_HOODIE
+    case CARDIGAN
+    case FLEECE
+    case COAT
+    case PUFFER
+    case VEST
     
-    case UNKNOWN = ""
+    case UNKNOWN
     
     var id: String { "\(self)" }
+    
+    var title: String {
+        switch self {
+        // 상의
+        case .SWEATSHIRT: "맨투맨"
+        case .SHIRT_BLOUSE: "셔츠/블라우스"
+        case .HOODIE: "후드"
+        case .KNIT: "니트"
+        case .T_SHIRT: "티셔츠"
+        case .SLEEVELESS: "민소매"
+        
+        // 하의
+        case .JEANS: "데님팬츠"
+        case .SLACKS: "슬랙스"
+        case .SHORTS: "솟팬츠"
+        case .JUMPSUIT: "점프슈트"
+        case .SKIRT: "스커트"
+        
+        // 아우터
+        case .JACKET: "자켓"
+        case .ZIP_UP_HOODIE: "후드집업"
+        case .CARDIGAN: "가디건"
+        case .FLEECE: "플리스"
+        case .COAT: "코트"
+        case .PUFFER: "패딩"
+        case .VEST: "베스트"
+        
+        case .UNKNOWN: ""
+        }
+    }
     
     init(from decoder: Decoder) throws {
         self = try SubCategory(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .UNKNOWN

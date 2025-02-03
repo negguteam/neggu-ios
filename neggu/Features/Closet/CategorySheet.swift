@@ -88,7 +88,7 @@ struct DropDownButton: View {
                 }
             } label: {
                 HStack {
-                    Text(category.rawValue)
+                    Text(category.title)
                         .negguFont(.body2)
                     
                     Spacer()
@@ -118,7 +118,7 @@ struct DropDownButton: View {
                         }
                     } label: {
                         HStack {
-                            Text(subCategory.rawValue)
+                            Text(subCategory.title)
                                 .foregroundStyle(subCategoryIsSelected ? .negguSecondary : .labelAlt)
                             
                             Spacer()

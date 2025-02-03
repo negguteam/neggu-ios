@@ -51,7 +51,7 @@ struct MoodSheet: View {
                             }
                         } label: {
                             HStack {
-                                Text(mood.rawValue)
+                                Text(mood.title)
                                     .negguFont(.body2)
                                 
                                 Spacer()

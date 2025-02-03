@@ -33,11 +33,23 @@ struct ClosetView: View {
     
     var categoryTitle: String {
         if selectedSubCategory != .UNKNOWN {
-            selectedSubCategory.rawValue
+            selectedSubCategory.title
         } else if selectedCategory != .UNKNOWN {
             selectedCategory.rawValue
         } else {
             "카테고리"
+        }
+    }
+    
+    var moodTitle: String {
+        if let firstMood = selectedMoodList.first {
+            if selectedMoodList.count > 1 {
+                firstMood.title + " +\(selectedMoodList.count - 1)"
+            } else {
+                firstMood.title
+            }
+        } else {
+            "분위기"
         }
     }
     
@@ -66,7 +78,7 @@ struct ClosetView: View {
                             filterType = .category
                         }
                         
-                        FilterButton(title: "분위기") {
+                        FilterButton(title: moodTitle) {
                             filterType = .mood
                         }
                         

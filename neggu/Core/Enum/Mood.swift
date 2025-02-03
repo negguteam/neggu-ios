@@ -8,21 +8,39 @@
 import Foundation
 
 enum Mood: String, CaseIterable, Identifiable, Codable {
-    case FEMININE = "페미닌"
-    case SPORTS = "스포츠"
-    case STREETWEAR = "스트릿"
-    case MODERN = "모던"
-    case VINTAGE = "빈티지"
-    case OUTDOOR = "아웃도어"
-    case OFFICE = "오피스"
-    case ETHNIC = "에스닉"
-    case PREPPY = "프레피"
-    case LUXURY = "럭셔리"
-    case CASUAL = "캐주얼"
-    case AMERICAN = "아메리칸"
+    case FEMININE
+    case SPORTS
+    case STREETWEAR
+    case MODERN
+    case VINTAGE
+    case OUTDOOR
+    case OFFICE
+    case ETHNIC
+    case PREPPY
+    case LUXURY
+    case CASUAL
+    case AMERICAN
     case UNKNOWN
     
     var id: String { "\(self)" }
+    
+    var title: String {
+        switch self {
+        case .FEMININE: "페미닌"
+        case .SPORTS: "스포츠"
+        case .STREETWEAR: "스트릿"
+        case .MODERN: "모던"
+        case .VINTAGE: "빈티지"
+        case .OUTDOOR: "아웃도어"
+        case .OFFICE: "오피스"
+        case .ETHNIC: "에스닉"
+        case .PREPPY: "프레피"
+        case .LUXURY: "럭셔리"
+        case .CASUAL: "캐주얼"
+        case .AMERICAN: "아메리칸"
+        case .UNKNOWN: ""
+        }
+    }
     
     static var allCasesArray: [Self] {
         allCases.filter { $0 != .UNKNOWN }
