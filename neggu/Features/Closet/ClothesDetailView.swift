@@ -6,98 +6,105 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ClothesDetailView: View {
-    let clothes: Clothes
+    @EnvironmentObject private var coordinator: MainCoordinator
     
+    let service: ClosetService = DefaultClosetService()
+    let clothesID: String
+    
+    @State private var clothesState: ClothesState = .loading
     @State private var clothesText: String = ""
-    @State private var showLookBookEditView: Bool = false
+    
+    @State private var bag = Set<AnyCancellable>()
     
     var body: some View {
-        ZStack(alignment: .top) {
-            VStack(spacing: 0) {
-                Spacer(minLength: 200)
-                
-                VStack {
-                    Spacer(minLength: 200)
-                    
+        Group {
+            switch clothesState {
+            case .loading:
+                ProgressView()
+                    .onAppear {
+                        service.clothesDetail(id: clothesID)
+                            .sink { event in
+                                print("ClosetDetail:", event)
+                            } receiveValue: { clothes in
+                                clothesState = .loaded(clothes: clothes)
+                            }.store(in: &bag)
+                    }
+            case .loaded(let clothes):
+                GeometryReader { proxy in
                     ScrollView {
-                        VStack {
-                            HStack(spacing: 16) {
+                        AsyncImage(url: URL(string: clothes.imageUrl)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        } placeholder: {
+                            Color.gray10
+                                .overlay {
+                                    ProgressView()
+                                }
+                        }
+                        .frame(width: proxy.size.width)
+                        .aspectRatio(6/5, contentMode: .fit)
+                        
+                        VStack(spacing: 20) {
+                            HStack(spacing: 12) {
                                 Button {
                                     
                                 } label: {
-                                    HStack(spacing: 4) {
-                                        Text("공유하기")
-                                        
-                                        Image(systemName: "square.and.arrow.down")
-                                    }
-                                    .padding()
-                                    .background(.labelAlt)
-                                    .clipShape(.rect(cornerRadius: 20))
-                                    .negguFont(.body1b)
-                                    .foregroundStyle(.white)
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.labelAlt)
+                                        .frame(height: 48)
+                                        .overlay {
+                                            HStack(spacing: 4) {
+                                                Text("공유하기")
+                                                
+                                                Image(systemName: "square.and.arrow.down")
+                                            }
+                                            .negguFont(.body1b)
+                                            .foregroundStyle(.white)
+                                        }
                                 }
-                                .buttonStyle(PlainButtonStyle())
                                 
                                 Button {
-                                    showLookBookEditView = true
+                                    coordinator.fullScreenCover = .lookbookEdit
                                 } label: {
-                                    HStack(spacing: 4) {
-                                        Text("룩북 만들기")
-                                        
-                                        Image(.shirtFill)
-                                    }
-                                    .padding()
-                                    .background(.negguSecondary)
-                                    .clipShape(.rect(cornerRadius: 20))
-                                    .negguFont(.body1b)
-                                    .foregroundStyle(.labelNormal)
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.negguSecondary)
+                                        .frame(height: 48)
+                                        .overlay {
+                                            HStack(spacing: 4) {
+                                                Text("룩북 만들기")
+                                                
+                                                Image(.shirtFill)
+                                            }
+                                            .negguFont(.body1b)
+                                            .foregroundStyle(.labelNormal)
+                                        }
                                 }
-                                .buttonStyle(PlainButtonStyle())
                             }
-                            .padding(.top, 10)
                             
-                            VStack(alignment: .leading) {
-                                Text("의상 정보")
-                                    .negguFont(.title3)
-                                
-                                TextField("", text: $clothesText)
-                                    .padding()
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(.bgAlt)
-                                    }
-                            }
-                            .foregroundStyle(.black)
+                            Text(clothes.name)
+                            Text([clothes.category.title, clothes.subCategory.title].joined(separator: " > "))
+                            Text(clothes.mood.map { $0.title }.joined(separator: ", "))
+                            Text(clothes.priceRange.title)
+                            Text(clothes.isPurchase ? "구매함" : "구매하지 않음")
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.horizontal, 48)
                     }
                 }
-                .background(.white)
-                .clipShape(.rect(topLeadingRadius: 24, topTrailingRadius: 24))
             }
-            .ignoresSafeArea(edges: .bottom)
-            
-            Image(.dummyClothes0)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 300, height: 400)
         }
-        .fullScreenCover(isPresented: $showLookBookEditView) {
-            LookBookEditView()
-        }
+        .background(.bgNormal)
+    }
+    
+    enum ClothesState {
+        case loading
+        case loaded(clothes: ClothesEntity)
     }
 }
 
 #Preview {
-    ClothesDetailView(
-        clothes: .init(
-            name: "멋진 옷",
-            link: "www.neggu.com",
-            imageUrl: "",
-            brand: "네꾸"
-        )
-    )
-    .background(.black.opacity(0.3))
+    ClothesDetailView(clothesID: "abcd")
 }
