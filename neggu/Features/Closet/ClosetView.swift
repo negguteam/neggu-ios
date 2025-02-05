@@ -19,7 +19,7 @@ struct ClosetView: View {
     
     @State private var selectedCategory: Category = .UNKNOWN
     @State private var selectedSubCategory: SubCategory = .UNKNOWN
-    @State private var selectedMoodList: [Mood] = []
+    @State private var selectedMood: [Mood] = []
     @State private var selectedColor: ColorFilter?
     
     @FocusState private var isFocused: Bool
@@ -35,19 +35,15 @@ struct ClosetView: View {
         if selectedSubCategory != .UNKNOWN {
             selectedSubCategory.title
         } else if selectedCategory != .UNKNOWN {
-            selectedCategory.rawValue
+            selectedCategory.title
         } else {
             "카테고리"
         }
     }
     
     var moodTitle: String {
-        if let firstMood = selectedMoodList.first {
-            if selectedMoodList.count > 1 {
-                firstMood.title + " +\(selectedMoodList.count - 1)"
-            } else {
-                firstMood.title
-            }
+        if let firstMood = selectedMood.first {
+            firstMood.title
         } else {
             "분위기"
         }
@@ -155,12 +151,14 @@ struct ClosetView: View {
                 }
         }
         .refreshable {
+            refreshCloset()
+        }
+        .sheet(item: $filterType) {
             page = 0
             canPagenation = true
             clothes.removeAll()
             getClothes()
-        }
-        .sheet(item: $filterType) { filterType in
+        } content: { filterType in
             switch filterType {
             case .category:
                 CategorySheet(
@@ -169,7 +167,7 @@ struct ClosetView: View {
                 )
                 .presentationDetents([.fraction(0.85)])
             case .mood:
-                MoodSheet(selectedMoodList: $selectedMoodList)
+                MoodSheet(selectedMoodList: $selectedMood, isSingleSelection: true)
                     .presentationDetents([.fraction(0.85)])
             case .color:
                 ColorSheet(selectedColor: $selectedColor)
@@ -296,18 +294,44 @@ struct ClosetView: View {
     private func getClothes() {
         if !canPagenation { return }
         
-        service.clothesList(page: page, size: 10)
-            .sink { event in
-                print("ClosetView:", event)
-            } receiveValue: { result in
-                self.clothes += result.content
-                
-                if !result.last {
-                    self.page += 1
-                }
-                
-                self.canPagenation = !result.last
-            }.store(in: &bag)
+        var parameters: [String: Any] = ["page": page, "size": 10]
+        
+        if selectedCategory != .UNKNOWN {
+            parameters["category"] = selectedCategory.id
+        }
+        
+        if selectedColor != nil {
+            parameters["colorGroup"] = selectedColor?.id
+        }
+        
+        if !selectedMood.isEmpty {
+            parameters["mood"] = selectedMood.first?.id
+        }
+        
+        service.clothesList(parameters: parameters)
+        .sink { event in
+            print("ClosetView:", event)
+        } receiveValue: { result in
+            self.clothes += result.content
+            
+            if !result.last {
+                self.page += 1
+            }
+            
+            self.canPagenation = !result.last
+        }.store(in: &bag)
+    }
+    
+    private func refreshCloset() {
+        selectedCategory = .UNKNOWN
+        selectedSubCategory = .UNKNOWN
+        selectedColor = nil
+        selectedMood.removeAll()
+        
+        page = 0
+        canPagenation = true
+        clothes.removeAll()
+        getClothes()
     }
     
     enum FilterType: Identifiable {

@@ -11,6 +11,16 @@ struct MoodSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var selectedMoodList: [Mood]
+    let isSingleSelection: Bool
+    
+    var selectionLimit: Int {
+        isSingleSelection ? 1 : 3
+    }
+    
+    init(selectedMoodList: Binding<[Mood]>, isSingleSelection: Bool = false) {
+        self._selectedMoodList = selectedMoodList
+        self.isSingleSelection = isSingleSelection
+    }
     
     var body: some View {
         VStack(spacing: 24) {
@@ -46,7 +56,7 @@ struct MoodSheet: View {
                             if isSelected {
                                 selectedMoodList.removeAll(where: { $0 == mood })
                             } else {
-                                if selectedMoodList.count >= 3 { return }
+                                if selectedMoodList.count >= selectionLimit { return }
                                 selectedMoodList.append(mood)
                             }
                         } label: {
