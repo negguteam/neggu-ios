@@ -13,7 +13,7 @@ typealias DefaultClosetService = BaseService<ClosetAPI>
 protocol ClosetService {
     func register(image: Data, request: ClothesRegisterEntity) -> AnyPublisher<ClothesEntity, Error>
     func clothesDetail(id: String) -> AnyPublisher<ClothesEntity, Error>
-    func clothesList(page: Int, size: Int) -> AnyPublisher<ClosetEntity, Error>
+    func clothesList(parameters: [String: Any]) -> AnyPublisher<ClosetEntity, Error>
     func brandList() -> AnyPublisher<[BrandEntity], Error>
     func deleteClothes(id: String) -> AnyPublisher<ClothesEntity, Error>
 }
@@ -45,8 +45,8 @@ extension DefaultClosetService: ClosetService {
         requestObjectWithNetworkError(.clothesDetail(id: id))
     }
     
-    func clothesList(page: Int, size: Int) -> AnyPublisher<ClosetEntity, Error> {
-        requestObjectWithNetworkError(.clothesList(page: page, size: size))
+    func clothesList(parameters: [String: Any]) -> AnyPublisher<ClosetEntity, Error> {
+        requestObjectWithNetworkError(.clothesList(parameters: parameters))
     }
     
     func brandList() -> AnyPublisher<[BrandEntity], Error> {

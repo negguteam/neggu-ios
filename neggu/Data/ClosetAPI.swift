@@ -11,7 +11,7 @@ import Moya
 enum ClosetAPI {
     case register(image: Data, request: Data)
     case clothesDetail(id: String)
-    case clothesList(page: Int, size: Int)
+    case clothesList(parameters: [String: Any])
     case brandList
     case deleteClothes(id: String)
 }
@@ -60,9 +60,9 @@ extension ClosetAPI: BaseAPI {
             multipartData.append(.init(provider: .data(request), name: "clothRegisterRequest"))
             
             return .uploadMultipart(multipartData)
-        case .clothesList(let page, let size):
+        case .clothesList(let parameters):
             return .requestParameters(
-                parameters: ["size": size, "page": page],
+                parameters: parameters,
                 encoding: URLEncoding.queryString
             )
         default:
