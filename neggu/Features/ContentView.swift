@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var coordinator = MainCoordinator()
+    @StateObject private var closetViewModel = ClosetViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -51,8 +52,10 @@ struct ContentView: View {
                 NegguTabBar(activeTab: $coordinator.activeTab, showTabBarList: $coordinator.showTabbarList)
             }
         }
-        .environmentObject(coordinator)
         .animation(.smooth(duration: 0.2), value: coordinator.showTabbarList)
+        .ignoresSafeArea(.keyboard)
+        .environmentObject(coordinator)
+        .environmentObject(closetViewModel)
     }
 }
 

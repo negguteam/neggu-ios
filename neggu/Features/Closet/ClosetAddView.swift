@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
-import Combine
 
 struct ClosetAddView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var viewModel: ClosetViewModel
     
     // TODO: 이름 수정을 했을 때, 카테고리 변경하면 또 이름이 알아서 편집되는지?
     @State private var clothes: ClothesRegisterEntity
@@ -29,10 +28,6 @@ struct ClosetAddView: View {
     
     private let segmentedImage: UIImage
     
-    let service = DefaultClosetService()
-    
-    @State private var bag = Set<AnyCancellable>()
-    
     var name: String {
         if clothes.name.isEmpty {
             [clothes.brand,
@@ -46,7 +41,7 @@ struct ClosetAddView: View {
     
     var categoryTitle: String {
         if clothes.subCategory != .UNKNOWN {
-            clothes.category.title + " > " + clothes.subCategory.rawValue
+            clothes.category.title + " > " + clothes.subCategory.title
         } else if clothes.category != .UNKNOWN {
             clothes.category.title
         } else {
@@ -313,15 +308,9 @@ struct ClosetAddView: View {
                                 clothes.name = name
                                 clothes.mood = selectedMoodList
                                 
-                                service.register(
-                                    image: image,
-                                    request: clothes
-                                ).sink { event in
-                                    print("ClosetAdd:", event)
-                                } receiveValue: { result in
-                                    debugPrint(result)
-                                    dismiss()
-                                }.store(in: &bag)
+                                viewModel.registerClothes(image: image, clothes: clothes) {
+                                    coordinator.dismiss()
+                                }
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)
@@ -374,7 +363,7 @@ struct ClosetAddView: View {
             leftContent: "이어서 편집하기",
             rightContent: "그만하기"
         ) {
-            dismiss()
+            coordinator.dismiss()
         }
     }
     

@@ -11,55 +11,27 @@ import Combine
 
 struct ClosetView: View {
     @EnvironmentObject private var closetCoordinator: MainCoordinator
-    
-    private let service = DefaultClosetService()
+    @EnvironmentObject private var viewModel: ClosetViewModel
     
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
     
-    @State private var selectedCategory: Category = .UNKNOWN
-    @State private var selectedSubCategory: SubCategory = .UNKNOWN
-    @State private var selectedMood: [Mood] = []
-    @State private var selectedColor: ColorFilter?
-    
     @FocusState private var isFocused: Bool
     @State private var filterType: FilterType?
-    
-    @State private var page: Int = 0
-    @State private var canPagenation: Bool = true
-    
-    @State private var clothes: [ClothesEntity] = []
-    @State private var bag = Set<AnyCancellable>()
-    
-    var categoryTitle: String {
-        if selectedSubCategory != .UNKNOWN {
-            selectedSubCategory.title
-        } else if selectedCategory != .UNKNOWN {
-            selectedCategory.title
-        } else {
-            "카테고리"
-        }
-    }
-    
-    var moodTitle: String {
-        if let firstMood = selectedMood.first {
-            firstMood.title
-        } else {
-            "분위기"
-        }
-    }
-    
-    var colorTitle: String {
-        selectedColor?.id.uppercased() ?? "색상"
-    }
-    
+        
     var body: some View {
         ScrollView {
             VStack(spacing: 48) {
                 LinkBanner(urlString: $clothesURLString) {
                     if clothesURLString.isEmpty { return }
                     clothesURLString = clothesURLString.split(separator: " ").filter { $0.contains("https://") }.joined()
-                    Task { await segmentation() }
+                    
+                    Task {
+                        await segmentation()
+                        clothesURLString.removeAll()
+                        isFocused = false
+                    }
+                    
                 }
                 .focused($isFocused)
                 .id(0)
@@ -90,9 +62,9 @@ struct ClosetView: View {
                             columns: [GridItem](repeating: GridItem(.flexible(), spacing: 18), count: 3),
                             spacing: 16
                         ) {
-                            ForEach(clothes) { item in
+                            ForEach(viewModel.clothes) { item in
                                 Button {
-
+                                    closetCoordinator.push(.clothesDetail(clothesID: item.clothId))
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
@@ -114,7 +86,7 @@ struct ClosetView: View {
                             .fill(.clear)
                             .frame(height: 56)
                             .onAppear {
-                                getClothes()
+                                viewModel.getClothes()
                             }
                     }
                     .scrollIndicators(.hidden)
@@ -151,29 +123,50 @@ struct ClosetView: View {
                 }
         }
         .refreshable {
-            refreshCloset()
+            viewModel.resetFilter()
+            viewModel.refreshCloset()
         }
         .sheet(item: $filterType) {
-            page = 0
-            canPagenation = true
-            clothes.removeAll()
-            getClothes()
+            viewModel.refreshCloset()
         } content: { filterType in
             switch filterType {
             case .category:
                 CategorySheet(
-                    selectedCategory: $selectedCategory,
-                    selectedSubCategory: $selectedSubCategory
+                    selectedCategory: $viewModel.selectedCategory,
+                    selectedSubCategory: $viewModel.selectedSubCategory
                 )
                 .presentationDetents([.fraction(0.85)])
             case .mood:
-                MoodSheet(selectedMoodList: $selectedMood, isSingleSelection: true)
+                MoodSheet(selectedMoodList: $viewModel.selectedMood, isSingleSelection: true)
                     .presentationDetents([.fraction(0.85)])
             case .color:
-                ColorSheet(selectedColor: $selectedColor)
+                ColorSheet(selectedColor: $viewModel.selectedColor)
                     .presentationDetents([.fraction(0.85)])
             }
         }
+    }
+    
+    
+    var categoryTitle: String {
+        if viewModel.selectedSubCategory != .UNKNOWN {
+            viewModel.selectedSubCategory.title
+        } else if viewModel.selectedCategory != .UNKNOWN {
+            viewModel.selectedCategory.title
+        } else {
+            "카테고리"
+        }
+    }
+    
+    var moodTitle: String {
+        if let firstMood = viewModel.selectedMood.first {
+            firstMood.title
+        } else {
+            "분위기"
+        }
+    }
+    
+    var colorTitle: String {
+        viewModel.selectedColor?.id.uppercased() ?? "색상"
     }
     
     private func segmentation() async {
@@ -291,49 +284,6 @@ struct ClosetView: View {
         closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: image)
     }
     
-    private func getClothes() {
-        if !canPagenation { return }
-        
-        var parameters: [String: Any] = ["page": page, "size": 10]
-        
-        if selectedCategory != .UNKNOWN {
-            parameters["category"] = selectedCategory.id
-        }
-        
-        if selectedColor != nil {
-            parameters["colorGroup"] = selectedColor?.id
-        }
-        
-        if !selectedMood.isEmpty {
-            parameters["mood"] = selectedMood.first?.id
-        }
-        
-        service.clothesList(parameters: parameters)
-        .sink { event in
-            print("ClosetView:", event)
-        } receiveValue: { result in
-            self.clothes += result.content
-            
-            if !result.last {
-                self.page += 1
-            }
-            
-            self.canPagenation = !result.last
-        }.store(in: &bag)
-    }
-    
-    private func refreshCloset() {
-        selectedCategory = .UNKNOWN
-        selectedSubCategory = .UNKNOWN
-        selectedColor = nil
-        selectedMood.removeAll()
-        
-        page = 0
-        canPagenation = true
-        clothes.removeAll()
-        getClothes()
-    }
-    
     enum FilterType: Identifiable {
         case category
         case mood
@@ -343,6 +293,6 @@ struct ClosetView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}
+//#Preview {
+//    ContentView()
+//}
