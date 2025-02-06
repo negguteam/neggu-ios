@@ -58,7 +58,7 @@ class NegguInterceptor: RequestInterceptor {
         
         authService.tokenReissuance { isSuccessed in
             if isSuccessed {
-                completion(.retryWithDelay(10))
+                completion(.retryWithDelay(1))
             } else {
                 completion(.doNotRetryWithError(error))
             }
