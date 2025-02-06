@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SignUpCompleteView: View {
+    @EnvironmentObject private var authCoordinator: AuthCoordinator
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 50)
@@ -31,6 +33,7 @@ struct SignUpCompleteView: View {
             VStack(spacing: 24) {
                 Button {
                     UserDefaultsKey.Auth.isLogined = true
+                    authCoordinator.popToRoot()
                 } label: {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(.negguSecondary)
