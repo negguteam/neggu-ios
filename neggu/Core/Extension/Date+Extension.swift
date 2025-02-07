@@ -107,7 +107,7 @@ extension Date {
         } else if week.contains(self.yearMonthDay()) {
             return (self.daySymbol(), .labelNormal)
         } else {
-            return (self.monthDayFormatted(), .labelNormal)
+            return (self.monthDayFormatted(), .gray50)
         }
     }
     

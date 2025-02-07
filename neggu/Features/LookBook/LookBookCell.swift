@@ -11,21 +11,18 @@ struct LookBookCell: View {
     let dateString: String
     let dateColor: Color
     let isNeggu: Bool
-    let isGridItem: Bool
     
-    init(dateString: String, dateColor: Color, isNeggu: Bool = false, isGridItem: Bool = false) {
+    init(dateString: String, dateColor: Color, isNeggu: Bool = false) {
         self.dateString = dateString
         self.dateColor = dateColor
         self.isNeggu = isNeggu
-        self.isGridItem = isGridItem
     }
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.white)
-                .frame(idealWidth: isGridItem ? .infinity : 90)
-                .frame(height: isGridItem ? 260 : 112)
+                .frame(height: 260)
                 .overlay {
                     ZStack(alignment: .bottomLeading) {
                         Image(.dummyLookbook)
@@ -39,12 +36,9 @@ struct LookBookCell: View {
                     }
                     .padding(10)
                 }
-                .padding(.top, 7)
             
             HStack(spacing: 4) {
-                if isGridItem {
-                    Image(systemName: "alarm")
-                }
+                Image(systemName: "alarm")
                 
                 Text(dateString)
             }
