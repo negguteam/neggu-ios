@@ -20,169 +20,18 @@ struct LookBookDetailView: View {
     @State private var sheetHeight: CGFloat = .zero
     
     var body: some View {
-        GeometryReader { proxy in
-            ScrollView {
-                VStack(spacing: 32) {
-                    Image("dummy_lookbook")
-                        .resizable()
-                        .scaledToFit()
-                    
-                    HStack {
-                        Spacer()
-                        
-                        Button {
-                            showCalendar = true
-                        } label: {
-                            HStack(spacing: 0) {
-                                Image(systemName: "calendar")
-                                    .frame(width: 24, height: 24)
-                                    .padding(.trailing, 4)
-                                
-                                if let selectedDate {
-                                    Text(selectedDate.monthDayFormatted())
-                                    Text("에 입을 예정")
-                                        .foregroundStyle(.labelAlt)
-                                } else {
-                                    Text("입을 예정이신가요?")
-                                }
-                            }
-                            .negguFont(.body2b)
-                            .foregroundStyle(selectedDate == nil ? .labelInactive : .negguSecondary)
-                            .frame(height: 60)
-                            .padding(.horizontal, 12)
-                            .background(.bgNormal)
-                            .clipShape(.rect(cornerRadius: 16))
-                        }
-                    }
-                }
-                .padding(20)
-                .frame(width: proxy.size.width, height: proxy.size.height * 0.9)
-                .background(.white)
-                .clipShape(.rect(cornerRadius: 20))
-                .padding(.vertical, 12)
-                
-                VStack(spacing: 20) {
-                    Text("2024년 12월 3일 편집됨")
-                        .negguFont(.caption)
-                        .foregroundStyle(.black.opacity(0.2))
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .padding(.bottom, 10)
-                    
-                    if isNeggu {
-                        HStack(spacing: 0) {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                                .foregroundStyle(.negguSecondary)
-                            
-                            Group {
-                                Text("네꾸ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ")
-                                    .foregroundStyle(.negguSecondary)
-                                    .lineLimit(1)
-                                    .padding(.leading, 12)
-                                
-                                Text("님이 꾸며준 룩북이에요")
-                                    .fixedSize()
-                            }
-                            .negguFont(.body2b)
-                            
-                            Spacer()
-                            
-                            Circle()
-                                .frame(width: 36, height: 36)
-                        }
-                        .padding(12)
-                        .background(.negguSecondaryAlt)
-                        .clipShape(.rect(cornerRadius: 16))
-                    }
-                    
-                    VStack {
-                        Text("의상 자세히 보기")
-                            .negguFont(.title3)
-                            .foregroundStyle(.labelNormal)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
-                            ForEach(0...5, id: \.self) { index in
-                                Button {
-                                    clothes = .init(name: "옷\(index)", link: "", imageUrl: "", brand: "")
-                                } label: {
-                                    Image("dummy_clothes\(index % 3)")
-                                        .resizable()
-                                        .aspectRatio(0.8, contentMode: .fit)
-                                }
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.vertical, 32)
-                    .background(.white)
-                    .clipShape(.rect(cornerRadius: 16))
-                    
-                    Toggle("다른사람에게 공개", isOn: $isPublic)
-                        .negguFont(.body2b)
-                        .foregroundStyle(.labelAssistive)
-                        .tint(.safe)
-                        .padding(12)
-                        .background(.white)
-                        .clipShape(.rect(cornerRadius: 16))
-                    
-                    HStack {
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "square.and.arrow.up")
-                                .foregroundStyle(.white)
-                                .frame(width: 56, height: 56)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(.black)
-                                }
-                        }
-                        .buttonStyle(.plain)
-                        
-                        Button {
-                            
-                        } label: {
-                            HStack {
-                                Image(systemName: "calendar")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 24, height: 24)
-                                
-                                Text("네가 좀 꾸며줘!")
-                                    .negguFont(.body1b)
-                            }
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 56)
-                            .background {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(.negguSecondary)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 90)
-            }
-            .scrollIndicators(.hidden)
-            .background(.gray5)
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+        VStack(spacing: 0) {
+            HStack {
                 Button {
                     dismiss()
                 } label: {
                     Image(systemName: "chevron.left")
                         .foregroundStyle(.labelNormal)
+                        .frame(width: 44, height: 44)
                 }
-            }
-            
-            ToolbarItem(placement: .principal) {
+                
+                Spacer()
+                
                 HStack(spacing: 4) {
                     Text("데이트룩")
                         .negguFont(.body2b)
@@ -193,9 +42,9 @@ struct LookBookDetailView: View {
                     .frame(width: 24, height: 24)
                 }
                 .foregroundStyle(.labelNormal)
-            }
-            
-            ToolbarItem(placement: .topBarTrailing) {
+                
+                Spacer()
+                
                 Menu {
                     Button("이미지로 저장하기") {
                         
@@ -212,15 +61,164 @@ struct LookBookDetailView: View {
                 } label: {
                     Image(systemName: "ellipsis")
                         .foregroundStyle(.labelNormal)
+                        .frame(width: 44, height: 44)
                 }
             }
+            .frame(height: 44)
+            .padding(.horizontal, 20)
+            .background(.bgNormal)
+            
+            ScrollView {
+                VStack(spacing: 24) {
+                    VStack(spacing: 54) {
+                        Image("dummy_lookbook")
+                            .resizable()
+                            .scaledToFit()
+                        
+                        HStack {
+                            if isNeggu {
+                                HStack(spacing: 12) {
+//                                    Color.negguSecondary
+//                                        .frame(width: 24, height: 24)
+//                                        .mask {
+//                                            Image("neggu_star")
+//                                                .resizable()
+//                                        }
+                                    
+                                    Circle()
+                                        .frame(width: 36, height: 36)
+                                    
+                                    HStack(spacing: 0) {
+                                        Text("네꾸ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ")
+                                            .foregroundStyle(.negguSecondary)
+                                            .lineLimit(1)
+                                        
+                                        Text("님이 꾸며줬어요")
+                                            .fixedSize()
+                                    }
+                                    .negguFont(.body2b)
+                                }
+                                .frame(height: 56)
+                                .padding(.horizontal, 14)
+                                .background(.bgNormal)
+                                .clipShape(.rect(cornerRadius: 16))
+                            }
+                            
+                            Button {
+                                showCalendar = true
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "calendar")
+                                        .frame(width: 24, height: 24)
+                                    
+                                    if let selectedDate {
+                                        Text(selectedDate.monthDayFormatted())
+                                    }
+                                }
+                                .negguFont(.body2b)
+                                .foregroundStyle(selectedDate == nil ? .labelInactive : .negguSecondary)
+                                .padding(.horizontal, 12)
+                                .frame(width: selectedDate == nil ? 56 : nil, height: 56)
+                                .background(.bgNormal)
+                                .clipShape(.rect(cornerRadius: 16))
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 24)
+                    .containerRelativeFrame(.horizontal)
+                    .containerRelativeFrame(.vertical) { length, _ in length * 0.9 }
+                    .background(.white)
+                    .clipShape(.rect(cornerRadius: 20))
+                    .padding(.top, 12)
+                    
+                    VStack(spacing: 24) {
+                        Text("2024년 12월 3일 편집됨")
+                            .negguFont(.caption)
+                            .foregroundStyle(.black.opacity(0.2))
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                        
+                        VStack {
+                            Text("더보기")
+                                .negguFont(.title3)
+                                .foregroundStyle(.labelNormal)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
+                                ForEach(0...5, id: \.self) { index in
+                                    Button {
+                                        clothes = .init(name: "옷\(index)", link: "", imageUrl: "", brand: "")
+                                    } label: {
+                                        Image("dummy_clothes\(index % 3)")
+                                            .resizable()
+                                            .aspectRatio(0.8, contentMode: .fit)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 28)
+                        .padding(.vertical, 32)
+                        .background(.white)
+                        .clipShape(.rect(cornerRadius: 16))
+                        
+                        Toggle("다른사람에게 공개", isOn: $isPublic)
+                            .negguFont(.body2b)
+                            .foregroundStyle(.labelAssistive)
+                            .tint(.safe)
+                            .padding(.horizontal, 28)
+                            .padding(.vertical, 10)
+                            .background(.white)
+                            .clipShape(.rect(cornerRadius: 16))
+                        
+                        HStack {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "square.and.arrow.up")
+                                    .foregroundStyle(.white)
+                                    .frame(width: 56, height: 56)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(.black)
+                                    }
+                            }
+                            
+                            Button {
+                                
+                            } label: {
+                                HStack(spacing: 10) {
+                                    Image("neggu_star")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 24, height: 24)
+                                    
+                                    Text("네가 좀 꾸며줘!")
+                                        .negguFont(.body1b)
+                                }
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 56)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.negguSecondary)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 90)
+                }
+            }
+            .scrollIndicators(.hidden)
+            .background(.gray5)
         }
+        .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showCalendar) {
             LookBookDateEditView(selectedDate: $selectedDate)
                 .heightChangePreference { sheetHeight = $0 }
                 .presentationDetents([.height(sheetHeight)])
                 .presentationCornerRadius(20)
-                .presentationBackground(Color.bgNormal)
+                .presentationBackground(.bgNormal)
         }
     }
 }
