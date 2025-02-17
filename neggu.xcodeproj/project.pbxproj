@@ -49,6 +49,8 @@
 		135081182D38CCB2005E2491 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081172D38CCB2005E2491 /* Category.swift */; };
 		1350811A2D38CCBF005E2491 /* SubCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135081192D38CCBF005E2491 /* SubCategory.swift */; };
 		1350811C2D38D5A4005E2491 /* BrandEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350811B2D38D5A4005E2491 /* BrandEntity.swift */; };
+		1352E0042D5F50AD00354234 /* LookBookAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0032D5F50AD00354234 /* LookBookAPI.swift */; };
+		1352E0062D5F68D100354234 /* LookBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0052D5F68D100354234 /* LookBookService.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
 		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
@@ -104,6 +106,7 @@
 		13DC5E732C64AA3900DB5600 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */; };
 		13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */; };
 		13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E772C64AB1100DB5600 /* DIContainer.swift */; };
+		13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */; };
 		13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */; };
 		13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */; };
 		13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */; };
@@ -170,6 +173,8 @@
 		135081172D38CCB2005E2491 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		135081192D38CCBF005E2491 /* SubCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategory.swift; sourceTree = "<group>"; };
 		1350811B2D38D5A4005E2491 /* BrandEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandEntity.swift; sourceTree = "<group>"; };
+		1352E0032D5F50AD00354234 /* LookBookAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookAPI.swift; sourceTree = "<group>"; };
+		1352E0052D5F68D100354234 /* LookBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookService.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
 		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
@@ -225,6 +230,7 @@
 		13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationDependency.swift; sourceTree = "<group>"; };
 		13DC5E772C64AB1100DB5600 /* DIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEntity.swift; sourceTree = "<group>"; };
 		13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEditView.swift; sourceTree = "<group>"; };
 		13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpendableTextView.swift; sourceTree = "<group>"; };
@@ -473,6 +479,8 @@
 				13BE365C2D27975D0033DE7B /* HealthAPI.swift */,
 				1350810B2D38BC95005E2491 /* ClosetAPI.swift */,
 				1350810D2D38C760005E2491 /* ClosetService.swift */,
+				1352E0032D5F50AD00354234 /* LookBookAPI.swift */,
+				1352E0052D5F68D100354234 /* LookBookService.swift */,
 				1309706F2D41248D0050D091 /* UserAPI.swift */,
 				130970712D4126290050D091 /* UserService.swift */,
 			);
@@ -486,6 +494,7 @@
 				1364C8772C61370700F67E3C /* CheckNicknameEntity.swift */,
 				13BE365A2D2797200033DE7B /* ErrorEntity.swift */,
 				136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */,
+				13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */,
 				1350811B2D38D5A4005E2491 /* BrandEntity.swift */,
 			);
 			path = Domain;
@@ -749,6 +758,7 @@
 				135081162D38CCA1005E2491 /* Mood.swift in Sources */,
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				1318DE572D3F79410077972D /* String+Extension.swift in Sources */,
+				1352E0062D5F68D100354234 /* LookBookService.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
 				13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */,
 				13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */,
@@ -768,6 +778,7 @@
 				1337B70B2CDD009C0052BFF2 /* ClothesDetailView.swift in Sources */,
 				1364C8732C61031E00F67E3C /* TokenEntity.swift in Sources */,
 				1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */,
+				1352E0042D5F50AD00354234 /* LookBookAPI.swift in Sources */,
 				1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */,
 				1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */,
 				13F8ABD82D19DF5600E08057 /* TitleForm.swift in Sources */,
@@ -778,6 +789,7 @@
 				1350810C2D38BC95005E2491 /* ClosetAPI.swift in Sources */,
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
+				13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
 				130970692D40C1420050D091 /* UIImage+Extension.swift in Sources */,
 				13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */,

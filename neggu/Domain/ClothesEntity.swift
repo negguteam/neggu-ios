@@ -70,6 +70,18 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
             brand: self.brand
         )
     }
+    
+    func toLookBookClothes() -> LookBookClothesEntity {
+        return .init(
+            id: self.id,
+            imageUrl: imageUrl,
+            scale: 1.0,
+            angle: 0,
+            xRatio: 0,
+            yRatio: 0,
+            zIndex: 0
+        )
+    }
 }
 
 struct Clothes: Equatable, Hashable, Identifiable {

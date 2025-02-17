@@ -23,6 +23,8 @@ extension BaseAPI {
             base += "/auth"
         case .closet:
             base += "/cloth"
+        case .lookbook:
+            base += "/lookbook"
         case .user:
             base += "/user"
         case .health:
@@ -51,6 +53,7 @@ extension BaseAPI {
 enum APIType {
     case auth
     case closet
+    case lookbook
     case user
     case notification
     case health
