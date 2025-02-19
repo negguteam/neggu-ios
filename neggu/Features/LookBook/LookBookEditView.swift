@@ -10,28 +10,7 @@ import SwiftUI
 struct LookBookEditView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var clothes: [Clothes] = [
-        .init(
-            name: "루즈핏 V넥 베스트 CRYSTAL BEIGE",
-            link: "https://musinsaapp.page.link/v1St9cWw5h291zfBA",
-            imageUrl: "https://image.msscdn.net/images/goods_img/20230809/3454995/3454995_16915646154097_500.jpg",
-            brand: "내셔널지오그래픽"
-        ),
-        .init(
-            name: "나이키 에어포스 1 '07 LV8 미드나잇 네이비",
-            link: "https://kream.co.kr/products/78768?base_product_id=12831",
-            imageUrl: "https://kream-phinf.pstatic.net/MjAyNDA2MjJfMTMx/MDAxNzE5MDI5ODMzOTg2.8TsdHQrXy3-tcIMHceZOG5eBSdl_-ybtjFhLVIZDOXEg.TUQIZNOi5ptP4zsfcdsi3EBAgTwh2jruSeKGnbMekaQg.PNG/a_56586590956f4404862cbdaeff6a5e63.png",
-            brand: "Nike"
-        ),
-        .init(
-            name: "푸마 터프 테라 Mid Gloss - 블랙: 다크그레이",
-            link: "https://www.musinsa.com/products/4537667",
-            imageUrl: "https://image.msscdn.net/thumbnails/images/goods_img/20241021/4537667/4537667_17302782606169_500.jpg",
-            brand: "puma"
-        )
-    ]
-    
-    @State private var selectedClothes: [Clothes] = []
+    @State private var selectedClothes: [LookBookClothesItem] = []
     
     @State private var editingClothes: String = "" {
         didSet {
@@ -45,7 +24,11 @@ struct LookBookEditView: View {
     @State private var isColorEditMode: Bool = false
     @State private var isEditingMode: Bool = false
     
-    private let categories: [String] = ["상의", "하의", "아우터", "원피스", "기타", "전체"]
+    let lookbookService = DefaultLookBookService()
+    
+    @State private var lookbookClothes: [ClothesEntity] = []
+    
+    @State private var bag = Set<AnyCancellable>()
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
@@ -196,12 +179,12 @@ struct LookBookEditView: View {
                         if !isEditingMode {
                             ScrollView(.horizontal) {
                                 HStack {
-                                    ForEach($clothes) { clothes in
+                                    ForEach($lookbookClothes) { clothes in
                                         let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
                                         
                                         Button {
                                             if !isSelected {
-                                                selectedClothes.append(clothes.wrappedValue)
+                                                selectedClothes.append(clothes.wrappedValue.toLookBookItem())
                                             } else {
                                                 selectedClothes.removeAll(where: { $0.id == clothes.wrappedValue.id })
                                             }
@@ -281,20 +264,25 @@ struct LookBookEditView: View {
                 endPoint: .bottom
             )
         }
+        .onAppear {
+            getLookBookClothes()
+        }
     }
     
     var collageView: some View {
         GeometryReader { proxy in
             ZStack {
                 ForEach($selectedClothes) { clothes in
-                    AsyncImage(url: URL(string: clothes.wrappedValue.imageUrl)) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
+                    Group {
+                        if let image = clothes.wrappedValue.image {
+                            Image(uiImage: image)
                                 .resizable()
                                 .scaledToFit()
-                        default:
+                        } else {
                             Color.clear
+                                .overlay {
+                                    ProgressView()
+                                }
                         }
                     }
                     .frame(width: proxy.size.width / 2, height: proxy.size.height / 3)
@@ -364,10 +352,32 @@ struct LookBookEditView: View {
                 }
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
+            .background(.white)
         }
     }
     
-    func drag(clothes: Binding<Clothes>) -> some Gesture {
+    func getLookBookClothes() {
+//        if !canPagenation { return }
+                    
+        var parameters: [String: Any] = ["page": 0, "size": 10]
+        
+        if selectedCategory != .UNKNOWN {
+            parameters["filterCategory"] = selectedCategory.id
+        }
+        
+//        if selectedColor != nil {
+            parameters["colorGroup"] = "ALL"
+//        }
+        
+        lookbookService.lookbookClothes(parameters: parameters)
+            .sink { event in
+                print("LookBookEditView:", event)
+            } receiveValue: { result in
+                self.lookbookClothes = result.content
+            }.store(in: &bag)
+    }
+    
+    func drag(clothes: Binding<LookBookClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
                 guard editingClothes == clothes.id else { return }
@@ -379,7 +389,7 @@ struct LookBookEditView: View {
             }
     }
     
-    func scaleGesture(_ clothes: Binding<Clothes>) -> some Gesture {
+    func scaleGesture(_ clothes: Binding<LookBookClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
                 // TODO: [!] 최소, 최대 확대 범위 설정
@@ -395,7 +405,7 @@ struct LookBookEditView: View {
         return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 200
     }
     
-    func rotationGesture(_ clothes: Binding<Clothes>) -> some Gesture {
+    func rotationGesture(_ clothes: Binding<LookBookClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
                 // 드래그 시작 시 기준 각도를 설정
@@ -404,7 +414,13 @@ struct LookBookEditView: View {
                 }
                 
                 // 현재 각도와 시작 각도 비교하여 각도 변화 계산
-                clothes.wrappedValue.angle = angleForPoint(start: .zero, end: value.location) - clothes.wrappedValue.lastAngle
+                var angle = angleForPoint(start: .zero, end: value.location) - clothes.wrappedValue.lastAngle
+                
+                if angle.degrees < 0 {
+                    angle.degrees += 360
+                }
+                
+                clothes.wrappedValue.angle = angle
             }
             .onEnded { _ in
                 print(clothes.wrappedValue.angle.degrees)
