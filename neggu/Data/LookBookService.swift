@@ -21,14 +21,17 @@ protocol LookBookService {
 extension DefaultLookBookService: LookBookService {
     
     func register(image: Data, request: [LookBookClothesEntity]) -> AnyPublisher<LookBookEntity, Error> {
-        let dictionary: [String: Any] = [
-            "lookBookClothes": request
-        ]
-        let object = (try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)) ?? .init()
+        let requestArray = request.compactMap {
+            let jsonData = (try? JSONEncoder().encode($0)) ?? .init()
+            return try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
+        }
+        
+        let dictionary: [String: Any] = ["lookBookClothes": requestArray]
+        let object = try? JSONSerialization.data(withJSONObject: dictionary)
         
         return requestObjectWithNetworkError(.register(
             image: image,
-            request: object
+            request: object ?? .init()
         ))
     }
     

@@ -56,8 +56,8 @@ extension LookBookAPI: BaseAPI {
         switch self {
         case .register(let image, let request):
             var multipartData: [MultipartFormData] = []
-            multipartData.append(.init(provider: .data(image), name: "image", fileName: "lookbookImage", mimeType: "image/png"))
-            multipartData.append(.init(provider: .data(request), name: "lookbookClothes"))
+            multipartData.append(.init(provider: .data(image), name: "image", fileName: "lookBookImage", mimeType: "image/png"))
+            multipartData.append(.init(provider: .data(request), name: "lookBookRequest"))
             
             return .uploadMultipart(multipartData)
         case .lookbookList(let parameters), .lookbookClothes(let parameters):
