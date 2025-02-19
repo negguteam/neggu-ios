@@ -17,8 +17,11 @@ struct LookBookEntity: Decodable, Identifiable {
     let modifiedAt: String
 }
 
-struct LookBookRequestEntity: Decodable {
-    let lookBookClothes: [LookBookClothesEntity]
+struct LookBookListEntity: Decodable {
+    let content: [LookBookEntity]
+    let first: Bool
+    let last: Bool
+    let empty: Bool
 }
 
 struct LookBookClothesEntity: Codable, Identifiable, Equatable {
@@ -26,9 +29,9 @@ struct LookBookClothesEntity: Codable, Identifiable, Equatable {
     let imageUrl: String
     var scale: Float
     var angle: Int
-    var xRatio: Float
-    var yRatio: Float
-    var zIndex: Int
+    var xratio: Float
+    var yratio: Float
+    var zindex: Int
 }
 
 struct LookBookClothesItem: Identifiable, Equatable {
@@ -50,9 +53,9 @@ struct LookBookClothesItem: Identifiable, Equatable {
             imageUrl: self.imageUrl,
             scale: Float(self.scale),
             angle: Int(self.angle.degrees),
-            xRatio: Float(self.offset.width),
-            yRatio: Float(self.offset.height),
-            zIndex: Int(zIndex)
+            xratio: Float(self.offset.width),
+            yratio: Float(self.offset.height),
+            zindex: Int(zIndex)
         )
     }
 }

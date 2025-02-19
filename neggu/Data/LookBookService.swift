@@ -13,7 +13,7 @@ typealias DefaultLookBookService = BaseService<LookBookAPI>
 protocol LookBookService {
     func register(image: Data, request: [LookBookClothesEntity]) -> AnyPublisher<LookBookEntity, Error>
     func lookbookDetail(id: String) -> AnyPublisher<LookBookEntity, Error>
-    func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookEntity, Error>
+    func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookListEntity, Error>
     func lookbookClothes(parameters: [String: Any]) -> AnyPublisher<ClosetEntity, Error>
     func deleteLookBook(id: String) -> AnyPublisher<LookBookEntity, Error>
 }
@@ -39,7 +39,7 @@ extension DefaultLookBookService: LookBookService {
         requestObjectWithNetworkError(.lookbookDetail(id: id))
     }
     
-    func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookEntity, Error> {
+    func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookListEntity, Error> {
         requestObjectWithNetworkError(.lookbookList(parameters: parameters))
     }
     
