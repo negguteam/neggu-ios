@@ -10,11 +10,13 @@ import SwiftUI
 struct LookBookCell: View {
     let dateString: String
     let dateColor: Color
+    let lookBook: LookBookEntity
     let isNeggu: Bool
     
-    init(dateString: String, dateColor: Color, isNeggu: Bool = false) {
+    init(dateString: String, dateColor: Color, lookBook: LookBookEntity, isNeggu: Bool = false) {
         self.dateString = dateString
         self.dateColor = dateColor
+        self.lookBook = lookBook
         self.isNeggu = isNeggu
     }
     
@@ -25,9 +27,16 @@ struct LookBookCell: View {
                 .frame(height: 260)
                 .overlay {
                     ZStack(alignment: .bottomLeading) {
-                        Image(.dummyLookbook)
-                            .resizable()
-                            .scaledToFit()
+                        AsyncImage(url: URL(string: lookBook.imageURL)) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        } placeholder: {
+                            Color.clear
+                                .overlay {
+                                    ProgressView()
+                                }
+                        }
                         
                         if isNeggu {
                             Circle()

@@ -264,9 +264,9 @@ struct LookBookView: View {
                                 let (dateString, dateColor) = date.generateLookBookDate()
                                 
                                 Button {
-                                    lookbookCoordinator.push(.lookbookDetail)
+                                    lookbookCoordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
                                 } label: {
-                                    LookBookCell(dateString: dateString, dateColor: dateColor, isNeggu: index % 4 == 0)
+                                    LookBookCell(dateString: dateString, dateColor: dateColor, lookBook: lookBook, isNeggu: Bool.random())
                                 }
                             }
                         }
