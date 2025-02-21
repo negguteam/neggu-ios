@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct LookBookDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var clothes: Clothes?
+    @State private var lookBookState: LookBookState = .loading
+    
     @State private var selectedDate: Date?
     
     @State private var showCalendar: Bool = false
@@ -18,6 +20,11 @@ struct LookBookDetailView: View {
     @State private var isPublic: Bool = false
     
     @State private var sheetHeight: CGFloat = .zero
+    
+    @State private var bag = Set<AnyCancellable>()
+    
+    let lookBookID: String
+    let service: LookBookService = DefaultLookBookService()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,7 +41,7 @@ struct LookBookDetailView: View {
                 
                 HStack(spacing: 4) {
                     Text("데이트룩")
-                        .negguFont(.body2b)
+                        .negguFont(.body1b)
                     
                     Button("", systemImage: "pencil") {
                         
@@ -69,144 +76,169 @@ struct LookBookDetailView: View {
             .background(.bgNormal)
             
             ScrollView {
-                VStack(spacing: 24) {
-                    VStack(spacing: 54) {
-                        Image("dummy_lookbook")
-                            .resizable()
-                            .scaledToFit()
-                        
-                        HStack {
-                            if isNeggu {
-                                HStack(spacing: 12) {
-//                                    Color.negguSecondary
-//                                        .frame(width: 24, height: 24)
-//                                        .mask {
-//                                            Image("neggu_star")
-//                                                .resizable()
-//                                        }
-                                    
-                                    Circle()
-                                        .frame(width: 36, height: 36)
-                                    
-                                    HStack(spacing: 0) {
-                                        Text("네꾸ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ")
-                                            .foregroundStyle(.negguSecondary)
-                                            .lineLimit(1)
+                switch lookBookState {
+                case .loading:
+                    ProgressView()
+                        .onAppear {
+                            service.lookbookDetail(id: lookBookID)
+                                .sink { event in
+                                    print("LookBookDetailView:", event)
+                                } receiveValue: { lookBook in
+                                    lookBookState = .complete(lookBook: lookBook)
+                                }.store(in: &bag)
+                        }
+                case .complete(let lookBook):
+                    VStack(spacing: 24) {
+                        VStack(spacing: 54) {
+                            AsyncImage(url: URL(string: lookBook.imageURL)) { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                            } placeholder: {
+                                Color.clear
+                                    .overlay {
+                                        ProgressView()
+                                    }
+                            }
+                            
+                            HStack {
+                                if isNeggu {
+                                    HStack(spacing: 12) {
+                                        //                                    Color.negguSecondary
+                                        //                                        .frame(width: 24, height: 24)
+                                        //                                        .mask {
+                                        //                                            Image("neggu_star")
+                                        //                                                .resizable()
+                                        //                                        }
                                         
-                                        Text("님이 꾸며줬어요")
-                                            .fixedSize()
+                                        Circle()
+                                            .frame(width: 36, height: 36)
+                                        
+                                        HStack(spacing: 0) {
+                                            Text("네꾸ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ")
+                                                .foregroundStyle(.negguSecondary)
+                                                .lineLimit(1)
+                                            
+                                            Text("님이 꾸며줬어요")
+                                                .fixedSize()
+                                        }
+                                        .negguFont(.body2b)
+                                    }
+                                    .frame(height: 56)
+                                    .padding(.horizontal, 14)
+                                    .background(.bgNormal)
+                                    .clipShape(.rect(cornerRadius: 16))
+                                }
+                                
+                                Button {
+                                    showCalendar = true
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "calendar")
+                                            .frame(width: 24, height: 24)
+                                        
+                                        if let selectedDate {
+                                            Text(selectedDate.monthDayFormatted())
+                                        }
                                     }
                                     .negguFont(.body2b)
-                                }
-                                .frame(height: 56)
-                                .padding(.horizontal, 14)
-                                .background(.bgNormal)
-                                .clipShape(.rect(cornerRadius: 16))
-                            }
-                            
-                            Button {
-                                showCalendar = true
-                            } label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "calendar")
-                                        .frame(width: 24, height: 24)
-                                    
-                                    if let selectedDate {
-                                        Text(selectedDate.monthDayFormatted())
-                                    }
-                                }
-                                .negguFont(.body2b)
-                                .foregroundStyle(selectedDate == nil ? .labelInactive : .negguSecondary)
-                                .padding(.horizontal, 12)
-                                .frame(width: selectedDate == nil ? 56 : nil, height: 56)
-                                .background(.bgNormal)
-                                .clipShape(.rect(cornerRadius: 16))
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 24)
-                    .containerRelativeFrame(.horizontal)
-                    .containerRelativeFrame(.vertical) { length, _ in length * 0.9 }
-                    .background(.white)
-                    .clipShape(.rect(cornerRadius: 20))
-                    .padding(.top, 12)
-                    
-                    VStack(spacing: 24) {
-                        Text("2024년 12월 3일 편집됨")
-                            .negguFont(.caption)
-                            .foregroundStyle(.black.opacity(0.2))
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        
-                        VStack {
-                            Text("더보기")
-                                .negguFont(.title3)
-                                .foregroundStyle(.labelNormal)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
-                                ForEach(0...5, id: \.self) { index in
-                                    Button {
-                                        clothes = .init(name: "옷\(index)", link: "", imageUrl: "", brand: "")
-                                    } label: {
-                                        Image("dummy_clothes\(index % 3)")
-                                            .resizable()
-                                            .aspectRatio(0.8, contentMode: .fit)
-                                    }
+                                    .foregroundStyle(selectedDate == nil ? .labelInactive : .negguSecondary)
+                                    .padding(.horizontal, 12)
+                                    .frame(width: selectedDate == nil ? 56 : nil, height: 56)
+                                    .background(.bgNormal)
+                                    .clipShape(.rect(cornerRadius: 16))
                                 }
                             }
                         }
-                        .padding(.horizontal, 28)
-                        .padding(.vertical, 32)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 24)
+                        .containerRelativeFrame(.horizontal)
+                        .containerRelativeFrame(.vertical) { length, _ in length * 0.9 }
                         .background(.white)
-                        .clipShape(.rect(cornerRadius: 16))
+                        .clipShape(.rect(cornerRadius: 20))
+                        .padding(.top, 12)
                         
-                        Toggle("다른사람에게 공개", isOn: $isPublic)
-                            .negguFont(.body2b)
-                            .foregroundStyle(.labelAssistive)
-                            .tint(.safe)
+                        VStack(spacing: 24) {
+                            Text(lookBook.modifiedAt + " 편집됨")
+                                .negguFont(.caption)
+                                .foregroundStyle(.black.opacity(0.2))
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                            
+                            VStack {
+                                Text("더보기")
+                                    .negguFont(.title3)
+                                    .foregroundStyle(.labelNormal)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                
+                                LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
+                                    ForEach(lookBook.lookBookClothes) { clothes in
+                                        Button {
+
+                                        } label: {
+                                            AsyncImage(url: URL(string: clothes.imageUrl)) { image in
+                                                image
+                                                    .resizable()
+                                                    .scaledToFit()
+                                            } placeholder: {
+                                                ProgressView()
+                                            }
+                                            .aspectRatio(0.8, contentMode: .fit)
+                                        }
+                                    }
+                                }
+                            }
                             .padding(.horizontal, 28)
-                            .padding(.vertical, 10)
+                            .padding(.vertical, 32)
                             .background(.white)
                             .clipShape(.rect(cornerRadius: 16))
-                        
-                        HStack {
-                            Button {
+                            
+                            Toggle("다른사람에게 공개", isOn: $isPublic)
+                                .negguFont(.body2b)
+                                .foregroundStyle(.labelAssistive)
+                                .tint(.safe)
+                                .padding(.horizontal, 28)
+                                .padding(.vertical, 10)
+                                .background(.white)
+                                .clipShape(.rect(cornerRadius: 16))
+                            
+                            HStack {
+                                Button {
+                                    
+                                } label: {
+                                    Image(systemName: "square.and.arrow.up")
+                                        .foregroundStyle(.white)
+                                        .frame(width: 56, height: 56)
+                                        .background {
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .fill(.black)
+                                        }
+                                }
                                 
-                            } label: {
-                                Image(systemName: "square.and.arrow.up")
+                                Button {
+                                    
+                                } label: {
+                                    HStack(spacing: 10) {
+                                        Image("neggu_star")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 24, height: 24)
+                                        
+                                        Text("네가 좀 꾸며줘!")
+                                            .negguFont(.body1b)
+                                    }
                                     .foregroundStyle(.white)
-                                    .frame(width: 56, height: 56)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 56)
                                     .background {
                                         RoundedRectangle(cornerRadius: 16)
-                                            .fill(.black)
+                                            .fill(.negguSecondary)
                                     }
-                            }
-                            
-                            Button {
-                                
-                            } label: {
-                                HStack(spacing: 10) {
-                                    Image("neggu_star")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 24, height: 24)
-                                    
-                                    Text("네가 좀 꾸며줘!")
-                                        .negguFont(.body1b)
-                                }
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 56)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(.negguSecondary)
                                 }
                             }
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 90)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 90)
                 }
             }
             .scrollIndicators(.hidden)
@@ -221,11 +253,10 @@ struct LookBookDetailView: View {
                 .presentationBackground(.bgNormal)
         }
     }
-}
-
-#Preview {
-    NavigationStack {
-        LookBookDetailView()
+    
+    enum LookBookState {
+        case loading
+        case complete(lookBook: LookBookEntity)
     }
 }
 
