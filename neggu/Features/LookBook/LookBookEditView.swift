@@ -18,7 +18,8 @@ struct LookBookEditView: View {
         }
     }
     
-    @State private var selectedCategory: String = "전체"
+    @State private var selectedCategory: Category = .UNKNOWN
+    @State private var selectedColor: ColorFilter?
     
     @State private var showCategoryList: Bool = false
     @State private var isColorEditMode: Bool = false
@@ -31,238 +32,245 @@ struct LookBookEditView: View {
     @State private var bag = Set<AnyCancellable>()
     
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            GeometryReader { proxy in
-                VStack(spacing: 0) {
-                    HStack {
-                        Image(systemName: "multiply")
-                            .frame(width: 24, height: 24)
-                            .onTapGesture {
-                                dismiss()
-                            }
-                        
-                        Spacer()
-                        
-                        // TODO: 사진 저장 시, placehoder로 저장되는 것 해결하기
-                        Button("저장하기") {
-                            guard let lookbookImage = makeWaterMarkView(proxy: proxy).snapshot() else { return }
-                            UIImageWriteToSavedPhotosAlbum(lookbookImage, nil, nil, nil)
-                        }
-                        .negguFont(.body2b)
-                        .foregroundStyle(.black)
-                    }
-                    .frame(height: 44)
-                    .padding(.horizontal, 20)
-                    
-                    collageView
-                        .frame(width: proxy.size.width, height: proxy.size.height - 44)
-                        .clipped()
-                }
-            }
-            
+        GeometryReader { proxy in
             VStack(spacing: 0) {
-                if !isEditingMode {
-                    HStack {
-                        HStack {
-                            if !isColorEditMode {
-                                Button {
-                                    showCategoryList = true
-                                } label: {
-                                    HStack(spacing: 0) {
-                                        Image(systemName: "globe")
-                                        
-                                        HStack(spacing: 0) {
-                                            Text("길동")
-                                                .lineLimit(1)
-                                            
-                                            Text("의 옷장")
-                                                .fixedSize()
-                                        }
-                                        .padding(.horizontal, 12)
-                                        
-                                        Image(systemName: showCategoryList ? "chevron.down" : "chevron.up")
-                                    }
-                                    .negguFont(.body2b)
-                                    .foregroundStyle(.negguSecondary)
-                                    .frame(height: 44)
-                                    .padding(.horizontal, 12)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 22)
-                                            .fill(.white)
-                                    }
-                                }
-                                
-                                Button {
-                                    
-                                } label: {
-                                    RoundedRectangle(cornerRadius: 100)
-                                        .fill(.negguSecondary)
-                                        .frame(width: 80, height: 44)
-                                        .overlay {
-                                            Text("네꾸 ✨")
-                                                .negguFont(.body2b)
-                                                .foregroundStyle(.white)
-                                        }
-                                }
-                            }
+                HStack {
+                    Image(systemName: "multiply")
+                        .frame(width: 24, height: 24)
+                        .onTapGesture {
+                            dismiss()
                         }
-                        .animation(.smooth.delay(isColorEditMode ? 0 : 0.2), value: isColorEditMode)
-                        
-                        Spacer()
-                        
-                        HStack {
-                            if isColorEditMode {
-                                ScrollView(.horizontal) {
-                                    HStack(spacing: 12) {
-                                        Circle()
-                                            .frame(width: 32)
-                                        
-                                        ForEach(ColorFilter.allCases) { filter in
-                                            Circle()
-                                                .stroke(.lineAlt)
-                                                .fill(filter.color)
-                                                .frame(width: 32)
-                                        }
-                                    }
-                                }
-                                .scrollIndicators(.hidden)
-                                .opacity(isColorEditMode ? 1 : 0)
-                            } else {
-                                Circle()
-                                    .fill(.black)
-                                    .frame(width: 24)
-                                    .opacity(isColorEditMode ? 0 : 1)
-                            }
-                            
-                            Button {
-                                isColorEditMode.toggle()
-                            } label: {
-                                Image(systemName: "chevron.down")
-                                    .frame(width: 24, height: 24)
-                                    .foregroundStyle(.negguSecondary)
-                                    .rotationEffect(isColorEditMode ? Angle(degrees: 180.0) : Angle(degrees: 0.0))
-                            }
-                        }
-                        .frame(height: 44)
-                        .padding(.horizontal, 8)
-                        .background(.white)
-                        .clipShape(.rect(cornerRadius: 22))
-                        .animation(.smooth.delay(isColorEditMode ? 0.2 : 0), value: isColorEditMode)
+                    
+                    Spacer()
+                    
+                    Button("저장하기") {
+                        guard let lookbookImage = collageView
+                            .frame(width: proxy.size.width, height: proxy.size.width * 4 / 3)
+                            .background(.white)
+                            .snapshot(),
+                              let pngData = lookbookImage.pngData()
+                        else { return }
+                        UIImageWriteToSavedPhotosAlbum(lookbookImage, nil, nil, nil)
                     }
-                    .frame(height: 44)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 20)
-                } else {
-                    Button {
-                        selectedClothes.removeAll()
-                        isColorEditMode = false
-                        editingClothes = ""
-                    } label: {
-                        Circle()
-                            .fill(.warning)
-                            .frame(width: 72)
-                            .overlay {
-                                Image(systemName: "trash")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 36, height: 36)
-                                    .foregroundStyle(.labelRNormal)
-                            }
-                    }
-                    .padding(.bottom, 28)
+                    .negguFont(.body2b)
+                    .foregroundStyle(.black)
                 }
+                .frame(height: 44)
+                .padding(.horizontal, 20)
                 
-                UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
-                    .fill(.white)
-                    .frame(height: isEditingMode ? 18 : 152)
-                    .overlay(alignment: .top) {
+                ZStack(alignment: .bottomLeading) {
+                    collageView
+                        .frame(width: proxy.size.width)
+                        .clipped()
+                    
+                    VStack(spacing: 0) {
                         if !isEditingMode {
-                            ScrollView(.horizontal) {
+                            HStack {
+                                Spacer()
+                                
+                                Circle()
+                                    .frame(width: 44, height: 44)
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.top, 12)
+                            
+                            Spacer()
+                            
+                            HStack {
                                 HStack {
-                                    ForEach($lookbookClothes) { clothes in
-                                        let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
-                                        
+                                    if !isColorEditMode {
                                         Button {
-                                            if !isSelected {
-                                                selectedClothes.append(clothes.wrappedValue.toLookBookItem())
-                                            } else {
-                                                selectedClothes.removeAll(where: { $0.id == clothes.wrappedValue.id })
-                                            }
+                                            showCategoryList = true
                                         } label: {
-                                            AsyncImage(url: URL(string: clothes.wrappedValue.imageUrl)) { image in
-                                                image
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                            } placeholder: {
-                                                ProgressView()
+                                            HStack(spacing: 0) {
+                                                Image(systemName: "globe")
+                                                
+                                                HStack(spacing: 0) {
+                                                    Text("길동")
+                                                        .lineLimit(1)
+                                                    
+                                                    Text("의 옷장")
+                                                        .fixedSize()
+                                                }
+                                                .padding(.horizontal, 12)
+                                                
+                                                Image(systemName: showCategoryList ? "chevron.down" : "chevron.up")
                                             }
-                                            .frame(width: 100, height: 100)
-                                            .background(isSelected ? .negguSecondaryAlt : .gray5)
-                                            .overlay {
-                                                RoundedRectangle(cornerRadius: 16)
-                                                    .strokeBorder(isSelected ? .negguSecondary : .gray5)
+                                            .negguFont(.body2b)
+                                            .foregroundStyle(.negguSecondary)
+                                            .frame(height: 44)
+                                            .padding(.horizontal, 12)
+                                            .background {
+                                                RoundedRectangle(cornerRadius: 22)
+                                                    .fill(.white)
                                             }
-                                            .clipShape(.rect(cornerRadius: 16))
                                         }
                                     }
                                 }
-                                .padding(.horizontal, 20)
-                            }
-                            .scrollIndicators(.hidden)
-                            .padding(.top, 30)
-                        }
-                    }
-            }
-            
-            if showCategoryList {
-                Color.bgDimmed
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        showCategoryList = false
-                    }
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(categories, id: \.self) { category in
-                        Button {
-                            selectedCategory = category
-                            showCategoryList = false
-                        } label: {
-                            HStack(spacing: 12) {
-                                Image(systemName: "globe")
-                                
-                                Text(category)
+                                .animation(.smooth.delay(isColorEditMode ? 0 : 0.2), value: isColorEditMode)
                                 
                                 Spacer()
                                 
-                                if category == "전체" {
-                                    Image(systemName: showCategoryList ? "chevron.down" : "chevron.up")
+                                HStack {
+                                    if isColorEditMode {
+                                        ScrollView(.horizontal) {
+                                            HStack(spacing: 12) {
+                                                Circle()
+                                                    .frame(width: 32)
+                                                
+                                                ForEach(ColorFilter.allCases) { filter in
+                                                    Circle()
+                                                        .stroke(.lineAlt)
+                                                        .fill(filter.color)
+                                                        .frame(width: 32)
+                                                }
+                                            }
+                                        }
+                                        .scrollIndicators(.hidden)
+                                        .opacity(isColorEditMode ? 1 : 0)
+                                    } else {
+                                        Circle()
+                                            .fill(.black)
+                                            .frame(width: 24)
+                                            .opacity(isColorEditMode ? 0 : 1)
+                                    }
+                                    
+                                    Button {
+                                        isColorEditMode.toggle()
+                                    } label: {
+                                        Image(systemName: "chevron.down")
+                                            .frame(width: 24, height: 24)
+                                            .foregroundStyle(.negguSecondary)
+                                            .rotationEffect(isColorEditMode ? Angle(degrees: 180.0) : Angle(degrees: 0.0))
+                                    }
+                                }
+                                .frame(height: 44)
+                                .padding(.horizontal, 8)
+                                .background(.white)
+                                .clipShape(.rect(cornerRadius: 22))
+                                .animation(.smooth.delay(isColorEditMode ? 0.2 : 0), value: isColorEditMode)
+                            }
+                            .frame(height: 44)
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 20)
+                        } else {
+                            Button {
+                                selectedClothes.removeAll()
+                                isColorEditMode = false
+                                editingClothes = ""
+                            } label: {
+                                Circle()
+                                    .fill(.warning)
+                                    .frame(width: 72)
+                                    .overlay {
+                                        Image(systemName: "trash")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 36, height: 36)
+                                            .foregroundStyle(.labelRNormal)
+                                    }
+                            }
+                            .padding(.bottom, 28)
+                        }
+                        
+                        UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
+                            .fill(.white)
+                            .frame(height: isEditingMode ? 18 : 152)
+                            .overlay(alignment: .top) {
+                                if !isEditingMode {
+                                    ScrollView(.horizontal) {
+                                        HStack {
+                                            ForEach($lookbookClothes) { clothes in
+                                                let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
+                                                
+                                                Button {
+                                                    if !isSelected {
+                                                        selectedClothes.append(clothes.wrappedValue.toLookBookItem())
+                                                    } else {
+                                                        selectedClothes.removeAll(where: { $0.id == clothes.wrappedValue.id })
+                                                    }
+                                                } label: {
+                                                    AsyncImage(url: URL(string: clothes.wrappedValue.imageUrl)) { image in
+                                                        image
+                                                            .resizable()
+                                                            .aspectRatio(contentMode: .fit)
+                                                    } placeholder: {
+                                                        ProgressView()
+                                                    }
+                                                    .frame(width: 100, height: 100)
+                                                    .background(isSelected ? .negguSecondaryAlt : .gray5)
+                                                    .overlay {
+                                                        RoundedRectangle(cornerRadius: 16)
+                                                            .strokeBorder(isSelected ? .negguSecondary : .gray5)
+                                                    }
+                                                    .clipShape(.rect(cornerRadius: 16))
+                                                }
+                                            }
+                                        }
+                                        .padding(.horizontal, 20)
+                                    }
+                                    .scrollIndicators(.hidden)
+                                    .padding(.top, 30)
                                 }
                             }
-                            .frame(width: 146, height: 44)
-                            .foregroundStyle(
-                                selectedCategory == category
-                                ? .negguSecondary
-                                : .labelInactive
-                            )
+                    }
+                    
+                    if showCategoryList {
+                        Color.bgDimmed
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                showCategoryList = false
+                            }
+                        
+                        VStack(alignment: .leading, spacing: 0) {
+                            ForEach(Category.allCases) { category in
+                                Button {
+                                    selectedCategory = category
+                                    showCategoryList = false
+                                } label: {
+                                    HStack(spacing: 12) {
+                                        Image(systemName: "globe")
+                                        
+                                        switch category {
+                                        case .UNKNOWN:
+                                            Text("전체")
+                                        default:
+                                            Text(category.title)
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        if category == .UNKNOWN {
+                                            Image(systemName: showCategoryList ? "chevron.down" : "chevron.up")
+                                        }
+                                    }
+                                    .frame(width: 146, height: 44)
+                                    .foregroundStyle(
+                                        selectedCategory == category
+                                        ? .negguSecondary
+                                        : .labelInactive
+                                    )
+                                }
+                            }
                         }
+                        .negguFont(.body2b)
+                        .padding(.horizontal, 12)
+                        .background {
+                            RoundedRectangle(cornerRadius: 22)
+                                .fill(.white)
+                        }
+                        .padding(.leading, 20)
+                        .padding(.bottom, 172)
                     }
                 }
-                .negguFont(.body2b)
-                .padding(.horizontal, 12)
                 .background {
-                    RoundedRectangle(cornerRadius: 22)
-                        .fill(.white)
+                    LinearGradient(
+                        gradient: Gradient(colors: [.white, .white, .gray10]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 }
-                .padding(.leading, 20)
-                .padding(.bottom, 172)
             }
-        }
-        .background {
-            LinearGradient(
-                gradient: Gradient(colors: [.white, .white, .gray10]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
         }
         .onAppear {
             getLookBookClothes()
@@ -313,8 +321,8 @@ struct LookBookEditView: View {
                                 }
                                 .rotationEffect(.degrees(45))
                                 .offset(
-                                    x: proxy.size.width / 2 * clothes.wrappedValue.scale / 2 + 18,
-                                    y: proxy.size.height / 2 * clothes.wrappedValue.scale / 3 + 2
+                                    x: proxy.size.width / 2 * clothes.wrappedValue.scale / 2,
+                                    y: proxy.size.height / 2 * clothes.wrappedValue.scale / 3
                                 )
                                 .rotationEffect(clothes.wrappedValue.angle)
                                 .gesture(
@@ -352,7 +360,6 @@ struct LookBookEditView: View {
                 }
             }
             .frame(width: proxy.size.width, height: proxy.size.height)
-            .background(.white)
         }
     }
     
