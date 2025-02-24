@@ -58,15 +58,15 @@ final class MainCoordinator: Coordinator {
             ClosetView()
         case .closetAdd(let clothes, let segmentedImage):
             ClosetAddView(clothes: clothes, segmentedImage: segmentedImage)
-        case .clothesDetail(let clothes):
-            ClothesDetailView(clothes: clothes)
+        case .clothesDetail(let clothesID):
+            ClothesDetailView(clothesID: clothesID)
         
         case .lookbook:
             LookBookView()
-        case .lookbookEdit:
-            LookBookEditView()
-        case .lookbookDetail:
-            LookBookDetailView()
+        case .lookbookEdit(let editingClothes):
+            LookBookEditView(editingClothes: editingClothes)
+        case .lookbookDetail(let lookBookID):
+            LookBookDetailView(lookBookID: lookBookID)
             
         case .setting:
             SettingView()
@@ -76,11 +76,11 @@ final class MainCoordinator: Coordinator {
     enum Destination: Sceneable {
         case closet
         case closetAdd(clothes: ClothesRegisterEntity, segmentedImage: UIImage)
-        case clothesDetail(clothes: ClothesEntity)
+        case clothesDetail(clothesID: String)
         
         case lookbook
-        case lookbookEdit
-        case lookbookDetail
+        case lookbookEdit(editingClothes: [LookBookClothesItem] = [])
+        case lookbookDetail(lookBookID: String)
         
         case setting
         

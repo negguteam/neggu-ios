@@ -10,7 +10,7 @@ import SwiftUI
 struct LookBookEditView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State private var selectedClothes: [LookBookClothesItem] = []
+    @State private var selectedClothes: [LookBookClothesItem]
     
     @State private var editingClothes: String = "" {
         didSet {
@@ -30,6 +30,10 @@ struct LookBookEditView: View {
     @State private var lookbookClothes: [ClothesEntity] = []
     
     @State private var bag = Set<AnyCancellable>()
+    
+    init(editingClothes: [LookBookClothesItem] = []) {
+        self.selectedClothes = editingClothes
+    }
     
     var body: some View {
         GeometryReader { proxy in

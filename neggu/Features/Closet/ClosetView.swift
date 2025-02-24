@@ -106,7 +106,7 @@ struct ClosetView: View {
         .scrollDismissesKeyboard(.immediately)
         .overlay(alignment: .bottom) {
             Button {
-                closetCoordinator.fullScreenCover = .lookbookEdit
+                closetCoordinator.fullScreenCover = .lookbookEdit()
             } label: {
                 NegguCTAButton()
             }
