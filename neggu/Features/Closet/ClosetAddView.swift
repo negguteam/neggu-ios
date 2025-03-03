@@ -66,7 +66,7 @@ struct ClosetAddView: View {
                 Button {
                     showAlert = true
                 } label: {
-                    Image(systemName: "multiply")
+                    Image(.xLarge)
                         .frame(width: 44, height: 44)
                         .foregroundStyle(.labelNormal)
                 }
@@ -100,7 +100,7 @@ struct ClosetAddView: View {
                                                 
                                                 Spacer()
                                                 
-                                                Image(systemName: "chevron.down")
+                                                Image(.chevronDown)
                                             }
                                             .padding()
                                             .background() {
@@ -125,7 +125,7 @@ struct ClosetAddView: View {
                                                 
                                                 Spacer()
                                                 
-                                                Image(systemName: "chevron.down")
+                                                Image(.chevronDown)
                                             }
                                             .padding()
                                             .background() {
@@ -159,7 +159,7 @@ struct ClosetAddView: View {
                                                 
                                                 Spacer()
                                                 
-                                                Image(systemName: "chevron.down")
+                                                Image(.chevronDown)
                                             }
                                             .padding()
                                             .background() {
@@ -226,7 +226,7 @@ struct ClosetAddView: View {
                                                     .fill(.black)
                                                     .frame(width: 40, height: 40)
                                                     .overlay {
-                                                        Image(systemName: "arrow.right")
+                                                        Image(.arrowRight)
                                                             .foregroundStyle(.white)
                                                     }
                                             }
@@ -252,7 +252,7 @@ struct ClosetAddView: View {
                                                     .negguFont(.body1b)
                                                     .lineLimit(1)
                                                 
-                                                Image(systemName: "pencil")
+                                                Image(.edit)
                                                     .frame(width: 24, height: 24)
                                             }
                                             

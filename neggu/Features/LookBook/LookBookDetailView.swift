@@ -134,7 +134,7 @@ struct LookBookDetailView: View {
                                     showCalendar = true
                                 } label: {
                                     HStack(spacing: 4) {
-                                        Image(systemName: "calendar")
+                                        Image(.calendar)
                                             .frame(width: 24, height: 24)
                                         
                                         if let selectedDate {
@@ -205,7 +205,7 @@ struct LookBookDetailView: View {
                                 Button {
                                     
                                 } label: {
-                                    Image(systemName: "square.and.arrow.up")
+                                    Image(.share)
                                         .foregroundStyle(.white)
                                         .frame(width: 56, height: 56)
                                         .background {
