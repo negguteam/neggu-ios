@@ -86,7 +86,8 @@ final class AuthViewModel: NSObject, ObservableObject {
             "nickname": nickname,
             "age": age + 1,
             "gender": gender.id,
-            "mood": moodList.map { $0.id }
+            "mood": moodList.map { $0.id },
+            "fcmToken": UserDefaultsKey.User.fcmToken ?? ""
         ])
         .sink { event in
             switch event {
