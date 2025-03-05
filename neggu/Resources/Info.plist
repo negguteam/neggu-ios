@@ -27,6 +27,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>FirebaseMessagingAutoInitEnabled</key>
+	<false/>
 	<key>GIDClientID</key>
 	<string>$(GOOGLE_CLIENT_ID)</string>
 	<key>GIDServerClientID</key>
@@ -47,6 +49,11 @@
 		<string>Pretendard-Bold.otf</string>
 		<string>Pretendard-Medium.otf</string>
 		<string>Pretendard-Regular.otf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>fetch</string>
 	</array>
 </dict>
 </plist>
