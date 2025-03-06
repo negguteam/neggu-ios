@@ -11,7 +11,7 @@ struct LookBookEntity: Decodable, Identifiable {
     let id: String
     let accountId: String
     let lookBookId: String
-    let imageURL: String
+    let imageUrl: String
     let lookBookClothes: [LookBookClothesEntity]
     let createdAt: String
     let modifiedAt: String
@@ -29,12 +29,31 @@ struct LookBookClothesEntity: Codable, Identifiable, Equatable {
     let imageUrl: String
     var scale: Float
     var angle: Int
-    var xratio: Float
-    var yratio: Float
-    var zindex: Int
+    var xRatio: Float
+    var yRatio: Float
+    var zIndex: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id, imageUrl, scale, angle
+        case xRatio = "xratio"
+        case yRatio = "yratio"
+        case zIndex = "zindex"
+    }
+    
+    func toLookBookItem() -> LookBookClothesItem {
+        return .init(
+            id: self.id,
+            imageUrl: self.imageUrl,
+            image: self.imageUrl.toUIImage(),
+            scale: CGFloat(self.scale),
+            angle: Angle(degrees: Double(self.angle)),
+            offset: .init(width: CGFloat(self.xRatio), height: CGFloat(self.yRatio)),
+            zIndex: Double(self.zIndex)
+        )
+    }
 }
 
-struct LookBookClothesItem: Identifiable, Equatable {
+struct LookBookClothesItem: Identifiable, Equatable, Hashable {
     let id: String
     let imageUrl: String
     var image: UIImage?
@@ -53,9 +72,9 @@ struct LookBookClothesItem: Identifiable, Equatable {
             imageUrl: self.imageUrl,
             scale: Float(self.scale),
             angle: Int(self.angle.degrees),
-            xratio: Float(self.offset.width),
-            yratio: Float(self.offset.height),
-            zindex: Int(zIndex)
+            xRatio: Float(self.offset.width),
+            yRatio: Float(self.offset.height),
+            zIndex: Int(zIndex)
         )
     }
 }

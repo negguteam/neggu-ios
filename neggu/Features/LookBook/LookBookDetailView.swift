@@ -90,7 +90,7 @@ struct LookBookDetailView: View {
                 case .complete(let lookBook):
                     VStack(spacing: 24) {
                         VStack(spacing: 54) {
-                            AsyncImage(url: URL(string: lookBook.imageURL)) { image in
+                            AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
                                 image
                                     .resizable()
                                     .scaledToFit()

@@ -39,6 +39,10 @@ struct ClothesRegisterEntity: Codable, Equatable, Hashable {
     static var mockData: Self {
         return .init(name: "멋진 옷", brand: "Neggu", link: "www.neggu.com")
     }
+    
+    static var emptyData: Self {
+        return .init(name: "", brand: "", link: "")
+    }
 }
 
 struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
@@ -74,15 +78,15 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
             imageUrl: imageUrl,
             scale: 1.0,
             angle: 0,
-            xratio: 0,
-            yratio: 0,
-            zindex: 0
+            xRatio: 0,
+            yRatio: 0,
+            zIndex: 0
         )
     }
 }
 
 
-private extension String {
+extension String {
     
     func toUIImage() -> UIImage? {
         guard let url = URL(string: self) else { return nil }
