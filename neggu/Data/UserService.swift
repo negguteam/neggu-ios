@@ -11,14 +11,14 @@ import Combine
 typealias DefaultUserService = BaseService<UserAPI>
 
 protocol UserService {
-    func profile() -> AnyPublisher<Data, Error>
+    func profile() -> AnyPublisher<UserProfileEntity, Error>
     func logout() -> AnyPublisher<Void, Error>
     func withdraw() -> AnyPublisher<Void, Error>
 }
 
 extension DefaultUserService: UserService {
     
-    func profile() -> AnyPublisher<Data, Error> {
+    func profile() -> AnyPublisher<UserProfileEntity, Error> {
         requestObjectWithNetworkError(.profile)
     }
     
