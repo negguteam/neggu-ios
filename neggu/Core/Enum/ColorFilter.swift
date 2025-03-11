@@ -29,13 +29,13 @@ enum ColorFilter: CaseIterable, Identifiable {
         case .GRAY: .gray30
         case .BLACK: .black
         case .RED: .red
-        case .ORANGE: .orange
-        case .YELLOW: .yellow
-        case .GREEN: .green
-        case .BLUE: .blue
-        case .PURPLE: .purple
-        case .PINK: .pink
-        case .BROWN: .brown
+        case .ORANGE: .filterOrange
+        case .YELLOW: .filterYellow
+        case .GREEN: .filterGreen
+        case .BLUE: .filterBlue
+        case .PURPLE: .filterPurple
+        case .PINK: .filterPink
+        case .BROWN: .filterBrown
         }
     }
 }
