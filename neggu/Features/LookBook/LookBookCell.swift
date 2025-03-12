@@ -27,7 +27,7 @@ struct LookBookCell: View {
                 .frame(height: 260)
                 .overlay {
                     ZStack(alignment: .bottomLeading) {
-                        AsyncImage(url: URL(string: lookBook.imageURL)) { image in
+                        AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
                             image
                                 .resizable()
                                 .scaledToFit()
