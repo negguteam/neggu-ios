@@ -112,3 +112,29 @@ extension Date {
     }
     
 }
+
+
+// MARK: ISOFormat
+extension Date {
+    
+    static let isoFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withFullDate]
+        return formatter
+    }()
+    
+    static let lookBookDetailDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy년 M월 d일"
+        return formatter
+    }()
+    
+    func toISOFormatString() -> String {
+        return Self.isoFormatter.string(from: self)
+    }
+    
+    func toLookBookDetailDateString() -> String {
+        return Self.lookBookDetailDateFormatter.string(from: self)
+    }
+    
+}

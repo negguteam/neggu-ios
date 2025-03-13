@@ -15,4 +15,8 @@ extension String {
         return predicate.evaluate(with: self)
     }
     
+    func toISOFormatDate() -> Date? {
+        return Date.isoFormatter.date(from: self)
+    }
+    
 }
