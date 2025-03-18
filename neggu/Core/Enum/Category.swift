@@ -51,7 +51,7 @@ enum Category: String, CaseIterable, Identifiable, Codable {
     }
     
     static var allCasesArray: [Self] {
-        allCases.filter { $0 != .NONE || $0 != .UNKNOWN }
+        allCases.filter { $0 != .NONE && $0 != .UNKNOWN }
     }
     
     var subCategoryArray: [SubCategory] {
