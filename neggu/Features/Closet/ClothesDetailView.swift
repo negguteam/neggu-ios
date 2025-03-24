@@ -14,7 +14,7 @@ struct ClothesDetailView: View {
     let service: ClosetService = DefaultClosetService()
     let clothesID: String
     
-    @State private var clothesState: ClothesState = .loading
+@State private var clothesState: ClothesState = .loading
     @State private var clothesText: String = ""
     
     @State private var bag = Set<AnyCancellable>()
@@ -33,70 +33,171 @@ struct ClothesDetailView: View {
                             }.store(in: &bag)
                     }
             case .loaded(let clothes):
-                GeometryReader { proxy in
-                    ScrollView {
-                        AsyncImage(url: URL(string: clothes.imageUrl)) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            Color.gray10
-                                .overlay {
-                                    ProgressView()
-                                }
-                        }
-                        .frame(width: proxy.size.width)
-                        .aspectRatio(6/5, contentMode: .fit)
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
                         
-                        VStack(spacing: 20) {
-                            HStack(spacing: 12) {
-                                Button {
-                                    
-                                } label: {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(.labelAlt)
-                                        .frame(height: 48)
+                        Button {
+                            
+                        } label: {
+                            Image(.hamburgerHorizontal)
+                                .frame(width: 44, height: 44)
+                                .foregroundStyle(.black)
+                        }
+                    }
+                    .padding([.horizontal, .top], 20)
+                    
+                    ScrollView {
+                        VStack(spacing: 48) {
+                            VStack(alignment: .leading, spacing: 24) {
+                                AsyncImage(url: URL(string: clothes.imageUrl)) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                } placeholder: {
+                                    Color.gray10
                                         .overlay {
-                                            HStack(spacing: 4) {
-                                                Text("공유하기")
-                                                
-                                                Image(systemName: "square.and.arrow.down")
-                                            }
-                                            .negguFont(.body1b)
-                                            .foregroundStyle(.white)
+                                            ProgressView()
+                                        }
+                                }
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 300)
+                                
+                                VStack(alignment: .leading, spacing: 12) {
+                                    Text(clothes.name)
+                                        .negguFont(.title3)
+                                        .foregroundStyle(.labelNormal)
+                                    
+                                    Text(categoryString(clothes.category, clothes.subCategory))
+                                        .negguFont(.body2)
+                                        .foregroundStyle(.labelAlt)
+                                }
+                            }
+                            
+                            VStack(spacing: 20) {
+                                VStack(alignment: .leading) {
+                                    Text("종류")
+                                        .negguFont(.body1b)
+                                        .foregroundStyle(.labelNormal)
+                                    
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .strokeBorder(.lineAlt)
+                                        .frame(height: 56)
+                                        .overlay(alignment: .leading) {
+                                            Text(moodString(clothes.mood))
+                                                .negguFont(.body2b)
+                                                .foregroundStyle(.labelAlt)
+                                                .padding(.horizontal, 16)
                                         }
                                 }
                                 
-                                Button {
-                                    coordinator.fullScreenCover = .lookbookEdit
-                                } label: {
+                                VStack(alignment: .leading) {
+                                    Text("브랜드")
+                                        .negguFont(.body1b)
+                                        .foregroundStyle(.labelNormal)
+                                    
                                     RoundedRectangle(cornerRadius: 16)
-                                        .fill(.negguSecondary)
-                                        .frame(height: 48)
+                                        .strokeBorder(.lineAlt)
+                                        .frame(height: 56)
+                                        .overlay(alignment: .leading) {
+                                            Text(clothes.brand)
+                                                .negguFont(.body2b)
+                                                .foregroundStyle(.labelAlt)
+                                                .padding(.horizontal, 16)
+                                        }
+                                }
+                                
+                                VStack(alignment: .leading) {
+                                    Text("가격 및 구매처")
+                                        .negguFont(.body1b)
+                                        .foregroundStyle(.labelNormal)
+                                    
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .strokeBorder(.lineAlt)
+                                        .frame(height: 56)
+                                        .overlay(alignment: .leading) {
+                                            Text(clothes.priceRange.title)
+                                                .negguFont(.body2b)
+                                                .foregroundStyle(.labelAlt)
+                                                .padding(.horizontal, 16)
+                                        }
+                                    
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .strokeBorder(.lineAlt)
+                                        .frame(height: 56)
                                         .overlay {
-                                            HStack(spacing: 4) {
-                                                Text("룩북 만들기")
+                                            HStack(spacing: 16) {
+                                                Image(.link)
+                                                    .foregroundStyle(.labelAssistive)
+                                                    .frame(width: 24, height: 24)
+                                                    .padding(.leading, 8)
                                                 
-                                                Image(.shirtFill)
+                                                Text(clothes.link.isEmpty ? "구매 링크" : clothes.link)
+                                                    .negguFont(.caption)
+                                                    .foregroundStyle(.labelInactive)
+                                                    .lineLimit(1)
+                                                    .frame(maxWidth: .infinity)
+                                                
+                                                Button {
+                                                    
+                                                } label: {
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .fill(.black)
+                                                        .frame(width: 40, height: 40)
+                                                        .overlay {
+                                                            Image(.arrowRight)
+                                                                .foregroundStyle(.white)
+                                                        }
+                                                }
                                             }
-                                            .negguFont(.body1b)
-                                            .foregroundStyle(.labelNormal)
+                                            .padding(.horizontal, 8)
+                                        }
+                                    
+                                    Text(clothes.memo.isEmpty ? "메모를 남겨보세요!" : clothes.memo)
+                                        .negguFont(.body2b)
+                                        .foregroundStyle(.labelAlt)
+                                        .multilineTextAlignment(.leading)
+                                        .padding()
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .background {
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .strokeBorder(.lineAlt)
                                         }
                                 }
                             }
                             
-                            Text(clothes.name)
-                            Text([clothes.category.title, clothes.subCategory.title].joined(separator: " > "))
-                            Text(clothes.mood.map { $0.title }.joined(separator: ", "))
-                            Text(clothes.priceRange.title)
-                            Text(clothes.isPurchase ? "구매함" : "구매하지 않음")
+                            Button {
+                                
+                            } label: {
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(.negguSecondary)
+                                    .frame(height: 56)
+                                    .overlay {
+                                        Text("수정하기")
+                                            .negguFont(.body1b)
+                                            .foregroundStyle(.labelRNormal)
+                                    }
+                            }
                         }
                         .padding(.horizontal, 48)
+                        .padding(.bottom, 20)
                     }
                 }
             }
         }
         .background(.bgNormal)
+    }
+    
+    func categoryString(_ category: Category, _ subCategory: SubCategory) -> String {
+        [category.title, subCategory.title].joined(separator: " > ")
+    }
+    
+    func moodString(_ moodList: [Mood]) -> String {
+        if moodList.isEmpty {
+            "옷의 분위기"
+        } else {
+            moodList.map { $0.title }.joined(separator: ", ")
+        }
     }
     
     enum ClothesState {

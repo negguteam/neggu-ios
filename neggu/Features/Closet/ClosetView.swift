@@ -18,7 +18,8 @@ struct ClosetView: View {
     
     @FocusState private var isFocused: Bool
     @State private var filterType: FilterType?
-        
+    @State private var selectedClothes: ClothesEntity?
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 48) {
@@ -64,7 +65,7 @@ struct ClosetView: View {
                         ) {
                             ForEach(viewModel.clothes) { item in
                                 Button {
-                                    closetCoordinator.push(.clothesDetail(clothesID: item.clothId))
+                                    selectedClothes = item
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
@@ -125,6 +126,11 @@ struct ClosetView: View {
         .refreshable {
             viewModel.resetFilter()
             viewModel.refreshCloset()
+        }
+        .sheet(item: $selectedClothes) { clothes in
+            ClothesDetailView(clothesID: clothes.id)
+                .presentationDetents([.fraction(0.9)])
+                .presentationCornerRadius(20)
         }
         .sheet(item: $filterType) {
             viewModel.refreshCloset()
