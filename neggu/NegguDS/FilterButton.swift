@@ -27,13 +27,13 @@ struct FilterButton: View {
                 Image(systemName: "chevron.down")
                     .frame(width: 20, height: 20)
             }
-            .foregroundStyle(isFiltered ? .negguSecondary : .labelAssistive)
+            .foregroundStyle(isFiltered ? .white : .labelAssistive)
             .frame(height: 35)
             .padding(.leading, 12)
             .padding(.trailing, 8)
             .background {
                 RoundedRectangle(cornerRadius: 100)
-                    .fill(isFiltered ? .negguSecondaryAlt : .bgAlt)
+                    .fill(isFiltered ? .black : .bgAlt)
             }
         }
     }

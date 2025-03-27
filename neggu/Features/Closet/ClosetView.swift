@@ -87,6 +87,7 @@ struct ClosetView: View {
                             .fill(.clear)
                             .frame(height: 56)
                             .onAppear {
+                                if viewModel.page <= 0 { return }
                                 viewModel.getClothes()
                             }
                     }
@@ -107,7 +108,7 @@ struct ClosetView: View {
         .scrollDismissesKeyboard(.immediately)
         .overlay(alignment: .bottom) {
             Button {
-                closetCoordinator.fullScreenCover = .lookbookEdit()
+                
             } label: {
                 NegguCTAButton()
             }
@@ -132,9 +133,7 @@ struct ClosetView: View {
                 .presentationDetents([.fraction(0.9)])
                 .presentationCornerRadius(20)
         }
-        .sheet(item: $filterType) {
-            viewModel.refreshCloset()
-        } content: { filterType in
+        .sheet(item: $filterType) { filterType in
             switch filterType {
             case .category:
                 CategorySheet(

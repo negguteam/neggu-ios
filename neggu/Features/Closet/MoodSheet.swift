@@ -56,8 +56,16 @@ struct MoodSheet: View {
                             if isSelected {
                                 selectedMoodList.removeAll(where: { $0 == mood })
                             } else {
-                                if selectedMoodList.count >= selectionLimit { return }
-                                selectedMoodList.append(mood)
+                                if isSingleSelection {
+                                    if selectedMoodList.isEmpty {
+                                        selectedMoodList.append(mood)
+                                    } else {
+                                        selectedMoodList[0] = mood
+                                    }
+                                } else {
+                                    if selectedMoodList.count >= selectionLimit { return }
+                                    selectedMoodList.append(mood)
+                                }
                             }
                         } label: {
                             HStack {

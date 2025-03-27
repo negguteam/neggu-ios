@@ -24,6 +24,10 @@ final class ClosetViewModel: ObservableObject {
     
     var bag = Set<AnyCancellable>()
     
+    init() {
+        filteredClothes()
+    }
+    
     func registerClothes(
         image: Data,
         clothes: ClothesRegisterEntity,
@@ -44,32 +48,46 @@ final class ClosetViewModel: ObservableObject {
     func getClothes() {
         if !canPagenation { return }
         
-        var parameters: [String: Any] = ["page": page, "size": 10]
+        var parameters: [String: Any] = ["page": page, "size": 9]
         
-        if selectedCategory != .UNKNOWN {
-            parameters["category"] = selectedCategory.id
-        }
-        
-        if selectedColor != nil {
-            parameters["colorGroup"] = selectedColor?.id
+        if selectedSubCategory == .UNKNOWN {
+            if selectedCategory != .UNKNOWN {
+                parameters["category"] = selectedCategory.id
+            }
+        } else {
+            parameters["subCategory"] = selectedSubCategory.id
         }
         
         if !selectedMood.isEmpty {
-            parameters["mood"] = selectedMood.first?.id
+            parameters["mood"] = selectedMood[0].id
+        }
+        
+        if let color = selectedColor {
+            parameters["colorGroup"] = color.id
         }
         
         closetService.clothesList(parameters: parameters)
-        .sink { event in
-            print("ClosetView:", event)
-        } receiveValue: { result in
-            self.clothes += result.content
-            
-            if !result.last {
-                self.page += 1
-            }
-            
-            self.canPagenation = !result.last
-        }.store(in: &bag)
+            .sink { event in
+                print("ClosetView:", event)
+            } receiveValue: { result in
+                self.clothes += result.content
+                
+                if !result.last {
+                    self.page += 1
+                }
+                
+                self.canPagenation = !result.last
+            }.store(in: &bag)
+    }
+    
+    func filteredClothes() {
+        $selectedCategory.combineLatest($selectedSubCategory, $selectedMood, $selectedColor)
+            .throttle(for: .seconds(0.5), scheduler: DispatchQueue.main, latest: true)
+            .sink { [weak self] _, _, _, _ in
+                self?.resetPage()
+                self?.clothes.removeAll()
+                self?.getClothes()
+            }.store(in: &bag)
     }
     
     func refreshCloset() {
