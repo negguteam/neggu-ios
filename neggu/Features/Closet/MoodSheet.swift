@@ -29,7 +29,7 @@ struct MoodSheet: View {
                 .frame(width: 150, height: 8)
             
             HStack {
-                Text("옷의 분위기")
+                Text("옷의 스타일")
                     .negguFont(.title3)
                     .foregroundStyle(.labelNormal)
                 
@@ -40,7 +40,7 @@ struct MoodSheet: View {
                         selectedMoodList.removeAll()
                         dismiss()
                     } label: {
-                        Image(systemName: "arrow.clockwise")
+                        Image(.refresh)
                             .frame(width: 24, height: 24)
                             .foregroundStyle(.labelAssistive)
                     }

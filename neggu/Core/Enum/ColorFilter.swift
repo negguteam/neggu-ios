@@ -23,6 +23,22 @@ enum ColorFilter: CaseIterable, Identifiable {
     
     var id: String { "\(self)" }
     
+    var title: String {
+        switch self {
+        case .WHITE: "흰색"
+        case .GRAY: "회색"
+        case .BLACK: "검정색"
+        case .RED: "빨간색"
+        case .ORANGE: "주황색"
+        case .YELLOW: "노랑색"
+        case .GREEN: "초록색"
+        case .BLUE: "파랑색"
+        case .PURPLE: "보라색"
+        case .PINK: "분홍색"
+        case .BROWN: "갈색"
+        }
+    }
+    
     var color: Color {
         switch self {
         case .WHITE: .white

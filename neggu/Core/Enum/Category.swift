@@ -62,8 +62,14 @@ enum Category: String, CaseIterable, Identifiable, Codable {
             [.JEANS, .SLACKS, .SHORTS, .JUMPSUIT, .SKIRT]
         case .OUTER:
             [.JACKET, .ZIP_UP_HOODIE, .CARDIGAN, .FLEECE, .COAT, .PUFFER, .VEST]
-        case .ONEPIECE, .ACCESSORY, .BAG, .SHOES:
-            []
+        case .ONEPIECE:
+            [.DRESS]
+        case .ACCESSORY:
+            [.NECKLACE, .EARRINGS, .BRACELET, .RING, .HAIR_ACCESSORY, .BELT, .WATCH]
+        case .BAG:
+            [.BACKPACK, .TOTEBAG, .CLUTHCH, .CROSSBODY_BAG, .SHOULDER_BAG, .LUGGAGE]
+        case .SHOES:
+            [.SNEAKERS, .DRESS_SHOES, .BOOTS, .SANDALS, .SLIPPERS, .FLATS]
         case .NONE, .UNKNOWN:
             []
         }

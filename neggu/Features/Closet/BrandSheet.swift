@@ -54,9 +54,10 @@ struct BrandSheet: View {
             }
             
             HStack(spacing: 16) {
-                Image(.link)
+                Image(.search)
+                    .frame(width: 24, height: 24)
                     .foregroundStyle(.labelAssistive)
-                    .padding(.leading, 12)
+                    .padding(.leading, 8)
                 
                 TextField(
                     "",
@@ -67,16 +68,14 @@ struct BrandSheet: View {
                 .foregroundStyle(.labelNormal)
                 
                 Button {
-                    
+                    brandName.removeAll()
                 } label: {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(.black)
+                    Image(.xSmall)
                         .frame(width: 40, height: 40)
-                        .overlay {
-                            Image(systemName: "arrow.right")
-                                .foregroundStyle(.white)
-                        }
+                        .foregroundStyle(.labelAlt)
                 }
+                .opacity(brandName.isEmpty ? 0 : 1)
+                .disabled(brandName.isEmpty)
             }
             .padding(8)
             .background {

@@ -19,11 +19,22 @@ struct ColorSheet: View {
                 .frame(width: 150, height: 8)
             
             HStack {
-                Text("카테고리")
+                Text("색상")
                     .negguFont(.title3)
                     .foregroundStyle(.labelNormal)
                 
                 Spacer()
+                
+                if selectedColor != nil {
+                    Button {
+                        selectedColor = nil
+                        dismiss()
+                    } label: {
+                        Image(.refresh)
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.labelAssistive)
+                    }
+                }
             }
             
             ScrollView {
@@ -44,7 +55,7 @@ struct ColorSheet: View {
                                     .strokeBorder(color.color == .white ? .lineAlt : .clear)
                                     .frame(width: 24, height: 24)
                                 
-                                Text(color.id.uppercased())
+                                Text(color.title)
                                     .negguFont(.body2)
                                     .foregroundStyle(selectedColor == color ? .negguSecondary : .labelNormal)
                                 

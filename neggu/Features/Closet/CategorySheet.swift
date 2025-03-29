@@ -33,7 +33,7 @@ struct CategorySheet: View {
                         selectedSubCategory = .UNKNOWN
                         dismiss()
                     } label: {
-                        Image(systemName: "arrow.clockwise")
+                        Image(.refresh)
                             .frame(width: 24, height: 24)
                             .foregroundStyle(.labelAssistive)
                     }
@@ -93,7 +93,7 @@ struct DropDownButton: View {
                     
                     Spacer()
                     
-                    Image(systemName: "chevron.down")
+                    Image(.chevronDown)
                         .rotationEffect(isSelected ? .degrees(-90) : .degrees(0))
                 }
                 .foregroundStyle(selectedCategory == category ? .negguSecondary : .labelNormal)
@@ -119,6 +119,7 @@ struct DropDownButton: View {
                     } label: {
                         HStack {
                             Text(subCategory.title)
+                                .negguFont(.body2)
                                 .foregroundStyle(subCategoryIsSelected ? .negguSecondary : .labelAlt)
                             
                             Spacer()
