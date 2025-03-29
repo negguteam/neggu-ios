@@ -58,7 +58,8 @@ extension AuthAPI: BaseAPI {
         switch self {
         case .login(_, let idToken):
                 .requestParameters(
-                    parameters: ["idToken": idToken],
+                    parameters: ["idToken": idToken,
+                                 "fcmToken": UserDefaultsKey.User.fcmToken ?? "none"],
                     encoding: JSONEncoding.default
                 )
         case .register(let parameters):
