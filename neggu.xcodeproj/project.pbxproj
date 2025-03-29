@@ -759,6 +759,7 @@
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				1318DE572D3F79410077972D /* String+Extension.swift in Sources */,
 				1352E0062D5F68D100354234 /* LookBookService.swift in Sources */,
+				1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
 				13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */,
 				13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */,
@@ -1005,6 +1006,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = neggu/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "네꾸";
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하고 싶어요";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범에 접근하고싶어요";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1045,6 +1048,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = neggu/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "네꾸";
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하고 싶어요";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범에 접근하고싶어요";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

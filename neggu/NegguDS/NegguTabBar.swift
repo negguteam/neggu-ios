@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 enum NegguTab {
     case closet
@@ -16,13 +17,23 @@ struct NegguTabBar: View {
     enum TabListType {
         case `default`
         case clothes
-        case lookbook
     }
     
     @Binding var activeTab: NegguTab
     @Binding var showTabBarList: Bool
+    @Binding var selectedCameraPhoto: UIImage?
+    
+    @Binding var selectedAlbumPhoto: PhotosPickerItem? {
+        didSet {
+            if selectedAlbumPhoto != nil { showTabBarList = false }
+        }
+    }
+    
+    @Binding var createLookBook: Bool
     
     @State private var tapType: TabListType = .default
+    
+    @State private var showCameraView: Bool = false
     
     @Namespace private var animation
     
@@ -62,7 +73,8 @@ struct NegguTabBar: View {
                                 .frame(height: 1)
                             
                             Button {
-                                tapType = .lookbook
+                                showTabBarList = false
+                                createLookBook = true
                             } label: {
                                 HStack(spacing: 12) {
                                     Image(.closetFill)
@@ -80,12 +92,15 @@ struct NegguTabBar: View {
                     case .clothes:
                         VStack(alignment: .leading, spacing: 16) {
                             Button {
-                                
+                                showTabBarList = false
+                                activeTab = .closet
                             } label: {
                                 HStack(spacing: 12) {
                                     Image(.link)
                                     
                                     Text("링크로 등록하기")
+                                    
+                                    Spacer()
                                 }
                                 .frame(height: 24)
                                 .padding(.leading, 18)
@@ -96,12 +111,15 @@ struct NegguTabBar: View {
                                 .frame(height: 1)
                             
                             Button {
-                                
+                                showTabBarList = false
+                                showCameraView = true
                             } label: {
                                 HStack(spacing: 12) {
                                     Image(.camera)
                                     
                                     Text("지금 촬영하고 등록하기")
+                                    
+                                    Spacer()
                                 }
                                 .frame(height: 24)
                                 .padding(.leading, 18)
@@ -111,31 +129,22 @@ struct NegguTabBar: View {
                                 .fill(.white.opacity(0.2))
                                 .frame(height: 1)
                             
-                            Button {
-                                
-                            } label: {
+                            PhotosPicker(
+                                selection: $selectedAlbumPhoto,
+                                matching: .all(of: [.images, .screenshots])
+                            ) {
                                 HStack(spacing: 12) {
                                     Image(.gallery)
                                     
                                     Text("갤러리에서 등록하기")
+                                    
+                                    Spacer()
                                 }
                                 .frame(height: 24)
                                 .padding(.leading, 18)
                             }
                         }
                         .negguFont(.body2b)
-                    case .lookbook:
-                        VStack(alignment: .leading, spacing: 16) {
-                            Color.clear
-                                .frame(height: 32)
-                            
-                            Rectangle()
-                                .fill(.white.opacity(0.2))
-                                .frame(height: 1)
-                            
-                            Color.clear
-                                .frame(height: 32)
-                        }
                     }
                 }
                 .foregroundStyle(.labelRNormal)
@@ -223,10 +232,10 @@ struct NegguTabBar: View {
             .clipShape(.rect(cornerRadius: 20))
         }
         .frame(width: 328)
+        .sheet(isPresented: $showCameraView) {
+            ImagePicker(image: $selectedCameraPhoto, isActive: $showCameraView)
+                .padding(.top, 20)
+                .background(.black)
+        }
     }
-}
-
-
-#Preview {
-    ContentView()
 }
