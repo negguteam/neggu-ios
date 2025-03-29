@@ -9,15 +9,15 @@ import SwiftUI
 import Combine
 
 struct ClothesDetailView: View {
-    @EnvironmentObject private var coordinator: MainCoordinator
+    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var viewModel: ClosetViewModel
     
-    let service: ClosetService = DefaultClosetService()
-    let clothesID: String
-    
-@State private var clothesState: ClothesState = .loading
-    @State private var clothesText: String = ""
+    @State private var clothesState: ClothesState = .loading
+    @State private var showAlert: Bool = false
     
     @State private var bag = Set<AnyCancellable>()
+    
+    let clothesID: String
     
     var body: some View {
         Group {
@@ -25,20 +25,19 @@ struct ClothesDetailView: View {
             case .loading:
                 ProgressView()
                     .onAppear {
-                        service.clothesDetail(id: clothesID)
-                            .sink { event in
-                                print("ClosetDetail:", event)
-                            } receiveValue: { clothes in
-                                clothesState = .loaded(clothes: clothes)
-                            }.store(in: &bag)
+                        viewModel.getClothesDetail(clothesID) {
+                            clothesState = .loaded(clothes: $0)
+                        }
                     }
             case .loaded(let clothes):
                 VStack(spacing: 0) {
                     HStack {
                         Spacer()
                         
-                        Button {
-                            
+                        Menu {
+                            Button("삭제하기", role: .destructive) {
+                                showAlert = true
+                            }
                         } label: {
                             Image(.hamburgerHorizontal)
                                 .frame(width: 44, height: 44)
@@ -112,57 +111,59 @@ struct ClothesDetailView: View {
                                         .negguFont(.body1b)
                                         .foregroundStyle(.labelNormal)
                                     
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(.lineAlt)
-                                        .frame(height: 56)
-                                        .overlay(alignment: .leading) {
-                                            Text(clothes.priceRange.title)
-                                                .negguFont(.body2b)
-                                                .foregroundStyle(.labelAlt)
-                                                .padding(.horizontal, 16)
-                                        }
-                                    
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .strokeBorder(.lineAlt)
-                                        .frame(height: 56)
-                                        .overlay {
-                                            HStack(spacing: 16) {
-                                                Image(.link)
-                                                    .foregroundStyle(.labelAssistive)
-                                                    .frame(width: 24, height: 24)
-                                                    .padding(.leading, 8)
-                                                
-                                                Text(clothes.link.isEmpty ? "구매 링크" : clothes.link)
-                                                    .negguFont(.caption)
-                                                    .foregroundStyle(.labelInactive)
-                                                    .lineLimit(1)
-                                                    .frame(maxWidth: .infinity)
-                                                
-                                                Button {
-                                                    
-                                                } label: {
-                                                    RoundedRectangle(cornerRadius: 12)
-                                                        .fill(.black)
-                                                        .frame(width: 40, height: 40)
-                                                        .overlay {
-                                                            Image(.arrowRight)
-                                                                .foregroundStyle(.white)
-                                                        }
-                                                }
+                                    VStack(spacing: 12) {
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .strokeBorder(.lineAlt)
+                                            .frame(height: 56)
+                                            .overlay(alignment: .leading) {
+                                                Text(clothes.priceRange.title)
+                                                    .negguFont(.body2b)
+                                                    .foregroundStyle(.labelAlt)
+                                                    .padding(.horizontal, 16)
                                             }
-                                            .padding(.horizontal, 8)
-                                        }
-                                    
-                                    Text(clothes.memo.isEmpty ? "메모를 남겨보세요!" : clothes.memo)
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(.labelAlt)
-                                        .multilineTextAlignment(.leading)
-                                        .padding()
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .background {
-                                            RoundedRectangle(cornerRadius: 16)
-                                                .strokeBorder(.lineAlt)
-                                        }
+                                        
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .strokeBorder(.lineAlt)
+                                            .frame(height: 56)
+                                            .overlay {
+                                                HStack(spacing: 16) {
+                                                    Image(.link)
+                                                        .foregroundStyle(.labelAssistive)
+                                                        .frame(width: 24, height: 24)
+                                                        .padding(.leading, 8)
+                                                    
+                                                    Text(clothes.link.isEmpty ? "구매 링크" : clothes.link)
+                                                        .negguFont(.caption)
+                                                        .foregroundStyle(.labelInactive)
+                                                        .lineLimit(1)
+                                                        .frame(maxWidth: .infinity)
+                                                    
+                                                    Button {
+                                                        
+                                                    } label: {
+                                                        RoundedRectangle(cornerRadius: 12)
+                                                            .fill(.black)
+                                                            .frame(width: 40, height: 40)
+                                                            .overlay {
+                                                                Image(.arrowRight)
+                                                                    .foregroundStyle(.white)
+                                                            }
+                                                    }
+                                                }
+                                                .padding(.horizontal, 8)
+                                            }
+                                        
+                                        Text(clothes.memo.isEmpty ? "메모를 남겨보세요!" : clothes.memo)
+                                            .negguFont(.body2b)
+                                            .foregroundStyle(.labelAlt)
+                                            .multilineTextAlignment(.leading)
+                                            .padding()
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .background {
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .strokeBorder(.lineAlt)
+                                            }
+                                    }
                                 }
                             }
                             
@@ -181,6 +182,17 @@ struct ClothesDetailView: View {
                         }
                         .padding(.horizontal, 48)
                         .padding(.bottom, 20)
+                    }
+                }
+                .negguAlert(
+                    showAlert: $showAlert,
+                    title: "의상을 삭제할까요?",
+                    description: "삭제한 의상은 복구되지 않습니다.",
+                    leftContent: "취소하기",
+                    rightContent: "삭제하기"
+                ) {
+                    viewModel.deleteClothes(clothes.id) {
+                        dismiss()
                     }
                 }
             }

@@ -90,6 +90,25 @@ final class ClosetViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
+    func getClothesDetail(_ id: String, completion: @escaping (ClothesEntity) -> Void) {
+        closetService.clothesDetail(id: id)
+            .sink { event in
+                print("ClosetDetail:", event)
+            } receiveValue: { clothes in
+                completion(clothes)
+            }.store(in: &bag)
+    }
+    
+    func deleteClothes(_ id: String, completion: @escaping () -> Void) {
+        closetService.deleteClothes(id: id)
+            .sink { event in
+                print("ClothesDetail:", event)
+            } receiveValue: { _ in
+                self.refreshCloset()
+                completion()
+            }.store(in: &bag)
+    }
+    
     func refreshCloset() {
         resetPage()
         clothes.removeAll()
