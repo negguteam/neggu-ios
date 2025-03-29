@@ -14,7 +14,6 @@ struct ClosetAddView: View {
     // TODO: 이름 수정을 했을 때, 카테고리 변경하면 또 이름이 알아서 편집되는지?
     @State private var clothes: ClothesRegisterEntity
     @State private var clothesColor: UIColor = .clear
-    @State private var selectedMoodList: [Mood] = []
     
     @State private var fieldType: FieldType?
     
@@ -81,8 +80,7 @@ struct ClosetAddView: View {
                             Image(uiImage: segmentedImage)
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: proxy.size.width)
-                                .aspectRatio(6/5, contentMode: .fit)
+                                .frame(width: proxy.size.width, height: proxy.size.width * 1.2)
                             
                             LazyVStack(
                                 spacing: 20,
@@ -301,12 +299,10 @@ struct ClosetAddView: View {
                                     }
                                     
                                     scrollProxy.scrollTo("Category", anchor: .top)
-                                    
                                     return
                                 }
                                 
                                 clothes.name = name
-                                clothes.mood = selectedMoodList
                                 
                                 viewModel.registerClothes(image: image, clothes: clothes) {
                                     coordinator.dismiss()
