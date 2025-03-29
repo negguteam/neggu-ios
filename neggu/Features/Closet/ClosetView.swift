@@ -81,15 +81,15 @@ struct ClosetView: View {
                                         }
                                 }
                             }
+                            
+                            Rectangle()
+                                .fill(.clear)
+                                .frame(height: 56)
+                                .onAppear {
+                                    if viewModel.page <= 0 { return }
+                                    viewModel.getClothes()
+                                }
                         }
-                        
-                        Rectangle()
-                            .fill(.clear)
-                            .frame(height: 56)
-                            .onAppear {
-                                if viewModel.page <= 0 { return }
-                                viewModel.getClothes()
-                            }
                     }
                     .scrollIndicators(.hidden)
                     .scrollDisabled(scrollPosition == 0)
@@ -125,8 +125,8 @@ struct ClosetView: View {
                 }
         }
         .refreshable {
+            viewModel.resetCloset()
             viewModel.resetFilter()
-            viewModel.refreshCloset()
         }
         .sheet(item: $selectedClothes) { clothes in
             ClothesDetailView(clothesID: clothes.id)

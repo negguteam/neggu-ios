@@ -54,7 +54,7 @@ struct ClothesDetailView: View {
                                         .resizable()
                                         .scaledToFit()
                                 } placeholder: {
-                                    Color.gray10
+                                    Color.clear
                                         .overlay {
                                             ProgressView()
                                         }
@@ -136,7 +136,7 @@ struct ClothesDetailView: View {
                                                         .negguFont(.caption)
                                                         .foregroundStyle(.labelInactive)
                                                         .lineLimit(1)
-                                                        .frame(maxWidth: .infinity)
+                                                        .frame(maxWidth: .infinity, alignment: .leading)
                                                     
                                                     Button {
                                                         

@@ -40,15 +40,17 @@ final class ClosetViewModel: ObservableObject {
             print("ClosetAdd:", event)
         } receiveValue: { result in
             debugPrint(result)
-            self.refreshCloset()
+            self.resetCloset()
+            self.getClothes()
             completion()
         }.store(in: &bag)
     }
     
     func getClothes() {
         if !canPagenation { return }
+        canPagenation = false
         
-        var parameters: [String: Any] = ["page": page, "size": 9]
+        var parameters: [String: Any] = ["page": page, "size": 18]
         
         if selectedSubCategory == .UNKNOWN {
             if selectedCategory != .UNKNOWN {
@@ -70,13 +72,9 @@ final class ClosetViewModel: ObservableObject {
             .sink { event in
                 print("ClosetView:", event)
             } receiveValue: { result in
-                self.clothes += result.content
-                
-                if !result.last {
-                    self.page += 1
-                }
-                
                 self.canPagenation = !result.last
+                self.clothes += result.content
+                self.page += !result.last ? 1 : 0
             }.store(in: &bag)
     }
     
@@ -84,8 +82,7 @@ final class ClosetViewModel: ObservableObject {
         $selectedCategory.combineLatest($selectedSubCategory, $selectedMood, $selectedColor)
             .throttle(for: .seconds(0.5), scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] _, _, _, _ in
-                self?.resetPage()
-                self?.clothes.removeAll()
+                self?.resetCloset()
                 self?.getClothes()
             }.store(in: &bag)
     }
@@ -104,15 +101,14 @@ final class ClosetViewModel: ObservableObject {
             .sink { event in
                 print("ClothesDetail:", event)
             } receiveValue: { _ in
-                self.refreshCloset()
+                self.resetCloset()
                 completion()
             }.store(in: &bag)
     }
     
-    func refreshCloset() {
+    func resetCloset() {
         resetPage()
         clothes.removeAll()
-        getClothes()
     }
     
     func resetPage() {
