@@ -10,6 +10,7 @@ import Moya
 
 enum ClosetAPI {
     case register(image: Data, request: Data)
+    case modify(paramters: [String: Any])
     case clothesDetail(id: String)
     case clothesList(parameters: [String: Any])
     case brandList
@@ -24,6 +25,8 @@ extension ClosetAPI: BaseAPI {
         switch self {
         case .register:
             ""
+        case .modify:
+            "/modify"
         case .clothesDetail(let id):
             "/\(id)"
         case .clothesList:
@@ -46,7 +49,7 @@ extension ClosetAPI: BaseAPI {
     
     var method: Moya.Method {
         switch self {
-        case .register: .post
+        case .register, .modify: .post
         case .deleteClothes: .delete
         default: .get
         }

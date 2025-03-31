@@ -12,6 +12,7 @@ typealias DefaultClosetService = BaseService<ClosetAPI>
 
 protocol ClosetService {
     func register(image: Data, request: ClothesRegisterEntity) -> AnyPublisher<ClothesEntity, Error>
+    func modify(_ clothes: ClothesEntity) -> AnyPublisher<ClothesEntity, Error>
     func clothesDetail(id: String) -> AnyPublisher<ClothesEntity, Error>
     func clothesList(parameters: [String: Any]) -> AnyPublisher<ClosetEntity, Error>
     func brandList() -> AnyPublisher<[BrandEntity], Error>
@@ -34,11 +35,36 @@ extension DefaultClosetService: ClosetService {
             "link": request.link
         ]
         let object = (try? JSONSerialization.data(withJSONObject: dictionary, options: .prettyPrinted)) ?? .init()
-        print(String(data: object, encoding: .utf8))
         return requestObjectWithNetworkError(.register(
             image: image,
             request: object
         ))
+    }
+    
+    func modify(_ clothes: ClothesEntity) -> AnyPublisher<ClothesEntity, Error> {
+        var parameters: [String: Any] = [
+            "id": clothes.id,
+            "accountId": clothes.accountId,
+            "imageUrl": clothes.imageUrl,
+            "colorCode": clothes.colorCode,
+            "name": clothes.name,
+            "category": clothes.category,
+            "subCategory": clothes.subCategory,
+            "mood": clothes.mood,
+            "priceRange": clothes.priceRange,
+            "memo": clothes.memo,
+            "isPurchase": clothes.isPurchase
+        ]
+        
+        if !clothes.brand.isEmpty {
+            parameters["brand"] = clothes.brand
+        }
+        
+        if !clothes.link.isEmpty {
+            parameters["link"] = clothes.link
+        }
+        
+        return requestObjectWithNetworkError(.modify(paramters: parameters))
     }
     
     func clothesDetail(id: String) -> AnyPublisher<ClothesEntity, Error> {
