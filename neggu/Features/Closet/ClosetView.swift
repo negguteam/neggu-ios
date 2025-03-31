@@ -171,7 +171,7 @@ struct ClosetView: View {
     }
     
     var colorTitle: String {
-        viewModel.selectedColor?.id.uppercased() ?? "색상"
+        viewModel.selectedColor?.title ?? "색상"
     }
     
     private func segmentation() async {
@@ -246,35 +246,16 @@ struct ClosetView: View {
                 }
                 
                 guard let convertedProduct = product?.toProduct(urlString: urlString),
-                      let imageUrl = URL(string: convertedProduct.imageUrl),
+                      let imageUrl = URL(string: product?.imageUrl ?? ""),
                       let (imageData, _) = try? await URLSession.shared.data(from: imageUrl),
                       let image = UIImage(data: imageData),
                       let segmentedImage = await ImageAnalyzeManager.shared.segmentation(image)
                 else {
-                    // 시뮬레이터는 segmentation을 지원하지 않아서 테스트를 위한 임시 처리
-//                    let clothes = ClothesRegisterEntity(
-//                        name: "루즈핏 V넥 베스트 CRYSTAL BEIGE",
-//                        brand: "내셔널지오그래픽",
-//                        link:  "https://musinsaapp.page.link/v1St9cWw5h291zfBA"
-//                        imageUrl: "https://image.msscdn.net/images/goods_img/20230809/3454995/3454995_16915646154097_500.jpg",
-//                    )
-//                    
-//                    await MainActor.run {
-//                        closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: .dummyClothes1)
-//                    }
-//                    
-//                    print("시뮬레이터 세그먼테이션 이슈")
                     continue
                 }
                 
                 await MainActor.run {
-                    let clothes = ClothesRegisterEntity(
-                        name: convertedProduct.name,
-                        brand: convertedProduct.brand,
-                        link: convertedProduct.link
-                    )
-                    
-                    closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: segmentedImage)
+                    closetCoordinator.fullScreenCover = .closetAdd(clothes: convertedProduct, segmentedImage: segmentedImage)
                 }
             }
         } catch {

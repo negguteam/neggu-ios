@@ -79,27 +79,8 @@ struct LookBookClothesItem: Identifiable, Equatable, Hashable {
     }
 }
 
-
-struct Clothes: Equatable, Hashable, Identifiable {
-    let id: String = UUID().uuidString
-    var sku: String?
-    var name: String
-    var account: String?
-    var link: String
+struct Decorator: Decodable {
+    let id: String
     let imageUrl: String
-    var category: Category = .UNKNOWN
-    var subCategory: SubCategory = .UNKNOWN
-    var mood: Mood = .UNKNOWN
-    var brand: String
-    var priceRange: PriceRange = .UNKNOWN
-    var colorCode: String?
-    var memo: String = ""
-    var isPurchase: Bool = false
-    
-    var offset: CGSize = .zero
-    var lastOffset: CGSize = .zero
-    var scale: CGFloat = 1.0
-    var lastScale: CGFloat = 1.0
-    var angle: Angle = .degrees(0)
-    var lastAngle: Angle = .degrees(0)
+    let targetDate: String
 }

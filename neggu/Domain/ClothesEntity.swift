@@ -19,11 +19,6 @@ struct ClosetEntity: Decodable {
     let empty: Bool
 }
 
-struct ObjectId: Decodable, Hashable {
-    let timestamp: Int
-    let date: String
-}
-
 struct ClothesRegisterEntity: Codable, Equatable, Hashable {
     var name: String
     var colorCode: String?
@@ -64,23 +59,13 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     let createdAt: String
     let modifiedAt: String
     
-    func toLookBookItem() -> LookBookClothesItem {
+    func toLookBookItem(offset: CGSize = .zero) -> LookBookClothesItem {
         return .init(
             id: self.id,
             imageUrl: self.imageUrl,
-            image: self.imageUrl.toUIImage()
-        )
-    }
-    
-    func toLookBookClothes() -> LookBookClothesEntity {
-        return .init(
-            id: self.id,
-            imageUrl: imageUrl,
-            scale: 1.0,
-            angle: 0,
-            xRatio: 0,
-            yRatio: 0,
-            zIndex: 0
+            image: self.imageUrl.toUIImage(),
+            offset: offset,
+            lastOffset: offset
         )
     }
 }
@@ -119,7 +104,9 @@ extension String {
 
 
 protocol Clothesable: Decodable {
-    func toProduct(urlString: String) -> Clothes
+    var imageUrl: String { get }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity
 }
 
 struct AblyProduct: Clothesable {
@@ -156,13 +143,16 @@ struct AblyProduct: Clothesable {
         }
     }
     
-    func toProduct(urlString: String) -> Clothes {
+    var imageUrl: String {
+        props.serverQueryClient.queries[0].state.data.goods.image
+    }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity {
         let goods = props.serverQueryClient.queries[0].state.data.goods
         return .init(
             name: goods.name,
-            link: urlString,
-            imageUrl: goods.image,
-            brand: goods.market.name
+            brand: goods.market.name,
+            link: urlString
         )
     }
 }
@@ -199,14 +189,17 @@ struct MusinsaProduct: Clothesable {
         }
     }
     
-    func toProduct(urlString: String) -> Clothes {
+    var imageUrl: String {
+        "https://image.msscdn.net/thumbnails" + props.pageProps.meta.data.thumbnailImageUrl
+    }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity {
         let product = props.pageProps.meta.data
         
         return .init(
             name: product.goodsNm,
-            link: urlString,
-            imageUrl: "https://image.msscdn.net/thumbnails" + product.thumbnailImageUrl,
-            brand: product.brand
+            brand: product.brand,
+            link: urlString
         )
     }
 }
@@ -242,14 +235,17 @@ struct ZigzagProduct: Clothesable {
         }
     }
     
-    func toProduct(urlString: String) -> Clothes {
+    var imageUrl: String {
+        props.pageProps.product.imageList[0].url
+    }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity {
         let product = props.pageProps.product
         
         return .init(
             name: product.name,
-            link: urlString,
-            imageUrl: product.imageList[0].url,
-            brand: product.brand
+            brand: product.brand,
+            link: urlString
         )
     }
 }
@@ -289,14 +285,17 @@ struct QueenitProduct: Clothesable {
         }
     }
     
-    func toProduct(urlString: String) -> Clothes {
+    var imageUrl: String {
+        props.pageProps.dehydratedState.queries[0].state.data.product.imageUrl
+    }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity {
         let product = props.pageProps.dehydratedState.queries[0].state.data.product
         
         return .init(
             name: product.name,
-            link: urlString,
-            imageUrl: product.imageUrl,
-            brand: product.brand
+            brand: product.brand,
+            link: urlString
         )
     }
 }
@@ -340,14 +339,18 @@ struct TwentyNineCMProduct: Clothesable {
             }
         }
     }
-    func toProduct(urlString: String) -> Clothes {
+    
+    var imageUrl: String {
+        "https://img.29cm.co.kr" + props.pageProps.dehydratedState.queries[0].state.data.itemImages[0].imageUrl
+    }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity {
         let goods = props.pageProps.dehydratedState.queries[0].state.data
         
         return .init(
             name: goods.itemName,
-            link: urlString,
-            imageUrl: "https://img.29cm.co.kr" + goods.itemImages[0].imageUrl,
-            brand: goods.frontBrand.brandNameKor
+            brand: goods.frontBrand.brandNameKor,
+            link: urlString
         )
     }
 }
@@ -370,12 +373,15 @@ struct KreamProduct: Clothesable {
         var priceCurrency: String
     }
     
-    func toProduct(urlString: String) -> Clothes {
+    var imageUrl: String {
+        image[0]
+    }
+    
+    func toProduct(urlString: String) -> ClothesRegisterEntity {
         return .init(
             name: name,
-            link: urlString,
-            imageUrl: image[0],
-            brand: brand.name
+            brand: brand.name,
+            link: urlString
         )
     }
 }
