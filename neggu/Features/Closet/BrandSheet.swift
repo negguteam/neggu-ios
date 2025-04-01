@@ -29,11 +29,66 @@ struct BrandSheet: View {
     let service = DefaultClosetService()
     
     var body: some View {
-        VStack(spacing: 24) {
-            RoundedRectangle(cornerRadius: 100)
-                .fill(.black.opacity(0.1))
-                .frame(width: 150, height: 8)
-            
+        NegguSheet {
+            VStack(spacing: 16) {
+                HStack(spacing: 16) {
+                    Image(.search)
+                        .frame(width: 24, height: 24)
+                        .foregroundStyle(.labelAssistive)
+                        .padding(.leading, 8)
+                    
+                    TextField(
+                        "",
+                        text: $brandName,
+                        prompt: Text("무신사, 에이블리, ...").foregroundStyle(.labelInactive)
+                    )
+                    .negguFont(.body2)
+                    .foregroundStyle(.labelNormal)
+                    
+                    Button {
+                        brandName.removeAll()
+                    } label: {
+                        Image(.xSmall)
+                            .frame(width: 40, height: 40)
+                            .foregroundStyle(.labelAlt)
+                    }
+                    .opacity(brandName.isEmpty ? 0 : 1)
+                    .disabled(brandName.isEmpty)
+                }
+                .padding(8)
+                .background {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.bgAlt)
+                        .strokeBorder(.lineAlt)
+                }
+                .padding(.horizontal, 48)
+                
+                ScrollView {
+                    VStack(spacing: 4) {
+                        ForEach(filteredBrandList) { brand in
+                            let isSelected = selectedBrand == brand.en
+                            
+                            Button {
+                                selectedBrand = brand.en
+                                dismiss()
+                            } label: {
+                                HStack {
+                                    Text(brand.en)
+                                        .negguFont(.body2)
+                                        .foregroundStyle(isSelected ? .negguSecondary : .labelAlt)
+                                    
+                                    Spacer()
+                                }
+                                .frame(height: 52)
+                                .padding(.horizontal, 12)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 48)
+                }
+                .scrollIndicators(.hidden)
+            }
+        } header: {
             HStack {
                 Text("브랜드")
                     .negguFont(.title3)
@@ -52,63 +107,7 @@ struct BrandSheet: View {
                     }
                 }
             }
-            
-            HStack(spacing: 16) {
-                Image(.search)
-                    .frame(width: 24, height: 24)
-                    .foregroundStyle(.labelAssistive)
-                    .padding(.leading, 8)
-                
-                TextField(
-                    "",
-                    text: $brandName,
-                    prompt: Text("무신사, 에이블리, ...").foregroundStyle(.labelInactive)
-                )
-                .negguFont(.body2)
-                .foregroundStyle(.labelNormal)
-                
-                Button {
-                    brandName.removeAll()
-                } label: {
-                    Image(.xSmall)
-                        .frame(width: 40, height: 40)
-                        .foregroundStyle(.labelAlt)
-                }
-                .opacity(brandName.isEmpty ? 0 : 1)
-                .disabled(brandName.isEmpty)
-            }
-            .padding(8)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(.bgAlt)
-                    .strokeBorder(.lineAlt)
-            }
-            
-            ScrollView {
-                VStack(spacing: 4) {
-                    ForEach(filteredBrandList) { brand in
-                        let isSelected = selectedBrand == brand.en
-                        
-                        Button {
-                            selectedBrand = brand.en
-                            dismiss()
-                        } label: {
-                            HStack {
-                                Text(brand.en)
-                                    .negguFont(.body2)
-                                    .foregroundStyle(isSelected ? .negguSecondary : .labelAlt)
-                                
-                                Spacer()
-                            }
-                            .frame(height: 52)
-                            .padding(.horizontal, 12)
-                        }
-                    }
-                }
-            }
         }
-        .padding(.horizontal, 48)
-        .padding(.top, 20)
         .onAppear {
             service.brandList()
                 .sink { event in

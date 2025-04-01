@@ -112,6 +112,7 @@
 		13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */; };
 		13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */; };
 		13F8ABD82D19DF5600E08057 /* TitleForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD72D19DF5600E08057 /* TitleForm.swift */; };
+		13F951AB2D9C4B7900F69C94 /* NegguSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */; };
 		13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD7D542CBB874400D21143 /* LookBookDetailView.swift */; };
 		13FE56CE2D53483C00C7D4E9 /* ClosetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */; };
 		13FE61FB2D2AA1DD00578BB5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */; };
@@ -236,6 +237,7 @@
 		13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpendableTextView.swift; sourceTree = "<group>"; };
 		13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedRectangle.swift; sourceTree = "<group>"; };
 		13F8ABD72D19DF5600E08057 /* TitleForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleForm.swift; sourceTree = "<group>"; };
+		13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguSheet.swift; sourceTree = "<group>"; };
 		13FD7D542CBB874400D21143 /* LookBookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDetailView.swift; sourceTree = "<group>"; };
 		13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewModel.swift; sourceTree = "<group>"; };
 		13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -788,6 +790,7 @@
 				13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */,
 				134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */,
 				1350810C2D38BC95005E2491 /* ClosetAPI.swift in Sources */,
+				13F951AB2D9C4B7900F69C94 /* NegguSheet.swift in Sources */,
 				13659CE52C5FA19500BB6B91 /* NegguInterceptor.swift in Sources */,
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */,

@@ -10,16 +10,25 @@ import SwiftUI
 struct CategorySheet: View {
     @Environment(\.dismiss) private var dismiss
     
-    // 뷰모델로 개선하기
     @Binding var selectedCategory: Category
     @Binding var selectedSubCategory: SubCategory
     
     var body: some View {
-        VStack(spacing: 24) {
-            RoundedRectangle(cornerRadius: 100)
-                .fill(.black.opacity(0.1))
-                .frame(width: 150, height: 8)
-            
+        NegguSheet {
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(Category.allCasesArray) { category in
+                        DropDownButton(
+                            selectedCategory: $selectedCategory,
+                            selectedSubCategory: $selectedSubCategory,
+                            category: category
+                        )
+                    }
+                }
+                .padding(.horizontal, 48)
+            }
+            .scrollIndicators(.hidden)
+        } header: {
             HStack {
                 Text("옷의 종류")
                     .negguFont(.title3)
@@ -39,23 +48,7 @@ struct CategorySheet: View {
                     }
                 }
             }
-            
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(Category.allCasesArray) { category in
-                        DropDownButton(
-                            selectedCategory: $selectedCategory,
-                            selectedSubCategory: $selectedSubCategory,
-                            category: category
-                        )
-                    }
-                }
-            }
-            .scrollIndicators(.hidden)
         }
-        .padding(.horizontal, 48)
-        .padding(.top, 20)
-        .padding(.bottom, 24)
     }
 }
 

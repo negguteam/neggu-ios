@@ -17,14 +17,111 @@ struct LookBookDateEditView: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
-            RoundedRectangle(cornerRadius: 100)
-                .fill(.black.opacity(0.1))
-                .frame(width: 150, height: 8)
-                .padding(.bottom, 32)
-            
+        NegguSheet {
+            VStack(spacing: 24) {
+                if let date = selectedDate {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.negguSecondaryAlt)
+                        .frame(height: 60)
+                        .overlay {
+                            HStack(spacing: 0) {
+                                Image(.calendar)
+                                    .frame(width: 24, height: 24)
+                                    .padding(.trailing, 4)
+                                
+                                Text(date.monthDayFormatted())
+                                
+                                Text("에 입을 예정이에요")
+                                    .foregroundStyle(.labelNormal)
+                                
+                                Spacer()
+                                
+                                Button {
+                                    selectedDate = nil
+                                } label: {
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .fill(.warning)
+                                        .frame(width: 63, height: 44)
+                                        .overlay {
+                                            Text("삭제")
+                                                .foregroundStyle(.white)
+                                        }
+                                }
+                            }
+                            .negguFont(.body2b)
+                            .foregroundStyle(.negguSecondary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                        }
+                }
+                
+                LazyVGrid(
+                    columns: [GridItem](repeating: .init(spacing: 4), count: 7),
+                    spacing: 2
+                ) {
+                    ForEach(Date.weekdaySymbols, id: \.self) { symbol in
+                        Text(symbol)
+                            .negguFont(.caption)
+                            .foregroundStyle(
+                                symbol == "Sun" ? .warning
+                                : symbol == "Sat" ? .labelAssistive
+                                : .labelAlt
+                            )
+                    }
+                    .padding(.bottom, 2)
+                    
+                    ForEach(selectedMonthDates) { day in
+                        if day.date >= selectedMonth {
+                            Circle()
+                                .fill(selectedDate == day.date ? .negguSecondary : day.date == Date.now.yearMonthDay() ? .negguSecondaryAlt : .clear)
+                                .overlay {
+                                    Text(day.date.dayFormatted())
+                                        .negguFont(.body2b)
+                                        .foregroundStyle(dateColor(day))
+                                }
+                                .onTapGesture {
+                                    if day.ignored || selectedDate == day.date { return }
+                                    dismiss()
+                                    selectedDate = day.date
+                                }
+                        } else {
+                            Circle()
+                                .fill(.clear)
+                        }
+                    }
+                }
+                .padding(.top, 8)
+                
+                HStack {
+                    let today = Date.now.yearMonthDay()
+                    let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date.now.yearMonthDay())!
+                    let twoDaysAfter = Calendar.current.date(byAdding: .day, value: 2, to: Date.now.yearMonthDay())!
+                    
+                    Button {
+                        selectedDate = today
+                    } label: {
+                        DateSelectButton(selectedDate: $selectedDate, title: "오늘", date: today)
+                    }
+                    
+                    Button {
+                        selectedDate = tomorrow
+                    } label: {
+                        DateSelectButton(selectedDate: $selectedDate, title: "내일", date: tomorrow)
+                    }
+                    
+                    Button {
+                        selectedDate = twoDaysAfter
+                    } label: {
+                        DateSelectButton(selectedDate: $selectedDate, title: "모레", date: twoDaysAfter)
+                    }
+                }
+                .padding(.horizontal, 28)
+                .padding(.bottom, 24)
+            }
+            .padding(.horizontal, 20)
+        } header: {
             HStack {
-                Image(systemName: "chevron.left")
+                Image(.chevronLeft)
                     .frame(width: 24, height: 24)
                     .onTapGesture {
                         updateMonth(false)
@@ -34,116 +131,14 @@ struct LookBookDateEditView: View {
                     .negguFont(.body1b)
                     .frame(maxWidth: .infinity)
                 
-                Image(systemName: "chevron.right")
+                Image(.chevronRight)
                     .frame(width: 24, height: 24)
                     .onTapGesture {
                         updateMonth()
                     }
             }
             .foregroundStyle(.labelNormal)
-            .padding(.horizontal, 28)
-            .padding(.bottom)
-            
-            if let date = selectedDate {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(.negguSecondaryAlt)
-                    .frame(height: 60)
-                    .overlay {
-                        HStack(spacing: 0) {
-                            Image(systemName: "calendar")
-                                .frame(width: 24, height: 24)
-                                .padding(.trailing, 4)
-                            
-                            Text(date.monthDayFormatted())
-                            
-                            Text("에 입을 예정이에요")
-                                .foregroundStyle(.labelNormal)
-                            
-                            Spacer()
-                            
-                            Button {
-                                selectedDate = nil
-                            } label: {
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(.warning)
-                                    .frame(width: 63, height: 44)
-                                    .overlay {
-                                        Text("삭제")
-                                            .foregroundStyle(.white)
-                                    }
-                            }
-                        }
-                        .negguFont(.body2b)
-                        .foregroundStyle(.negguSecondary)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                    }
-                    .padding(.bottom)
-            }
-            
-            LazyVGrid(
-                columns: [GridItem](repeating: .init(spacing: 4), count: 7),
-                spacing: 2
-            ) {
-                ForEach(Date.weekdaySymbols, id: \.self) { symbol in
-                    Text(symbol)
-                        .negguFont(.caption)
-                        .foregroundStyle(
-                            symbol == "Sun" ? .warning
-                            : symbol == "Sat" ? .labelAssistive
-                            : .labelAlt
-                        )
-                }
-                .padding(.bottom, 2)
-                
-                ForEach(selectedMonthDates) { day in
-                    if day.date >= selectedMonth {
-                        Circle()
-                            .fill(selectedDate == day.date ? .negguSecondary : day.date == Date.now.yearMonthDay() ? .negguSecondaryAlt : .clear)
-                            .overlay {
-                                Text(day.date.dayFormatted())
-                                    .negguFont(.body2b)
-                                    .foregroundStyle(dateColor(day))
-                            }
-                            .onTapGesture {
-                                if day.ignored || selectedDate == day.date { return }
-                                dismiss()
-                                selectedDate = day.date
-                            }
-                    } else {
-                        Circle()
-                            .fill(.clear)
-                    }
-                }
-            }
-            
-            HStack {
-                let today = Date.now.yearMonthDay()
-                let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date.now.yearMonthDay())!
-                let twoDaysAfter = Calendar.current.date(byAdding: .day, value: 2, to: Date.now.yearMonthDay())!
-                
-                Button {
-                    selectedDate = today
-                } label: {
-                    DateSelectButton(selectedDate: $selectedDate, title: "오늘", date: today)
-                }
-                
-                Button {
-                    selectedDate = tomorrow
-                } label: {
-                    DateSelectButton(selectedDate: $selectedDate, title: "내일", date: tomorrow)
-                }
-                
-                Button {
-                    selectedDate = twoDaysAfter
-                } label: {
-                    DateSelectButton(selectedDate: $selectedDate, title: "모레", date: twoDaysAfter)
-                }
-            }
-            .padding(.horizontal, 28)
         }
-        .padding(20)
-        .background(.bgNormal)
     }
     
     func updateMonth(_ increment: Bool = true) {

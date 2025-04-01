@@ -331,9 +331,19 @@ struct ClosetAddView: View {
         .onTapGesture {
             focusedField = nil
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                
+                Button("완료") {
+                    focusedField = nil
+                }
+                .foregroundStyle(.negguSecondary)
+            }
+        }
         .sheet(isPresented: $showNameEditView) {
             ClothesNameEditView(clothesName: $clothes.name, placeholder: name)
-                .presentationDetents([.height(300)])
+                .presentationDetents([.height(270)])
                 .presentationCornerRadius(20)
         }
         .sheet(item: $fieldType) { fieldType in

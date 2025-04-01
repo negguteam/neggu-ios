@@ -23,30 +23,7 @@ struct MoodSheet: View {
     }
     
     var body: some View {
-        VStack(spacing: 24) {
-            RoundedRectangle(cornerRadius: 100)
-                .fill(.black.opacity(0.1))
-                .frame(width: 150, height: 8)
-            
-            HStack {
-                Text("옷의 스타일")
-                    .negguFont(.title3)
-                    .foregroundStyle(.labelNormal)
-                
-                Spacer()
-                
-                if !selectedMoodList.isEmpty {
-                    Button {
-                        selectedMoodList.removeAll()
-                        dismiss()
-                    } label: {
-                        Image(.refresh)
-                            .frame(width: 24, height: 24)
-                            .foregroundStyle(.labelAssistive)
-                    }
-                }
-            }
-            
+        NegguSheet {
             ScrollView {
                 VStack(spacing: 4) {
                     ForEach(Mood.allCasesArray) { mood in
@@ -84,7 +61,8 @@ struct MoodSheet: View {
                         }
                     }
                 }
-                .padding(.bottom, 110)
+                .padding(.horizontal, 48)
+                .padding(.bottom, 76)
             }
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {
@@ -101,8 +79,9 @@ struct MoodSheet: View {
                         }
                 }
                 .disabled(selectedMoodList.isEmpty)
+                .padding(.horizontal, 48)
                 .padding(.top, 20)
-                .padding(.bottom, 50)
+                .padding(.bottom)
                 .background {
                     LinearGradient(
                         colors: [
@@ -114,10 +93,26 @@ struct MoodSheet: View {
                     )
                 }
             }
+        } header: {
+            HStack {
+                Text("옷의 스타일")
+                    .negguFont(.title3)
+                    .foregroundStyle(.labelNormal)
+                
+                Spacer()
+                
+                if !selectedMoodList.isEmpty {
+                    Button {
+                        selectedMoodList.removeAll()
+                        dismiss()
+                    } label: {
+                        Image(.refresh)
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.labelAssistive)
+                    }
+                }
+            }
         }
-        .padding(.horizontal, 48)
-        .padding(.top, 20)
-        .ignoresSafeArea(edges: .bottom)
     }
 }
 

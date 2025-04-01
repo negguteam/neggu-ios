@@ -13,30 +13,7 @@ struct ColorSheet: View {
     @Binding var selectedColor: ColorFilter?
     
     var body: some View {
-        VStack(spacing: 24) {
-            RoundedRectangle(cornerRadius: 100)
-                .fill(.black.opacity(0.1))
-                .frame(width: 150, height: 8)
-            
-            HStack {
-                Text("색상")
-                    .negguFont(.title3)
-                    .foregroundStyle(.labelNormal)
-                
-                Spacer()
-                
-                if selectedColor != nil {
-                    Button {
-                        selectedColor = nil
-                        dismiss()
-                    } label: {
-                        Image(.refresh)
-                            .frame(width: 24, height: 24)
-                            .foregroundStyle(.labelAssistive)
-                    }
-                }
-            }
-            
+        NegguSheet {
             ScrollView {
                 VStack(spacing: 4) {
                     ForEach(ColorFilter.allCases) { color in
@@ -65,12 +42,30 @@ struct ColorSheet: View {
                         }
                     }
                 }
+                .padding(.horizontal, 48)
+                .padding(.bottom, 56)
             }
             .scrollIndicators(.hidden)
+        } header: {
+            HStack {
+                Text("색상")
+                    .negguFont(.title3)
+                    .foregroundStyle(.labelNormal)
+                
+                Spacer()
+                
+                if selectedColor != nil {
+                    Button {
+                        selectedColor = nil
+                        dismiss()
+                    } label: {
+                        Image(.refresh)
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(.labelAssistive)
+                    }
+                }
+            }
         }
-        .padding(.horizontal, 48)
-        .padding(.top, 20)
-        .padding(.bottom, 24)
     }
 }
 
