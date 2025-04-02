@@ -9,17 +9,6 @@ import SwiftUI
 import Combine
 
 struct LookBookView: View {
-    enum ProfileState {
-        case available(profile: UserProfileEntity)
-        case unavailable
-    }
-    
-    enum LookBookState {
-        case available
-        case none
-        case needClothes
-    }
-    
     @EnvironmentObject private var lookbookCoordinator: MainCoordinator
     
     @State private var profileState: ProfileState = .unavailable
@@ -46,11 +35,10 @@ struct LookBookView: View {
                     }
                     
                     Button("룩북 삭제하기", role: .destructive) {
-                        
+                        showDeleteList = true
                     }
                 } label: {
-                    Image(systemName: "ellipsis")
-                        .bold()
+                    Image(.hamburgerHorizontal)
                         .foregroundStyle(.labelNormal)
                         .frame(width: 44, height: 44)
                 }
@@ -71,34 +59,44 @@ struct LookBookView: View {
                                         .foregroundStyle(.labelNormal)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     
-                                    Circle()
-                                        .frame(width: 74, height: 74)
-                                        .overlay(alignment: .bottomTrailing) {
-                                            Button {
-                                                
-                                            } label: {
-                                                Circle()
-                                                    .fill(.negguSecondary)
-                                                    .frame(width: 24, height: 24)
-                                                    .overlay {
-                                                        Image(systemName: "pencil")
-                                                            .foregroundStyle(.white)
-                                                    }
-                                            }
-                                            .offset(y: 8)
+                                    Group {
+                                        if let profileImage = profile.profileImage {
+                                            AsyncImage(url: URL(string: profileImage))
+                                        } else {
+                                            Circle()
                                         }
+                                    }
+                                    .frame(width: 74, height: 74)
+                                    .overlay(alignment: .bottomTrailing) {
+                                        Button {
+                                            
+                                        } label: {
+                                            Circle()
+                                                .fill(.negguSecondary)
+                                                .frame(width: 24, height: 24)
+                                                .overlay {
+                                                    Image(.edit)
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .frame(width: 12, height: 12)
+                                                        .foregroundStyle(.white)
+                                                }
+                                        }
+                                        .offset(y: 8)
+                                    }
                                 }
                                 
                                 Text("옷장이 잘 채워지고 있어요!")
                                     .negguFont(.body2b)
                                     .foregroundStyle(.labelAssistive)
+                                    .padding(.bottom, 20)
                                 
                                 VStack {
                                     HStack(spacing: 16) {
                                         switch lookbookState {
                                         case .available:
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .fill(.clear)
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .fill(.white)
                                                 .overlay {
                                                     Image(.dummyLookbook)
                                                         .resizable()
@@ -107,11 +105,11 @@ struct LookBookView: View {
                                                             Text("내일 입을 룩북")
                                                                 .negguFont(.body3b)
                                                                 .foregroundStyle(.labelRNormal)
+                                                                .frame(height: 30)
                                                                 .padding(.horizontal)
                                                                 .background {
                                                                     RoundedRectangle(cornerRadius: 16)
                                                                         .fill(.black.opacity(0.4))
-                                                                        .frame(height: 30)
                                                                 }
                                                                 .padding(.bottom, 12)
                                                         }
@@ -223,7 +221,9 @@ struct LookBookView: View {
                                                     HStack {
                                                         Text("내가 꾸며준 코디 보러가기")
                                                         
-                                                        Image(systemName: "chevron.right")
+                                                        Image(.chevronRight)
+                                                            .resizable()
+                                                            .scaledToFit()
                                                             .frame(width: 12, height: 12)
                                                     }
                                                     .negguFont(.caption)
@@ -253,7 +253,11 @@ struct LookBookView: View {
                                                     Text("내 취향분석 더 보기")
                                                         .negguFont(.body2b)
                                                     
-                                                    Image(systemName: "chevron.right")
+                                                    Image(.chevronRight)
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                        .foregroundStyle(.labelRAssistive)
+                                                        .frame(width: 12, height: 12)
                                                 }
                                                 .foregroundStyle(.labelRNormal)
                                             }
@@ -267,7 +271,6 @@ struct LookBookView: View {
                             case .unavailable:
                                 ProgressView()
                                     .onAppear {
-                                        // MARK: 의상 없으면 의상 등록, 룩북 없으면 룩북 등록, 룩북 있으면 입을 날짜 최신인 룩북 표시
                                         userService.profile()
                                             .sink { event in
                                                 print("UserProfile:", event)
@@ -287,10 +290,18 @@ struct LookBookView: View {
                             
                         }
                         
-                        VStack(alignment: .leading) {
-                            Text("홍길동의 룩북")
-                                .negguFont(.title2)
-                                .id("LookBook")
+                        VStack(alignment: .leading, spacing: 24) {
+                            switch profileState {
+                            case .available(let profile):
+                                Text(profile.nickname + "의 룩북")
+                                    .negguFont(.title2)
+                                    .lineLimit(1)
+                                    .id("LookBook")
+                            case .unavailable:
+                                Text("사용자의 룩북")
+                                    .negguFont(.title2)
+                                    .id("LookBook")
+                            }
                             
                             HStack {
                                 FilterButton(title: "분위기") {
@@ -303,32 +314,60 @@ struct LookBookView: View {
                             }
                             .negguFont(.body3b)
                             .foregroundStyle(.gray50)
-                        }
-                        
-                        LazyVGrid(
-                            columns: [GridItem](repeating: GridItem(.flexible(), spacing: 16), count: 2),
-                            spacing: 16
-                        ) {
-                            ForEach(0..<8, id: \.self) { index in
-                                let date = Calendar.current.date(byAdding: .day, value: index, to: .now)!
-                                let (dateString, dateColor) = date.generateLookBookDate()
-                                
-                                Button {
-                                    lookbookCoordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
-                                } label: {
-                                    LookBookCell(dateString: dateString, dateColor: dateColor, lookBook: lookBook, isNeggu: Bool.random())
+                            
+                            LazyVGrid(
+                                columns: [GridItem](repeating: GridItem(.flexible(), spacing: 16), count: 2),
+                                spacing: 16
+                            ) {
+                                ForEach(lookBookList) { lookBook in
+                                    let date = Calendar.current.date(byAdding: .day, value: (0...10).randomElement() ?? 1, to: .now)!
+                                    let (dateString, dateColor) = date.generateLookBookDate()
+                                    
+                                    Button {
+                                        lookbookCoordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
+                                    } label: {
+                                        LookBookCell(dateString: dateString, dateColor: dateColor, lookBook: lookBook, isNeggu: Bool.random())
+                                    }
                                 }
+                                
+                                Rectangle()
+                                    .fill(.clear)
+                                    .frame(height: 56)
+                                    .onAppear {
+                                        print("LookBook Pagenation - onAppear")
+                                    }
                             }
                         }
                     }
                     .padding(.top, 32)
-                    .padding(.bottom, 56)
+                    .padding(.bottom, 80)
                 }
                 .scrollIndicators(.hidden)
             }
         }
         .padding(.horizontal, 20)
         .background(.gray5)
+        .sheet(isPresented: $showNegguList) {
+            Text("내가 꾸며준 룩북")
+                .presentationDetents([.fraction(0.8)])
+                .presentationCornerRadius(20)
+        }
+        .sheet(isPresented: $showDeleteList) {
+            Text("삭제하기")
+                .presentationDetents([.fraction(0.8)])
+                .presentationCornerRadius(20)
+        }
+    }
+    
+    enum ProfileState {
+        case available(profile: UserProfileEntity)
+        case unavailable
+    }
+    
+    enum LookBookState {
+        case available
+        case none
+        case needClothes
     }
 }
 
