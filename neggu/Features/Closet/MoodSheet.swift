@@ -11,6 +11,7 @@ struct MoodSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     @Binding var selectedMoodList: [Mood]
+    
     let isSingleSelection: Bool
     
     var selectionLimit: Int {
@@ -91,6 +92,7 @@ struct MoodSheet: View {
                         startPoint: .top,
                         endPoint: .bottom
                     )
+                    .ignoresSafeArea()
                 }
             }
         } header: {
