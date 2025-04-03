@@ -23,73 +23,76 @@ struct LookBookDetailView: View {
     
     @State private var bag = Set<AnyCancellable>()
     
+    @State private var showLookBookEditView: Bool = false
+    
     let lookBookID: String
     let service: LookBookService = DefaultLookBookService()
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundStyle(.labelNormal)
-                        .frame(width: 44, height: 44)
-                }
-                
-                Spacer()
-                
-                HStack(spacing: 4) {
-                    Text("데이트룩")
-                        .negguFont(.body1b)
-                    
-                    Button("", systemImage: "pencil") {
-                        
+            switch lookBookState {
+            case .loading:
+                ProgressView()
+                    .onAppear {
+                        service.lookbookDetail(id: lookBookID)
+                            .sink { event in
+                                print("LookBookDetailView:", event)
+                            } receiveValue: { lookBook in
+                                lookBookState = .complete(lookBook: lookBook)
+                            }.store(in: &bag)
                     }
-                    .frame(width: 24, height: 24)
-                }
-                .foregroundStyle(.labelNormal)
-                
-                Spacer()
-                
-                Menu {
-                    Button("이미지로 저장하기") {
-                        
+            case .complete(let lookBook):
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(.chevronLeft)
+                            .foregroundStyle(.labelNormal)
+                            .frame(width: 44, height: 44)
                     }
                     
-                    Button("편집하기") {
-                        
-                    }
+                    Spacer()
                     
-                    Button("삭제하기", role: .destructive) {
+                    HStack(spacing: 12) {
+                        Text("데이트룩")
+                            .negguFont(.body1b)
                         
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .foregroundStyle(.labelNormal)
-                        .frame(width: 44, height: 44)
-                }
-            }
-            .frame(height: 44)
-            .padding(.horizontal, 20)
-            .background(.bgNormal)
-            
-            ScrollView {
-                switch lookBookState {
-                case .loading:
-                    ProgressView()
-                        .onAppear {
-                            service.lookbookDetail(id: lookBookID)
-                                .sink { event in
-                                    print("LookBookDetailView:", event)
-                                } receiveValue: { lookBook in
-                                    lookBookState = .complete(lookBook: lookBook)
-                                }.store(in: &bag)
+                        Button {
+                            
+                        } label: {
+                            Image(.edit)
+                                .frame(width: 24, height: 24)
                         }
-                case .complete(let lookBook):
+                    }
+                    .foregroundStyle(.labelNormal)
+                    
+                    Spacer()
+                    
+                    Menu {
+                        Button("이미지로 저장하기") {
+                            
+                        }
+                        
+                        Button("편집하기") {
+                            showLookBookEditView = true
+                        }
+                        
+                        Button("삭제하기", role: .destructive) {
+                            
+                        }
+                    } label: {
+                        Image(.hamburgerHorizontal)
+                            .foregroundStyle(.labelNormal)
+                            .frame(width: 44, height: 44)
+                    }
+                }
+                .frame(height: 44)
+                .padding(.horizontal, 20)
+                .background(.bgNormal)
+                
+                ScrollView {
                     VStack(spacing: 24) {
-                        VStack(spacing: 54) {
+                        VStack {
                             AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
                                 image
                                     .resizable()
@@ -100,17 +103,11 @@ struct LookBookDetailView: View {
                                         ProgressView()
                                     }
                             }
+                            .frame(maxHeight: .infinity)
                             
                             HStack {
                                 if isNeggu {
                                     HStack(spacing: 12) {
-                                        //                                    Color.negguSecondary
-                                        //                                        .frame(width: 24, height: 24)
-                                        //                                        .mask {
-                                        //                                            Image("neggu_star")
-                                        //                                                .resizable()
-                                        //                                        }
-                                        
                                         Circle()
                                             .frame(width: 36, height: 36)
                                         
@@ -156,10 +153,9 @@ struct LookBookDetailView: View {
                         .containerRelativeFrame(.vertical) { length, _ in length * 0.9 }
                         .background(.white)
                         .clipShape(.rect(cornerRadius: 20))
-                        .padding(.top, 12)
                         
                         VStack(spacing: 24) {
-                            Text(lookBook.modifiedAt + " 편집됨")
+                            Text((lookBook.modifiedAt.toISOFormatDate()?.toLookBookDetailDateString() ?? "") + " 편집됨")
                                 .negguFont(.caption)
                                 .foregroundStyle(.black.opacity(0.2))
                                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -237,12 +233,13 @@ struct LookBookDetailView: View {
                             }
                         }
                         .padding(.horizontal, 20)
-                        .padding(.bottom, 90)
+                        .padding(.bottom, 20)
                     }
+                    .padding(.top, 12)
                 }
+                .scrollIndicators(.hidden)
+                .background(.bgNormal)
             }
-            .scrollIndicators(.hidden)
-            .background(.gray5)
         }
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showCalendar) {
