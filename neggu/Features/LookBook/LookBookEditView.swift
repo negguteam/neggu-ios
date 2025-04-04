@@ -19,7 +19,7 @@ struct LookBookEditView: View {
         }
     }
     
-    @State private var selectedCategory: Category = .UNKNOWN
+    @State private var selectedCategory: Category = .NONE
     @State private var selectedColor: ColorFilter?
     
     @State private var showCategoryList: Bool = false
@@ -39,6 +39,13 @@ struct LookBookEditView: View {
     var body: some View {
         GeometryReader { proxy in
             collageView
+                .background {
+                    LinearGradient(
+                        gradient: Gradient(colors: [.white, .white, .gray10]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                }
                 .clipped()
                 .overlay {
                     VStack(spacing: 0) {
@@ -78,6 +85,8 @@ struct LookBookEditView: View {
                         .frame(height: 44)
                         .padding(.horizontal, 20)
                         .foregroundStyle(.black)
+                        .opacity(isEditingMode ? 0 : 1)
+                        .disabled(isEditingMode)
                         
                         HStack {
                             Spacer()
@@ -86,6 +95,15 @@ struct LookBookEditView: View {
                                 print("네꾸하기")
                             } label: {
                                 Circle()
+                                    .fill(.black)
+                                    .overlay {
+                                        Image(.negguStar)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 24, height: 24)
+                                    }
+                                    .shadow(color: .black.opacity(0.05), radius: 4, x: 4, y: 4)
+                                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
                                     .frame(width: 44, height: 44)
                             }
                         }
@@ -122,7 +140,7 @@ struct LookBookEditView: View {
                                             showCategoryList = true
                                         } label: {
                                             HStack(spacing: 0) {
-                                                Image(systemName: "globe")
+                                                Image(selectedCategory.iconName)
                                                 
                                                 HStack(spacing: 0) {
                                                     Text("길동")
@@ -133,7 +151,7 @@ struct LookBookEditView: View {
                                                 }
                                                 .padding(.horizontal, 12)
                                                 
-                                                Image(systemName: showCategoryList ? "chevron.down" : "chevron.up")
+                                                Image(showCategoryList ? "chevron_down" : "chevron_up")
                                             }
                                             .negguFont(.body2b)
                                             .foregroundStyle(.negguSecondary)
@@ -154,30 +172,47 @@ struct LookBookEditView: View {
                                     if isColorEditMode {
                                         ScrollView(.horizontal) {
                                             HStack(spacing: 12) {
-                                                Circle()
+                                                Image("color_rainbow")
                                                     .frame(width: 32)
+                                                    .onTapGesture {
+                                                        selectedColor = nil
+                                                        isColorEditMode = false
+                                                    }
                                                 
                                                 ForEach(ColorFilter.allCases) { filter in
                                                     Circle()
                                                         .stroke(.lineAlt)
                                                         .fill(filter.color)
                                                         .frame(width: 32)
+                                                        .onTapGesture {
+                                                            selectedColor = filter
+                                                            isColorEditMode = false
+                                                        }
                                                 }
                                             }
                                         }
                                         .scrollIndicators(.hidden)
                                         .opacity(isColorEditMode ? 1 : 0)
                                     } else {
-                                        Circle()
-                                            .fill(.black)
-                                            .frame(width: 24)
-                                            .opacity(isColorEditMode ? 0 : 1)
+                                        if let selectedColor {
+                                            Circle()
+                                                .fill(selectedColor.color)
+                                                .strokeBorder(.lineAlt)
+                                                .frame(width: 24)
+                                                .opacity(isColorEditMode ? 0 : 1)
+                                        } else {
+                                            Image("color_rainbow")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 24)
+                                                .opacity(isColorEditMode ? 0 : 1)
+                                        }
                                     }
                                     
                                     Button {
                                         isColorEditMode.toggle()
                                     } label: {
-                                        Image(systemName: "chevron.down")
+                                        Image("chevron_down")
                                             .frame(width: 24, height: 24)
                                             .foregroundStyle(.negguSecondary)
                                             .rotationEffect(isColorEditMode ? Angle(degrees: 180.0) : Angle(degrees: 0.0))
@@ -205,7 +240,9 @@ struct LookBookEditView: View {
                                             
                                             Button {
                                                 if !isSelected {
-                                                    selectedClothes.append(clothes.wrappedValue.toLookBookItem())
+                                                    let middleX = proxy.size.width / 4
+                                                    let middleY = proxy.size.height / 4
+                                                    selectedClothes.append(clothes.wrappedValue.toLookBookItem(offset: .init(width: middleX, height: middleY)))
                                                 } else {
                                                     selectedClothes.removeAll(where: { $0.id == clothes.wrappedValue.id })
                                                 }
@@ -246,27 +283,22 @@ struct LookBookEditView: View {
                                 }
                             
                             VStack(alignment: .leading, spacing: 0) {
-                                ForEach(Category.allCases) { category in
+                                ForEach(Category.allCases.filter { $0 != .UNKNOWN }) { category in
                                     Button {
                                         selectedCategory = category
                                         showCategoryList = false
                                     } label: {
                                         HStack(spacing: 0) {
-                                            Image(systemName: "globe")
+                                            Image(category.iconName)
                                                 .frame(width: 24, height: 24)
                                                 .padding(.horizontal, 12)
                                             
-                                            switch category {
-                                            case .UNKNOWN:
-                                                Text("전체")
-                                            default:
-                                                Text(category.title)
-                                            }
+                                            Text(category.title)
                                             
                                             Spacer()
                                             
-                                            if category == .UNKNOWN {
-                                                Image(showCategoryList ? "chevron_up" : "chevron_down")
+                                            if category == .NONE {
+                                                Image("chevron_up")
                                                     .frame(width: 44, height: 44)
                                             } else {
                                                 Color.clear
@@ -294,98 +326,96 @@ struct LookBookEditView: View {
         .onAppear {
             getLookBookClothes()
         }
+        .onChange(of: selectedCategory) {
+            getLookBookClothes()
+        }
+        .onChange(of: selectedColor) {
+            getLookBookClothes()
+        }
     }
     
     var collageView: some View {
-        LinearGradient(
-            gradient: Gradient(colors: [.white, .white, .gray10]),
-            startPoint: .top,
-            endPoint: .bottom
-        )
-        .overlay {
-            GeometryReader { proxy in
-                ZStack(alignment: .topLeading) {
-                    ForEach($selectedClothes) { clothes in
-                        Group {
-                            if let image = clothes.wrappedValue.image {
-                                Image(uiImage: image)
-                                    .resizable()
-                                    .scaledToFit()
-                            } else {
-                                Color.clear
-                                    .overlay {
-                                        ProgressView()
-                                    }
-                            }
+        GeometryReader { proxy in
+            ZStack(alignment: .topLeading) {
+                ForEach($selectedClothes) { clothes in
+                    Group {
+                        if let image = clothes.wrappedValue.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                        } else {
+                            Color.clear
+                                .overlay {
+                                    ProgressView()
+                                }
                         }
-                        .frame(width: proxy.size.width / 2, height: proxy.size.height / 3)
-                        .scaleEffect(clothes.wrappedValue.scale)
-                        .rotationEffect(clothes.wrappedValue.angle)
-                        .overlay {
-                            if editingClothes == clothes.id {
-                                RoundedRectangle(cornerRadius: 18)
-                                    .strokeBorder(
-                                        .black,
-                                        style: StrokeStyle(
-                                            lineWidth: 2,
-                                            dash: [4, 4]
-                                        )
+                    }
+                    .frame(width: proxy.size.width / 2, height: proxy.size.height / 3)
+                    .scaleEffect(clothes.wrappedValue.scale)
+                    .rotationEffect(clothes.wrappedValue.angle)
+                    .overlay {
+                        if editingClothes == clothes.id {
+                            RoundedRectangle(cornerRadius: 18)
+                                .strokeBorder(
+                                    .black,
+                                    style: StrokeStyle(
+                                        lineWidth: 2,
+                                        dash: [4, 4]
                                     )
-                                    .frame(
-                                        width: proxy.size.width / 2 * clothes.wrappedValue.scale,
-                                        height: proxy.size.height / 3 * clothes.wrappedValue.scale
+                                )
+                                .frame(
+                                    width: proxy.size.width / 2 * clothes.wrappedValue.scale,
+                                    height: proxy.size.height / 3 * clothes.wrappedValue.scale
+                                )
+                                .rotationEffect(clothes.wrappedValue.angle)
+                            
+                            Circle()
+                                .fill(.negguPrimary)
+                                .frame(width: 36, height: 36)
+                                .overlay {
+                                    Image("resize")
+                                        .foregroundStyle(.white)
+                                }
+                                .offset(
+                                    x: proxy.size.width / 2 * clothes.wrappedValue.scale / 2,
+                                    y: proxy.size.height / 2 * clothes.wrappedValue.scale / 3
+                                )
+                                .rotationEffect(clothes.wrappedValue.angle)
+                                .gesture(
+                                    SimultaneousGesture(
+                                        scaleGesture(clothes),
+                                        rotationGesture(clothes)
                                     )
-                                    .rotationEffect(clothes.wrappedValue.angle)
-                                
-                                Circle()
-                                    .fill(.negguPrimary)
-                                    .frame(width: 36, height: 36)
-                                    .overlay {
-                                        Image(systemName: "arrow.left.and.right")
-                                            .foregroundStyle(.white)
-                                    }
-                                    .rotationEffect(.degrees(45))
-                                    .offset(
-                                        x: proxy.size.width / 2 * clothes.wrappedValue.scale / 2,
-                                        y: proxy.size.height / 2 * clothes.wrappedValue.scale / 3
-                                    )
-                                    .rotationEffect(clothes.wrappedValue.angle)
-                                    .gesture(
-                                        SimultaneousGesture(
-                                            scaleGesture(clothes),
-                                            rotationGesture(clothes)
-                                        )
-                                    )
-                            }
+                                )
                         }
-                        .offset(clothes.wrappedValue.offset)
-                        .zIndex(Double(selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) ?? 0))
-                        .gesture(drag(clothes: clothes))
+                    }
+                    .offset(clothes.wrappedValue.offset)
+                    .zIndex(Double(selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) ?? 0))
+                    .gesture(drag(clothes: clothes))
+                    .onTapGesture {
+                        if editingClothes == clothes.id {
+                            editingClothes = ""
+                        } else {
+                            editingClothes = clothes.id
+                        }
+                        
+                        selectedClothes.append(clothes.wrappedValue)
+                        
+                        guard let index = selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) else { return }
+                        selectedClothes.remove(at: index)
+                        
+                        guard let lastIndex = selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) else { return }
+                        clothes.wrappedValue.zIndex = Double(lastIndex)
+                    }
+                }
+                
+                if isEditingMode {
+                    Color.white.opacity(0.3)
+                        .frame(width: proxy.size.width, height: proxy.size.height)
+                        .zIndex(Double(selectedClothes.count) - 1.5)
                         .onTapGesture {
-                            if editingClothes == clothes.id {
-                                editingClothes = ""
-                            } else {
-                                editingClothes = clothes.id
-                            }
-                            
-                            selectedClothes.append(clothes.wrappedValue)
-                            
-                            guard let index = selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) else { return }
-                            selectedClothes.remove(at: index)
-                            
-                            guard let lastIndex = selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) else { return }
-                            clothes.wrappedValue.zIndex = Double(lastIndex)
+                            editingClothes = ""
                         }
-                    }
-                    
-                    if isEditingMode {
-                        Color.white.opacity(0.3)
-                            .frame(width: proxy.size.width, height: proxy.size.height)
-                            .zIndex(Double(selectedClothes.count) - 1.5)
-                            .onTapGesture {
-                                editingClothes = ""
-                            }
-                    }
                 }
             }
         }
@@ -396,13 +426,15 @@ struct LookBookEditView: View {
                     
         var parameters: [String: Any] = ["page": 0, "size": 10]
         
-        if selectedCategory != .UNKNOWN {
+        if selectedCategory != .UNKNOWN && selectedCategory != .NONE {
             parameters["filterCategory"] = selectedCategory.id
         }
         
-//        if selectedColor != nil {
+        if let selectedColor {
+            parameters["colorGroup"] = selectedColor.id
+        } else {
             parameters["colorGroup"] = "ALL"
-//        }
+        }
         
         lookbookService.lookbookClothes(parameters: parameters)
             .sink { event in
@@ -424,6 +456,7 @@ struct LookBookEditView: View {
             }
     }
     
+    // TODO: Scasle
     func scaleGesture(_ clothes: Binding<LookBookClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
@@ -440,6 +473,7 @@ struct LookBookEditView: View {
         return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 200
     }
     
+    // TODO: 편집 시 각도 인식 이슈 해결하기
     func rotationGesture(_ clothes: Binding<LookBookClothesItem>) -> some Gesture {
         DragGesture()
             .onChanged { value in
@@ -453,6 +487,10 @@ struct LookBookEditView: View {
                 
                 if angle.degrees < 0 {
                     angle.degrees += 360
+                }
+            
+                if angle.degrees > 360 {
+                    angle.degrees -= 360
                 }
                 
                 clothes.wrappedValue.angle = angle
