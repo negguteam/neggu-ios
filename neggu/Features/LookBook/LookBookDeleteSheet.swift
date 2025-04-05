@@ -22,7 +22,16 @@ struct LookBookDeleteSheet: View {
                     spacing: 16
                 ) {
                     ForEach(viewModel.lookBookList) { lookBook in
-                        LookBookDeleteCell(lookBook: lookBook)
+                        let isSelected = selectedLookBookList.contains { $0.id == lookBook.id }
+                        
+                        LookBookDeleteCell(lookBook: lookBook, isSelected: isSelected)
+                            .onTapGesture {
+                                if isSelected {
+                                    selectedLookBookList = selectedLookBookList.filter { $0.id != lookBook.id }
+                                } else {
+                                    selectedLookBookList.append(lookBook)
+                                }
+                            }
                     }
                     
                     Rectangle()
@@ -87,9 +96,8 @@ struct LookBookDeleteSheet: View {
 }
 
 struct LookBookDeleteCell: View {
-    @State private var isSelected: Bool = false
-    
     let lookBook: LookBookEntity
+    let isSelected: Bool
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -121,9 +129,6 @@ struct LookBookDeleteCell: View {
                         }
                 }
                 .padding(12)
-            }
-            .onTapGesture {
-                isSelected.toggle()
             }
     }
 }
