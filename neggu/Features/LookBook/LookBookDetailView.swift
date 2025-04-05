@@ -19,6 +19,7 @@ struct LookBookDetailView: View {
     
     @State private var showCalendar: Bool = false
     @State private var showLookBookEditView: Bool = false
+    @State private var showDeleteAlert: Bool = false
     @State private var selectedClothes: LookBookClothesEntity?
     @State private var sheetHeight: CGFloat = .zero
     
@@ -63,7 +64,8 @@ struct LookBookDetailView: View {
                     
                     Menu {
                         Button("이미지로 저장하기") {
-                            
+                            guard let lookBookImage = lookBook.imageUrl.toUIImage() else { return }
+                            UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
                         }
                         
                         Button("편집하기") {
@@ -71,7 +73,7 @@ struct LookBookDetailView: View {
                         }
                         
                         Button("삭제하기", role: .destructive) {
-                            
+                            showDeleteAlert = true
                         }
                     } label: {
                         Image(.hamburgerHorizontal)
@@ -253,6 +255,17 @@ struct LookBookDetailView: View {
             ClothesDetailView(clothesID: clothes.id)
                 .presentationDetents([.fraction(0.9)])
                 .presentationCornerRadius(20)
+        }
+        .negguAlert(
+            showAlert: $showDeleteAlert,
+            title: "룩북을 삭제할까요?",
+            description: "삭제한 룩북은 복구되지 않습니다.",
+            leftContent: "취소하기",
+            rightContent: "삭제하기"
+        ) {
+            viewModel.deleteLookBook(id: lookBookID) {
+                dismiss()
+            }
         }
     }
     

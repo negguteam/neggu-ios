@@ -34,8 +34,38 @@ struct LookBookDeleteSheet: View {
                         }
                 }
                 .padding(.horizontal, 48)
+                .padding(.bottom)
             }
             .scrollIndicators(.hidden)
+            .overlay(alignment: .bottom) {
+                Button {
+                    dismiss()
+                } label: {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(selectedLookBookList.isEmpty ? .bgInactive : .warning)
+                        .frame(height: 56)
+                        .overlay {
+                            Text("선택완료")
+                                .negguFont(.body1b)
+                                .foregroundStyle(selectedLookBookList.isEmpty ? .labelInactive : .labelRNormal)
+                        }
+                }
+                .disabled(selectedLookBookList.isEmpty)
+                .padding(.horizontal, 48)
+                .padding(.top, 20)
+                .padding(.bottom)
+                .background {
+                    LinearGradient(
+                        colors: [
+                            Color(red: 248, green: 248, blue: 248, opacity: 0),
+                            Color(red: 248, green: 248, blue: 248, opacity: 1)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                }
+            }
         } header: {
             HStack {
                 Text("삭제하기")
@@ -65,6 +95,7 @@ struct LookBookDeleteCell: View {
         RoundedRectangle(cornerRadius: 20)
             .fill(isSelected ? .warningAlt : .white)
             .strokeBorder(isSelected ? .warning : .white)
+            .frame(height: 220)
             .overlay {
                 ZStack(alignment: .topTrailing) {
                     AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
@@ -77,11 +108,17 @@ struct LookBookDeleteCell: View {
                                 ProgressView()
                             }
                     }
-
                     
                     Circle()
                         .fill(isSelected ? .warning : .bgAlt)
                         .frame(width: 24)
+                        .overlay {
+                            Image(.check)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 12, height: 12)
+                                .foregroundStyle(isSelected ? .white : .labelInactive)
+                        }
                 }
                 .padding(12)
             }

@@ -65,7 +65,6 @@ struct LookBookEditView: View {
                                     .snapshot(),
                                       let pngData = lookbookImage.pngData()
                                 else { return }
-//                                UIImageWriteToSavedPhotosAlbum(lookbookImage, nil, nil, nil)
                                 
                                 let requests = selectedClothes.compactMap { $0.toEntity() }
                                 debugPrint(requests)

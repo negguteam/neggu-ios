@@ -11,13 +11,12 @@ struct LookBookCell: View {
     let dateString: String
     let dateColor: Color
     let lookBook: LookBookEntity
-    let isNeggu: Bool
     
-    init(dateString: String, dateColor: Color, lookBook: LookBookEntity, isNeggu: Bool = false) {
+    init(lookBook: LookBookEntity, targetDate: Date) {
+        let (dateString, dateColor) = targetDate.generateLookBookDate()
+        self.lookBook = lookBook
         self.dateString = dateString
         self.dateColor = dateColor
-        self.lookBook = lookBook
-        self.isNeggu = isNeggu
     }
     
     var body: some View {
@@ -38,9 +37,10 @@ struct LookBookCell: View {
                                 }
                         }
                         
-                        if isNeggu {
-                            Circle()
+                        if let decorator = lookBook.decorator {
+                            AsyncImage(url: URL(string: decorator.imageUrl))
                                 .frame(width: 36, height: 36)
+                                .clipShape(.circle)
                         }
                     }
                     .padding(10)

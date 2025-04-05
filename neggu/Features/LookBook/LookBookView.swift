@@ -302,13 +302,10 @@ struct LookBookView: View {
                                 spacing: 16
                             ) {
                                 ForEach(viewModel.lookBookList) { lookBook in
-                                    let date = Calendar.current.date(byAdding: .day, value: (0...10).randomElement() ?? 1, to: .now)!
-                                    let (dateString, dateColor) = date.generateLookBookDate()
-                                    
                                     Button {
                                         lookbookCoordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
                                     } label: {
-                                        LookBookCell(dateString: dateString, dateColor: dateColor, lookBook: lookBook, isNeggu: Bool.random())
+                                        LookBookCell(lookBook: lookBook, targetDate: .now.addingTimeInterval(.random(in: 0...10) * 24 * 60 * 60))
                                     }
                                 }
                                 
