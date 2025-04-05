@@ -11,6 +11,8 @@ import Combine
 struct LookBookEditView: View {
     @Environment(\.dismiss) private var dismiss
     
+    @EnvironmentObject private var viewModel: LookBookViewModel
+    
     @State private var selectedClothes: [LookBookClothesItem]
     
     @State private var editingClothes: String = "" {
@@ -19,18 +21,9 @@ struct LookBookEditView: View {
         }
     }
     
-    @State private var selectedCategory: Category = .NONE
-    @State private var selectedColor: ColorFilter?
-    
     @State private var showCategoryList: Bool = false
     @State private var isColorEditMode: Bool = false
     @State private var isEditingMode: Bool = false
-    
-    let lookbookService = DefaultLookBookService()
-    
-    @State private var lookbookClothes: [ClothesEntity] = []
-    
-    @State private var bag = Set<AnyCancellable>()
     
     init(editingClothes: [LookBookClothesItem] = []) {
         self.selectedClothes = editingClothes
@@ -66,18 +59,11 @@ struct LookBookEditView: View {
                                       let pngData = lookbookImage.pngData()
                                 else { return }
                                 
-                                let requests = selectedClothes.compactMap { $0.toEntity() }
-                                debugPrint(requests)
+                                let request = selectedClothes.compactMap { $0.toEntity() }
                                 
-                                lookbookService.register(
-                                    image: pngData,
-                                    request: requests
-                                ).sink { event in
-                                    print("LookBookEditView", event)
-                                } receiveValue: { result in
-                                    debugPrint(result)
+                                viewModel.registerLookBook(image: pngData, request: request) {
                                     dismiss()
-                                }.store(in: &bag)
+                                }
                             }
                             .negguFont(.body2b)
                         }
@@ -139,7 +125,7 @@ struct LookBookEditView: View {
                                             showCategoryList = true
                                         } label: {
                                             HStack(spacing: 0) {
-                                                Image(selectedCategory.iconName)
+                                                Image(viewModel.selectedCategory.iconName)
                                                 
                                                 HStack(spacing: 0) {
                                                     Text("길동")
@@ -174,7 +160,7 @@ struct LookBookEditView: View {
                                                 Image("color_rainbow")
                                                     .frame(width: 32)
                                                     .onTapGesture {
-                                                        selectedColor = nil
+                                                        viewModel.selectedColor = nil
                                                         isColorEditMode = false
                                                     }
                                                 
@@ -184,7 +170,7 @@ struct LookBookEditView: View {
                                                         .fill(filter.color)
                                                         .frame(width: 32)
                                                         .onTapGesture {
-                                                            selectedColor = filter
+                                                            viewModel.selectedColor = filter
                                                             isColorEditMode = false
                                                         }
                                                 }
@@ -193,7 +179,7 @@ struct LookBookEditView: View {
                                         .scrollIndicators(.hidden)
                                         .opacity(isColorEditMode ? 1 : 0)
                                     } else {
-                                        if let selectedColor {
+                                        if let selectedColor = viewModel.selectedColor {
                                             Circle()
                                                 .fill(selectedColor.color)
                                                 .strokeBorder(.lineAlt)
@@ -233,20 +219,20 @@ struct LookBookEditView: View {
                             .frame(height: isEditingMode ? 18 : 136)
                             .overlay(alignment: .top) {
                                 ScrollView(.horizontal) {
-                                    HStack {
-                                        ForEach($lookbookClothes) { clothes in
+                                    LazyHStack {
+                                        ForEach(viewModel.lookBookClothes) { clothes in
                                             let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
                                             
                                             Button {
                                                 if !isSelected {
                                                     let middleX = proxy.size.width / 4
                                                     let middleY = proxy.size.height / 4
-                                                    selectedClothes.append(clothes.wrappedValue.toLookBookItem(offset: .init(width: middleX, height: middleY)))
+                                                    selectedClothes.append(clothes.toLookBookItem(offset: .init(width: middleX, height: middleY)))
                                                 } else {
-                                                    selectedClothes.removeAll(where: { $0.id == clothes.wrappedValue.id })
+                                                    selectedClothes.removeAll(where: { $0.id == clothes.id })
                                                 }
                                             } label: {
-                                                AsyncImage(url: URL(string: clothes.wrappedValue.imageUrl)) { image in
+                                                AsyncImage(url: URL(string: clothes.imageUrl)) { image in
                                                     image
                                                         .resizable()
                                                         .aspectRatio(contentMode: .fit)
@@ -254,14 +240,22 @@ struct LookBookEditView: View {
                                                     ProgressView()
                                                 }
                                                 .frame(width: 100, height: 100)
-                                                .background(isSelected ? .negguSecondaryAlt : .gray5)
+                                                .background(isSelected ? .negguSecondaryAlt : .bgNormal)
                                                 .overlay {
                                                     RoundedRectangle(cornerRadius: 16)
-                                                        .strokeBorder(isSelected ? .negguSecondary : .gray5)
+                                                        .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
                                                 }
                                                 .clipShape(.rect(cornerRadius: 16))
                                             }
                                         }
+                                        
+                                        Rectangle()
+                                            .fill(.clear)
+                                            .frame(height: 100)
+                                            .onAppear {
+                                                if viewModel.clothesPage <= 0 { return }
+                                                viewModel.getLookBookClothes()
+                                            }
                                     }
                                     .padding(.horizontal, 22)
                                 }
@@ -284,7 +278,7 @@ struct LookBookEditView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 ForEach(Category.allCases.filter { $0 != .UNKNOWN }) { category in
                                     Button {
-                                        selectedCategory = category
+                                        viewModel.selectedCategory = category
                                         showCategoryList = false
                                     } label: {
                                         HStack(spacing: 0) {
@@ -306,7 +300,7 @@ struct LookBookEditView: View {
                                         }
                                         .frame(width: 171, height: 44)
                                         .foregroundStyle(
-                                            selectedCategory == category
+                                            viewModel.selectedCategory == category
                                             ? .negguSecondary
                                             : .labelInactive
                                         )
@@ -323,13 +317,10 @@ struct LookBookEditView: View {
                 }
         }
         .onAppear {
-            getLookBookClothes()
+            viewModel.filteredClothes()
         }
-        .onChange(of: selectedCategory) {
-            getLookBookClothes()
-        }
-        .onChange(of: selectedColor) {
-            getLookBookClothes()
+        .onDisappear {
+            viewModel.resetLookBookClothes()
         }
     }
     
@@ -418,29 +409,6 @@ struct LookBookEditView: View {
                 }
             }
         }
-    }
-    
-    func getLookBookClothes() {
-//        if !canPagenation { return }
-                    
-        var parameters: [String: Any] = ["page": 0, "size": 10]
-        
-        if selectedCategory != .UNKNOWN && selectedCategory != .NONE {
-            parameters["filterCategory"] = selectedCategory.id
-        }
-        
-        if let selectedColor {
-            parameters["colorGroup"] = selectedColor.id
-        } else {
-            parameters["colorGroup"] = "ALL"
-        }
-        
-        lookbookService.lookbookClothes(parameters: parameters)
-            .sink { event in
-                print("LookBookEditView:", event)
-            } receiveValue: { result in
-                self.lookbookClothes = result.content
-            }.store(in: &bag)
     }
     
     func drag(clothes: Binding<LookBookClothesItem>) -> some Gesture {
