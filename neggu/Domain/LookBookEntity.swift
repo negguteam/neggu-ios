@@ -13,8 +13,15 @@ struct LookBookEntity: Decodable, Identifiable {
     let lookBookId: String
     let imageUrl: String
     let lookBookClothes: [LookBookClothesEntity]
+    let decorator: Decorator?
     let createdAt: String
     let modifiedAt: String
+    
+    struct Decorator: Decodable {
+        let id: String
+        let imageUrl: String
+        let targetDate: String
+    }
 }
 
 struct LookBookListEntity: Decodable {
@@ -24,7 +31,8 @@ struct LookBookListEntity: Decodable {
     let empty: Bool
 }
 
-struct LookBookClothesEntity: Codable, Identifiable, Equatable {
+
+struct LookBookClothesEntity: Decodable, Identifiable, Equatable {
     let id: String
     let imageUrl: String
     var scale: Float
@@ -46,11 +54,24 @@ struct LookBookClothesEntity: Codable, Identifiable, Equatable {
             imageUrl: self.imageUrl,
             image: self.imageUrl.toUIImage(),
             scale: CGFloat(self.scale),
+//            lastScale: CGFloat(self.scale),
             angle: Angle(degrees: Double(self.angle)),
+//            lastAngle: Angle(degrees: Double(self.angle)),
             offset: .init(width: CGFloat(self.xRatio), height: CGFloat(self.yRatio)),
+            lastOffset: .init(width: CGFloat(self.xRatio), height: CGFloat(self.yRatio)),
             zIndex: Double(self.zIndex)
         )
     }
+}
+
+struct LookBookClothesRegisterEntity: Encodable {
+    let id: String
+    let imageUrl: String
+    let scale: Float
+    let angle: Int
+    let xRatio: Float
+    let yRatio: Float
+    let zIndex: Int
 }
 
 struct LookBookClothesItem: Identifiable, Equatable, Hashable {
@@ -66,7 +87,7 @@ struct LookBookClothesItem: Identifiable, Equatable, Hashable {
     var lastOffset: CGSize = .zero
     var zIndex: Double = 0
     
-    func toEntity() -> LookBookClothesEntity {
+    func toEntity() -> LookBookClothesRegisterEntity {
         return .init(
             id: self.id,
             imageUrl: self.imageUrl,
@@ -77,10 +98,4 @@ struct LookBookClothesItem: Identifiable, Equatable, Hashable {
             zIndex: Int(zIndex)
         )
     }
-}
-
-struct Decorator: Decodable {
-    let id: String
-    let imageUrl: String
-    let targetDate: String
 }

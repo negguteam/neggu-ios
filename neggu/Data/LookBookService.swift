@@ -11,7 +11,7 @@ import Combine
 typealias DefaultLookBookService = BaseService<LookBookAPI>
 
 protocol LookBookService {
-    func register(image: Data, request: [LookBookClothesEntity]) -> AnyPublisher<LookBookEntity, Error>
+    func register(image: Data, request: [LookBookClothesRegisterEntity]) -> AnyPublisher<LookBookEntity, Error>
     func lookbookDetail(id: String) -> AnyPublisher<LookBookEntity, Error>
     func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookListEntity, Error>
     func lookbookClothes(parameters: [String: Any]) -> AnyPublisher<ClosetEntity, Error>
@@ -20,7 +20,7 @@ protocol LookBookService {
 
 extension DefaultLookBookService: LookBookService {
     
-    func register(image: Data, request: [LookBookClothesEntity]) -> AnyPublisher<LookBookEntity, Error> {
+    func register(image: Data, request: [LookBookClothesRegisterEntity]) -> AnyPublisher<LookBookEntity, Error> {
         let requestArray = request.compactMap {
             let jsonData = (try? JSONEncoder().encode($0)) ?? .init()
             return try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
