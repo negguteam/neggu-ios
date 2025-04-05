@@ -10,19 +10,14 @@ import Combine
 
 struct LookBookView: View {
     @EnvironmentObject private var lookbookCoordinator: MainCoordinator
-    
-    @State private var profileState: ProfileState = .unavailable
-    
-    @State private var lookbookState: LookBookState = .available
-    @State private var lookBookList: [LookBookEntity] = []
+    @EnvironmentObject private var viewModel: LookBookViewModel
     
     @State private var showNegguList: Bool = false
     @State private var showDeleteList: Bool = false
     
-    let userService: UserService = DefaultUserService()
-    let lookBookService: LookBookService = DefaultLookBookService()
-    
-    @State private var bag = Set<AnyCancellable>()
+    var lookBookStateString: String {
+        viewModel.lookbookState == .none ? "룩북을\n등록해주세요!" : "의상을 먼저\n등록해주세요!"
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -48,7 +43,7 @@ struct LookBookView: View {
                 ScrollView {
                     VStack(spacing: 64) {
                         VStack(alignment: .leading, spacing: 16) {
-                            switch profileState {
+                            switch viewModel.profileState {
                             case .available(let profile):
                                 Image("title_badge")
                                     .frame(height: 28)
@@ -93,7 +88,7 @@ struct LookBookView: View {
                                 
                                 VStack {
                                     HStack(spacing: 16) {
-                                        switch lookbookState {
+                                        switch viewModel.lookbookState {
                                         case .available:
                                             RoundedRectangle(cornerRadius: 16)
                                                 .fill(.white)
@@ -116,7 +111,7 @@ struct LookBookView: View {
                                                 }
                                         default:
                                             Button {
-                                                if lookbookState == .none {
+                                                if viewModel.lookbookState == .none {
                                                     lookbookCoordinator.fullScreenCover = .lookbookEdit()
                                                 } else {
                                                     lookbookCoordinator.showTabbarList = true
@@ -132,7 +127,7 @@ struct LookBookView: View {
                                                         )
                                                     )
                                                     .overlay {
-                                                        Text(lookbookState == .none ? "룩북을\n등록해주세요!" : "의상을 먼저\n등록해주세요!")
+                                                        Text(lookBookStateString)
                                                             .negguFont(.title4)
                                                             .foregroundStyle(.labelInactive)
                                                             .multilineTextAlignment(.center)
@@ -271,27 +266,14 @@ struct LookBookView: View {
                             case .unavailable:
                                 ProgressView()
                                     .onAppear {
-                                        userService.profile()
-                                            .sink { event in
-                                                print("UserProfile:", event)
-                                            } receiveValue: { profile in
-                                                profileState = .available(profile: profile)
-                                                
-                                                if profile.clothes.isEmpty {
-                                                    lookbookState = .needClothes
-                                                } else if profile.lookBooks.isEmpty {
-                                                    lookbookState = .none
-                                                } else {
-                                                    lookbookState = .available
-                                                }
-                                            }.store(in: &bag)
+                                        viewModel.fetchProfile()
                                     }
                             }
                             
                         }
                         
                         VStack(alignment: .leading, spacing: 24) {
-                            switch profileState {
+                            switch viewModel.profileState {
                             case .available(let profile):
                                 Text(profile.nickname + "의 룩북")
                                     .negguFont(.title2)
@@ -319,7 +301,7 @@ struct LookBookView: View {
                                 columns: [GridItem](repeating: GridItem(.flexible(), spacing: 16), count: 2),
                                 spacing: 16
                             ) {
-                                ForEach(lookBookList) { lookBook in
+                                ForEach(viewModel.lookBookList) { lookBook in
                                     let date = Calendar.current.date(byAdding: .day, value: (0...10).randomElement() ?? 1, to: .now)!
                                     let (dateString, dateColor) = date.generateLookBookDate()
                                     
@@ -335,6 +317,7 @@ struct LookBookView: View {
                                     .frame(height: 56)
                                     .onAppear {
                                         print("LookBook Pagenation - onAppear")
+                                        viewModel.getLookBookList()
                                     }
                             }
                         }
@@ -346,28 +329,20 @@ struct LookBookView: View {
             }
         }
         .padding(.horizontal, 20)
-        .background(.gray5)
+        .background(.bgNormal)
+        .refreshable {
+            viewModel.resetLookBookList()
+        }
         .sheet(isPresented: $showNegguList) {
             Text("내가 꾸며준 룩북")
                 .presentationDetents([.fraction(0.8)])
                 .presentationCornerRadius(20)
         }
         .sheet(isPresented: $showDeleteList) {
-            Text("삭제하기")
+            LookBookDeleteSheet()
                 .presentationDetents([.fraction(0.8)])
                 .presentationCornerRadius(20)
         }
-    }
-    
-    enum ProfileState {
-        case available(profile: UserProfileEntity)
-        case unavailable
-    }
-    
-    enum LookBookState {
-        case available
-        case none
-        case needClothes
     }
 }
 

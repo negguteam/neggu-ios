@@ -11,22 +11,18 @@ import Combine
 struct LookBookDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
+    @StateObject private var viewModel = LookBookViewModel()
+    
     @State private var lookBookState: LookBookState = .loading
-    
     @State private var selectedDate: Date?
-    
-    @State private var showCalendar: Bool = false
-    @State private var isNeggu: Bool = true
     @State private var isPublic: Bool = false
     
+    @State private var showCalendar: Bool = false
+    @State private var showLookBookEditView: Bool = false
+    @State private var selectedClothes: LookBookClothesEntity?
     @State private var sheetHeight: CGFloat = .zero
     
-    @State private var bag = Set<AnyCancellable>()
-    
-    @State private var showLookBookEditView: Bool = false
-    
     let lookBookID: String
-    let service: LookBookService = DefaultLookBookService()
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,12 +30,9 @@ struct LookBookDetailView: View {
             case .loading:
                 ProgressView()
                     .onAppear {
-                        service.lookbookDetail(id: lookBookID)
-                            .sink { event in
-                                print("LookBookDetailView:", event)
-                            } receiveValue: { lookBook in
-                                lookBookState = .complete(lookBook: lookBook)
-                            }.store(in: &bag)
+                        viewModel.getLookBookDetail(id: lookBookID) { lookBook in
+                            lookBookState = .complete(lookBook: lookBook)
+                        }
                     }
             case .complete(let lookBook):
                 HStack {
@@ -106,13 +99,14 @@ struct LookBookDetailView: View {
                             .frame(maxHeight: .infinity)
                             
                             HStack {
-                                if isNeggu {
+                                if let decorator = lookBook.decorator {
                                     HStack(spacing: 12) {
-                                        Circle()
+                                        AsyncImage(url: URL(string: decorator.imageUrl))
                                             .frame(width: 36, height: 36)
+                                            .clipShape(.circle)
                                         
                                         HStack(spacing: 0) {
-                                            Text("네꾸ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ")
+                                            Text(decorator.id)
                                                 .foregroundStyle(.negguSecondary)
                                                 .lineLimit(1)
                                             
@@ -125,6 +119,8 @@ struct LookBookDetailView: View {
                                     .padding(.horizontal, 14)
                                     .background(.bgNormal)
                                     .clipShape(.rect(cornerRadius: 16))
+                                } else {
+                                    Spacer()
                                 }
                                 
                                 Button {
@@ -169,7 +165,7 @@ struct LookBookDetailView: View {
                                 LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
                                     ForEach(lookBook.lookBookClothes) { clothes in
                                         Button {
-
+                                            selectedClothes = clothes
                                         } label: {
                                             AsyncImage(url: URL(string: clothes.imageUrl)) { image in
                                                 image
@@ -239,6 +235,10 @@ struct LookBookDetailView: View {
                 }
                 .scrollIndicators(.hidden)
                 .background(.bgNormal)
+                .fullScreenCover(isPresented: $showLookBookEditView) {
+                    let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
+                    LookBookEditView(editingClothes: editingClothes)
+                }
             }
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -248,6 +248,11 @@ struct LookBookDetailView: View {
                 .presentationDetents([.height(sheetHeight)])
                 .presentationCornerRadius(20)
                 .presentationBackground(.bgNormal)
+        }
+        .sheet(item: $selectedClothes) { clothes in
+            ClothesDetailView(clothesID: clothes.id)
+                .presentationDetents([.fraction(0.9)])
+                .presentationCornerRadius(20)
         }
     }
     

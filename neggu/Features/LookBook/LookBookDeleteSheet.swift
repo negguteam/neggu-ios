@@ -10,6 +10,10 @@ import SwiftUI
 struct LookBookDeleteSheet: View {
     @Environment(\.dismiss) private var dismiss
     
+    @EnvironmentObject private var viewModel: LookBookViewModel
+    
+    @State private var selectedLookBookList: [LookBookEntity] = []
+    
     var body: some View {
         NegguSheet {
             ScrollView {
@@ -17,7 +21,17 @@ struct LookBookDeleteSheet: View {
                     columns: [GridItem](repeating: .init(.flexible(), spacing: 16), count: 2),
                     spacing: 16
                 ) {
+                    ForEach(viewModel.lookBookList) { lookBook in
+                        LookBookDeleteCell(lookBook: lookBook)
+                    }
                     
+                    Rectangle()
+                        .fill(.clear)
+                        .frame(height: 56)
+                        .onAppear {
+                            print("LookBook Pagenation - onAppear")
+                            viewModel.getLookBookList()
+                        }
                 }
                 .padding(.horizontal, 48)
             }

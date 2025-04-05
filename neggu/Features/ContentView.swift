@@ -11,6 +11,7 @@ import PhotosUI
 struct ContentView: View {
     @StateObject private var coordinator = MainCoordinator()
     @StateObject private var closetViewModel = ClosetViewModel()
+    @StateObject private var lookBookViewModel = LookBookViewModel()
     
     @State private var selectedCameraPhoto: UIImage?
     @State private var selectedAlbumPhoto: PhotosPickerItem?
@@ -67,6 +68,7 @@ struct ContentView: View {
         }
         .environmentObject(coordinator)
         .environmentObject(closetViewModel)
+        .environmentObject(lookBookViewModel)
         .onChange(of: selectedCameraPhoto) { _, newValue in
             if newValue == nil { return }
             
