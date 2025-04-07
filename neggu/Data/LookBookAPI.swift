@@ -10,6 +10,7 @@ import Moya
 
 enum LookBookAPI {
     case register(image: Data, request: Data)
+    case negguInvite
     case lookbookDetail(id: String)
     case lookbookList(parameters: [String: Any])
     case lookbookClothes(parameters: [String: Any])
@@ -24,6 +25,8 @@ extension LookBookAPI: BaseAPI {
         switch self {
         case .register:
             ""
+        case .negguInvite:
+            "/generate/invite"
         case .lookbookDetail(let id):
             "/\(id)"
         case .lookbookList:
@@ -46,7 +49,7 @@ extension LookBookAPI: BaseAPI {
     
     var method: Moya.Method {
         switch self {
-        case .register: .post
+        case .register, .negguInvite: .post
         case .deleteLookBook: .delete
         default: .get
         }

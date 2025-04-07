@@ -54,6 +54,7 @@
 		1352E0042D5F50AD00354234 /* LookBookAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0032D5F50AD00354234 /* LookBookAPI.swift */; };
 		1352E0062D5F68D100354234 /* LookBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0052D5F68D100354234 /* LookBookService.swift */; };
 		1354444F2DA1897B00112F96 /* LookBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1354444E2DA1897B00112F96 /* LookBookViewModel.swift */; };
+		135A27942DA40A410048AA15 /* NegguInviteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135A27932DA40A410048AA15 /* NegguInviteEntity.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
 		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
@@ -183,6 +184,7 @@
 		1352E0032D5F50AD00354234 /* LookBookAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookAPI.swift; sourceTree = "<group>"; };
 		1352E0052D5F68D100354234 /* LookBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookService.swift; sourceTree = "<group>"; };
 		1354444E2DA1897B00112F96 /* LookBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookViewModel.swift; sourceTree = "<group>"; };
+		135A27932DA40A410048AA15 /* NegguInviteEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteEntity.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
 		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
@@ -507,6 +509,8 @@
 				136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */,
 				13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */,
 				1350811B2D38D5A4005E2491 /* BrandEntity.swift */,
+				134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */,
+				135A27932DA40A410048AA15 /* NegguInviteEntity.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -769,6 +773,7 @@
 				13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */,
 				13659CDB2C5F613500BB6B91 /* BaseService.swift in Sources */,
 				135081162D38CCA1005E2491 /* Mood.swift in Sources */,
+				135A27942DA40A410048AA15 /* NegguInviteEntity.swift in Sources */,
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				1318DE572D3F79410077972D /* String+Extension.swift in Sources */,
 				1352E0062D5F68D100354234 /* LookBookService.swift in Sources */,

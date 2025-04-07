@@ -21,6 +21,7 @@ struct LookBookEditView: View {
         }
     }
     
+    @State private var showNegguInviteAlert: Bool = false
     @State private var showCategoryList: Bool = false
     @State private var isColorEditMode: Bool = false
     @State private var isEditingMode: Bool = false
@@ -77,7 +78,7 @@ struct LookBookEditView: View {
                             Spacer()
                             
                             Button {
-                                print("네꾸하기")
+                                showNegguInviteAlert = true
                             } label: {
                                 Circle()
                                     .fill(.black)
@@ -315,6 +316,14 @@ struct LookBookEditView: View {
                         }
                     }
                 }
+        }
+        .overlay {
+            if showNegguInviteAlert {
+                Color.bgDimmed
+                    .ignoresSafeArea()
+                
+                NegguInviteAlert(showAlert: $showNegguInviteAlert)
+            }
         }
         .onAppear {
             viewModel.filteredClothes()

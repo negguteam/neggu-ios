@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct NegguInviteAlert: View {
-    @State private var showCompletion: Bool = false
+    @EnvironmentObject private var viewModel: LookBookViewModel
     
-    let inviteCode: String
+    @Binding var showAlert: Bool
+    
+    @State private var inviteCode = ""
+    @State private var showCompletion: Bool = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -18,7 +21,7 @@ struct NegguInviteAlert: View {
                 .frame(height: 24)
                 .overlay(alignment: .trailing) {
                     Button {
-                        print("닫기")
+                        showAlert = false
                     } label: {
                         Image(.xLarge)
                             .foregroundStyle(.white)
@@ -43,13 +46,13 @@ struct NegguInviteAlert: View {
                     HStack(spacing: 12) {
                         Text("내 초대코드")
                         
-                        Text("1234567")
+                        Text(inviteCode)
                         
                         Spacer()
                         
                         Button {
+                            UIPasteboard.general.string = inviteCode
                             showCompletion = true
-                            print("초대코드 복사")
                         } label: {
                             Image(.tablerCopy)
                                 .foregroundStyle(.labelInactive)
@@ -145,9 +148,10 @@ struct NegguInviteAlert: View {
                 .clipShape(.rect(cornerRadius: 20))
         }
         .padding(.horizontal, 55)
+        .onAppear {
+            viewModel.negguInvite { invite in
+                self.inviteCode = invite.id
+            }
+        }
     }
-}
-
-#Preview {
-    NegguInviteAlert(inviteCode: "123456")
 }

@@ -61,6 +61,15 @@ final class LookBookViewModel: ObservableObject {
         }.store(in: &bag)
     }
     
+    func negguInvite(completion: @escaping (NegguInviteEntity) -> Void) {
+        lookBookService.negguInvite()
+            .sink { event in
+                print("LookBookView:", event)
+            } receiveValue: { result in
+                completion(result)
+            }.store(in: &bag)
+    }
+    
     func getLookBookList() {
         if !canPagenation { return }
         canPagenation = false
