@@ -38,6 +38,8 @@
 		1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338892C2C89E7A70023CED5 /* ClosetView.swift */; };
 		133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */; };
 		133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */; };
+		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
+		134342482D7CE4FF00D3F1A3 /* UserProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */; };
 		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
 		134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A02D363F4D00B18C1B /* LinkBanner.swift */; };
 		134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */; };
@@ -165,6 +167,8 @@
 		133927392C7F1D3C009E623B /* neggu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = neggu.entitlements; sourceTree = "<group>"; };
 		133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSheet.swift; sourceTree = "<group>"; };
 		133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheet.swift; sourceTree = "<group>"; };
+		134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteAlert.swift; sourceTree = "<group>"; };
+		134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEntity.swift; sourceTree = "<group>"; };
 		1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		134AD9A02D363F4D00B18C1B /* LinkBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBanner.swift; sourceTree = "<group>"; };
 		134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguCTAButton.swift; sourceTree = "<group>"; };
@@ -551,6 +555,9 @@
 				133889292C899BF90023CED5 /* NegguTabBar.swift */,
 				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
+				1390E0E02D687D1000848920 /* ImagePicker.swift */,
+				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
+				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
@@ -801,6 +808,8 @@
 				13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
 				130970692D40C1420050D091 /* UIImage+Extension.swift in Sources */,
+				134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */,
+				134342482D7CE4FF00D3F1A3 /* UserProfileEntity.swift in Sources */,
 				13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */,
 				13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */,
 				1308D2752C62801F003F50F3 /* Coordinator.swift in Sources */,
