@@ -42,6 +42,9 @@
 		134342482D7CE4FF00D3F1A3 /* UserProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */; };
 		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
 		1347E7672DA519A30008E127 /* InsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E7662DA519A30008E127 /* InsightView.swift */; };
+		1347E7692DA53D9C0008E127 /* InsightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E7682DA53D9C0008E127 /* InsightAPI.swift */; };
+		1347E76B2DA53F910008E127 /* InsightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E76A2DA53F910008E127 /* InsightService.swift */; };
+		1347E76D2DA540260008E127 /* InsightEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E76C2DA540260008E127 /* InsightEntity.swift */; };
 		134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A02D363F4D00B18C1B /* LinkBanner.swift */; };
 		134AD9A32D368C9400B18C1B /* NegguCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */; };
 		1350810C2D38BC95005E2491 /* ClosetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1350810B2D38BC95005E2491 /* ClosetAPI.swift */; };
@@ -173,6 +176,9 @@
 		134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEntity.swift; sourceTree = "<group>"; };
 		1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
 		1347E7662DA519A30008E127 /* InsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightView.swift; sourceTree = "<group>"; };
+		1347E7682DA53D9C0008E127 /* InsightAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightAPI.swift; sourceTree = "<group>"; };
+		1347E76A2DA53F910008E127 /* InsightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightService.swift; sourceTree = "<group>"; };
+		1347E76C2DA540260008E127 /* InsightEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightEntity.swift; sourceTree = "<group>"; };
 		134AD9A02D363F4D00B18C1B /* LinkBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBanner.swift; sourceTree = "<group>"; };
 		134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguCTAButton.swift; sourceTree = "<group>"; };
 		1350810B2D38BC95005E2491 /* ClosetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetAPI.swift; sourceTree = "<group>"; };
@@ -506,6 +512,8 @@
 				1352E0052D5F68D100354234 /* LookBookService.swift */,
 				1309706F2D41248D0050D091 /* UserAPI.swift */,
 				130970712D4126290050D091 /* UserService.swift */,
+				1347E7682DA53D9C0008E127 /* InsightAPI.swift */,
+				1347E76A2DA53F910008E127 /* InsightService.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -521,6 +529,7 @@
 				1350811B2D38D5A4005E2491 /* BrandEntity.swift */,
 				134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */,
 				135A27932DA40A410048AA15 /* NegguInviteEntity.swift */,
+				1347E76C2DA540260008E127 /* InsightEntity.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -785,12 +794,14 @@
 				13659CDB2C5F613500BB6B91 /* BaseService.swift in Sources */,
 				135081162D38CCA1005E2491 /* Mood.swift in Sources */,
 				135A27942DA40A410048AA15 /* NegguInviteEntity.swift in Sources */,
+				1347E76B2DA53F910008E127 /* InsightService.swift in Sources */,
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				1318DE572D3F79410077972D /* String+Extension.swift in Sources */,
 				1352E0062D5F68D100354234 /* LookBookService.swift in Sources */,
 				1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
 				13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */,
+				1347E7692DA53D9C0008E127 /* InsightAPI.swift in Sources */,
 				13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */,
 				13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */,
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
@@ -807,6 +818,7 @@
 				133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */,
 				1302FE5F2C8709C50076D015 /* SignUpView.swift in Sources */,
 				1337B70B2CDD009C0052BFF2 /* ClothesDetailView.swift in Sources */,
+				1347E76D2DA540260008E127 /* InsightEntity.swift in Sources */,
 				1364C8732C61031E00F67E3C /* TokenEntity.swift in Sources */,
 				1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */,
 				1352E0042D5F50AD00354234 /* LookBookAPI.swift in Sources */,
