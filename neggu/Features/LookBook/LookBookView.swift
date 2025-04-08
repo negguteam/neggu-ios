@@ -235,7 +235,7 @@ struct LookBookView: View {
                                     }
                                     
                                     Button {
-                                        
+                                        lookbookCoordinator.push(.insight)
                                     } label: {
                                         RoundedRectangle(cornerRadius: 20)
                                             .fill(.negguPrimary)
