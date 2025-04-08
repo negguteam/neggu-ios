@@ -63,6 +63,11 @@ extension ClosetAPI: BaseAPI {
             multipartData.append(.init(provider: .data(request), name: "clothRegisterRequest"))
             
             return .uploadMultipart(multipartData)
+        case .modify(let paramters):
+            return .requestParameters(
+                parameters: paramters,
+                encoding: JSONEncoding.default
+            )
         case .clothesList(let parameters):
             return .requestParameters(
                 parameters: parameters,

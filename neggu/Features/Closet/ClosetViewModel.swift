@@ -22,11 +22,13 @@ final class ClosetViewModel: ObservableObject {
     
     private let closetService = DefaultClosetService()
     
-    var bag = Set<AnyCancellable>()
+    private var bag = Set<AnyCancellable>()
+    
     
     init() {
         filteredClothes()
     }
+    
     
     func registerClothes(
         image: Data,
@@ -44,6 +46,15 @@ final class ClosetViewModel: ObservableObject {
             self.getClothes()
             completion()
         }.store(in: &bag)
+    }
+    
+    func modifyClothes(_ clothes: ClothesEntity, completion: @escaping () -> Void) {
+        closetService.modify(clothes)
+            .sink { event in
+                print("ClosetAdd:", event)
+            } receiveValue: { _ in
+                completion()
+            }.store(in: &bag)
     }
     
     func getClothes() {
