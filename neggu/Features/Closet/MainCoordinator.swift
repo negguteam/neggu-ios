@@ -68,6 +68,8 @@ final class MainCoordinator: Coordinator {
         case .lookbookDetail(let lookBookID):
             LookBookDetailView(lookBookID: lookBookID)
             
+        case .insight:
+            InsightView()
         case .setting:
             SettingView()
         }
@@ -82,6 +84,7 @@ final class MainCoordinator: Coordinator {
         case lookbookEdit(editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
         
+        case insight
         case setting
         
         var id: String { "\(self)" }
