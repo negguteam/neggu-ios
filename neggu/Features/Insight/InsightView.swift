@@ -10,13 +10,10 @@ import Combine
 
 struct InsightView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
+    @EnvironmentObject private var viewModel: InsightViewModel
     
     @State private var insightState: InsightState = .invalid
     @State private var page: Int = 0
-    
-    @State private var bag = Set<AnyCancellable>()
-    
-    let service = DefaultInsightService()
     
     var body: some View {
         VStack {
@@ -166,12 +163,9 @@ struct InsightView: View {
             case .invalid:
                 ProgressView()
                     .onAppear {
-                        service.getInsight()
-                            .sink { event in
-                                print("InsightView:", event)
-                            } receiveValue: { insight in
-                                self.insightState = .valid(insight)
-                            }.store(in: &bag)
+                        viewModel.getInsight { insight in
+                            self.insightState = .valid(insight)
+                        }
                     }
             }
         }

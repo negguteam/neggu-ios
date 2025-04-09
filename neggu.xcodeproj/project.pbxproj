@@ -59,6 +59,7 @@
 		1352E0062D5F68D100354234 /* LookBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0052D5F68D100354234 /* LookBookService.swift */; };
 		1354444F2DA1897B00112F96 /* LookBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1354444E2DA1897B00112F96 /* LookBookViewModel.swift */; };
 		135A27942DA40A410048AA15 /* NegguInviteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135A27932DA40A410048AA15 /* NegguInviteEntity.swift */; };
+		13624D412DA6CA5900732B01 /* InsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13624D402DA6CA5900732B01 /* InsightViewModel.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
 		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
@@ -194,6 +195,7 @@
 		1354444E2DA1897B00112F96 /* LookBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookViewModel.swift; sourceTree = "<group>"; };
 		135A27932DA40A410048AA15 /* NegguInviteEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteEntity.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
+		13624D402DA6CA5900732B01 /* InsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightViewModel.swift; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
 		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		1364C86E2C6102F500F67E3C /* AuthAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				1347E7662DA519A30008E127 /* InsightView.swift */,
+				13624D402DA6CA5900732B01 /* InsightViewModel.swift */,
 			);
 			path = Insight;
 			sourceTree = "<group>";
@@ -861,6 +864,7 @@
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
 				130970702D41248D0050D091 /* UserAPI.swift in Sources */,
+				13624D412DA6CA5900732B01 /* InsightViewModel.swift in Sources */,
 				13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */,
 				13B3757A2D34E37D001D009E /* Date+Extension.swift in Sources */,
 				13FE56CE2D53483C00C7D4E9 /* ClosetViewModel.swift in Sources */,
