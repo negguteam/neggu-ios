@@ -77,6 +77,8 @@
 		13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */; };
 		13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEA2C5FBFA100BB6B91 /* Util.swift */; };
 		13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */; };
+		1368D48F2DA788B200DFE166 /* KeyboardAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1368D48E2DA788B200DFE166 /* KeyboardAdapter.swift */; };
+		1368D4922DA833A800DFE166 /* AppsFlyerLib-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 1368D4912DA833A800DFE166 /* AppsFlyerLib-Static */; };
 		136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* BorderedChip.swift */; };
 		136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */; };
 		136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D72CEC9780009DEA76 /* NegguAlert.swift */; };
@@ -275,6 +277,7 @@
 				132247182C5E924F004557EF /* FirebaseMessaging in Frameworks */,
 				13659CD52C5F60C400BB6B91 /* CombineMoya in Frameworks */,
 				136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */,
+				1368D4922DA833A800DFE166 /* AppsFlyerLib-Static in Frameworks */,
 				132247162C5E924F004557EF /* FirebaseCrashlytics in Frameworks */,
 				132247122C5E924F004557EF /* FirebaseAnalytics in Frameworks */,
 				13659CD72C5F60C400BB6B91 /* Moya in Frameworks */,
@@ -659,6 +662,7 @@
 				1308D26B2C61F08E003F50F3 /* KakaoSDKUser */,
 				13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */,
 				136470D02C8A360600A0D545 /* SwiftSoup */,
+				1368D4912DA833A800DFE166 /* AppsFlyerLib-Static */,
 			);
 			productName = neggu;
 			productReference = 1386EACD2C5D3F9C0085655D /* neggu.app */;
@@ -739,6 +743,7 @@
 				13659CD32C5F60C300BB6B91 /* XCRemoteSwiftPackageReference "Moya" */,
 				1308D2662C61F08E003F50F3 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				136470CF2C8A360600A0D545 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				1368D4902DA833A800DFE166 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */,
 			);
 			productRefGroup = 1386EACE2C5D3F9C0085655D /* Products */;
 			projectDirPath = "";
@@ -1282,6 +1287,14 @@
 				minimumVersion = 15.0.0;
 			};
 		};
+		1368D4902DA833A800DFE166 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework-Static";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.16.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1339,6 +1352,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13659CD32C5F60C300BB6B91 /* XCRemoteSwiftPackageReference "Moya" */;
 			productName = Moya;
+		};
+		1368D4912DA833A800DFE166 /* AppsFlyerLib-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1368D4902DA833A800DFE166 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */;
+			productName = "AppsFlyerLib-Static";
 		};
 		13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;
