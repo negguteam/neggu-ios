@@ -21,6 +21,34 @@ enum NegguEnv {
         
     }
     
+    enum AppsFlyer {
+        
+        static let devKey: String = {
+            guard let key = infoDictionary["APPSFLYER_DEVKEY"] as? String else {
+                fatalError("APPSFLYER_DEVKEY not set in plist for this environment")
+            }
+            
+            return key
+        }()
+
+        static let appleId: String = {
+            guard let id = infoDictionary["APPSFLYER_APPLEID"] as? String else {
+                fatalError("APPSFLYER_APPLEID not set in plist for this environment")
+            }
+            
+            return id
+        }()
+        
+        static let oneLinkId: String = {
+            guard let id = infoDictionary["APPSFLYER_ONELINKID"] as? String else {
+                fatalError("APPSFLYER_ONELINKID not set in plist for this environment")
+            }
+            
+            return id
+        }()
+        
+    }
+    
     static var kakaoAppKey: String {
         guard let appkey = infoDictionary["KAKAO_APP_KEY"] as? String else {
             fatalError("Kakao App Key not set infoplist for this environment")
