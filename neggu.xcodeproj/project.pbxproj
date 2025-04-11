@@ -94,7 +94,6 @@
 		1386EB002C5D40350085655D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */; };
 		1386EB022C5D416D0085655D /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB012C5D416D0085655D /* Colors.xcassets */; };
 		1386EB082C5D419B0085655D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB072C5D419B0085655D /* Localizable.xcstrings */; };
-		1386EB0E2C5D41FA0085655D /* NegguDS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EB0D2C5D41FA0085655D /* NegguDS.swift */; };
 		1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1390E0E02D687D1000848920 /* ImagePicker.swift */; };
 		139728FE2D7356EC0021B356 /* LookBookDeleteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */; };
 		13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */; };
@@ -111,7 +110,6 @@
 		13BE365F2D2845BB0033DE7B /* SignUpGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */; };
 		13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */; };
 		13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */; };
-		13C09FDE2D30098200A9494B /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C09FDD2D30098200A9494B /* ScrollDetector.swift */; };
 		13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */; };
 		13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */; };
 		13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E82CC434DD003A10AE /* LookBookView.swift */; };
@@ -229,7 +227,6 @@
 		1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1386EB012C5D416D0085655D /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1386EB072C5D419B0085655D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		1386EB0D2C5D41FA0085655D /* NegguDS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguDS.swift; sourceTree = "<group>"; };
 		1390E0E02D687D1000848920 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDeleteSheet.swift; sourceTree = "<group>"; };
 		13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetAddView.swift; sourceTree = "<group>"; };
@@ -246,7 +243,6 @@
 		13BE365E2D2845BB0033DE7B /* SignUpGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderView.swift; sourceTree = "<group>"; };
 		13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMoodView.swift; sourceTree = "<group>"; };
 		13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNicknameView.swift; sourceTree = "<group>"; };
-		13C09FDD2D30098200A9494B /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
 		13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAgeView.swift; sourceTree = "<group>"; };
 		13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		13DBA7E82CC434DD003A10AE /* LookBookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookView.swift; sourceTree = "<group>"; };
@@ -575,11 +571,9 @@
 				134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */,
 				134AD9A02D363F4D00B18C1B /* LinkBanner.swift */,
 				13AEFD442D30E8E30041C10A /* DateSelectButton.swift */,
-				13C09FDD2D30098200A9494B /* ScrollDetector.swift */,
 				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
 				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
 				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
-				1386EB0D2C5D41FA0085655D /* NegguDS.swift */,
 				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
 				133889292C899BF90023CED5 /* NegguTabBar.swift */,
@@ -862,9 +856,7 @@
 				1318DE552D3F600D0077972D /* PickerField.swift in Sources */,
 				1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */,
 				1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */,
-				13C09FDE2D30098200A9494B /* ScrollDetector.swift in Sources */,
 				139728FE2D7356EC0021B356 /* LookBookDeleteSheet.swift in Sources */,
-				1386EB0E2C5D41FA0085655D /* NegguDS.swift in Sources */,
 				1364C8762C61281200F67E3C /* UserDefaultsKey.swift in Sources */,
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
