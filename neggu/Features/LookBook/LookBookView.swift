@@ -114,7 +114,7 @@ struct LookBookView: View {
                                                 if viewModel.lookbookState == .none {
                                                     lookbookCoordinator.fullScreenCover = .lookbookEdit()
                                                 } else {
-                                                    lookbookCoordinator.showTabbarList = true
+                                                    lookbookCoordinator.isGnbOpened = true
                                                 }
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 12)

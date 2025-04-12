@@ -14,10 +14,6 @@ struct ContentView: View {
     @StateObject private var lookBookViewModel = LookBookViewModel()
     @StateObject private var insightViewModel = InsightViewModel()
     
-    @State private var selectedCameraPhoto: UIImage?
-    @State private var selectedAlbumPhoto: PhotosPickerItem?
-    @State private var createLookBook: Bool = false
-    
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $coordinator.activeTab) {
@@ -40,26 +36,20 @@ struct ContentView: View {
                 .toolbar(.hidden, for: .tabBar)
             }
             
-            if coordinator.showTabbarList {
+            if coordinator.isGnbOpened {
                 Color.black
                     .opacity(0.5)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        coordinator.showTabbarList = false
+                        coordinator.isGnbOpened = false
                     }
             }
             
-            if coordinator.showTabbar {
-                NegguTabBar(
-                    activeTab: $coordinator.activeTab,
-                    showTabBarList: $coordinator.showTabbarList,
-                    selectedCameraPhoto: $selectedCameraPhoto,
-                    selectedAlbumPhoto: $selectedAlbumPhoto,
-                    createLookBook: $createLookBook
-                )
+            if coordinator.showGnb {
+                BottomNavigationBar()
             }
         }
-        .animation(.smooth(duration: 0.2), value: coordinator.showTabbarList)
+        .animation(.smooth(duration: 0.2), value: coordinator.isGnbOpened)
         .ignoresSafeArea(.keyboard)
         .sheet(item: $coordinator.sheet) { scene in
             coordinator.buildScene(scene)
@@ -71,54 +61,9 @@ struct ContentView: View {
         .environmentObject(closetViewModel)
         .environmentObject(lookBookViewModel)
         .environmentObject(insightViewModel)
-        .onChange(of: selectedCameraPhoto) { _, newValue in
-            if newValue == nil { return }
-            
-            Task.detached(priority: .high) {
-                guard let image = newValue,
-                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(image)
-                else { return }
-                
-                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
-                try await Task.sleep(for: .seconds(0.5))
-                
-                await MainActor.run {
-                    coordinator.showTabbarList = false
-                    coordinator.fullScreenCover = .closetAdd(clothes: .emptyData, segmentedImage: segmentedImage)
-                    selectedCameraPhoto = nil
-                }
-            }
-        }
-        .onChange(of: selectedAlbumPhoto) { _, newValue in
-            if newValue == nil { return }
-            
-            Task.detached(priority: .high) {
-                let data = try await newValue?.loadTransferable(type: Data.self)
-                
-                guard let data,
-                      let uiImage = UIImage(data: data),
-                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(uiImage)
-                else { return }
-                
-                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
-                try await Task.sleep(for: .seconds(0.5))
-                
-                await MainActor.run {
-                    coordinator.showTabbarList = false
-                    coordinator.fullScreenCover = .closetAdd(clothes: .emptyData, segmentedImage: segmentedImage)
-                    selectedAlbumPhoto = nil
-                }
-            }
-        }
-        .onChange(of: createLookBook) { _, newValue in
-            if newValue {
-                coordinator.fullScreenCover = .lookbookEdit()
-                createLookBook = false
-            }
+        .onOpenURL { url in
+            let urlComponents = URLComponents(string: url.absoluteString)
+            print(urlComponents?.scheme, urlComponents?.host, urlComponents?.path, urlComponents?.queryItems)
         }
     }
-}
-
-#Preview {
-    ContentView()
 }

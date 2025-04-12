@@ -10,22 +10,23 @@ import SwiftUI
 final class MainCoordinator: Coordinator {
     
     @Published var activeTab: NegguTab = .closet
-    @Published var showTabbar: Bool = true
-    @Published var showTabbarList: Bool = false
+    @Published var showGnb: Bool = true
+    
+    @Published var isGnbOpened: Bool = false
     
     @Published var path: NavigationPath = .init()
     
     @Published var closetPath: NavigationPath = .init() {
         didSet {
             print("Closet Path:", closetPath.count)
-            showTabbar = closetPath.isEmpty
+            showGnb = closetPath.isEmpty
         }
     }
     
     @Published var lookbookPath: NavigationPath = .init() {
         didSet {
             print("LookBook Path:", lookbookPath.count)
-            showTabbar = lookbookPath.isEmpty
+            showGnb = lookbookPath.isEmpty
         }
     }
     
@@ -89,5 +90,4 @@ final class MainCoordinator: Coordinator {
         
         var id: String { "\(self)" }
     }
-    
 }
