@@ -39,9 +39,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         Messaging.messaging().apnsToken = deviceToken
     }
     
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        AppsFlyerLib.shared().start()
-    }
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//        AppsFlyerLib.shared().start()
+//    }
     
 }
 
