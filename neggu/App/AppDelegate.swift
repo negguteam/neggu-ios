@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseMessaging
+import AppsFlyerLib
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
@@ -37,6 +38,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     ) {
         Messaging.messaging().apnsToken = deviceToken
     }
+    
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//        AppsFlyerLib.shared().start()
+//    }
     
 }
 

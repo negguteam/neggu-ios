@@ -4,6 +4,12 @@
 <dict>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
+	<key>APPSFLYER_DEVKEY</key>
+	<string>$(APPSFLYER_DEVKEY)</string>
+	<key>APPSFLYER_APPLEID</key>
+	<string>$(APPSFLYER_APPLEID)</string>
+	<key>APPSFLYER_ONELINKID</key>
+	<string>$(APPSFLYER_ONELINKID)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -20,6 +26,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakao$(KAKAO_APP_KEY)</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>negguapp</string>
 			</array>
 		</dict>
 	</array>

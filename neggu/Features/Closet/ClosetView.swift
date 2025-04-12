@@ -10,15 +10,18 @@ import SwiftSoup
 import Combine
 
 struct ClosetView: View {
-    @EnvironmentObject private var closetCoordinator: MainCoordinator
+    @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var viewModel: ClosetViewModel
     
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
     
-    @FocusState private var isFocused: Bool
     @State private var filterType: FilterType?
     @State private var selectedClothes: ClothesEntity?
+    
+    @State private var ctaButtonExpanded: Bool = false
+    
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         ScrollView {
@@ -106,17 +109,23 @@ struct ClosetView: View {
         .scrollPosition(id: $scrollPosition)
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)
-        .overlay(alignment: .bottom) {
-            Button {
-                
-            } label: {
-                NegguCTAButton()
-            }
-            .opacity(scrollPosition == 0 ? 0 : 1)
-            .offset(y: scrollPosition == 0 ? 0 : -84)
-            .animation(.smooth, value: scrollPosition)
-        }
         .padding(.top, 1)
+        .overlay {
+            if ctaButtonExpanded {
+                Color.bgDimmed
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        ctaButtonExpanded = false
+                    }
+            }
+        }
+        .overlay(alignment: .bottom) {
+            NegguCTAButton(isExpanded: $ctaButtonExpanded)
+                .opacity(scrollPosition == 0 ? 0 : 1)
+                .offset(y: scrollPosition == 0 ? 0 : -78)
+                .animation(.smooth, value: scrollPosition)
+                .animation(.smooth(duration: 0.3), value: ctaButtonExpanded)
+        }
         .background {
             Color.bgNormal
                 .ignoresSafeArea()
@@ -255,19 +264,12 @@ struct ClosetView: View {
                 }
                 
                 await MainActor.run {
-                    closetCoordinator.fullScreenCover = .closetAdd(clothes: convertedProduct, segmentedImage: segmentedImage)
+                    coordinator.fullScreenCover = .closetAdd(clothes: convertedProduct, segmentedImage: segmentedImage)
                 }
             }
         } catch {
             print(error.localizedDescription)
         }
-    }
-    
-    private func testSegmentation() {
-        let image = UIImage(resource: .bannerBG1)
-        let clothes: ClothesRegisterEntity = .mockData
-        
-        closetCoordinator.fullScreenCover = .closetAdd(clothes: clothes, segmentedImage: image)
     }
     
     enum FilterType: Identifiable {
