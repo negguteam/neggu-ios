@@ -34,8 +34,9 @@
 		1334DBF92CAA73AA00928C4C /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */; };
 		1337B70B2CDD009C0052BFF2 /* ClothesDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */; };
 		133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */; };
-		1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889292C899BF90023CED5 /* NegguTabBar.swift */; };
+		1338892A2C899BF90023CED5 /* BottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889292C899BF90023CED5 /* BottomNavigationBar.swift */; };
 		1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338892C2C89E7A70023CED5 /* ClosetView.swift */; };
+		133A43542DAAD2060090E409 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133A43532DAAD2060090E409 /* GradientView.swift */; };
 		133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */; };
 		133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */; };
 		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
@@ -78,7 +79,6 @@
 		13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */; };
 		13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEA2C5FBFA100BB6B91 /* Util.swift */; };
 		13659CED2C5FE0EE00BB6B91 /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */; };
-		1368D48F2DA788B200DFE166 /* KeyboardAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1368D48E2DA788B200DFE166 /* KeyboardAdapter.swift */; };
 		1368D4922DA833A800DFE166 /* AppsFlyerLib-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 1368D4912DA833A800DFE166 /* AppsFlyerLib-Static */; };
 		136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* BorderedChip.swift */; };
 		136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */; };
@@ -169,9 +169,10 @@
 		1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesDetailView.swift; sourceTree = "<group>"; };
 		133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAnalyzeManager.swift; sourceTree = "<group>"; };
-		133889292C899BF90023CED5 /* NegguTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguTabBar.swift; sourceTree = "<group>"; };
+		133889292C899BF90023CED5 /* BottomNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomNavigationBar.swift; sourceTree = "<group>"; };
 		1338892C2C89E7A70023CED5 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		133927392C7F1D3C009E623B /* neggu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = neggu.entitlements; sourceTree = "<group>"; };
+		133A43532DAAD2060090E409 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSheet.swift; sourceTree = "<group>"; };
 		133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheet.swift; sourceTree = "<group>"; };
 		134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteAlert.swift; sourceTree = "<group>"; };
@@ -579,12 +580,13 @@
 				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
 				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
-				133889292C899BF90023CED5 /* NegguTabBar.swift */,
+				133889292C899BF90023CED5 /* BottomNavigationBar.swift */,
 				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 				1390E0E02D687D1000848920 /* ImagePicker.swift */,
 				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
 				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
+				133A43532DAAD2060090E409 /* GradientView.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
@@ -863,6 +865,7 @@
 				1364C8762C61281200F67E3C /* UserDefaultsKey.swift in Sources */,
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
+				133A43542DAAD2060090E409 /* GradientView.swift in Sources */,
 				130970702D41248D0050D091 /* UserAPI.swift in Sources */,
 				13624D412DA6CA5900732B01 /* InsightViewModel.swift in Sources */,
 				13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */,
@@ -872,7 +875,7 @@
 				133889282C898B3E0023CED5 /* ImageAnalyzeManager.swift in Sources */,
 				13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */,
 				13BA78A22D376B0800ADB1C1 /* CategorySheet.swift in Sources */,
-				1338892A2C899BF90023CED5 /* NegguTabBar.swift in Sources */,
+				1338892A2C899BF90023CED5 /* BottomNavigationBar.swift in Sources */,
 				13FE61FD2D2ABDF100578BB5 /* SignUpCompleteView.swift in Sources */,
 				13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */,
 				13B3757F2D34E795001D009E /* CGSize+Extension.swift in Sources */,

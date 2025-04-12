@@ -32,8 +32,21 @@ struct NegguCTAButton: View {
                                 negguState = .generateInvite
                             } label: {
                                 VStack(alignment: .leading, spacing: 12) {
-                                    GnbOpendedViewItem("네가 좀 꾸며줘!", leftIcon: .negguStar, rightIcon: .chevronRight)
-                                        .frame(height: 32)
+                                    HStack(spacing: 12) {
+                                        GradientView {
+                                            Image(.negguStar)
+                                        }
+                                        
+                                        GradientView {
+                                            Text("네가 좀 꾸며줘!")
+                                                .negguFont(.body1b)
+                                        }
+                                        
+                                        Spacer()
+                                        
+                                        Image(.chevronRight)
+                                            .frame(width: 32, height: 32)
+                                    }
                                     
                                     Text("친구가 내 옷장 속 옷들로 꾸밀 수 있도록 초대코드를 생성해요!")
                                         .negguFont(.body3)
@@ -53,8 +66,18 @@ struct NegguCTAButton: View {
                         .negguFont(.body1b)
                     case .generateInvite:
                         VStack(spacing: 20) {
-                            GnbOpendedViewItem("네가 좀 꾸며줘!", leftIcon: .negguStar)
-                                .negguFont(.body1b)
+                            HStack(spacing: 12) {
+                                GradientView {
+                                    Image(.negguStar)
+                                }
+                                
+                                GradientView {
+                                    Text("네가 좀 꾸며줘!")
+                                        .negguFont(.body1b)
+                                }
+                                
+                                Spacer()
+                            }
                             
                             HStack(spacing: 0) {
                                 Text("초대코드")
@@ -218,24 +241,20 @@ struct NegguCTAButton: View {
                 .padding(.horizontal, 36)
                 .padding(.vertical, 28)
             } else {
-                Color.clear
-                    .frame(width: 130)
-                    .overlay {
-                        Image(.gnbOpen)
-                            .resizable()
-                            .mask {
-                                HStack(spacing: 10) {
-                                    Image(.negguStar)
-                                    
-                                    Text("네가 좀 꾸며줘!")
-                                        .negguFont(.body2b)
-                                }
-                            }
+                HStack(spacing: 10) {
+                    GradientView {
+                        Image(.negguStar)
                     }
-                    .padding(.horizontal)
-                    .onTapGesture {
-                        isExpanded = true
+                    
+                    GradientView {
+                        Text("네가 좀 꾸며줘!")
+                            .negguFont(.body2b)
                     }
+                }
+                .padding(.horizontal)
+                .onTapGesture {
+                    isExpanded = true
+                }
             }
         }
         .frame(

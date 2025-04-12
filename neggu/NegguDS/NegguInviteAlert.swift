@@ -17,16 +17,25 @@ struct NegguInviteAlert: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Rectangle()
-                .frame(height: 24)
-                .overlay(alignment: .trailing) {
-                    Button {
-                        showAlert = false
-                    } label: {
-                        Image(.xLarge)
-                            .foregroundStyle(.white)
-                    }
+            HStack(spacing: 12) {
+                GradientView {
+                    Image(.negguStar)
                 }
+                
+                GradientView {
+                    Text("네가 좀 꾸며줘")
+                        .negguFont(.body1b)
+                }
+                
+                Spacer()
+                
+                Button {
+                    showAlert = false
+                } label: {
+                    Image(.xLarge)
+                        .foregroundStyle(.labelRAssistive)
+                }
+            }
             
             HStack(spacing: 0) {
                 Text("초대코드")
@@ -87,27 +96,6 @@ struct NegguInviteAlert: View {
                 }
             }
         }
-        .overlay {
-            Image("gnb_open")
-                .resizable()
-                .mask {
-                    VStack(spacing: 20) {
-                        HStack(spacing: 12) {
-                            Image("neggu_star")
-                                .frame(width: 24, height: 24)
-                            
-                            Text("네가 좀 꾸며줘!")
-                                .negguFont(.body1b)
-                            
-                            Spacer()
-                        }
-                        .frame(height: 24)
-                        
-                        Spacer()
-                    }
-                }
-                .allowsHitTesting(false)
-        }
         .padding(.horizontal, 36)
         .padding(.vertical, 28)
         .background {
@@ -143,11 +131,12 @@ struct NegguInviteAlert: View {
         }
         .padding(2)
         .background {
-            Image("gnb_open")
+            Image(.gnbOpen)
                 .resizable()
                 .clipShape(.rect(cornerRadius: 20))
         }
-        .padding(.horizontal, 55)
+        .padding(.horizontal, 48)
+        .animation(.easeInOut, value: showCompletion)
         .onAppear {
             viewModel.negguInvite { invite in
                 self.inviteCode = invite.id
