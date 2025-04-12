@@ -58,6 +58,7 @@
 		1352E0042D5F50AD00354234 /* LookBookAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0032D5F50AD00354234 /* LookBookAPI.swift */; };
 		1352E0062D5F68D100354234 /* LookBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1352E0052D5F68D100354234 /* LookBookService.swift */; };
 		1354444F2DA1897B00112F96 /* LookBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1354444E2DA1897B00112F96 /* LookBookViewModel.swift */; };
+		13595F292DA9587700AFF836 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13595F282DA9587700AFF836 /* DeepLinkManager.swift */; };
 		135A27942DA40A410048AA15 /* NegguInviteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135A27932DA40A410048AA15 /* NegguInviteEntity.swift */; };
 		13624D412DA6CA5900732B01 /* InsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13624D402DA6CA5900732B01 /* InsightViewModel.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
@@ -193,6 +194,7 @@
 		1352E0032D5F50AD00354234 /* LookBookAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookAPI.swift; sourceTree = "<group>"; };
 		1352E0052D5F68D100354234 /* LookBookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookService.swift; sourceTree = "<group>"; };
 		1354444E2DA1897B00112F96 /* LookBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookViewModel.swift; sourceTree = "<group>"; };
+		13595F282DA9587700AFF836 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		135A27932DA40A410048AA15 /* NegguInviteEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteEntity.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		13624D402DA6CA5900732B01 /* InsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightViewModel.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				13659CDA2C5F613500BB6B91 /* BaseService.swift */,
 				13659CE42C5FA19500BB6B91 /* NegguInterceptor.swift */,
 				13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */,
+				13595F282DA9587700AFF836 /* DeepLinkManager.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -874,6 +877,7 @@
 				13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */,
 				13B3757F2D34E795001D009E /* CGSize+Extension.swift in Sources */,
 				13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */,
+				13595F292DA9587700AFF836 /* DeepLinkManager.swift in Sources */,
 				13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */,
 				13659CD92C5F612200BB6B91 /* BaseAPI.swift in Sources */,
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,

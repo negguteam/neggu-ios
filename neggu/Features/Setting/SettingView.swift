@@ -105,7 +105,7 @@ struct SettingView: View {
                                 print("SettingView:", event)
                             } receiveValue: { _ in
                                 UserDefaultsKey.clearUserData()
-                                UserDefaultsKey.clearPushToken()
+//                                UserDefaultsKey.clearPushToken()
                                 UserDefaultsKey.Auth.isLogined = false
                             }.store(in: &bag)
                     } label: {
