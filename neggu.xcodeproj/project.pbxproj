@@ -341,33 +341,25 @@
 		1337B7092CDCF7200052BFF2 /* LookBook */ = {
 			isa = PBXGroup;
 			children = (
-				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
+				13DBA7E82CC434DD003A10AE /* LookBookView.swift */,
 				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
 				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
-				13DBA7E82CC434DD003A10AE /* LookBookView.swift */,
+				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
 				136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */,
 				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
+				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
 				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
 			);
 			path = LookBook;
-			sourceTree = "<group>";
-		};
-		133889262C898ABB0023CED5 /* ImageSegmentation */ = {
-			isa = PBXGroup;
-			children = (
-				133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */,
-			);
-			path = ImageSegmentation;
 			sourceTree = "<group>";
 		};
 		1338892B2C89E73B0023CED5 /* Closet */ = {
 			isa = PBXGroup;
 			children = (
 				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
-				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
 				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
+				13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */,
 				136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */,
-				13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */,
 				13BA78A12D376B0800ADB1C1 /* CategorySheet.swift */,
 				13BA78A32D378B0000ADB1C1 /* ColorSheet.swift */,
 				133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */,
@@ -384,6 +376,26 @@
 				13624D402DA6CA5900732B01 /* InsightViewModel.swift */,
 			);
 			path = Insight;
+			sourceTree = "<group>";
+		};
+		135FEC982DAB719300E3AFB1 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		135FEC992DAB731600E3AFB1 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				1386EAD22C5D3F9C0085655D /* ContentView.swift */,
+				1308D2742C62801F003F50F3 /* Coordinator.swift */,
+				13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */,
+				133889292C899BF90023CED5 /* BottomNavigationBar.swift */,
+				134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */,
+			);
+			path = Root;
 			sourceTree = "<group>";
 		};
 		13607EA52C80E44B0073FCE2 /* ci_scripts */ = {
@@ -408,7 +420,6 @@
 		13659CE12C5FA13C00BB6B91 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				133889262C898ABB0023CED5 /* ImageSegmentation */,
 				13659CDF2C5F8F1D00BB6B91 /* APIError.swift */,
 				13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */,
 				1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */,
@@ -484,9 +495,10 @@
 		1386EAFA2C5D3FA40085655D /* App */ = {
 			isa = PBXGroup;
 			children = (
-				13DC5E752C64AB0900DB5600 /* ContainerDependencies */,
-				1386EAD02C5D3F9C0085655D /* negguApp.swift */,
+				1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */,
 				13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */,
+				1386EAD02C5D3F9C0085655D /* negguApp.swift */,
+				13DC5E752C64AB0900DB5600 /* ContainerDependencies */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -494,14 +506,14 @@
 		1386EAFB2C5D3FAC0085655D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1302FE572C86E9E80076D015 /* Fonts */,
 				133927392C7F1D3C009E623B /* neggu.entitlements */,
+				13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */,
 				132247202C5E946A004557EF /* Info.plist */,
 				1386EAD42C5D3F9C0085655D /* Assets.xcassets */,
 				1386EB012C5D416D0085655D /* Colors.xcassets */,
-				1386EB072C5D419B0085655D /* Localizable.xcstrings */,
 				132247232C5E972F004557EF /* NegguKeys.xcconfig */,
-				13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */,
+				1386EB072C5D419B0085655D /* Localizable.xcstrings */,
+				1302FE572C86E9E80076D015 /* Fonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -510,15 +522,15 @@
 			isa = PBXGroup;
 			children = (
 				1364C86E2C6102F500F67E3C /* AuthAPI.swift */,
-				1364C8702C6102FD00F67E3C /* AuthService.swift */,
 				13BE365C2D27975D0033DE7B /* HealthAPI.swift */,
 				1350810B2D38BC95005E2491 /* ClosetAPI.swift */,
-				1350810D2D38C760005E2491 /* ClosetService.swift */,
 				1352E0032D5F50AD00354234 /* LookBookAPI.swift */,
-				1352E0052D5F68D100354234 /* LookBookService.swift */,
 				1309706F2D41248D0050D091 /* UserAPI.swift */,
-				130970712D4126290050D091 /* UserService.swift */,
 				1347E7682DA53D9C0008E127 /* InsightAPI.swift */,
+				1364C8702C6102FD00F67E3C /* AuthService.swift */,
+				1350810D2D38C760005E2491 /* ClosetService.swift */,
+				1352E0052D5F68D100354234 /* LookBookService.swift */,
+				130970712D4126290050D091 /* UserService.swift */,
 				1347E76A2DA53F910008E127 /* InsightService.swift */,
 			);
 			path = Data;
@@ -543,9 +555,7 @@
 		1386EAFE2C5D3FCD0085655D /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */,
-				1386EAD22C5D3F9C0085655D /* ContentView.swift */,
-				1308D2742C62801F003F50F3 /* Coordinator.swift */,
+				135FEC992DAB731600E3AFB1 /* Root */,
 				1308D26F2C6274D0003F50F3 /* Auth */,
 				1338892B2C89E73B0023CED5 /* Closet */,
 				1337B7092CDCF7200052BFF2 /* LookBook */,
@@ -558,10 +568,11 @@
 		1386EB092C5D41B80085655D /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				13B375782D34E36A001D009E /* Extension */,
-				13AEFD482D30F1F20041C10A /* Enum */,
 				13DC5E782C64AB1100DB5600 /* DI */,
+				13AEFD482D30F1F20041C10A /* Enum */,
+				13B375782D34E36A001D009E /* Extension */,
 				13659CE12C5FA13C00BB6B91 /* Foundation */,
+				135FEC982DAB719300E3AFB1 /* Manager */,
 				1364C8742C61280000F67E3C /* Util */,
 			);
 			path = Core;
@@ -570,23 +581,20 @@
 		1386EB0A2C5D41C40085655D /* NegguDS */ = {
 			isa = PBXGroup;
 			children = (
-				1318DE542D3F600D0077972D /* PickerField.swift */,
-				13BA789F2D376A5400ADB1C1 /* FilterButton.swift */,
-				134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */,
-				134AD9A02D363F4D00B18C1B /* LinkBanner.swift */,
-				13AEFD442D30E8E30041C10A /* DateSelectButton.swift */,
-				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
-				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
-				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
-				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
-				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
-				133889292C899BF90023CED5 /* BottomNavigationBar.swift */,
 				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
+				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
+				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
-				1390E0E02D687D1000848920 /* ImagePicker.swift */,
-				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
-				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
+				13AEFD442D30E8E30041C10A /* DateSelectButton.swift */,
+				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
+				13BA789F2D376A5400ADB1C1 /* FilterButton.swift */,
 				133A43532DAAD2060090E409 /* GradientView.swift */,
+				1390E0E02D687D1000848920 /* ImagePicker.swift */,
+				134AD9A02D363F4D00B18C1B /* LinkBanner.swift */,
+				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
+				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
+				1318DE542D3F600D0077972D /* PickerField.swift */,
+				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
