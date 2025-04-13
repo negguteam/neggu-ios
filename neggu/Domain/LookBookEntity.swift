@@ -48,11 +48,11 @@ struct LookBookClothesEntity: Decodable, Identifiable, Equatable {
         case zIndex = "zindex"
     }
     
-    func toLookBookItem() -> LookBookClothesItem {
+    func toLookBookItem(image: UIImage? = nil) -> LookBookClothesItem {
         return .init(
             id: self.id,
             imageUrl: self.imageUrl,
-            image: self.imageUrl.toUIImage(),
+            image: image,
             scale: CGFloat(self.scale),
 //            lastScale: CGFloat(self.scale),
             angle: Angle(degrees: Double(self.angle)),

@@ -54,10 +54,10 @@ struct LookBookEditView: View {
                             Spacer()
                             
                             Button("저장하기") {
-                                guard let lookbookImage = collageView
+                                guard let lookBookImage = collageView
                                     .frame(width: proxy.size.width, height: proxy.size.height)
                                     .snapshot(),
-                                      let pngData = lookbookImage.pngData()
+                                      let pngData = lookBookImage.pngData()
                                 else { return }
                                 
                                 let request = selectedClothes.compactMap { $0.toEntity() }
@@ -226,27 +226,27 @@ struct LookBookEditView: View {
                                             
                                             Button {
                                                 if !isSelected {
-                                                    let middleX = proxy.size.width / 4
-                                                    let middleY = proxy.size.height / 4
-                                                    selectedClothes.append(clothes.toLookBookItem(offset: .init(width: middleX, height: middleY)))
+                                                    Task {
+                                                        guard let uiImage = await clothes.imageUrl.toImage() else { return }
+                                                        let middleX = proxy.size.width / 4
+                                                        let middleY = proxy.size.height / 4
+                                                        selectedClothes.append(clothes.toLookBookItem(
+                                                            image: uiImage,
+                                                            offset: .init(width: middleX, height: middleY))
+                                                        )
+                                                    }
                                                 } else {
                                                     selectedClothes.removeAll(where: { $0.id == clothes.id })
                                                 }
                                             } label: {
-                                                AsyncImage(url: URL(string: clothes.imageUrl)) { image in
-                                                    image
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fit)
-                                                } placeholder: {
-                                                    ProgressView()
-                                                }
-                                                .frame(width: 100, height: 100)
-                                                .background(isSelected ? .negguSecondaryAlt : .bgNormal)
-                                                .overlay {
-                                                    RoundedRectangle(cornerRadius: 16)
-                                                        .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
-                                                }
-                                                .clipShape(.rect(cornerRadius: 16))
+                                                CachedAsyncImage(clothes.imageUrl)
+                                                    .frame(width: 100, height: 100)
+                                                    .background(isSelected ? .negguSecondaryAlt : .bgNormal)
+                                                    .overlay {
+                                                        RoundedRectangle(cornerRadius: 16)
+                                                            .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
+                                                    }
+                                                    .clipShape(.rect(cornerRadius: 16))
                                             }
                                         }
                                         
@@ -326,6 +326,13 @@ struct LookBookEditView: View {
             }
         }
         .onAppear {
+            Task {
+                for i in selectedClothes.indices {
+                    guard let uiImage = await selectedClothes[i].imageUrl.toImage() else { continue }
+                    selectedClothes[i].image = uiImage
+                }
+            }
+            
             viewModel.filteredClothes()
         }
         .onDisappear {

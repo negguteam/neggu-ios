@@ -56,7 +56,7 @@ struct LookBookView: View {
                                     
                                     Group {
                                         if let profileImage = profile.profileImage {
-                                            AsyncImage(url: URL(string: profileImage))
+                                            CachedAsyncImage(profileImage)
                                         } else {
                                             Circle()
                                         }
@@ -306,6 +306,7 @@ struct LookBookView: View {
                                         lookbookCoordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
                                     } label: {
                                         LookBookCell(lookBook: lookBook, targetDate: .now.addingTimeInterval(.random(in: 0...10) * 24 * 60 * 60))
+                                            .frame(height: 260)
                                     }
                                 }
                                 
@@ -313,14 +314,13 @@ struct LookBookView: View {
                                     .fill(.clear)
                                     .frame(height: 56)
                                     .onAppear {
-                                        print("LookBook Pagenation - onAppear")
                                         viewModel.getLookBookList()
                                     }
                             }
                         }
                     }
                     .padding(.top, 32)
-                    .padding(.bottom, 80)
+                    .padding(.bottom, viewModel.lookBookList.count % 2 == 0 ? 24 : 80)
                 }
                 .scrollIndicators(.hidden)
             }

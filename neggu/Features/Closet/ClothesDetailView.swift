@@ -49,18 +49,9 @@ struct ClothesDetailView: View {
                     ScrollView {
                         VStack(spacing: 48) {
                             VStack(alignment: .leading, spacing: 24) {
-                                AsyncImage(url: URL(string: clothes.imageUrl)) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                } placeholder: {
-                                    Color.clear
-                                        .overlay {
-                                            ProgressView()
-                                        }
-                                }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 300)
+                                CachedAsyncImage(clothes.imageUrl)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 300)
                                 
                                 VStack(alignment: .leading, spacing: 12) {
                                     Text(clothes.name)

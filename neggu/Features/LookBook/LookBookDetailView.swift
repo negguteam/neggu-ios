@@ -64,8 +64,10 @@ struct LookBookDetailView: View {
                     
                     Menu {
                         Button("이미지로 저장하기") {
-                            guard let lookBookImage = lookBook.imageUrl.toUIImage() else { return }
-                            UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
+                            Task {
+                                guard let lookBookImage = await lookBook.imageUrl.toImage() else { return }
+                                UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
+                            }
                         }
                         
                         Button("편집하기") {
@@ -88,17 +90,8 @@ struct LookBookDetailView: View {
                 ScrollView {
                     VStack(spacing: 24) {
                         VStack {
-                            AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
-                                image
-                                    .resizable()
-                                    .scaledToFit()
-                            } placeholder: {
-                                Color.clear
-                                    .overlay {
-                                        ProgressView()
-                                    }
-                            }
-                            .frame(maxHeight: .infinity)
+                            CachedAsyncImage(lookBook.imageUrl)
+                                .frame(maxHeight: .infinity)
                             
                             HStack {
                                 if let decorator = lookBook.decorator {
@@ -169,14 +162,8 @@ struct LookBookDetailView: View {
                                         Button {
                                             selectedClothes = clothes
                                         } label: {
-                                            AsyncImage(url: URL(string: clothes.imageUrl)) { image in
-                                                image
-                                                    .resizable()
-                                                    .scaledToFit()
-                                            } placeholder: {
-                                                ProgressView()
-                                            }
-                                            .aspectRatio(0.8, contentMode: .fit)
+                                            CachedAsyncImage(clothes.imageUrl)
+                                                .aspectRatio(0.8, contentMode: .fit)
                                         }
                                     }
                                 }

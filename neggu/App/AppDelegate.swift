@@ -39,6 +39,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         Messaging.messaging().apnsToken = deviceToken
     }
     
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        URLCache.shared.removeAllCachedResponses()
+    }
+    
 //    func applicationDidBecomeActive(_ application: UIApplication) {
 //        AppsFlyerLib.shared().start()
 //    }
