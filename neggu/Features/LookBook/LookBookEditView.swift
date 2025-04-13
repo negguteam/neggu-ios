@@ -233,20 +233,14 @@ struct LookBookEditView: View {
                                                     selectedClothes.removeAll(where: { $0.id == clothes.id })
                                                 }
                                             } label: {
-                                                AsyncImage(url: URL(string: clothes.imageUrl)) { image in
-                                                    image
-                                                        .resizable()
-                                                        .aspectRatio(contentMode: .fit)
-                                                } placeholder: {
-                                                    ProgressView()
-                                                }
-                                                .frame(width: 100, height: 100)
-                                                .background(isSelected ? .negguSecondaryAlt : .bgNormal)
-                                                .overlay {
-                                                    RoundedRectangle(cornerRadius: 16)
-                                                        .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
-                                                }
-                                                .clipShape(.rect(cornerRadius: 16))
+                                                CachedAsyncImage(clothes.imageUrl)
+                                                    .frame(width: 100, height: 100)
+                                                    .background(isSelected ? .negguSecondaryAlt : .bgNormal)
+                                                    .overlay {
+                                                        RoundedRectangle(cornerRadius: 16)
+                                                            .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
+                                                    }
+                                                    .clipShape(.rect(cornerRadius: 16))
                                             }
                                         }
                                         

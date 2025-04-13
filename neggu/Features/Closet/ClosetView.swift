@@ -74,13 +74,7 @@ struct ClosetView: View {
                                         .fill(.clear)
                                         .aspectRatio(5/6, contentMode: .fit)
                                         .overlay {
-                                            AsyncImage(url: URL(string: item.imageUrl)) { image in
-                                                image
-                                                    .resizable()
-                                                    .scaledToFit()
-                                            } placeholder: {
-                                                ProgressView()
-                                            }
+                                            CachedAsyncImage(item.imageUrl)
                                         }
                                 }
                             }
@@ -93,6 +87,7 @@ struct ClosetView: View {
                                     viewModel.getClothes()
                                 }
                         }
+                        .padding(.bottom, viewModel.clothes.count % 3 == 0 ? 24 : 80)
                     }
                     .scrollIndicators(.hidden)
                     .scrollDisabled(scrollPosition == 0)

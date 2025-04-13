@@ -95,6 +95,7 @@
 		1386EB002C5D40350085655D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */; };
 		1386EB022C5D416D0085655D /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB012C5D416D0085655D /* Colors.xcassets */; };
 		1386EB082C5D419B0085655D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB072C5D419B0085655D /* Localizable.xcstrings */; };
+		13897EC02DAB9AB600CBD97F /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */; };
 		1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1390E0E02D687D1000848920 /* ImagePicker.swift */; };
 		139728FE2D7356EC0021B356 /* LookBookDeleteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */; };
 		13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */; };
@@ -230,6 +231,7 @@
 		1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1386EB012C5D416D0085655D /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1386EB072C5D419B0085655D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		1390E0E02D687D1000848920 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDeleteSheet.swift; sourceTree = "<group>"; };
 		13A4D6C92CAAC13E003F2E7C /* ClosetAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetAddView.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 				13659CE42C5FA19500BB6B91 /* NegguInterceptor.swift */,
 				13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */,
 				13595F282DA9587700AFF836 /* DeepLinkManager.swift */,
+				13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -896,6 +899,7 @@
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
 				136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */,
 				130970722D4126290050D091 /* UserService.swift in Sources */,
+				13897EC02DAB9AB600CBD97F /* CachedAsyncImage.swift in Sources */,
 				133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

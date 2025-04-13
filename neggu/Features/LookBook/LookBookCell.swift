@@ -23,22 +23,12 @@ struct LookBookCell: View {
         ZStack(alignment: .topTrailing) {
             RoundedRectangle(cornerRadius: 20)
                 .fill(.white)
-                .frame(height: 260)
                 .overlay {
                     ZStack(alignment: .bottomLeading) {
-                        AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            Color.clear
-                                .overlay {
-                                    ProgressView()
-                                }
-                        }
+                        CachedAsyncImage(lookBook.imageUrl)
                         
                         if let decorator = lookBook.decorator {
-                            AsyncImage(url: URL(string: decorator.imageUrl))
+                            CachedAsyncImage(decorator.imageUrl)
                                 .frame(width: 36, height: 36)
                                 .clipShape(.circle)
                         }

@@ -38,12 +38,11 @@ struct LookBookDeleteSheet: View {
                         .fill(.clear)
                         .frame(height: 56)
                         .onAppear {
-                            print("LookBook Pagenation - onAppear")
                             viewModel.getLookBookList()
                         }
                 }
                 .padding(.horizontal, 48)
-                .padding(.bottom)
+                .padding(.bottom, viewModel.lookBookList.count % 2 == 0 ? 32 : 88)
             }
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {
@@ -105,30 +104,21 @@ struct LookBookDeleteCell: View {
             .strokeBorder(isSelected ? .warning : .white)
             .frame(height: 220)
             .overlay {
-                ZStack(alignment: .topTrailing) {
-                    AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
-                        image
+                CachedAsyncImage(lookBook.imageUrl)
+                    .padding(12)
+            }
+            .overlay(alignment: .topTrailing) {
+                Circle()
+                    .fill(isSelected ? .warning : .bgAlt)
+                    .frame(width: 24)
+                    .overlay {
+                        Image(.check)
                             .resizable()
                             .scaledToFit()
-                    } placeholder: {
-                        Color.clear
-                            .overlay {
-                                ProgressView()
-                            }
+                            .frame(width: 12, height: 12)
+                            .foregroundStyle(isSelected ? .white : .labelInactive)
                     }
-                    
-                    Circle()
-                        .fill(isSelected ? .warning : .bgAlt)
-                        .frame(width: 24)
-                        .overlay {
-                            Image(.check)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 12, height: 12)
-                                .foregroundStyle(isSelected ? .white : .labelInactive)
-                        }
-                }
-                .padding(12)
+                    .padding(12)
             }
     }
 }

@@ -58,14 +58,8 @@ struct InsightView: View {
                                             .shadow(color: .black.opacity(0.05), radius: 4, x: 4, y: 4)
                                             .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
                                             .overlay {
-                                                AsyncImage(url: URL(string: lookBook.imageUrl)) { image in
-                                                    image
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                } placeholder: {
-                                                    ProgressView()
-                                                }
-                                                .padding()
+                                                CachedAsyncImage(lookBook.imageUrl)
+                                                    .padding()
                                             }
                                             .visualEffect { effect, proxy in
                                                 effect
@@ -99,14 +93,8 @@ struct InsightView: View {
                             .fill(.white)
                             .aspectRatio(3/4, contentMode: .fit)
                             .overlay {
-                                AsyncImage(url: URL(string: insight.clothes.first?.imageUrl ?? "")) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .padding(.horizontal)
+                                CachedAsyncImage(insight.clothes.first?.imageUrl ?? "")
+                                    .padding(.horizontal)
                             }
                         
                         Spacer()
@@ -126,14 +114,8 @@ struct InsightView: View {
                             .fill(.white)
                             .aspectRatio(3/4, contentMode: .fit)
                             .overlay {
-                                AsyncImage(url: URL(string: insight.lookBooks.first?.imageUrl ?? "")) { image in
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                                .padding(.horizontal)
+                                CachedAsyncImage(insight.lookBooks.first?.imageUrl ?? "")
+                                    .padding(.horizontal)
                             }
                         
                         Spacer()
