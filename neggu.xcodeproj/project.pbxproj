@@ -42,6 +42,7 @@
 		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
 		134342482D7CE4FF00D3F1A3 /* UserProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */; };
 		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
+		1346D4642DAC7B9F00638C0E /* SkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346D4632DAC7B9F00638C0E /* SkeletonView.swift */; };
 		1347E7672DA519A30008E127 /* InsightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E7662DA519A30008E127 /* InsightView.swift */; };
 		1347E7692DA53D9C0008E127 /* InsightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E7682DA53D9C0008E127 /* InsightAPI.swift */; };
 		1347E76B2DA53F910008E127 /* InsightService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1347E76A2DA53F910008E127 /* InsightService.swift */; };
@@ -179,6 +180,7 @@
 		134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteAlert.swift; sourceTree = "<group>"; };
 		134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEntity.swift; sourceTree = "<group>"; };
 		1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Bold.otf"; sourceTree = "<group>"; };
+		1346D4632DAC7B9F00638C0E /* SkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonView.swift; sourceTree = "<group>"; };
 		1347E7662DA519A30008E127 /* InsightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightView.swift; sourceTree = "<group>"; };
 		1347E7682DA53D9C0008E127 /* InsightAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightAPI.swift; sourceTree = "<group>"; };
 		1347E76A2DA53F910008E127 /* InsightService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightService.swift; sourceTree = "<group>"; };
@@ -598,6 +600,7 @@
 				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
 				1318DE542D3F600D0077972D /* PickerField.swift */,
 				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
+				1346D4632DAC7B9F00638C0E /* SkeletonView.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
@@ -808,6 +811,7 @@
 				13DC5E732C64AA3900DB5600 /* AuthViewModel.swift in Sources */,
 				134AD9A12D363F4D00B18C1B /* LinkBanner.swift in Sources */,
 				1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */,
+				1346D4642DAC7B9F00638C0E /* SkeletonView.swift in Sources */,
 				13A4D6CA2CAAC13E003F2E7C /* ClosetAddView.swift in Sources */,
 				13659CDB2C5F613500BB6B91 /* BaseService.swift in Sources */,
 				135081162D38CCA1005E2491 /* Mood.swift in Sources */,
