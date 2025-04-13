@@ -64,8 +64,10 @@ struct LookBookDetailView: View {
                     
                     Menu {
                         Button("이미지로 저장하기") {
-                            guard let lookBookImage = lookBook.imageUrl.toUIImage() else { return }
-                            UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
+                            Task {
+                                guard let lookBookImage = await lookBook.imageUrl.toImage() else { return }
+                                UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
+                            }
                         }
                         
                         Button("편집하기") {

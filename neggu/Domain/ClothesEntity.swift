@@ -59,46 +59,15 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     let createdAt: String
     let modifiedAt: String
     
-    func toLookBookItem(offset: CGSize = .zero) -> LookBookClothesItem {
+    func toLookBookItem(image: UIImage, offset: CGSize = .zero) -> LookBookClothesItem {
         return .init(
             id: self.id,
             imageUrl: self.imageUrl,
-            image: self.imageUrl.toUIImage(),
+            image: image,
             offset: offset,
             lastOffset: offset
         )
     }
-}
-
-
-extension String {
-    
-    func toUIImage() -> UIImage? {
-        guard let url = URL(string: self) else { return nil }
-        
-        let request = URLRequest(url: url)
-        
-        if let cachedResponse = URLCache.shared.cachedResponse(for: request),
-           let cachedImage = UIImage(data: cachedResponse.data) {
-            return cachedImage
-        } else {
-            Task.detached(priority: .high) {
-                do {
-                    let (data, response) = try await URLSession.shared.data(for: request)
-                    let cachedData = CachedURLResponse(response: response, data: data)
-                    URLCache.shared.storeCachedResponse(cachedData, for: request)
-                    
-                    return UIImage(data: data)
-                } catch {
-                    print(error.localizedDescription)
-                    return nil
-                }
-            }
-            
-            return nil
-        }
-    }
-    
 }
 
 
