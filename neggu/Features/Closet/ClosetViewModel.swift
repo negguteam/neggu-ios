@@ -91,6 +91,7 @@ final class ClosetViewModel: ObservableObject {
     
     func filteredClothes() {
         $selectedCategory.combineLatest($selectedSubCategory, $selectedMood, $selectedColor)
+            .removeDuplicates { $0 == $1 }
             .throttle(for: .seconds(0.5), scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] _, _, _, _ in
                 self?.resetCloset()
@@ -132,6 +133,21 @@ final class ClosetViewModel: ObservableObject {
         selectedSubCategory = .UNKNOWN
         selectedColor = nil
         selectedMood.removeAll()
+    }
+    
+    func checkInviteCode(_ code: String, completion: @escaping (Bool) -> Void) {
+        closetService.clothesInviteList(
+            parameters: ["inviteCode": code, "page": 0, "size": 1]
+        ).sink { event in
+            switch event {
+            case .finished:
+                print("CheckInviteCode:", event)
+            case .failure:
+                completion(false)
+            }
+        } receiveValue: { _ in
+            completion(true)
+        }.store(in: &bag)
     }
     
 }

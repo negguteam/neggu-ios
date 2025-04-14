@@ -10,6 +10,7 @@ import Moya
 
 enum LookBookAPI {
     case register(image: Data, request: Data)
+    case registerByInvite(image: Data, request: Data)
     case negguInvite
     case lookbookDetail(id: String)
     case lookbookList(parameters: [String: Any])
@@ -25,6 +26,8 @@ extension LookBookAPI: BaseAPI {
         switch self {
         case .register:
             ""
+        case .registerByInvite:
+            "/invite"
         case .negguInvite:
             "/generate/invite"
         case .lookbookDetail(let id):
@@ -40,7 +43,7 @@ extension LookBookAPI: BaseAPI {
     
     var headers: [String : String]? {
         switch self {
-        case .register:
+        case .register, .registerByInvite:
             HeaderType.multipartWithToken.value
         default:
             HeaderType.jsonWithToken.value
@@ -49,7 +52,7 @@ extension LookBookAPI: BaseAPI {
     
     var method: Moya.Method {
         switch self {
-        case .register, .negguInvite: .post
+        case .register, .registerByInvite, .negguInvite: .post
         case .deleteLookBook: .delete
         default: .get
         }
@@ -61,6 +64,12 @@ extension LookBookAPI: BaseAPI {
             var multipartData: [MultipartFormData] = []
             multipartData.append(.init(provider: .data(image), name: "image", fileName: "lookBookImage", mimeType: "image/png"))
             multipartData.append(.init(provider: .data(request), name: "lookBookRequest"))
+            
+            return .uploadMultipart(multipartData)
+        case .registerByInvite(let image, let request):
+            var multipartData: [MultipartFormData] = []
+            multipartData.append(.init(provider: .data(image), name: "image", fileName: "lookBookImage", mimeType: "image/png"))
+            multipartData.append(.init(provider: .data(request), name: "lookBookByInviteRequest"))
             
             return .uploadMultipart(multipartData)
         case .lookbookList(let parameters), .lookbookClothes(let parameters):
