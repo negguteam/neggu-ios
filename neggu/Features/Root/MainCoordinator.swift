@@ -30,8 +30,17 @@ final class MainCoordinator: Coordinator {
         }
     }
     
-    @Published var sheet: Destination?
-    @Published var fullScreenCover: Destination?
+    @Published var sheet: Destination? {
+        didSet {
+            print("Sheet:", sheet?.id ?? "none")
+        }
+    }
+    
+    @Published var fullScreenCover: Destination? {
+        didSet {
+            print("FullScreen Cover:", fullScreenCover?.id ?? "none")
+        }
+    }
     
     
     func push(_ destination: Destination) {

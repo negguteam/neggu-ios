@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct LookBookView: View {
-    @EnvironmentObject private var lookbookCoordinator: MainCoordinator
+    @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var viewModel: LookBookViewModel
     
     @State private var showNegguList: Bool = false
@@ -26,7 +26,7 @@ struct LookBookView: View {
                 
                 Menu {
                     Button("환경 설정") {
-                        lookbookCoordinator.push(.setting)
+                        coordinator.push(.setting)
                     }
                     
                     Button("룩북 삭제하기", role: .destructive) {
@@ -112,9 +112,9 @@ struct LookBookView: View {
                                         default:
                                             Button {
                                                 if viewModel.lookbookState == .none {
-                                                    lookbookCoordinator.fullScreenCover = .lookbookEdit()
+                                                    coordinator.fullScreenCover = .lookbookEdit()
                                                 } else {
-                                                    lookbookCoordinator.isGnbOpened = true
+                                                    coordinator.isGnbOpened = true
                                                 }
                                             } label: {
                                                 RoundedRectangle(cornerRadius: 12)
@@ -147,7 +147,7 @@ struct LookBookView: View {
                                         
                                         VStack {
                                             Button {
-                                                lookbookCoordinator.activeTab = .closet
+                                                coordinator.activeTab = .closet
                                             } label: {
                                                 HStack {
                                                     Image("shirt_fill")
@@ -235,7 +235,7 @@ struct LookBookView: View {
                                     }
                                     
                                     Button {
-                                        lookbookCoordinator.push(.insight)
+                                        coordinator.push(.insight)
                                     } label: {
                                         RoundedRectangle(cornerRadius: 20)
                                             .fill(.negguPrimary)
@@ -303,7 +303,7 @@ struct LookBookView: View {
                             ) {
                                 ForEach(viewModel.lookBookList) { lookBook in
                                     Button {
-                                        lookbookCoordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
+                                        coordinator.push(.lookbookDetail(lookBookID: lookBook.lookBookId))
                                     } label: {
                                         LookBookCell(lookBook: lookBook, targetDate: .now.addingTimeInterval(.random(in: 0...10) * 24 * 60 * 60))
                                             .frame(height: 260)

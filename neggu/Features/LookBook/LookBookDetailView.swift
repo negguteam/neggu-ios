@@ -9,16 +9,14 @@ import SwiftUI
 import Combine
 
 struct LookBookDetailView: View {
-    @Environment(\.dismiss) private var dismiss
-    
-    @StateObject private var viewModel = LookBookViewModel()
+    @EnvironmentObject private var coordinator: MainCoordinator
+    @EnvironmentObject private var viewModel: LookBookViewModel
     
     @State private var lookBookState: LookBookState = .loading
     @State private var selectedDate: Date?
     @State private var isPublic: Bool = false
     
     @State private var showCalendar: Bool = false
-    @State private var showLookBookEditView: Bool = false
     @State private var showDeleteAlert: Bool = false
     @State private var selectedClothes: LookBookClothesEntity?
     @State private var sheetHeight: CGFloat = .zero
@@ -38,7 +36,7 @@ struct LookBookDetailView: View {
             case .complete(let lookBook):
                 HStack {
                     Button {
-                        dismiss()
+                        coordinator.pop()
                     } label: {
                         Image(.chevronLeft)
                             .foregroundStyle(.labelNormal)
@@ -224,10 +222,6 @@ struct LookBookDetailView: View {
                 }
                 .scrollIndicators(.hidden)
                 .background(.bgNormal)
-                .fullScreenCover(isPresented: $showLookBookEditView) {
-                    let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
-                    LookBookEditView(editingClothes: editingClothes)
-                }
             }
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -251,7 +245,7 @@ struct LookBookDetailView: View {
             rightContent: "삭제하기"
         ) {
             viewModel.deleteLookBook(id: lookBookID) {
-                dismiss()
+                coordinator.pop()
             }
         }
     }

@@ -9,8 +9,7 @@ import SwiftUI
 import Combine
 
 struct LookBookEditView: View {
-    @Environment(\.dismiss) private var dismiss
-    
+    @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var viewModel: LookBookViewModel
     
     @State private var selectedClothes: [LookBookClothesItem]
@@ -26,7 +25,10 @@ struct LookBookEditView: View {
     @State private var isColorEditMode: Bool = false
     @State private var isEditingMode: Bool = false
     
-    init(editingClothes: [LookBookClothesItem] = []) {
+    private let inviteCode: String
+    
+    init(inviteCode: String, editingClothes: [LookBookClothesItem] = []) {
+        self.inviteCode = inviteCode
         self.selectedClothes = editingClothes
     }
     
@@ -45,7 +47,7 @@ struct LookBookEditView: View {
                     VStack(spacing: 0) {
                         HStack {
                             Button {
-                                dismiss()
+                                coordinator.dismiss()
                             } label: {
                                 Image(.xLarge)
                                     .frame(width: 44, height: 44)
@@ -63,7 +65,7 @@ struct LookBookEditView: View {
                                 let request = selectedClothes.compactMap { $0.toEntity() }
                                 
                                 viewModel.registerLookBook(image: pngData, request: request) {
-                                    dismiss()
+                                    coordinator.dismiss()
                                 }
                             }
                             .negguFont(.body2b)
@@ -528,8 +530,4 @@ extension View {
         return renderer.uiImage
     }
 
-}
-
-#Preview {
-    LookBookEditView()
 }
