@@ -69,7 +69,8 @@ struct LookBookDetailView: View {
                         }
                         
                         Button("편집하기") {
-                            showLookBookEditView = true
+                            let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
+                            coordinator.fullScreenCover = .lookbookEdit(editingClothes: editingClothes)
                         }
                         
                         Button("삭제하기", role: .destructive) {

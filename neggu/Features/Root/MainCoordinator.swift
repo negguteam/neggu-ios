@@ -73,8 +73,8 @@ final class MainCoordinator: Coordinator {
         
         case .lookbook:
             LookBookView()
-        case .lookbookEdit(let editingClothes):
-            LookBookEditView(editingClothes: editingClothes)
+        case .lookbookEdit(let inviteCode, let editingClothes):
+            LookBookEditView(inviteCode: inviteCode, editingClothes: editingClothes)
         case .lookbookDetail(let lookBookID):
             LookBookDetailView(lookBookID: lookBookID)
             
@@ -91,7 +91,7 @@ final class MainCoordinator: Coordinator {
         case clothesDetail(clothesID: String)
         
         case lookbook
-        case lookbookEdit(editingClothes: [LookBookClothesItem] = [])
+        case lookbookEdit(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
         
         case insight
