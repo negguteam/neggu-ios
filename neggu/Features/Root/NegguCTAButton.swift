@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NegguCTAButton: View {
     @EnvironmentObject private var coordinator: MainCoordinator
@@ -198,6 +199,10 @@ struct NegguCTAButton: View {
                                 .negguFont(.body2)
                                 .foregroundStyle(.labelNormal)
                                 .keyboardType(.numberPad)
+                                .onReceive(Just(inviteCode)) { newValue in
+                                    let filteredString = newValue.filter { "0123456789".contains($0) }
+                                    inviteCode = String(filteredString.prefix(6))
+                                }
                                 
                                 Button {
                                     closetViewModel.checkInviteCode(inviteCode) { isValid in
