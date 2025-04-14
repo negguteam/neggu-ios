@@ -11,7 +11,7 @@ import Combine
 typealias DefaultLookBookService = BaseService<LookBookAPI>
 
 protocol LookBookService {
-    func register(image: Data, request: [LookBookClothesRegisterEntity]) -> AnyPublisher<LookBookEntity, Error>
+    func register(image: Data, request: [LookBookClothesRegisterEntity], byInvite: Bool) -> AnyPublisher<LookBookEntity, Error>
     func negguInvite() -> AnyPublisher<NegguInviteEntity, Error>
     func lookbookDetail(id: String) -> AnyPublisher<LookBookEntity, Error>
     func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookListEntity, Error>
@@ -21,7 +21,7 @@ protocol LookBookService {
 
 extension DefaultLookBookService: LookBookService {
     
-    func register(image: Data, request: [LookBookClothesRegisterEntity]) -> AnyPublisher<LookBookEntity, Error> {
+    func register(image: Data, request: [LookBookClothesRegisterEntity], byInvite: Bool) -> AnyPublisher<LookBookEntity, Error> {
         let requestArray = request.compactMap {
             let jsonData = (try? JSONEncoder().encode($0)) ?? .init()
             return try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
@@ -30,10 +30,11 @@ extension DefaultLookBookService: LookBookService {
         let dictionary: [String: Any] = ["lookBookClothes": requestArray]
         let object = try? JSONSerialization.data(withJSONObject: dictionary)
         
-        return requestObjectWithNetworkError(.register(
-            image: image,
-            request: object ?? .init()
-        ))
+        return requestObjectWithNetworkError(
+            byInvite
+            ? .register(image: image,request: object ?? .init())
+            : .registerByInvite(image: image, request: object ?? .init())
+        )
     }
     
     func negguInvite() -> AnyPublisher<NegguInviteEntity, Error> {

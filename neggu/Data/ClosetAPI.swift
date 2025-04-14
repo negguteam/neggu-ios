@@ -13,6 +13,7 @@ enum ClosetAPI {
     case modify(paramters: [String: Any])
     case clothesDetail(id: String)
     case clothesList(parameters: [String: Any])
+    case clothesInviteList(parameters: [String: Any])
     case brandList
     case deleteClothes(id: String)
 }
@@ -31,6 +32,8 @@ extension ClosetAPI: BaseAPI {
             "/\(id)"
         case .clothesList:
             "/page"
+        case .clothesInviteList:
+            "/invite"
         case .brandList:
             "/brands"
         case .deleteClothes(let id):
@@ -68,7 +71,7 @@ extension ClosetAPI: BaseAPI {
                 parameters: paramters,
                 encoding: JSONEncoding.default
             )
-        case .clothesList(let parameters):
+        case .clothesList(let parameters), .clothesInviteList(let parameters):
             return .requestParameters(
                 parameters: parameters,
                 encoding: URLEncoding.queryString

@@ -30,8 +30,17 @@ final class MainCoordinator: Coordinator {
         }
     }
     
-    @Published var sheet: Destination?
-    @Published var fullScreenCover: Destination?
+    @Published var sheet: Destination? {
+        didSet {
+            print("Sheet:", sheet?.id ?? "none")
+        }
+    }
+    
+    @Published var fullScreenCover: Destination? {
+        didSet {
+            print("FullScreen Cover:", fullScreenCover?.id ?? "none")
+        }
+    }
     
     
     func push(_ destination: Destination) {
@@ -64,8 +73,8 @@ final class MainCoordinator: Coordinator {
         
         case .lookbook:
             LookBookView()
-        case .lookbookEdit(let editingClothes):
-            LookBookEditView(editingClothes: editingClothes)
+        case .lookbookEdit(let inviteCode, let editingClothes):
+            LookBookEditView(inviteCode: inviteCode, editingClothes: editingClothes)
         case .lookbookDetail(let lookBookID):
             LookBookDetailView(lookBookID: lookBookID)
             
@@ -82,7 +91,7 @@ final class MainCoordinator: Coordinator {
         case clothesDetail(clothesID: String)
         
         case lookbook
-        case lookbookEdit(editingClothes: [LookBookClothesItem] = [])
+        case lookbookEdit(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
         
         case insight

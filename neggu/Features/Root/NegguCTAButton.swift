@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NegguCTAButton: View {
     @EnvironmentObject private var coordinator: MainCoordinator
@@ -20,6 +21,7 @@ struct NegguCTAButton: View {
     @State private var inviteCode: String = ""
     
     @State private var showInviteCodeCompletion: Bool = false
+    @State private var showInviteCodeValidation: Bool = false
         
     var body: some View {
         Group {
@@ -197,11 +199,20 @@ struct NegguCTAButton: View {
                                 .negguFont(.body2)
                                 .foregroundStyle(.labelNormal)
                                 .keyboardType(.numberPad)
+                                .onReceive(Just(inviteCode)) { newValue in
+                                    let filteredString = newValue.filter { "0123456789".contains($0) }
+                                    inviteCode = String(filteredString.prefix(6))
+                                }
                                 
                                 Button {
-//                                    closetViewModel.checkInviteCode(inviteCode) {
-//                                        
-//                                    }
+                                    closetViewModel.checkInviteCode(inviteCode) { isValid in
+                                        if isValid {
+                                            coordinator.fullScreenCover = .lookbookEdit(inviteCode: inviteCode)
+                                            isExpanded = false
+                                        } else {
+                                            showInviteCodeValidation = true
+                                        }
+                                    }
                                 } label: {
                                     RoundedRectangle(cornerRadius: 12)
                                         .fill(inviteCode.count == 6 ? .negguSecondary : .bgInactive)
@@ -221,19 +232,21 @@ struct NegguCTAButton: View {
                                     .strokeBorder(.lineAlt)
                             }
                             
-//                            RoundedRectangle(cornerRadius: 12)
-//                                .fill(.warningAlt)
-//                                .frame(height: 32)
-//                                .overlay {
-//                                    HStack {
-//                                        Image(.xSmall)
-//                                        
-//                                        Text("존재하지 않거나 만료된 코드에요")
-//                                            .negguFont(.body3b)
-//                                            .lineLimit(1)
-//                                    }
-//                                    .foregroundStyle(.warning)
-//                                }
+                            if showInviteCodeValidation {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(.warningAlt)
+                                    .frame(height: 32)
+                                    .overlay {
+                                        HStack {
+                                            Image(.xSmall)
+                                            
+                                            Text("존재하지 않거나 만료된 코드에요")
+                                                .negguFont(.body3b)
+                                                .lineLimit(1)
+                                        }
+                                        .foregroundStyle(.warning)
+                                    }
+                            }
                         }
                     }
                 }

@@ -25,7 +25,8 @@ final class LookBookViewModel: ObservableObject {
     @Published private(set) var canClothesPagenation: Bool = true
     
     private let userService: UserService = DefaultUserService()
-    private let lookBookService = DefaultLookBookService()
+    private let closetService: ClosetService = DefaultClosetService()
+    private let lookBookService: LookBookService = DefaultLookBookService()
     
     private var bag = Set<AnyCancellable>()
     
@@ -50,10 +51,16 @@ final class LookBookViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    func registerLookBook(image: Data, request: [LookBookClothesRegisterEntity], completion: @escaping () -> Void) {
+    func registerLookBook(
+        image: Data,
+        request: [LookBookClothesRegisterEntity],
+        byInvite: Bool = false,
+        completion: @escaping () -> Void
+    ) {
         lookBookService.register(
             image: image,
-            request: request
+            request: request,
+            byInvite: byInvite
         ).sink { event in
             print("LookBookEditView", event)
         } receiveValue: { result in
@@ -93,14 +100,14 @@ final class LookBookViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    func getLookBookClothes() {
+    func getLookBookClothes(inviteCode: String) {
         if !canClothesPagenation { return }
         canClothesPagenation = false
         
         var parameters: [String: Any] = ["page": clothesPage, "size": 6]
         
         if selectedCategory != .UNKNOWN && selectedCategory != .NONE {
-            parameters["filterCategory"] = selectedCategory.id
+            parameters[inviteCode.isEmpty ? "filterCategory" : "category"] = selectedCategory.id
         }
         
         if let color = selectedColor {
@@ -109,22 +116,36 @@ final class LookBookViewModel: ObservableObject {
             parameters["colorGroup"] = "ALL"
         }
         
-        lookBookService.lookbookClothes(parameters: parameters)
-            .sink { event in
-                print("LookBookEditView:", event)
-            } receiveValue: { result in
-                self.canClothesPagenation = !result.last
-                self.clothesPage += result.last ? 0 : 1
-                self.lookBookClothes += result.content
-            }.store(in: &bag)
+        if inviteCode.isEmpty {
+            lookBookService.lookbookClothes(parameters: parameters)
+                .sink { event in
+                    print("LookBookEditView:", event)
+                } receiveValue: { result in
+                    self.canClothesPagenation = !result.last
+                    self.clothesPage += result.last ? 0 : 1
+                    self.lookBookClothes += result.content
+                }.store(in: &bag)
+        } else {
+            parameters["inviteCode"] = inviteCode
+            
+            closetService.clothesInviteList(parameters: parameters)
+                .sink { event in
+                    print("LookBookEditView:", event)
+                } receiveValue: { result in
+                    self.canClothesPagenation = !result.last
+                    self.clothesPage += result.last ? 0 : 1
+                    self.lookBookClothes += result.content
+                }.store(in: &bag)
+        }
     }
     
-    func filteredClothes() {
+    func filteredClothes(inviteCode: String) {
         $selectedCategory.combineLatest($selectedColor)
+            .removeDuplicates { $0 == $1 }
             .throttle(for: .seconds(0.5), scheduler: DispatchQueue.main, latest: true)
             .sink { [weak self] category, color in
                 self?.resetLookBookClothes()
-                self?.getLookBookClothes()
+                self?.getLookBookClothes(inviteCode: inviteCode)
             }.store(in: &bag)
     }
     

@@ -9,8 +9,7 @@ import SwiftUI
 import Combine
 
 struct LookBookEditView: View {
-    @Environment(\.dismiss) private var dismiss
-    
+    @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var viewModel: LookBookViewModel
     
     @State private var selectedClothes: [LookBookClothesItem]
@@ -21,13 +20,18 @@ struct LookBookEditView: View {
         }
     }
     
+    @State private var showNegguState: Bool
     @State private var showNegguInviteAlert: Bool = false
     @State private var showCategoryList: Bool = false
     @State private var isColorEditMode: Bool = false
     @State private var isEditingMode: Bool = false
     
-    init(editingClothes: [LookBookClothesItem] = []) {
+    private let inviteCode: String
+    
+    init(inviteCode: String, editingClothes: [LookBookClothesItem] = []) {
+        self.inviteCode = inviteCode
         self.selectedClothes = editingClothes
+        self.showNegguState = !inviteCode.isEmpty
     }
     
     var body: some View {
@@ -45,7 +49,7 @@ struct LookBookEditView: View {
                     VStack(spacing: 0) {
                         HStack {
                             Button {
-                                dismiss()
+                                coordinator.dismiss()
                             } label: {
                                 Image(.xLarge)
                                     .frame(width: 44, height: 44)
@@ -54,6 +58,8 @@ struct LookBookEditView: View {
                             Spacer()
                             
                             Button("저장하기") {
+                                if selectedClothes.isEmpty { return }
+                                
                                 guard let lookBookImage = collageView
                                     .frame(width: proxy.size.width, height: proxy.size.height)
                                     .snapshot(),
@@ -62,8 +68,14 @@ struct LookBookEditView: View {
                                 
                                 let request = selectedClothes.compactMap { $0.toEntity() }
                                 
-                                viewModel.registerLookBook(image: pngData, request: request) {
-                                    dismiss()
+                                if inviteCode.isEmpty {
+                                    viewModel.registerLookBook(image: pngData, request: request) {
+                                        coordinator.dismiss()
+                                    }
+                                } else {
+                                    viewModel.registerLookBook(image: pngData, request: request, byInvite: true) {
+                                        coordinator.dismiss()
+                                    }
                                 }
                             }
                             .negguFont(.body2b)
@@ -74,29 +86,58 @@ struct LookBookEditView: View {
                         .opacity(isEditingMode ? 0 : 1)
                         .disabled(isEditingMode)
                         
-                        HStack {
-                            Spacer()
-                            
-                            Button {
-                                showNegguInviteAlert = true
-                            } label: {
-                                Circle()
-                                    .fill(.black)
-                                    .overlay {
-                                        Image(.negguStar)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 24, height: 24)
-                                    }
-                                    .shadow(color: .black.opacity(0.05), radius: 4, x: 4, y: 4)
-                                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
-                                    .frame(width: 44, height: 44)
+                        if inviteCode.isEmpty && !isEditingMode {
+                            HStack {
+                                Spacer()
+                                
+                                Button {
+                                    showNegguInviteAlert = true
+                                } label: {
+                                    Circle()
+                                        .fill(.black)
+                                        .overlay {
+                                            Image(.negguStar)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 24, height: 24)
+                                        }
+                                        .shadow(color: .black.opacity(0.05), radius: 4, x: 4, y: 4)
+                                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
+                                        .frame(width: 44, height: 44)
+                                }
                             }
+                            .padding(.horizontal, 20)
+                            .padding(.top, 12)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.top, 12)
-                        .opacity(isEditingMode ? 0 : 1)
-                        .disabled(isEditingMode)
+                        
+                        if showNegguState {
+                            HStack {
+                                Image(.negguStar)
+                                
+                                Text("ㅇㅇ님의 룩북을 대신 꾸며주고 있어요")
+                                    .negguFont(.body2b)
+                                    .lineLimit(1)
+                                
+                                Spacer()
+                                
+                                Button {
+                                    showNegguState = false
+                                } label: {
+                                    Image(.xLarge)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 20, height: 20)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .frame(height: 56)
+                            .foregroundStyle(.white)
+                            .background {
+                                RoundedRectangle(cornerRadius: 16)
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.top, 12)
+                        }
                         
                         Spacer()
                         
@@ -255,7 +296,7 @@ struct LookBookEditView: View {
                                             .frame(height: 100)
                                             .onAppear {
                                                 if viewModel.clothesPage <= 0 { return }
-                                                viewModel.getLookBookClothes()
+                                                viewModel.getLookBookClothes(inviteCode: inviteCode)
                                             }
                                     }
                                     .padding(.horizontal, 22)
@@ -333,7 +374,7 @@ struct LookBookEditView: View {
                 }
             }
             
-            viewModel.filteredClothes()
+            viewModel.filteredClothes(inviteCode: inviteCode)
         }
         .onDisappear {
             viewModel.resetLookBookClothes()
@@ -528,8 +569,4 @@ extension View {
         return renderer.uiImage
     }
 
-}
-
-#Preview {
-    LookBookEditView()
 }
