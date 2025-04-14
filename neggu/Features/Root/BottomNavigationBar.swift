@@ -21,7 +21,7 @@ struct BottomNavigationBar: View {
     @State private var showCameraSheet: Bool = false
     @State private var showAlbumSheet: Bool = false
     
-    @Namespace private var tabAnimation
+    @Namespace private var namespace
     
     var body: some View {
         VStack(spacing: 14) {
@@ -30,16 +30,13 @@ struct BottomNavigationBar: View {
             }
             
             HStack(spacing: 16) {
-                BottomNavigationBarItem(tab: .closet, isActive: coordinator.activeTab == .closet) {
+                BottomNavigationBarItem(
+                    $coordinator.activeTab,
+                    tab: .closet,
+                    namespace: namespace
+                ) {
                     if coordinator.isGnbOpened { coordinator.isGnbOpened = false }
                     if coordinator.activeTab != .closet { coordinator.activeTab = .closet }
-                }
-                .background {
-                    if coordinator.activeTab == .closet {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(.white.opacity(0.2))
-                            .matchedGeometryEffect(id: "ACTIVETAB", in: tabAnimation)
-                    }
                 }
                 
                 Button {
@@ -55,16 +52,13 @@ struct BottomNavigationBar: View {
                 }
                 .zIndex(10)
                 
-                BottomNavigationBarItem(tab: .lookbook, isActive: coordinator.activeTab == .lookbook) {
+                BottomNavigationBarItem(
+                    $coordinator.activeTab,
+                    tab: .lookbook,
+                    namespace: namespace
+                ) {
                     if coordinator.isGnbOpened { coordinator.isGnbOpened = false }
                     if coordinator.activeTab != .lookbook { coordinator.activeTab = .lookbook }
-                }
-                .background {
-                    if coordinator.activeTab == .lookbook {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(.white.opacity(0.2))
-                            .matchedGeometryEffect(id: "ACTIVETAB", in: tabAnimation)
-                    }
                 }
             }
             .padding(4)
@@ -196,9 +190,18 @@ struct BottomNavigationBar: View {
 }
 
 struct BottomNavigationBarItem: View {
+    @Binding var activeTab: NegguTab
+    
     let tab: NegguTab
-    let isActive: Bool
+    let namespace: Namespace.ID
     let buttonAction: () -> Void
+    
+    init(_ activeTab: Binding<NegguTab>, tab: NegguTab, namespace: Namespace.ID, buttonAction: @escaping () -> Void) {
+        self._activeTab = activeTab
+        self.tab = tab
+        self.namespace = namespace
+        self.buttonAction = buttonAction
+    }
     
     var body: some View {
         Button {
@@ -207,11 +210,18 @@ struct BottomNavigationBarItem: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(.clear)
                 .overlay {
-                    Image(isActive ? tab.activeIcon : tab.inactiveIcon)
+                    Image(activeTab == tab ? tab.activeIcon : tab.inactiveIcon)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
                         .foregroundStyle(.white)
+                }
+                .background {
+                    if activeTab == tab {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(.white.opacity(0.2))
+                            .matchedGeometryEffect(id: "ACTIVETAB", in: namespace)
+                    }
                 }
         }
     }
