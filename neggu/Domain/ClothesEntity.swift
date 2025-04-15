@@ -59,13 +59,14 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     let createdAt: String
     let modifiedAt: String
     
-    func toLookBookItem(image: UIImage, offset: CGSize = .zero) -> LookBookClothesItem {
+    func toLookBookItem(image: UIImage, offset: CGSize = .zero, zIndex: CGFloat = .zero) -> LookBookClothesItem {
         return .init(
             id: self.id,
             imageUrl: self.imageUrl,
             image: image,
             offset: offset,
-            lastOffset: offset
+            lastOffset: offset,
+            zIndex: zIndex
         )
     }
 }

@@ -54,9 +54,9 @@ struct LookBookClothesEntity: Decodable, Identifiable, Equatable {
             imageUrl: self.imageUrl,
             image: image,
             scale: CGFloat(self.scale),
-//            lastScale: CGFloat(self.scale),
+            startDistance: CGFloat(self.scale),
             angle: Angle(degrees: Double(self.angle)),
-//            lastAngle: Angle(degrees: Double(self.angle)),
+            lastAngle: Angle(degrees: Double(self.angle)),
             offset: .init(width: CGFloat(self.xRatio), height: CGFloat(self.yRatio)),
             lastOffset: .init(width: CGFloat(self.xRatio), height: CGFloat(self.yRatio)),
             zIndex: Double(self.zIndex)
@@ -80,11 +80,15 @@ struct LookBookClothesItem: Identifiable, Equatable, Hashable {
     var image: UIImage?
     
     var scale: CGFloat = 1.0
-    var lastScale: CGFloat = 1.0
+    var startVector: CGVector?
+    var startDistance: CGFloat = 1.0
+    
     var angle: Angle = .degrees(0)
     var lastAngle: Angle = .degrees(0)
+    
     var offset: CGSize = .zero
     var lastOffset: CGSize = .zero
+    
     var zIndex: Double = 0
     
     func toEntity() -> LookBookClothesRegisterEntity {

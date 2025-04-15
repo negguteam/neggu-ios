@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct LookBookEditView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
@@ -35,8 +34,14 @@ struct LookBookEditView: View {
     }
     
     var body: some View {
-        GeometryReader { proxy in
+        GeometryReader {
+            let size = $0.size
+            let frame = $0.frame(in: .local)
+            let midX = frame.midX - size.width / 4
+            let midY = frame.midY - size.height / 6
+            
             collageView
+                .frame(width: size.width, height: size.height)
                 .background {
                     LinearGradient(
                         gradient: Gradient(colors: [.white, .white, .gray10]),
@@ -44,7 +49,6 @@ struct LookBookEditView: View {
                         endPoint: .bottom
                     )
                 }
-                .clipped()
                 .overlay {
                     VStack(spacing: 0) {
                         HStack {
@@ -264,20 +268,25 @@ struct LookBookEditView: View {
                                     LazyHStack {
                                         ForEach(viewModel.lookBookClothes) { clothes in
                                             let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
+                                            let isEditingClothes = editingClothes == clothes.id
                                             
                                             Button {
                                                 if !isSelected {
                                                     Task {
                                                         guard let uiImage = await clothes.imageUrl.toImage() else { return }
-                                                        let middleX = proxy.size.width / 4
-                                                        let middleY = proxy.size.height / 4
+                                                        
                                                         selectedClothes.append(clothes.toLookBookItem(
                                                             image: uiImage,
-                                                            offset: .init(width: middleX, height: middleY))
-                                                        )
+                                                            offset: .init(width: midX, height: midY),
+                                                            zIndex: Double(selectedClothes.count)
+                                                        ))
                                                     }
                                                 } else {
                                                     selectedClothes.removeAll(where: { $0.id == clothes.id })
+                                                    
+                                                    if isEditingClothes {
+                                                        editingClothes = ""
+                                                    }
                                                 }
                                             } label: {
                                                 CachedAsyncImage(clothes.imageUrl)
@@ -383,153 +392,39 @@ struct LookBookEditView: View {
     
     var collageView: some View {
         GeometryReader { proxy in
-            ZStack(alignment: .topLeading) {
+            let size = proxy.size
+            
+            ZStack {
                 ForEach($selectedClothes) { clothes in
-                    Group {
-                        if let image = clothes.wrappedValue.image {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFit()
-                        } else {
-                            Color.clear
-                                .overlay {
-                                    ProgressView()
-                                }
-                        }
-                    }
-                    .frame(width: proxy.size.width / 2, height: proxy.size.height / 3)
-                    .scaleEffect(clothes.wrappedValue.scale)
-                    .rotationEffect(clothes.wrappedValue.angle)
-                    .overlay {
-                        if editingClothes == clothes.id {
-                            RoundedRectangle(cornerRadius: 18)
-                                .strokeBorder(
-                                    .black,
-                                    style: StrokeStyle(
-                                        lineWidth: 2,
-                                        dash: [4, 4]
-                                    )
-                                )
-                                .frame(
-                                    width: proxy.size.width / 2 * clothes.wrappedValue.scale,
-                                    height: proxy.size.height / 3 * clothes.wrappedValue.scale
-                                )
-                                .rotationEffect(clothes.wrappedValue.angle)
-                            
-                            Circle()
-                                .fill(.negguPrimary)
-                                .frame(width: 36, height: 36)
-                                .overlay {
-                                    Image("resize")
-                                        .foregroundStyle(.white)
-                                }
-                                .offset(
-                                    x: proxy.size.width / 2 * clothes.wrappedValue.scale / 2,
-                                    y: proxy.size.height / 2 * clothes.wrappedValue.scale / 3
-                                )
-                                .rotationEffect(clothes.wrappedValue.angle)
-                                .gesture(
-                                    SimultaneousGesture(
-                                        scaleGesture(clothes),
-                                        rotationGesture(clothes)
-                                    )
-                                )
-                        }
-                    }
-                    .offset(clothes.wrappedValue.offset)
-                    .zIndex(Double(selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) ?? 0))
-                    .gesture(drag(clothes: clothes))
+                    ColleageItemView(
+                        proxy: proxy,
+                        editingClothes: $editingClothes,
+                        selectedClothes: $selectedClothes,
+                        clothes: clothes
+                    )
                     .onTapGesture {
-                        if editingClothes == clothes.id {
-                            editingClothes = ""
-                        } else {
-                            editingClothes = clothes.id
+                        editingClothes = editingClothes == clothes.id ? "" : clothes.id
+                        
+                        guard let index = selectedClothes.firstIndex(where: { $0.id == clothes.id }) else { return }
+                        selectedClothes.append(selectedClothes.remove(at: index))
+                        
+                        for i in selectedClothes.indices {
+                            selectedClothes[i].zIndex = Double(i)
                         }
-                        
-                        selectedClothes.append(clothes.wrappedValue)
-                        
-                        guard let index = selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) else { return }
-                        selectedClothes.remove(at: index)
-                        
-                        guard let lastIndex = selectedClothes.firstIndex(where: { $0.id == clothes.wrappedValue.id }) else { return }
-                        clothes.wrappedValue.zIndex = Double(lastIndex)
                     }
                 }
                 
                 if isEditingMode {
                     Color.white.opacity(0.3)
-                        .frame(width: proxy.size.width, height: proxy.size.height)
                         .zIndex(Double(selectedClothes.count) - 1.5)
                         .onTapGesture {
                             editingClothes = ""
                         }
                 }
             }
+            .frame(width: size.width, height: size.height)
+            .clipped()
         }
-    }
-    
-    func drag(clothes: Binding<LookBookClothesItem>) -> some Gesture {
-        DragGesture()
-            .onChanged { value in
-                guard editingClothes == clothes.id else { return }
-                
-                clothes.wrappedValue.offset = clothes.wrappedValue.lastOffset + value.translation
-            }
-            .onEnded { _ in
-                clothes.wrappedValue.lastOffset = clothes.wrappedValue.offset
-            }
-    }
-    
-    // TODO: Scasle
-    func scaleGesture(_ clothes: Binding<LookBookClothesItem>) -> some Gesture {
-        DragGesture()
-            .onChanged { value in
-                // TODO: [!] 최소, 최대 확대 범위 설정
-                let distance = distanceBetween(center: .zero, point: value.location)
-                clothes.wrappedValue.scale = max(distance / clothes.wrappedValue.lastScale, 0.1)
-            }
-            .onEnded { value in
-                clothes.wrappedValue.lastScale = clothes.wrappedValue.scale
-            }
-    }
-        
-    func distanceBetween(center: CGPoint, point: CGPoint) -> CGFloat {
-        return sqrt(pow(point.x - center.x, 2) + pow(point.y - center.y, 2)) / 200
-    }
-    
-    // TODO: 편집 시 각도 인식 이슈 해결하기
-    func rotationGesture(_ clothes: Binding<LookBookClothesItem>) -> some Gesture {
-        DragGesture()
-            .onChanged { value in
-                // 드래그 시작 시 기준 각도를 설정
-                if clothes.wrappedValue.lastAngle == .degrees(0) {
-                    clothes.wrappedValue.lastAngle = angleForPoint(start: .zero, end: value.location)
-                }
-                
-                // 현재 각도와 시작 각도 비교하여 각도 변화 계산
-                var angle = angleForPoint(start: .zero, end: value.location) - clothes.wrappedValue.lastAngle
-                
-                if angle.degrees < 0 {
-                    angle.degrees += 360
-                }
-            
-                if angle.degrees > 360 {
-                    angle.degrees -= 360
-                }
-                
-                clothes.wrappedValue.angle = angle
-            }
-            .onEnded { _ in
-                print(clothes.wrappedValue.angle.degrees)
-            }
-    }
-    
-    func angleForPoint(start: CGPoint, end: CGPoint) -> Angle {
-        let deltaX = end.x - start.x
-        let deltaY = end.y - start.y
-        let radians = atan2(deltaY, deltaX)
-        let degrees = radians * 180 / .pi
-        return Angle(degrees: degrees)
     }
     
     func makeWaterMarkView(proxy: GeometryProxy) -> some View {
