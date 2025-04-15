@@ -54,13 +54,13 @@ final class LookBookViewModel: ObservableObject {
     func registerLookBook(
         image: Data,
         request: [LookBookClothesRegisterEntity],
-        byInvite: Bool = false,
+        inviteCode: String = "",
         completion: @escaping () -> Void
     ) {
         lookBookService.register(
             image: image,
             request: request,
-            byInvite: byInvite
+            inviteCode: inviteCode
         ).sink { event in
             print("LookBookEditView", event)
         } receiveValue: { result in

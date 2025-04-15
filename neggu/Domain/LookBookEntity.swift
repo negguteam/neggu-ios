@@ -18,7 +18,7 @@ struct LookBookEntity: Decodable, Identifiable {
     let modifiedAt: String
     
     struct Decorator: Decodable {
-        let id: String
+        let accountId: String
         let imageUrl: String
         let targetDate: String
     }

@@ -82,7 +82,7 @@ struct LookBookEditView: View {
                                             coordinator.dismiss()
                                         }
                                     } else {
-                                        viewModel.registerLookBook(image: pngData, request: request, byInvite: true) {
+                                        viewModel.registerLookBook(image: pngData, request: request, inviteCode: inviteCode) {
                                             coordinator.dismiss()
                                         }
                                     }
