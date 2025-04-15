@@ -100,7 +100,7 @@ struct LookBookDetailView: View {
                                             .clipShape(.circle)
                                         
                                         HStack(spacing: 0) {
-                                            Text(decorator.id)
+                                            Text(decorator.accountId)
                                                 .foregroundStyle(.negguSecondary)
                                                 .lineLimit(1)
                                             

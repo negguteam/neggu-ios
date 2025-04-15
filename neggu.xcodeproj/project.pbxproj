@@ -126,6 +126,7 @@
 		13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */; };
 		13F8ABD82D19DF5600E08057 /* TitleForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD72D19DF5600E08057 /* TitleForm.swift */; };
 		13F951AB2D9C4B7900F69C94 /* NegguSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */; };
+		13FA3B4A2DAE865000D52EF8 /* ColleageItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */; };
 		13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD7D542CBB874400D21143 /* LookBookDetailView.swift */; };
 		13FE56CE2D53483C00C7D4E9 /* ClosetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */; };
 		13FE61FB2D2AA1DD00578BB5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */; };
@@ -263,6 +264,7 @@
 		13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedRectangle.swift; sourceTree = "<group>"; };
 		13F8ABD72D19DF5600E08057 /* TitleForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleForm.swift; sourceTree = "<group>"; };
 		13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguSheet.swift; sourceTree = "<group>"; };
+		13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColleageItemView.swift; sourceTree = "<group>"; };
 		13FD7D542CBB874400D21143 /* LookBookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDetailView.swift; sourceTree = "<group>"; };
 		13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetViewModel.swift; sourceTree = "<group>"; };
 		13FE61FA2D2AA1DD00578BB5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
 				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
 				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
+				13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */,
 			);
 			path = LookBook;
 			sourceTree = "<group>";
@@ -901,6 +904,7 @@
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,
 				13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
+				13FA3B4A2DAE865000D52EF8 /* ColleageItemView.swift in Sources */,
 				136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */,
 				130970722D4126290050D091 /* UserService.swift in Sources */,
 				13897EC02DAB9AB600CBD97F /* CachedAsyncImage.swift in Sources */,
