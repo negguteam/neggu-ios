@@ -32,8 +32,8 @@ extension DefaultLookBookService: LookBookService {
         
         return requestObjectWithNetworkError(
             byInvite
-            ? .register(image: image,request: object ?? .init())
-            : .registerByInvite(image: image, request: object ?? .init())
+            ? .registerByInvite(image: image, request: object ?? .init())
+            : .register(image: image,request: object ?? .init())
         )
     }
     
