@@ -61,34 +61,38 @@ struct LookBookEditView: View {
                             
                             Spacer()
                             
-                            Button("저장하기") {
-                                if selectedClothes.isEmpty { return }
-                                
-                                guard let lookBookImage = collageView
-                                    .frame(width: proxy.size.width, height: proxy.size.height)
-                                    .snapshot(),
-                                      let pngData = lookBookImage.pngData()
-                                else { return }
-                                
-                                let request = selectedClothes.compactMap { $0.toEntity() }
-                                
-                                if inviteCode.isEmpty {
-                                    viewModel.registerLookBook(image: pngData, request: request) {
-                                        coordinator.dismiss()
-                                    }
-                                } else {
-                                    viewModel.registerLookBook(image: pngData, request: request, byInvite: true) {
-                                        coordinator.dismiss()
+                            if isEditingMode {
+                                Button("확인하기") {
+                                    editingClothes = ""
+                                }
+                            } else {
+                                Button("저장하기") {
+                                    if selectedClothes.isEmpty { return }
+                                    
+                                    guard let lookBookImage = collageView
+                                        .frame(width: size.width, height: size.height)
+                                        .snapshot(),
+                                          let pngData = lookBookImage.pngData()
+                                    else { return }
+                                    
+                                    let request = selectedClothes.compactMap { $0.toEntity() }
+                                    
+                                    if inviteCode.isEmpty {
+                                        viewModel.registerLookBook(image: pngData, request: request) {
+                                            coordinator.dismiss()
+                                        }
+                                    } else {
+                                        viewModel.registerLookBook(image: pngData, request: request, byInvite: true) {
+                                            coordinator.dismiss()
+                                        }
                                     }
                                 }
                             }
-                            .negguFont(.body2b)
                         }
                         .frame(height: 44)
                         .padding(.horizontal, 20)
+                        .negguFont(.body2b)
                         .foregroundStyle(.black)
-                        .opacity(isEditingMode ? 0 : 1)
-                        .disabled(isEditingMode)
                         
                         if inviteCode.isEmpty && !isEditingMode {
                             HStack {
@@ -155,7 +159,7 @@ struct LookBookEditView: View {
                                     .fill(.warning)
                                     .frame(width: 72)
                                     .overlay {
-                                        Image(systemName: "trash")
+                                        Image(.delete)
                                             .resizable()
                                             .scaledToFit()
                                             .frame(width: 36, height: 36)
@@ -182,7 +186,7 @@ struct LookBookEditView: View {
                                                 }
                                                 .padding(.horizontal, 12)
                                                 
-                                                Image(showCategoryList ? "chevron_down" : "chevron_up")
+                                                Image(showCategoryList ? .chevronDown : .chevronUp)
                                             }
                                             .negguFont(.body2b)
                                             .foregroundStyle(.negguSecondary)
@@ -203,7 +207,7 @@ struct LookBookEditView: View {
                                     if isColorEditMode {
                                         ScrollView(.horizontal) {
                                             HStack(spacing: 12) {
-                                                Image("color_rainbow")
+                                                Image(.colorRainbow)
                                                     .frame(width: 32)
                                                     .onTapGesture {
                                                         viewModel.selectedColor = nil
@@ -232,7 +236,7 @@ struct LookBookEditView: View {
                                                 .frame(width: 24)
                                                 .opacity(isColorEditMode ? 0 : 1)
                                         } else {
-                                            Image("color_rainbow")
+                                            Image(.colorRainbow)
                                                 .resizable()
                                                 .scaledToFit()
                                                 .frame(width: 24)
@@ -243,7 +247,7 @@ struct LookBookEditView: View {
                                     Button {
                                         isColorEditMode.toggle()
                                     } label: {
-                                        Image("chevron_down")
+                                        Image(.chevronDown)
                                             .frame(width: 24, height: 24)
                                             .foregroundStyle(.negguSecondary)
                                             .rotationEffect(isColorEditMode ? Angle(degrees: 180.0) : Angle(degrees: 0.0))
@@ -342,7 +346,7 @@ struct LookBookEditView: View {
                                             Spacer()
                                             
                                             if category == .NONE {
-                                                Image("chevron_up")
+                                                Image(.chevronUp)
                                                     .frame(width: 44, height: 44)
                                             } else {
                                                 Color.clear
