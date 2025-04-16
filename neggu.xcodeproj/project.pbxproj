@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1301BC742DB066D70065864D /* ClothesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC732DB066D70065864D /* ClothesFilter.swift */; };
 		1302FE5A2C86EA180076D015 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1302FE582C86EA180076D015 /* Pretendard-Regular.otf */; };
 		1302FE5B2C86EA180076D015 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1302FE592C86EA180076D015 /* Pretendard-Medium.otf */; };
 		1302FE5D2C86EA6B0076D015 /* NegguFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302FE5C2C86EA6B0076D015 /* NegguFont.swift */; };
@@ -151,6 +152,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1301BC732DB066D70065864D /* ClothesFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesFilter.swift; sourceTree = "<group>"; };
 		1302FE582C86EA180076D015 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		1302FE592C86EA180076D015 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		1302FE5C2C86EA6B0076D015 /* NegguFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguFont.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */,
 				133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */,
 				13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */,
+				1301BC732DB066D70065864D /* ClothesFilter.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -871,6 +874,7 @@
 				1350811C2D38D5A4005E2491 /* BrandEntity.swift in Sources */,
 				13BA78A42D378B0000ADB1C1 /* ColorSheet.swift in Sources */,
 				13BA78A02D376A5400ADB1C1 /* FilterButton.swift in Sources */,
+				1301BC742DB066D70065864D /* ClothesFilter.swift in Sources */,
 				135081182D38CCB2005E2491 /* Category.swift in Sources */,
 				136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */,
 				13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */,

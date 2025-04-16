@@ -16,9 +16,11 @@ struct ClosetView: View {
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
     
-    @State private var filterType: FilterType?
-    @State private var selectedClothes: ClothesEntity?
+    @State private var filter: ClothesFilter = .init()
     
+    @State private var showCategoryFilter: Bool = false
+    @State private var showMoodFilter: Bool = false
+    @State private var showColorFilter: Bool = false
     @State private var ctaButtonExpanded: Bool = false
     
     @FocusState private var isFocused: Bool
@@ -46,16 +48,16 @@ struct ClosetView: View {
                         .foregroundStyle(.labelNormal)
                     
                     HStack {
-                        FilterButton(title: categoryTitle) {
-                            filterType = .category
+                        FilterButton(title: filter.categoryTitle) {
+                            showCategoryFilter = true
                         }
                         
-                        FilterButton(title: moodTitle) {
-                            filterType = .mood
+                        FilterButton(title: filter.moodTitle) {
+                            showMoodFilter = true
                         }
                         
-                        FilterButton(title: colorTitle) {
-                            filterType = .color
+                        FilterButton(title: filter.colorTitle) {
+                            showColorFilter = true
                         }
                     }
                     .padding(.top)
