@@ -11,7 +11,7 @@ import Combine
 
 struct ClosetView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
-    @EnvironmentObject private var viewModel: ClosetViewModel
+    @StateObject private var viewModel = ClosetViewModel()
     
     @State private var clothesURLString: String = ""
     @State private var scrollPosition: Int? = 0
@@ -68,9 +68,9 @@ struct ClosetView: View {
                             columns: [GridItem](repeating: GridItem(.flexible(), spacing: 18), count: 3),
                             spacing: 16
                         ) {
-                            ForEach(viewModel.clothes) { item in
+                            ForEach(viewModel.output.clothes) { item in
                                 Button {
-                                    selectedClothes = item
+                                    coordinator.sheet = .clothesDetail(clothesID: item.id)
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
@@ -85,11 +85,10 @@ struct ClosetView: View {
                                 .fill(.clear)
                                 .frame(height: 56)
                                 .onAppear {
-                                    if viewModel.page <= 0 { return }
-                                    viewModel.getClothes()
+                                    viewModel.send(action: .fetchClothesList)
                                 }
                         }
-                        .padding(.bottom, viewModel.clothes.count % 3 == 0 ? 24 : 80)
+                        .padding(.bottom, viewModel.output.clothes.count % 3 == 0 ? 24 : 80)
                     }
                     .scrollIndicators(.hidden)
                     .scrollDisabled(scrollPosition == 0)
@@ -131,53 +130,27 @@ struct ClosetView: View {
                 }
         }
         .refreshable {
-            viewModel.resetCloset()
-            viewModel.resetFilter()
+            filter = .init()
+            viewModel.send(action: .refresh)
         }
-        .sheet(item: $selectedClothes) { clothes in
-            ClothesDetailView(clothesID: clothes.id)
-                .presentationDetents([.fraction(0.9)])
-                .presentationCornerRadius(20)
+        .sheet(isPresented: $showCategoryFilter) {
+            CategorySheet(
+                selectedCategory: $filter.category,
+                selectedSubCategory: $filter.subCategory
+            )
+            .presentationDetents([.fraction(0.85)])
         }
-        .sheet(item: $filterType) { filterType in
-            switch filterType {
-            case .category:
-                CategorySheet(
-                    selectedCategory: $viewModel.selectedCategory,
-                    selectedSubCategory: $viewModel.selectedSubCategory
-                )
+        .sheet(isPresented: $showMoodFilter) {
+//            MoodSheet(selectedMoodList: $filter.mood, isSingleSelection: true)
+//                .presentationDetents([.fraction(0.85)])
+        }
+        .sheet(isPresented: $showColorFilter) {
+            ColorSheet(selectedColor: $filter.color)
                 .presentationDetents([.fraction(0.85)])
-            case .mood:
-                MoodSheet(selectedMoodList: $viewModel.selectedMood, isSingleSelection: true)
-                    .presentationDetents([.fraction(0.85)])
-            case .color:
-                ColorSheet(selectedColor: $viewModel.selectedColor)
-                    .presentationDetents([.fraction(0.85)])
-            }
         }
-    }
-    
-    
-    var categoryTitle: String {
-        if viewModel.selectedSubCategory != .UNKNOWN {
-            viewModel.selectedSubCategory.title
-        } else if viewModel.selectedCategory != .UNKNOWN {
-            viewModel.selectedCategory.title
-        } else {
-            "카테고리"
+        .onChange(of: filter) { _, newValue in
+            viewModel.send(action: .selectFilter(newValue))
         }
-    }
-    
-    var moodTitle: String {
-        if let firstMood = viewModel.selectedMood.first {
-            firstMood.title
-        } else {
-            "분위기"
-        }
-    }
-    
-    var colorTitle: String {
-        viewModel.selectedColor?.title ?? "색상"
     }
     
     private func segmentation() async {
@@ -268,16 +241,4 @@ struct ClosetView: View {
             print(error.localizedDescription)
         }
     }
-    
-    enum FilterType: Identifiable {
-        case category
-        case mood
-        case color
-        
-        var id: String { "\(self)" }
-    }
 }
-
-//#Preview {
-//    ContentView()
-//}

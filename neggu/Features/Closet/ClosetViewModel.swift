@@ -10,25 +10,97 @@ import Combine
 
 final class ClosetViewModel: ObservableObject {
     
-    @Published var clothes: [ClothesEntity] = []
+    private let closetService: ClosetService
     
-    @Published var selectedCategory: Category = .UNKNOWN
-    @Published var selectedSubCategory: SubCategory = .UNKNOWN
-    @Published var selectedMood: [Mood] = []
-    @Published var selectedColor: ColorFilter?
+    private let input = PassthroughSubject<Action, Never>()
     
-    @Published var page: Int = 0
-    @Published var canPagenation: Bool = true
+    @Published private(set) var output = State()
     
-    private let closetService = DefaultClosetService()
+    private var page: Int = 0
+    private var canPagenation: Bool = true
     
     private var bag = Set<AnyCancellable>()
     
     
-    init() {
-        filteredClothes()
+    init(closetService: ClosetService = DefaultClosetService()) {
+        self.closetService = closetService
+
+        input
+            .throttle(for: .seconds(0.3), scheduler: RunLoop.main, latest: true)
+            .sink { self.transform(from: $0) }
+            .store(in: &bag)
     }
     
+    
+    func send(action: Action) {
+        input.send(action)
+    }
+    
+    private func transform(from action: Action) {
+        switch action {
+        case .onAppear:
+            print("onAppear")
+        case .fetchClothesList:
+            getClothes()
+        case .selectFilter(let filter):
+            filteredClothes(filter: filter)
+        case .refresh:
+            resetCloset()
+        }
+    }
+        
+    func getClothes() {
+        if !canPagenation { return }
+        canPagenation = false
+        
+        var parameters: [String: Any] = ["page": page, "size": 18]
+        
+        let category = output.filter.category
+        let subCategory = output.filter.subCategory
+        let mood = output.filter.mood
+        let color = output.filter.color
+        
+        if subCategory == .UNKNOWN {
+            if category != .UNKNOWN {
+                parameters["category"] = category.id
+            }
+        } else {
+            parameters["subCategory"] = subCategory.id
+        }
+        
+        if mood != .UNKNOWN {
+            parameters["mood"] = mood.id
+        }
+        
+        if let color {
+            parameters["colorGroup"] = color.id
+        }
+        
+        closetService.clothesList(parameters: parameters)
+            .sink { event in
+                print("ClosetView:", event)
+            } receiveValue: { result in
+                self.canPagenation = !result.last
+                self.output.clothes += result.content
+                self.page += !result.last ? 1 : 0
+            }.store(in: &bag)
+    }
+    
+    func filteredClothes(filter: ClothesFilter) {
+        output.filter = filter
+        resetCloset()
+        getClothes()
+    }
+    
+    func resetCloset() {
+        resetPage()
+        output.clothes.removeAll()
+    }
+    
+    func resetPage() {
+        page = 0
+        canPagenation = true
+    }
     
     func registerClothes(
         image: Data,
@@ -57,48 +129,6 @@ final class ClosetViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    func getClothes() {
-        if !canPagenation { return }
-        canPagenation = false
-        
-        var parameters: [String: Any] = ["page": page, "size": 18]
-        
-        if selectedSubCategory == .UNKNOWN {
-            if selectedCategory != .UNKNOWN {
-                parameters["category"] = selectedCategory.id
-            }
-        } else {
-            parameters["subCategory"] = selectedSubCategory.id
-        }
-        
-        if !selectedMood.isEmpty {
-            parameters["mood"] = selectedMood[0].id
-        }
-        
-        if let color = selectedColor {
-            parameters["colorGroup"] = color.id
-        }
-        
-        closetService.clothesList(parameters: parameters)
-            .sink { event in
-                print("ClosetView:", event)
-            } receiveValue: { result in
-                self.canPagenation = !result.last
-                self.clothes += result.content
-                self.page += !result.last ? 1 : 0
-            }.store(in: &bag)
-    }
-    
-    func filteredClothes() {
-        $selectedCategory.combineLatest($selectedSubCategory, $selectedMood, $selectedColor)
-            .removeDuplicates { $0 == $1 }
-            .throttle(for: .seconds(0.5), scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] _, _, _, _ in
-                self?.resetCloset()
-                self?.getClothes()
-            }.store(in: &bag)
-    }
-    
     func getClothesDetail(_ id: String, completion: @escaping (ClothesEntity) -> Void) {
         closetService.clothesDetail(id: id)
             .sink { event in
@@ -118,23 +148,6 @@ final class ClosetViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    func resetCloset() {
-        resetPage()
-        clothes.removeAll()
-    }
-    
-    func resetPage() {
-        page = 0
-        canPagenation = true
-    }
-    
-    func resetFilter() {
-        selectedCategory = .UNKNOWN
-        selectedSubCategory = .UNKNOWN
-        selectedColor = nil
-        selectedMood.removeAll()
-    }
-    
     func checkInviteCode(_ code: String, completion: @escaping (Bool) -> Void) {
         closetService.clothesInviteList(
             parameters: ["inviteCode": code, "page": 0, "size": 1]
@@ -148,6 +161,25 @@ final class ClosetViewModel: ObservableObject {
         } receiveValue: { _ in
             completion(true)
         }.store(in: &bag)
+    }
+    
+}
+
+extension ClosetViewModel {
+    
+    struct State {
+        var userProfile: UserProfileEntity?
+        var clothes: [ClothesEntity] = []
+        var parsedClothes: (ClothesRegisterEntity, Data)?
+        
+        var filter: ClothesFilter = .init()
+    }
+    
+    enum Action {
+        case onAppear
+        case fetchClothesList
+        case selectFilter(ClothesFilter)
+        case refresh
     }
     
 }
