@@ -207,26 +207,6 @@ final class ClosetViewModel: ObservableObject {
         }
     }
     
-    
-    
-    func registerClothes(
-        image: Data,
-        clothes: ClothesRegisterEntity,
-        completion: @escaping () -> Void
-    ) {
-        closetService.register(
-            image: image,
-            request: clothes
-        ).sink { event in
-            print("ClosetAdd:", event)
-        } receiveValue: { result in
-            debugPrint(result)
-            self.resetCloset()
-            self.getClothes()
-            completion()
-        }.store(in: &bag)
-    }
-    
     func checkInviteCode(_ code: String, completion: @escaping (Bool) -> Void) {
         closetService.clothesInviteList(
             parameters: ["inviteCode": code, "page": 0, "size": 1]

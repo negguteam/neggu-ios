@@ -81,7 +81,7 @@ struct BottomNavigationBar: View {
             
             Task.detached(priority: .high) {
                 guard let image = newValue,
-                      let imageData = image.jpegData(compressionQuality: 1.0),
+                      let imageData = image.heicData(),//.jpegData(compressionQuality: 1.0),
                       let segmentedImage = await ImageAnalyzeManager.shared.segmentation(imageData)
                 else { return }
                 
@@ -89,7 +89,7 @@ struct BottomNavigationBar: View {
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    coordinator.fullScreenCover = .closetAdd(clothes: .emptyData, segmentedImage: segmentedImage)
+                    coordinator.fullScreenCover = .clothesRegister(segmentedImage: segmentedImage, clothes: .emptyData)
                     selectedCameraPhoto = nil
                 }
             }
@@ -108,7 +108,7 @@ struct BottomNavigationBar: View {
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    coordinator.fullScreenCover = .closetAdd(clothes: .emptyData, segmentedImage: segmentedImage)
+                    coordinator.fullScreenCover = .clothesRegister(segmentedImage: segmentedImage, clothes: .emptyData)
                     selectedAlbumPhoto = nil
                 }
             }

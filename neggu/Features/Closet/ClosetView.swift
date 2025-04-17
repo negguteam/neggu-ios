@@ -35,7 +35,7 @@ struct ClosetView: View {
                                       let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
                                 else { return }
                                 
-                                coordinator.fullScreenCover = .closetAdd(clothes: result.clothes, segmentedImage: image)
+                                coordinator.fullScreenCover = .clothesRegister(segmentedImage: image, clothes: result.clothes)
                                 clothesLink.removeAll()
                                 isFocused = false
                             }
