@@ -13,6 +13,10 @@ enum Util {
         UIDevice.current.identifierForVendor!.uuidString
     }
     
+    static var deviceName: String {
+        UIDevice.current.name
+    }
+    
     static var appVersion: String {
         guard let info: [String: Any] = Bundle.main.infoDictionary,
               let currentVersion: String = info["CFBundleShortVersionString"] as? String 

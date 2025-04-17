@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1301BC742DB066D70065864D /* ClothesFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC732DB066D70065864D /* ClothesFilter.swift */; };
+		1301BC762DB0960C0065864D /* HTMLParsingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC752DB0960C0065864D /* HTMLParsingResult.swift */; };
 		1302FE5A2C86EA180076D015 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1302FE582C86EA180076D015 /* Pretendard-Regular.otf */; };
 		1302FE5B2C86EA180076D015 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1302FE592C86EA180076D015 /* Pretendard-Medium.otf */; };
 		1302FE5D2C86EA6B0076D015 /* NegguFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302FE5C2C86EA6B0076D015 /* NegguFont.swift */; };
@@ -153,6 +154,7 @@
 
 /* Begin PBXFileReference section */
 		1301BC732DB066D70065864D /* ClothesFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesFilter.swift; sourceTree = "<group>"; };
+		1301BC752DB0960C0065864D /* HTMLParsingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLParsingResult.swift; sourceTree = "<group>"; };
 		1302FE582C86EA180076D015 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		1302FE592C86EA180076D015 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		1302FE5C2C86EA6B0076D015 /* NegguFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguFont.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */,
 				13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */,
 				1301BC732DB066D70065864D /* ClothesFilter.swift */,
+				1301BC752DB0960C0065864D /* HTMLParsingResult.swift */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -864,6 +867,7 @@
 				1308D26E2C6274C9003F50F3 /* LoginView.swift in Sources */,
 				13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */,
 				13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */,
+				1301BC762DB0960C0065864D /* HTMLParsingResult.swift in Sources */,
 				130970692D40C1420050D091 /* UIImage+Extension.swift in Sources */,
 				134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */,
 				134342482D7CE4FF00D3F1A3 /* UserProfileEntity.swift in Sources */,

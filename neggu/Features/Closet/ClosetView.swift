@@ -6,16 +6,12 @@
 //
 
 import SwiftUI
-import SwiftSoup
-import Combine
 
 struct ClosetView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @StateObject private var viewModel = ClosetViewModel()
     
-    @State private var clothesURLString: String = ""
-    @State private var scrollPosition: Int? = 0
-    
+    @State private var clothesLink: String = ""
     @State private var filter: ClothesFilter = .init()
     
     @State private var showCategoryFilter: Bool = false
@@ -23,21 +19,20 @@ struct ClosetView: View {
     @State private var showColorFilter: Bool = false
     @State private var ctaButtonExpanded: Bool = false
     
+    @State private var scrollPosition: Int? = 0
+    
     @FocusState private var isFocused: Bool
     
     var body: some View {
         ScrollView {
             VStack(spacing: 48) {
-                LinkBanner(urlString: $clothesURLString) {
-                    if clothesURLString.isEmpty { return }
-                    clothesURLString = clothesURLString.split(separator: " ").filter { $0.contains("https://") }.joined()
+                LinkBanner(urlString: $clothesLink) {
+                    if clothesLink.isEmpty { return }
+                    clothesLink = clothesLink.split(separator: " ").filter { $0.contains("https://") }.joined()
                     
-                    Task {
-                        await segmentation()
-                        clothesURLString.removeAll()
-                        isFocused = false
-                    }
-                    
+                    viewModel.send(action: .parseHTML(clothesLink))
+                    clothesLink.removeAll()
+                    isFocused = false
                 }
                 .focused($isFocused)
                 .id(0)
@@ -151,94 +146,15 @@ struct ClosetView: View {
         .onChange(of: filter) { _, newValue in
             viewModel.send(action: .selectFilter(newValue))
         }
+        .onChange(of: viewModel.output.parsingResult) {
+            Task {
+                guard let result = viewModel.output.parsingResult,
+                      let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
+                else { return }
+                
+                coordinator.fullScreenCover = .closetAdd(clothes: result.clothes, segmentedImage: image)
+            }
+        }
     }
     
-    private func segmentation() async {
-        let urlString = clothesURLString
-        
-        guard let url = URL(string: urlString) else {
-            print("invalid url")
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        
-        // 지그재그의 경우 랜딩 페이지로 이동하기 때문에 웹으로 들어간 것으로 처리해야함
-        switch urlString {
-        case _ where urlString.contains("zigzag"):
-            request.setValue("Chrome/92.0.4515.107", forHTTPHeaderField: "User-Agent")
-        default:
-            request.setValue(UIDevice.current.name, forHTTPHeaderField: "User-Agent")
-        }
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            guard let htmlString = String(data: data, encoding: .utf8) else {
-                print("Failed to get HTML content")
-                return
-            }
-            
-            let document = try SwiftSoup.parse(htmlString)
-            
-            // 무신사, 에이블리, 지그재그, 29cm, 퀸잇 -> application/json
-            // 크림 -> application/ld+json
-            let scriptElements =
-            switch urlString {
-            case _ where urlString.contains("kream"):
-                try document.select("script[type=application/ld+json]")
-            default:
-                try document.select("script[type=application/json]")
-            }
-            
-            for element in scriptElements {
-                let jsonString = try element.html()
-                
-                guard let data = jsonString.data(using: .utf8) else { return }
-                
-                let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                    .documentType: NSAttributedString.DocumentType.html,
-                    .characterEncoding: String.Encoding.utf8.rawValue
-                ]
-                
-                let attributedString = try NSAttributedString(data: data, options: options, documentAttributes: nil)
-                debugPrint(attributedString)
-                
-                guard let parsedData = attributedString.string.data(using: .utf8) else { return }
-                var product: Clothesable?
-                
-                switch urlString {
-                case _ where urlString.contains("kream"):
-                    product = try? JSONDecoder().decode(KreamProduct.self, from: parsedData)
-                case _ where urlString.contains("musinsa"):
-                    product = try? JSONDecoder().decode(MusinsaProduct.self, from: parsedData)
-                case _ where urlString.contains("zigzag"):
-                    product = try? JSONDecoder().decode(ZigzagProduct.self, from: parsedData)
-                case _ where urlString.contains("a-bly"):
-                    product = try? JSONDecoder().decode(AblyProduct.self, from: parsedData)
-                case _ where urlString.contains("queenit."):
-                    product = try? JSONDecoder().decode(QueenitProduct.self, from: parsedData)
-                case _ where urlString.contains("29cm."):
-                    product = try? JSONDecoder().decode(TwentyNineCMProduct.self, from: parsedData)
-                default:
-                    product = nil
-                }
-                
-                guard let convertedProduct = product?.toProduct(urlString: urlString),
-                      let imageUrl = URL(string: product?.imageUrl ?? ""),
-                      let (imageData, _) = try? await URLSession.shared.data(from: imageUrl),
-                      let image = UIImage(data: imageData),
-                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(image)
-                else {
-                    continue
-                }
-                
-                await MainActor.run {
-                    coordinator.fullScreenCover = .closetAdd(clothes: convertedProduct, segmentedImage: segmentedImage)
-                }
-            }
-        } catch {
-            print(error.localizedDescription)
-        }
-    }
 }

@@ -10,8 +10,6 @@ import PhotosUI
 
 struct BottomNavigationBar: View {
     @EnvironmentObject private var coordinator: MainCoordinator
-    @EnvironmentObject private var closetViewModel: ClosetViewModel
-    @EnvironmentObject private var lookBookViewModel: LookBookViewModel
     
     @State private var gnbState: GnbState = .main
     
@@ -83,7 +81,8 @@ struct BottomNavigationBar: View {
             
             Task.detached(priority: .high) {
                 guard let image = newValue,
-                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(image)
+                      let imageData = image.jpegData(compressionQuality: 1.0),
+                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(imageData)
                 else { return }
                 
                 // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
@@ -102,8 +101,7 @@ struct BottomNavigationBar: View {
                 let data = try await newValue?.loadTransferable(type: Data.self)
                 
                 guard let data,
-                      let uiImage = UIImage(data: data),
-                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(uiImage)
+                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(data)
                 else { return }
                 
                 // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지

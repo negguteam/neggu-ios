@@ -18,8 +18,12 @@ struct ImageAnalyzeManager {
     
     init() { }
     
-    func segmentation(_ image: UIImage) async -> UIImage? {
+    func segmentation(_ data: Data) async -> UIImage? {
         do {
+            guard let image = UIImage(data: data) else {
+                throw NSError(domain: "Fail to get UIImage", code: 1)
+            }
+            
             let analysis = try await analyzer.analyze(image, configuration: configuration)
             
             interaction.analysis = analysis
