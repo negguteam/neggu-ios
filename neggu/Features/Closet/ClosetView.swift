@@ -13,7 +13,6 @@ struct ClosetView: View {
     
     @State private var clothesLink: String = ""
     @State private var filter: ClothesFilter = .init()
-    @State private var selectedClothes: ClothesEntity?
     
     @State private var ctaButtonExpanded: Bool = false
     
@@ -74,7 +73,7 @@ struct ClosetView: View {
                         ) {
                             ForEach(viewModel.output.clothes) { item in
                                 Button {
-                                    selectedClothes = item
+                                    coordinator.sheet = .clothesDetail(clothes: item)
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
@@ -136,14 +135,6 @@ struct ClosetView: View {
         .refreshable {
             filter = .init()
             viewModel.send(action: .refresh)
-        }
-        .onAppear {
-            viewModel.send(action: .onAppear)
-        }
-        .sheet(item: $selectedClothes) { clothes in
-            ClothesDetailView(clothes: clothes)
-                .presentationDetents([.fraction(0.9)])
-                .environmentObject(viewModel)
         }
         .onChange(of: filter) { _, newValue in
             viewModel.send(action: .selectFilter(newValue))
