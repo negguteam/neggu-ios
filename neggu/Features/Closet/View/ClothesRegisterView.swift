@@ -1,5 +1,5 @@
 //
-//  ClosetAddView.swift
+//  ClothesRegisterView.swift
 //  neggu
 //
 //  Created by 유지호 on 9/30/24.
@@ -7,54 +7,25 @@
 
 import SwiftUI
 
-struct ClosetAddView: View {
+struct ClothesRegisterView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
-    @EnvironmentObject private var viewModel: ClosetViewModel
-    
-    // TODO: 이름 수정을 했을 때, 카테고리 변경하면 또 이름이 알아서 편집되는지?
-    @State private var clothes: ClothesRegisterEntity
-    @State private var clothesColor: UIColor = .clear
-    
-    @State private var fieldType: FieldType?
-    
-    @State private var isUnknownCategory: Bool = false
-    @State private var isUnknownMood: Bool = false
+    @EnvironmentObject private var closetViewModel: ClosetViewModel
+    @StateObject private var viewModel: ClothesRegisterViewModel = ClothesRegisterViewModel()
     
     @State private var showNameEditView: Bool = false
+    @State private var showCategorySheet: Bool = false
+    @State private var showMoodSheet: Bool = false
+    @State private var showBrandSheet: Bool = false
     @State private var showAlert: Bool = false
     
     @FocusState private var focusedField: FocusField?
     
     private let segmentedImage: UIImage
+    private let clothesEntity: ClothesRegisterEntity
     
-    var name: String {
-        if clothes.name.isEmpty {
-            [clothes.brand,
-//             (clothes.colorCode ?? "").uppercased(),
-             clothes.subCategory == .UNKNOWN ? clothes.category.title : clothes.subCategory.title]
-                .filter { !$0.isEmpty }.joined(separator: " ")
-        } else {
-            clothes.name
-        }
-    }
-    
-    var categoryTitle: String {
-        if clothes.subCategory != .UNKNOWN {
-            clothes.category.title + " > " + clothes.subCategory.title
-        } else if clothes.category != .UNKNOWN {
-            clothes.category.title
-        } else {
-            "옷의 종류"
-        }
-    }
-    
-    var moodTitle: String {
-        clothes.mood.map { $0.title }.joined(separator: ", ")
-    }
-    
-    init(clothes: ClothesRegisterEntity, segmentedImage: UIImage) {
-        self.clothes = clothes
+    init(segmentedImage: UIImage, clothes: ClothesRegisterEntity) {
         self.segmentedImage = segmentedImage
+        self.clothesEntity = clothes
     }
     
     var body: some View {
@@ -89,12 +60,12 @@ struct ClosetAddView: View {
                                 Section {
                                     TitleForm("어떤 종류의 옷인가요?") {
                                         Button {
-                                            fieldType = .category
+                                            showCategorySheet = true
                                         } label: {
                                             HStack {
-                                                Text(categoryTitle)
+                                                Text(viewModel.categoryString)
                                                     .negguFont(.body2b)
-                                                    .foregroundStyle(clothes.category == .UNKNOWN ? .labelInactive : .labelNormal)
+                                                    .foregroundStyle(viewModel.output.clothes.category == .UNKNOWN ? .labelInactive : .labelNormal)
                                                 
                                                 Spacer()
                                                 
@@ -103,23 +74,23 @@ struct ClosetAddView: View {
                                             .padding()
                                             .background() {
                                                 RoundedRectangle(cornerRadius: 16)
-                                                    .strokeBorder(isUnknownCategory ? .warning : .lineAlt)
+                                                    .strokeBorder(viewModel.output.isUnknownedCategory ? .warning : .lineAlt)
                                             }
                                         }
                                         
-                                        if isUnknownCategory {
+                                        if viewModel.output.isUnknownedCategory {
                                             Text("옷의 종류를 알려주세요!")
                                                 .negguFont(.body2)
                                                 .foregroundStyle(.warning)
                                         }
                                         
                                         Button {
-                                            fieldType = .mood
+                                            showMoodSheet = true
                                         } label: {
                                             HStack {
-                                                Text(clothes.mood.isEmpty ? "옷의 분위기" : moodTitle)
+                                                Text(viewModel.moodString)
                                                     .negguFont(.body2b)
-                                                    .foregroundStyle(clothes.mood.isEmpty ? .labelInactive : .labelNormal)
+                                                    .foregroundStyle(viewModel.output.clothes.mood.isEmpty ? .labelInactive : .labelNormal)
                                                 
                                                 Spacer()
                                                 
@@ -128,32 +99,26 @@ struct ClosetAddView: View {
                                             .padding()
                                             .background() {
                                                 RoundedRectangle(cornerRadius: 16)
-                                                    .strokeBorder(isUnknownMood ? .warning : .lineAlt)
+                                                    .strokeBorder(viewModel.output.isUnknownedMood ? .warning : .lineAlt)
                                             }
                                         }
                                         
-                                        if isUnknownMood {
+                                        if viewModel.output.isUnknownedMood {
                                             Text("옷의 분위기를 알려주세요!")
                                                 .negguFont(.body2)
                                                 .foregroundStyle(.warning)
                                         }
                                     }
                                     .id("Category")
-                                    .onChange(of: clothes.category) {
-                                        isUnknownCategory = false
-                                    }
-                                    .onChange(of: clothes.mood) {
-                                        isUnknownMood = false
-                                    }
                                     
                                     TitleForm("어느 브랜드인가요?") {
                                         Button {
-                                            fieldType = .brand
+                                            showBrandSheet = true
                                         } label: {
                                             HStack {
-                                                Text(clothes.brand.isEmpty ? "브랜드" : clothes.brand)
+                                                Text(viewModel.brandString)
                                                     .negguFont(.body2b)
-                                                    .foregroundStyle(clothes.brand.isEmpty ? .labelInactive : .labelNormal)
+                                                    .foregroundStyle(viewModel.output.clothes.brand.isEmpty ? .labelInactive : .labelNormal)
                                                 
                                                 Spacer()
                                                 
@@ -172,13 +137,13 @@ struct ClosetAddView: View {
                                             ScrollView(.horizontal) {
                                                 HStack {
                                                     ForEach(PriceRange.allCases) { select in
-                                                        let isSelected = clothes.priceRange == select
+                                                        let isSelected = viewModel.output.clothes.priceRange == select
                                                         
                                                         BorderedChip(title: select.title, isSelected: isSelected)
                                                             .id(select.id)
                                                             .onTapGesture {
                                                                 priceScrollProxy.scrollTo(select.id, anchor: .center)
-                                                                clothes.priceRange = select
+                                                                viewModel.send(action: .editPrice(select))
                                                             }
                                                     }
                                                 }
@@ -192,15 +157,15 @@ struct ClosetAddView: View {
                                     TitleForm("어디서 구매하나요?") {
                                         HStack(spacing: 18) {
                                             Button {
-                                                clothes.isPurchase = true
+                                                viewModel.send(action: .editPurchase(true))
                                             } label: {
-                                                BorderedRectangle("구매함", isSelected: clothes.isPurchase)
+                                                BorderedRectangle("구매함", isSelected: viewModel.output.clothes.isPurchase)
                                             }
                                             
                                             Button {
-                                                clothes.isPurchase = false
+                                                viewModel.send(action: .editPurchase(false))
                                             } label: {
-                                                BorderedRectangle("구매하지 않음", isSelected: !clothes.isPurchase)
+                                                BorderedRectangle("구매하지 않음", isSelected: !viewModel.output.clothes.isPurchase)
                                             }
                                         }
                                         .id(FocusField.link)
@@ -212,7 +177,10 @@ struct ClosetAddView: View {
                                             
                                             TextField(
                                                 "",
-                                                text: $clothes.link,
+                                                text: Binding(
+                                                    get: { viewModel.output.clothes.link },
+                                                    set: { viewModel.send(action: .editLink($0)) }
+                                                ),
                                                 prompt: Text("구매 링크").foregroundStyle(.labelInactive)
                                             )
                                             .negguFont(.body2)
@@ -237,16 +205,22 @@ struct ClosetAddView: View {
                                                 .strokeBorder(.lineAlt)
                                         }
                                         
-                                        ExpendableTextView("메모를 남겨보세요! (최대 200자)", text: $clothes.memo)
-                                            .focused($focusedField, equals: .memo)
+                                        ExpendableTextView(
+                                            "메모를 남겨보세요! (최대 200자)",
+                                            text: Binding(
+                                                get: { viewModel.output.clothes.memo },
+                                                set: { viewModel.send(action: .editMemo($0)) }
+                                            )
+                                        )
+                                        .focused($focusedField, equals: .memo)
                                     }
                                 } header: {
-                                    if !name.isEmpty {
+                                    if !viewModel.name.isEmpty {
                                         HStack {
                                             Button {
                                                 showNameEditView = true
                                             } label: {
-                                                Text(name)
+                                                Text(viewModel.name)
                                                     .negguFont(.body1b)
                                                     .lineLimit(1)
                                                 
@@ -289,24 +263,27 @@ struct ClosetAddView: View {
                             Button {
                                 guard let image = segmentedImage.pngData() else { return }
                                 
-                                guard clothes.category != .UNKNOWN && !clothes.mood.isEmpty else {
-                                    if clothes.category == .UNKNOWN {
-                                        isUnknownCategory = true
+                                guard viewModel.output.clothes.category != .UNKNOWN && !viewModel.output.clothes.mood.isEmpty else {
+                                    if viewModel.output.clothes.category == .UNKNOWN {
+                                        viewModel.send(action: .validateCategory(false))
                                     }
                                     
-                                    if clothes.mood.isEmpty {
-                                        isUnknownMood = true
+                                    if viewModel.output.clothes.mood.isEmpty {
+                                        viewModel.send(action: .validateMood(false))
                                     }
-                                    
+
                                     scrollProxy.scrollTo("Category", anchor: .top)
                                     return
                                 }
                                 
-                                clothes.name = name
-                                
-                                viewModel.registerClothes(image: image, clothes: clothes) {
-                                    coordinator.dismiss()
-                                }
+                                viewModel.send(action: .onTapRegister(
+                                    image,
+                                    viewModel.output.clothes,
+                                    {
+                                        closetViewModel.send(action: .refresh)
+                                        coordinator.dismissFullScreenCover()
+                                    }
+                                ))
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)
@@ -318,6 +295,7 @@ struct ClosetAddView: View {
                                     }
                             }
                             .padding(.horizontal, 48)
+                            .disabled(!viewModel.output.canRegister)
                         }
                     }
                 }
@@ -325,12 +303,6 @@ struct ClosetAddView: View {
         }
         .background(.bgNormal)
         .ignoresSafeArea(.keyboard)
-        .onAppear {
-            getMostColor()
-        }
-        .onTapGesture {
-            focusedField = nil
-        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
@@ -342,25 +314,41 @@ struct ClosetAddView: View {
             }
         }
         .sheet(isPresented: $showNameEditView) {
-            ClothesNameEditView(clothesName: $clothes.name, placeholder: name)
-                .presentationDetents([.height(270)])
-                .presentationCornerRadius(20)
+            ClothesNameEditView(
+                clothesName: Binding(
+                    get: { viewModel.output.clothes.name },
+                    set: { viewModel.send(action: .editName($0)) }
+                ),
+                placeholder: viewModel.name
+            )
+            .presentationDetents([.height(270)])
         }
-        .sheet(item: $fieldType) { fieldType in
-            switch fieldType {
-            case .category:
-                CategorySheet(
-                    selectedCategory: $clothes.category,
-                    selectedSubCategory: $clothes.subCategory
+        .sheet(isPresented: $showCategorySheet) {
+            CategorySheet(
+                selectedCategory: Binding(
+                    get: { viewModel.output.clothes.category },
+                    set: { viewModel.send(action: .editCategory($0)) }
+                ),
+                selectedSubCategory: Binding(
+                    get: { viewModel.output.clothes.subCategory },
+                    set: { viewModel.send(action: .editSubCategory($0)) }
                 )
-                .presentationDetents([.fraction(0.85)])
-            case .mood:
-                MoodSheet(selectedMoodList: $clothes.mood)
-                    .presentationDetents([.fraction(0.85)])
-            case .brand:
-                BrandSheet(selectedBrand: $clothes.brand)
-                    .presentationDetents([.fraction(0.85)])
-            }
+            )
+            .presentationDetents([.fraction(0.85)])
+        }
+        .sheet(isPresented: $showMoodSheet) {
+            MoodSheet(selectedMoodList: Binding(
+                get: { viewModel.output.clothes.mood },
+                set: { viewModel.send(action: .editMood($0)) }
+            ))
+            .presentationDetents([.fraction(0.85)])
+        }
+        .sheet(isPresented: $showBrandSheet) {
+            BrandSheet(selectedBrand: Binding(
+                get: { viewModel.output.clothes.brand },
+                set: { viewModel.send(action: .editBrand($0)) }
+            ))
+            .presentationDetents([.fraction(0.85)])
         }
         .negguAlert(
             showAlert: $showAlert,
@@ -369,7 +357,14 @@ struct ClosetAddView: View {
             leftContent: "이어서 편집하기",
             rightContent: "그만하기"
         ) {
-            coordinator.dismiss()
+            coordinator.dismissFullScreenCover()
+        }
+        .onAppear {
+            viewModel.send(action: .initial(clothesEntity))
+            getMostColor()
+        }
+        .onTapGesture {
+            focusedField = nil
         }
     }
     
@@ -378,27 +373,11 @@ struct ClosetAddView: View {
               let hexString = color.toHex()
         else { return }
         
-        clothesColor = color
-        clothes.colorCode = hexString
-    }
-    
-    enum FieldType: Identifiable {
-        case category
-        case mood
-        case brand
-        
-        var id: String { "\(self)" }
+        viewModel.send(action: .editColor(hexString))
     }
     
     enum FocusField {
         case link
         case memo
     }
-}
-
-#Preview {
-    ClosetAddView(
-        clothes: ClothesRegisterEntity.mockData,
-        segmentedImage: .bannerBG1
-    )
 }

@@ -66,11 +66,21 @@ final class MainCoordinator: Coordinator {
         switch scene {
         case .closet:
             ClosetView()
-        case .closetAdd(let clothes, let segmentedImage):
-            ClosetAddView(clothes: clothes, segmentedImage: segmentedImage)
-        case .clothesDetail(let clothesID):
-            ClothesDetailView(clothesID: clothesID)
-        
+        case .clothesRegister(let segmentedImage, let clothes):
+            ClothesRegisterView(segmentedImage: segmentedImage, clothes: clothes)
+        case .clothesDetail(let id):
+            ClothesDetailView(clothesID: id)
+                .presentationDetents([.fraction(0.9)])
+        case .categorySheet(let category, let subCategory):
+            CategorySheet(selectedCategory: category, selectedSubCategory: subCategory)
+                .presentationDetents([.fraction(0.85)])
+        case .moodSheet(let mood, let isSingleSelection):
+            MoodSheet(selectedMoodList: mood, isSingleSelection: isSingleSelection)
+                .presentationDetents([.fraction(0.85)])
+        case .colorSheet(let color):
+            ColorSheet(selectedColor: color)
+                .presentationDetents([.fraction(0.85)])
+            
         case .lookbook:
             LookBookView()
         case .lookbookEdit(let inviteCode, let editingClothes):
@@ -87,8 +97,11 @@ final class MainCoordinator: Coordinator {
     
     enum Destination: Sceneable {
         case closet
-        case closetAdd(clothes: ClothesRegisterEntity, segmentedImage: UIImage)
-        case clothesDetail(clothesID: String)
+        case clothesRegister(segmentedImage: UIImage, clothes: ClothesRegisterEntity)
+        case clothesDetail(id: String)
+        case categorySheet(category: Binding<Category>, SubCategory: Binding<SubCategory>)
+        case moodSheet(mood: Binding<[Mood]>, isSingleSelection: Bool = false)
+        case colorSheet(color: Binding<ColorFilter?>)
         
         case lookbook
         case lookbookEdit(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
@@ -98,5 +111,13 @@ final class MainCoordinator: Coordinator {
         case setting
         
         var id: String { "\(self)" }
+        
+        static func == (lhs: MainCoordinator.Destination, rhs: MainCoordinator.Destination) -> Bool {
+            lhs.id == rhs.id
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 }

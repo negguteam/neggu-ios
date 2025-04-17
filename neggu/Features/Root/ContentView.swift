@@ -84,6 +84,7 @@ struct ContentView: View {
         .ignoresSafeArea(.keyboard)
         .sheet(item: $coordinator.sheet) { scene in
             coordinator.buildScene(scene)
+                .presentationCornerRadius(20)
         }
         .fullScreenCover(item: $coordinator.fullScreenCover) { scene in
             coordinator.buildScene(scene)

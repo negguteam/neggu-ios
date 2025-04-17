@@ -6,28 +6,23 @@
 //
 
 import SwiftUI
-import Combine
 
 struct ClothesDetailView: View {
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var viewModel: ClosetViewModel
+    @EnvironmentObject private var coordinator: MainCoordinator
+    @EnvironmentObject private var closetViewModel: ClosetViewModel
+    @StateObject private var viewModel: ClothesDetailViewModel = ClothesDetailViewModel()
     
-    @State private var clothesState: ClothesState = .loading
     @State private var showAlert: Bool = false
-    
-    @State private var bag = Set<AnyCancellable>()
     
     let clothesID: String
     
     var body: some View {
         Group {
-            switch clothesState {
-            case .loading:
+            switch viewModel.state {
+            case .initial:
                 ProgressView()
                     .onAppear {
-                        viewModel.getClothesDetail(clothesID) {
-                            clothesState = .loaded(clothes: $0)
-                        }
+                        viewModel.send(action: .fetchClothes(id: clothesID))
                     }
             case .loaded(let clothes):
                 VStack(spacing: 0) {
@@ -58,7 +53,7 @@ struct ClothesDetailView: View {
                                         .negguFont(.title3)
                                         .foregroundStyle(.labelNormal)
                                     
-                                    Text(categoryString(clothes.category, clothes.subCategory))
+                                    Text(clothes.categoryString)
                                         .negguFont(.body2)
                                         .foregroundStyle(.labelAlt)
                                 }
@@ -74,7 +69,7 @@ struct ClothesDetailView: View {
                                         .strokeBorder(.lineAlt)
                                         .frame(height: 56)
                                         .overlay(alignment: .leading) {
-                                            Text(moodString(clothes.mood))
+                                            Text(clothes.moodString)
                                                 .negguFont(.body2b)
                                                 .foregroundStyle(.labelAlt)
                                                 .padding(.horizontal, 16)
@@ -159,7 +154,10 @@ struct ClothesDetailView: View {
                             }
                             
                             Button {
-                                
+//                                viewModel.send(action: .onTapModify(
+//                                    clothes: <#T##ClothesEntity#>,
+//                                    completion: { }
+//                                ))
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)
@@ -182,33 +180,16 @@ struct ClothesDetailView: View {
                     leftContent: "취소하기",
                     rightContent: "삭제하기"
                 ) {
-                    viewModel.deleteClothes(clothes.id) {
-                        dismiss()
-                    }
+                    viewModel.send(action: .onTapDelete(
+                        id: clothesID,
+                        completion: {
+                            closetViewModel.send(action: .refresh)
+                            coordinator.sheet = nil
+                        }
+                    ))
                 }
             }
         }
         .background(.bgNormal)
     }
-    
-    func categoryString(_ category: Category, _ subCategory: SubCategory) -> String {
-        [category.title, subCategory.title].joined(separator: " > ")
-    }
-    
-    func moodString(_ moodList: [Mood]) -> String {
-        if moodList.isEmpty {
-            "옷의 분위기"
-        } else {
-            moodList.map { $0.title }.joined(separator: ", ")
-        }
-    }
-    
-    enum ClothesState {
-        case loading
-        case loaded(clothes: ClothesEntity)
-    }
-}
-
-#Preview {
-    ClothesDetailView(clothesID: "abcd")
 }

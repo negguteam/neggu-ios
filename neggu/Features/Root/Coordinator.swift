@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-typealias Sceneable = Identifiable & Hashable
+typealias Sceneable = Identifiable & Hashable & Equatable
 
 protocol Coordinator: ObservableObject {
     associatedtype Destination: Sceneable
@@ -55,6 +55,14 @@ extension Coordinator {
      
     func dismiss() {
         sheet = nil
+        fullScreenCover = nil
+    }
+    
+    func dismissSheet() {
+        sheet = nil
+    }
+    
+    func dismissFullScreenCover() {
         fullScreenCover = nil
     }
     
