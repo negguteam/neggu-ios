@@ -11,6 +11,7 @@
 		1301BC762DB0960C0065864D /* HTMLParsingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC752DB0960C0065864D /* HTMLParsingResult.swift */; };
 		1301BC7A2DB145BC0065864D /* ClothesDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC792DB145BC0065864D /* ClothesDetailViewModel.swift */; };
 		1301BC7C2DB1A0DE0065864D /* ClothesRegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC7B2DB1A0DE0065864D /* ClothesRegisterViewModel.swift */; };
+		1301BC812DB1A6130065864D /* ClothesDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1301BC802DB1A6130065864D /* ClothesDetail.swift */; };
 		1302FE5A2C86EA180076D015 /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1302FE582C86EA180076D015 /* Pretendard-Regular.otf */; };
 		1302FE5B2C86EA180076D015 /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1302FE592C86EA180076D015 /* Pretendard-Medium.otf */; };
 		1302FE5D2C86EA6B0076D015 /* NegguFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1302FE5C2C86EA6B0076D015 /* NegguFont.swift */; };
@@ -159,6 +160,7 @@
 		1301BC752DB0960C0065864D /* HTMLParsingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLParsingResult.swift; sourceTree = "<group>"; };
 		1301BC792DB145BC0065864D /* ClothesDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesDetailViewModel.swift; sourceTree = "<group>"; };
 		1301BC7B2DB1A0DE0065864D /* ClothesRegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesRegisterViewModel.swift; sourceTree = "<group>"; };
+		1301BC802DB1A6130065864D /* ClothesDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesDetail.swift; sourceTree = "<group>"; };
 		1302FE582C86EA180076D015 /* Pretendard-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Regular.otf"; sourceTree = "<group>"; };
 		1302FE592C86EA180076D015 /* Pretendard-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.otf"; sourceTree = "<group>"; };
 		1302FE5C2C86EA6B0076D015 /* NegguFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguFont.swift; sourceTree = "<group>"; };
@@ -317,6 +319,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1301BC7D2DB1A5BA0065864D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
+				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
+				13A4D6C92CAAC13E003F2E7C /* ClothesRegisterView.swift */,
+				136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */,
+				13BA78A12D376B0800ADB1C1 /* CategorySheet.swift */,
+				13BA78A32D378B0000ADB1C1 /* ColorSheet.swift */,
+				133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */,
+				133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1301BC7E2DB1A5C80065864D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */,
+				1301BC792DB145BC0065864D /* ClothesDetailViewModel.swift */,
+				1301BC7B2DB1A0DE0065864D /* ClothesRegisterViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		1301BC7F2DB1A5D80065864D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1301BC732DB066D70065864D /* ClothesFilter.swift */,
+				1301BC802DB1A6130065864D /* ClothesDetail.swift */,
+				1301BC752DB0960C0065864D /* HTMLParsingResult.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		1302FE572C86E9E80076D015 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -371,19 +408,9 @@
 		1338892B2C89E73B0023CED5 /* Closet */ = {
 			isa = PBXGroup;
 			children = (
-				1338892C2C89E7A70023CED5 /* ClosetView.swift */,
-				1337B70A2CDD009C0052BFF2 /* ClothesDetailView.swift */,
-				13A4D6C92CAAC13E003F2E7C /* ClothesRegisterView.swift */,
-				136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */,
-				13BA78A12D376B0800ADB1C1 /* CategorySheet.swift */,
-				13BA78A32D378B0000ADB1C1 /* ColorSheet.swift */,
-				133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */,
-				133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */,
-				13FE56CD2D53483C00C7D4E9 /* ClosetViewModel.swift */,
-				1301BC732DB066D70065864D /* ClothesFilter.swift */,
-				1301BC752DB0960C0065864D /* HTMLParsingResult.swift */,
-				1301BC792DB145BC0065864D /* ClothesDetailViewModel.swift */,
-				1301BC7B2DB1A0DE0065864D /* ClothesRegisterViewModel.swift */,
+				1301BC7F2DB1A5D80065864D /* Model */,
+				1301BC7D2DB1A5BA0065864D /* View */,
+				1301BC7E2DB1A5C80065864D /* ViewModel */,
 			);
 			path = Closet;
 			sourceTree = "<group>";
@@ -847,6 +874,7 @@
 				13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */,
+				1301BC812DB1A6130065864D /* ClothesDetail.swift in Sources */,
 				1309706E2D40C4A20050D091 /* SettingView.swift in Sources */,
 				135081142D38CC94005E2491 /* Gender.swift in Sources */,
 				1354444F2DA1897B00112F96 /* LookBookViewModel.swift in Sources */,
