@@ -12,6 +12,7 @@ import SwiftSoup
 final class ClosetViewModel: ObservableObject {
     
     private let closetService: ClosetService
+    private let userService: UserService
     
     private let input = PassthroughSubject<Action, Never>()
     
@@ -23,11 +24,17 @@ final class ClosetViewModel: ObservableObject {
     private var bag = Set<AnyCancellable>()
     
     
-    init(closetService: ClosetService = DefaultClosetService()) {
+    init(
+        closetService: ClosetService = DefaultClosetService(),
+        userService: UserService = DefaultUserService()
+    ) {
         self.closetService = closetService
+        self.userService = userService
 
+        fetchUserProfile()
+        
         input
-            .throttle(for: .seconds(0.3), scheduler: RunLoop.main, latest: true)
+            .throttle(for: .seconds(0.5), scheduler: RunLoop.main, latest: true)
             .sink { self.transform(from: $0) }
             .store(in: &bag)
     }
@@ -43,8 +50,6 @@ final class ClosetViewModel: ObservableObject {
     
     private func transform(from action: Action) {
         switch action {
-        case .onAppear:
-            print("onAppear")
         case .fetchClothesList:
             getClothes()
         case .selectFilter(let filter):
@@ -63,6 +68,15 @@ final class ClosetViewModel: ObservableObject {
         }
     }
         
+    func fetchUserProfile() {
+        userService.profile()
+            .sink { event in
+                print("ClosetView:", event)
+            } receiveValue: { [weak self] profile in
+                self?.output.userProfile = profile
+            }.store(in: &bag)
+    }
+    
     func getClothes() {
         if !canPagenation { return }
         canPagenation = false
@@ -93,10 +107,10 @@ final class ClosetViewModel: ObservableObject {
         closetService.clothesList(parameters: parameters)
             .sink { event in
                 print("ClosetView:", event)
-            } receiveValue: { result in
-                self.canPagenation = !result.last
-                self.output.clothes += result.content
-                self.page += !result.last ? 1 : 0
+            } receiveValue: { [weak self] result in
+                self?.canPagenation = !result.last
+                self?.output.clothes += result.content
+                self?.page += !result.last ? 1 : 0
             }.store(in: &bag)
     }
     
@@ -273,7 +287,6 @@ extension ClosetViewModel {
     }
     
     enum Action {
-        case onAppear
         case fetchClothesList
         case selectFilter(ClothesFilter)
         case refresh

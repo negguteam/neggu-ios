@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClosetView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
-    @StateObject private var viewModel = ClosetViewModel()
+    @EnvironmentObject private var viewModel: ClosetViewModel
     
     @State private var clothesLink: String = ""
     @State private var filter: ClothesFilter = .init()
@@ -46,9 +46,10 @@ struct ClosetView: View {
                 .id(0)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text("내 옷장")
+                    Text(userNickname + " 옷장")
                         .negguFont(.title2)
                         .foregroundStyle(.labelNormal)
+                        .lineLimit(1)
                     
                     HStack {
                         FilterButton(title: filter.categoryTitle) {
@@ -141,4 +142,11 @@ struct ClosetView: View {
         }
     }
     
+    var userNickname: String {
+        if let nickname = viewModel.output.userProfile?.nickname {
+            nickname + "의"
+        } else {
+            "내"
+        }
+    }
 }
