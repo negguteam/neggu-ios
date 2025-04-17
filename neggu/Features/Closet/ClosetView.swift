@@ -54,6 +54,8 @@ struct ClosetView: View {
                         FilterButton(title: filter.colorTitle) {
                             showColorFilter = true
                         }
+                        
+                        
                     }
                     .padding(.top)
                     .padding(.bottom, 24)
@@ -136,8 +138,8 @@ struct ClosetView: View {
             .presentationDetents([.fraction(0.85)])
         }
         .sheet(isPresented: $showMoodFilter) {
-//            MoodSheet(selectedMoodList: $filter.mood, isSingleSelection: true)
-//                .presentationDetents([.fraction(0.85)])
+            MoodSheet(selectedMoodList: $filter.moodList, isSingleSelection: true)
+                .presentationDetents([.fraction(0.85)])
         }
         .sheet(isPresented: $showColorFilter) {
             ColorSheet(selectedColor: $filter.color)

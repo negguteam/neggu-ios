@@ -10,7 +10,7 @@ import Foundation
 struct ClothesFilter: Equatable {
     var category: Category = .UNKNOWN
     var subCategory: SubCategory = .UNKNOWN
-    var mood: Mood = .UNKNOWN
+    var moodList: [Mood] = []
     var color: ColorFilter?
     
     var categoryTitle: String {
@@ -24,7 +24,7 @@ struct ClothesFilter: Equatable {
     }
     
     var moodTitle: String {
-        if mood != .UNKNOWN {
+        if let mood = moodList.first {
             mood.title
         } else {
             "분위기"
@@ -38,7 +38,7 @@ struct ClothesFilter: Equatable {
     mutating func reset() {
         category = .UNKNOWN
         subCategory = .UNKNOWN
-        mood = .UNKNOWN
+        moodList.removeAll()
         color = nil
     }
 }

@@ -60,7 +60,7 @@ final class ClosetViewModel: ObservableObject {
         
         let category = output.filter.category
         let subCategory = output.filter.subCategory
-        let mood = output.filter.mood
+        let mood = output.filter.moodList
         let color = output.filter.color
         
         if subCategory == .UNKNOWN {
@@ -71,8 +71,8 @@ final class ClosetViewModel: ObservableObject {
             parameters["subCategory"] = subCategory.id
         }
         
-        if mood != .UNKNOWN {
-            parameters["mood"] = mood.id
+        if !mood.isEmpty {
+            parameters["mood"] = mood[0].id
         }
         
         if let color {
