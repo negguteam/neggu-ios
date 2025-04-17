@@ -13,6 +13,7 @@ struct ClosetView: View {
     
     @State private var clothesLink: String = ""
     @State private var filter: ClothesFilter = .init()
+    @State private var selectedClothes: ClothesEntity?
     
     @State private var ctaButtonExpanded: Bool = false
     
@@ -73,7 +74,7 @@ struct ClosetView: View {
                         ) {
                             ForEach(viewModel.output.clothes) { item in
                                 Button {
-                                    coordinator.sheet = .clothesDetail(clothesID: item.id)
+                                    selectedClothes = item
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
@@ -136,20 +137,13 @@ struct ClosetView: View {
             filter = .init()
             viewModel.send(action: .refresh)
         }
-        .sheet(isPresented: $showCategoryFilter) {
-            CategorySheet(
-                selectedCategory: $filter.category,
-                selectedSubCategory: $filter.subCategory
-            )
-            .presentationDetents([.fraction(0.85)])
+        .onAppear {
+            viewModel.send(action: .onAppear)
         }
-        .sheet(isPresented: $showMoodFilter) {
-            MoodSheet(selectedMoodList: $filter.moodList, isSingleSelection: true)
-                .presentationDetents([.fraction(0.85)])
-        }
-        .sheet(isPresented: $showColorFilter) {
-            ColorSheet(selectedColor: $filter.color)
-                .presentationDetents([.fraction(0.85)])
+        .sheet(item: $selectedClothes) { clothes in
+            ClothesDetailView(clothes: clothes)
+                .presentationDetents([.fraction(0.9)])
+                .environmentObject(viewModel)
         }
         .onChange(of: filter) { _, newValue in
             viewModel.send(action: .selectFilter(newValue))
