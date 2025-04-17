@@ -14,9 +14,6 @@ struct ClosetView: View {
     @State private var clothesLink: String = ""
     @State private var filter: ClothesFilter = .init()
     
-    @State private var showCategoryFilter: Bool = false
-    @State private var showMoodFilter: Bool = false
-    @State private var showColorFilter: Bool = false
     @State private var ctaButtonExpanded: Bool = false
     
     @State private var scrollPosition: Int? = 0
@@ -44,18 +41,16 @@ struct ClosetView: View {
                     
                     HStack {
                         FilterButton(title: filter.categoryTitle) {
-                            showCategoryFilter = true
+                            coordinator.sheet = .categorySheet(category: $filter.category, SubCategory: $filter.subCategory)
                         }
                         
                         FilterButton(title: filter.moodTitle) {
-                            showMoodFilter = true
+                            coordinator.sheet = .moodSheet(mood: $filter.moodList, isSingleSelection: true)
                         }
                         
                         FilterButton(title: filter.colorTitle) {
-                            showColorFilter = true
+                            coordinator.sheet = .colorSheet(color: $filter.color)
                         }
-                        
-                        
                     }
                     .padding(.top)
                     .padding(.bottom, 24)

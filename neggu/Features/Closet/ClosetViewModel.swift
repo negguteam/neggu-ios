@@ -32,6 +32,10 @@ final class ClosetViewModel: ObservableObject {
             .store(in: &bag)
     }
     
+    deinit {
+        bag.removeAll()
+    }
+    
     
     func send(action: Action) {
         input.send(action)
@@ -49,6 +53,10 @@ final class ClosetViewModel: ObservableObject {
             resetCloset()
         case .parseHTML(let link):
             Task { await parseHTML(link: link) }
+        case .onTapModify(let clothes):
+            modifyClothes(clothes)
+        case .onTapDelete(let id, let completion):
+            deleteClothes(id, completion: completion)
         }
     }
         
