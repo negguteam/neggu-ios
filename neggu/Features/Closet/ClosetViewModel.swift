@@ -61,10 +61,6 @@ final class ClosetViewModel: ObservableObject {
                 await parseHTML(link: link)
                 completion()
             }
-        case .onTapModify(let clothes):
-            modifyClothes(clothes)
-        case .onTapDelete(let id, let completion):
-            deleteClothes(id, completion: completion)
         }
     }
         
@@ -129,35 +125,6 @@ final class ClosetViewModel: ObservableObject {
         page = 0
         canPagenation = true
     }
-    
-    func getClothesDetail(_ id: String) {
-        closetService.clothesDetail(id: id)
-            .sink { event in
-                print("ClosetDetail:", event)
-            } receiveValue: { clothes in
-//                self.output.clothesDetail = clothes
-            }.store(in: &bag)
-    }
-    
-    func modifyClothes(_ clothes: ClothesEntity) {
-        closetService.modify(clothes)
-            .sink { event in
-                print("ClosetAdd:", event)
-            } receiveValue: { _ in
-                
-            }.store(in: &bag)
-    }
-    
-    func deleteClothes(_ id: String, completion: @escaping () -> Void) {
-        closetService.deleteClothes(id: id)
-            .sink { event in
-                print("ClothesDetail:", event)
-            } receiveValue: { _ in
-                self.resetCloset()
-                completion()
-            }.store(in: &bag)
-    }
-    
     
     private func parseHTML(link: String) async {
         do {
@@ -291,8 +258,6 @@ extension ClosetViewModel {
         case selectFilter(ClothesFilter)
         case refresh
         case parseHTML(String, completion: () -> Void)
-        case onTapModify(clothes: ClothesEntity)
-        case onTapDelete(id: String, completion: () -> Void)
     }
     
 }

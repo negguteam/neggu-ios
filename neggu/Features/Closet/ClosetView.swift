@@ -74,7 +74,7 @@ struct ClosetView: View {
                         ) {
                             ForEach(viewModel.output.clothes) { item in
                                 Button {
-                                    coordinator.sheet = .clothesDetail(clothes: item)
+                                    coordinator.sheet = .clothesDetail(id: item.id)
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
