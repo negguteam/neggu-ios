@@ -27,9 +27,20 @@ struct ClosetView: View {
                     if clothesLink.isEmpty { return }
                     clothesLink = clothesLink.split(separator: " ").filter { $0.contains("https://") }.joined()
                     
-                    viewModel.send(action: .parseHTML(clothesLink))
-                    clothesLink.removeAll()
-                    isFocused = false
+                    viewModel.send(action: .parseHTML(
+                        clothesLink,
+                        completion: {
+                            Task { @MainActor in
+                                guard let result = viewModel.output.parsingResult,
+                                      let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
+                                else { return }
+                                
+                                coordinator.fullScreenCover = .closetAdd(clothes: result.clothes, segmentedImage: image)
+                                clothesLink.removeAll()
+                                isFocused = false
+                            }
+                        }
+                    ))
                 }
                 .focused($isFocused)
                 .id(0)
@@ -142,15 +153,6 @@ struct ClosetView: View {
         }
         .onChange(of: filter) { _, newValue in
             viewModel.send(action: .selectFilter(newValue))
-        }
-        .onChange(of: viewModel.output.parsingResult) {
-            Task {
-                guard let result = viewModel.output.parsingResult,
-                      let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
-                else { return }
-                
-                coordinator.fullScreenCover = .closetAdd(clothes: result.clothes, segmentedImage: image)
-            }
         }
     }
     

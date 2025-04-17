@@ -51,8 +51,11 @@ final class ClosetViewModel: ObservableObject {
             filteredClothes(filter: filter)
         case .refresh:
             resetCloset()
-        case .parseHTML(let link):
-            Task { await parseHTML(link: link) }
+        case .parseHTML(let link, let completion):
+            Task {
+                await parseHTML(link: link)
+                completion()
+            }
         case .onTapModify(let clothes):
             modifyClothes(clothes)
         case .onTapDelete(let id, let completion):
@@ -111,6 +114,34 @@ final class ClosetViewModel: ObservableObject {
     func resetPage() {
         page = 0
         canPagenation = true
+    }
+    
+    func getClothesDetail(_ id: String) {
+        closetService.clothesDetail(id: id)
+            .sink { event in
+                print("ClosetDetail:", event)
+            } receiveValue: { clothes in
+//                self.output.clothesDetail = clothes
+            }.store(in: &bag)
+    }
+    
+    func modifyClothes(_ clothes: ClothesEntity) {
+        closetService.modify(clothes)
+            .sink { event in
+                print("ClosetAdd:", event)
+            } receiveValue: { _ in
+                
+            }.store(in: &bag)
+    }
+    
+    func deleteClothes(_ id: String, completion: @escaping () -> Void) {
+        closetService.deleteClothes(id: id)
+            .sink { event in
+                print("ClothesDetail:", event)
+            } receiveValue: { _ in
+                self.resetCloset()
+                completion()
+            }.store(in: &bag)
     }
     
     
@@ -215,34 +246,6 @@ final class ClosetViewModel: ObservableObject {
         }.store(in: &bag)
     }
     
-    func modifyClothes(_ clothes: ClothesEntity, completion: @escaping () -> Void) {
-        closetService.modify(clothes)
-            .sink { event in
-                print("ClosetAdd:", event)
-            } receiveValue: { _ in
-                completion()
-            }.store(in: &bag)
-    }
-    
-    func getClothesDetail(_ id: String, completion: @escaping (ClothesEntity) -> Void) {
-        closetService.clothesDetail(id: id)
-            .sink { event in
-                print("ClosetDetail:", event)
-            } receiveValue: { clothes in
-                completion(clothes)
-            }.store(in: &bag)
-    }
-    
-    func deleteClothes(_ id: String, completion: @escaping () -> Void) {
-        closetService.deleteClothes(id: id)
-            .sink { event in
-                print("ClothesDetail:", event)
-            } receiveValue: { _ in
-                self.resetCloset()
-                completion()
-            }.store(in: &bag)
-    }
-    
     func checkInviteCode(_ code: String, completion: @escaping (Bool) -> Void) {
         closetService.clothesInviteList(
             parameters: ["inviteCode": code, "page": 0, "size": 1]
@@ -266,7 +269,6 @@ extension ClosetViewModel {
         var userProfile: UserProfileEntity?
         var clothes: [ClothesEntity] = []
         var parsingResult: HTMLParsingResult?
-        
         var filter: ClothesFilter = .init()
     }
     
@@ -275,7 +277,9 @@ extension ClosetViewModel {
         case fetchClothesList
         case selectFilter(ClothesFilter)
         case refresh
-        case parseHTML(String)
+        case parseHTML(String, completion: () -> Void)
+        case onTapModify(clothes: ClothesEntity)
+        case onTapDelete(id: String, completion: () -> Void)
     }
     
 }
