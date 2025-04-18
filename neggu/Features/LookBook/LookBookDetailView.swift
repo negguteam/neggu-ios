@@ -18,8 +18,6 @@ struct LookBookDetailView: View {
     
     @State private var showCalendar: Bool = false
     @State private var showDeleteAlert: Bool = false
-    @State private var selectedClothes: LookBookClothesEntity?
-    @State private var sheetHeight: CGFloat = .zero
     
     let lookBookID: String
     
@@ -118,7 +116,7 @@ struct LookBookDetailView: View {
                                 }
                                 
                                 Button {
-                                    showCalendar = true
+                                    coordinator.sheet = .lookbookDateSheet(date: $selectedDate)
                                 } label: {
                                     HStack(spacing: 4) {
                                         Image(.calendar)
@@ -159,7 +157,7 @@ struct LookBookDetailView: View {
                                 LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
                                     ForEach(lookBook.lookBookClothes) { clothes in
                                         Button {
-                                            selectedClothes = clothes
+                                            coordinator.sheet = .clothesDetail(id: clothes.id)
                                         } label: {
                                             CachedAsyncImage(clothes.imageUrl)
                                                 .aspectRatio(0.8, contentMode: .fit)
@@ -226,18 +224,6 @@ struct LookBookDetailView: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
-        .sheet(isPresented: $showCalendar) {
-            LookBookDateEditView(selectedDate: $selectedDate)
-                .heightChangePreference { sheetHeight = $0 }
-                .presentationDetents([.height(sheetHeight)])
-                .presentationCornerRadius(20)
-                .presentationBackground(.bgNormal)
-        }
-        .sheet(item: $selectedClothes) { clothes in
-            ClothesDetailView(clothesID: clothes.id)
-                .presentationDetents([.fraction(0.9)])
-                .presentationCornerRadius(20)
-        }
         .negguAlert(
             showAlert: $showDeleteAlert,
             title: "룩북을 삭제할까요?",
@@ -255,27 +241,4 @@ struct LookBookDetailView: View {
         case loading
         case complete(lookBook: LookBookEntity)
     }
-}
-
-
-struct SizeKey: PreferenceKey {
-    static var defaultValue: CGFloat = .zero
-    
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
-}
-
-extension View {
-    
-    func heightChangePreference(completion: @escaping (CGFloat) -> Void) -> some View {
-        self.overlay {
-            GeometryReader { proxy in
-                Color.clear
-                    .preference(key: SizeKey.self, value: proxy.size.height)
-                    .onPreferenceChange(SizeKey.self, perform: completion)
-            }
-        }
-    }
-    
 }

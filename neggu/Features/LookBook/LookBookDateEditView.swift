@@ -9,7 +9,10 @@ import SwiftUI
 
 struct LookBookDateEditView: View {
     @Environment(\.dismiss) private var dismiss
+    
     @State private var selectedMonth: Date = .currentMonth
+    @State private var sheetHeight: CGFloat = .zero
+    
     @Binding var selectedDate: Date?
     
     var selectedMonthDates: [Day] {
@@ -139,6 +142,8 @@ struct LookBookDateEditView: View {
             }
             .foregroundStyle(.labelNormal)
         }
+        .heightChangePreference { sheetHeight = $0 }
+        .presentationDetents([.height(sheetHeight)])
     }
     
     func updateMonth(_ increment: Bool = true) {
