@@ -8,51 +8,49 @@
 import SwiftUI
 
 struct LookBookCell: View {
-    let dateString: String
-    let dateColor: Color
-    let lookBook: LookBookEntity
+    private let lookBook: LookBookEntity
+    private let targetDate: Date?
     
-    init(lookBook: LookBookEntity, targetDate: Date) {
-        let (dateString, dateColor) = targetDate.generateLookBookDate()
+    init(lookBook: LookBookEntity) {
         self.lookBook = lookBook
-        self.dateString = dateString
-        self.dateColor = dateColor
+        self.targetDate = lookBook.decorator?.targetDate.toISOFormatDate()
     }
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.white)
-                .overlay {
-                    ZStack(alignment: .bottomLeading) {
-                        CachedAsyncImage(lookBook.imageUrl)
-                        
-                        if let decorator = lookBook.decorator {
-                            CachedAsyncImage(decorator.imageUrl)
-                                .frame(width: 36, height: 36)
-                                .clipShape(.circle)
-                        }
+        RoundedRectangle(cornerRadius: 20)
+            .fill(.white)
+            .overlay {
+                ZStack(alignment: .bottomLeading) {
+                    CachedAsyncImage(lookBook.imageUrl)
+                    
+                    if let decorator = lookBook.decorator {
+                        CachedAsyncImage(decorator.imageUrl)
+                            .frame(width: 36, height: 36)
+                            .clipShape(.circle)
                     }
-                    .padding(10)
                 }
-            
-            HStack(spacing: 4) {
-                Image(systemName: "alarm")
-                
-                Text(dateString)
+                .padding(10)
             }
-            .negguFont(.caption)
-            .foregroundStyle(.white)
-            .padding(.horizontal, 12)
-            .frame(height: 24)
-            .background {
-                UnevenRoundedRectangle(
-                    topLeadingRadius: 8,
-                    bottomLeadingRadius: 8,
-                    topTrailingRadius: 8
-                )
-                .fill(dateColor)
+            .overlay(alignment: .topTrailing) {
+                if let (dateString, dateColor) = targetDate?.generateLookBookDate() {
+                    HStack(spacing: 4) {
+                        Image(systemName: "alarm")
+                        
+                        Text(dateString)
+                    }
+                    .negguFont(.caption)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .frame(height: 24)
+                    .background {
+                        UnevenRoundedRectangle(
+                            topLeadingRadius: 8,
+                            bottomLeadingRadius: 8,
+                            topTrailingRadius: 8
+                        )
+                        .fill(dateColor)
+                    }
+                }
             }
-        }
     }
 }
