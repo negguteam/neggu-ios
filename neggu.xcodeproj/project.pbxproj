@@ -94,7 +94,7 @@
 		136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C787F2CEB0584009DEA76 /* BorderedChip.swift */; };
 		136C79D62CEC8FF9009DEA76 /* ClothesNameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */; };
 		136C79D82CEC9780009DEA76 /* NegguAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D72CEC9780009DEA76 /* NegguAlert.swift */; };
-		136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */; };
+		136C79DA2CEC99D6009DEA76 /* LookBookDateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136C79D92CEC99D6009DEA76 /* LookBookDateSheet.swift */; };
 		13830E2B2C6FA4C200CA385F /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */; };
 		1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1384FE862CD8FA3E00162AAF /* NegguColor.swift */; };
 		1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EAD02C5D3F9C0085655D /* negguApp.swift */; };
@@ -241,7 +241,7 @@
 		136C787F2CEB0584009DEA76 /* BorderedChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedChip.swift; sourceTree = "<group>"; };
 		136C79D52CEC8FF9009DEA76 /* ClothesNameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesNameEditView.swift; sourceTree = "<group>"; };
 		136C79D72CEC9780009DEA76 /* NegguAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguAlert.swift; sourceTree = "<group>"; };
-		136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDateEditView.swift; sourceTree = "<group>"; };
+		136C79D92CEC99D6009DEA76 /* LookBookDateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDateSheet.swift; sourceTree = "<group>"; };
 		1384FE862CD8FA3E00162AAF /* NegguColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguColor.swift; sourceTree = "<group>"; };
 		1386EACD2C5D3F9C0085655D /* neggu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = neggu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1386EAD02C5D3F9C0085655D /* negguApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = negguApp.swift; sourceTree = "<group>"; };
@@ -408,7 +408,7 @@
 				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
 				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
 				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
-				136C79D92CEC99D6009DEA76 /* LookBookDateEditView.swift */,
+				136C79D92CEC99D6009DEA76 /* LookBookDateSheet.swift */,
 				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
 				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
 				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
@@ -890,7 +890,7 @@
 				13659CE72C5FA8C100BB6B91 /* NegguEnv.swift in Sources */,
 				13FD7D552CBB874400D21143 /* LookBookDetailView.swift in Sources */,
 				1350811A2D38CCBF005E2491 /* SubCategory.swift in Sources */,
-				136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */,
+				136C79DA2CEC99D6009DEA76 /* LookBookDateSheet.swift in Sources */,
 				13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */,
 				133CCC962DB2CC8A008386A8 /* UserProfileHeader.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,

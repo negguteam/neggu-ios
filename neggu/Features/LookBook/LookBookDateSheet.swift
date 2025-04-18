@@ -1,5 +1,5 @@
 //
-//  LookBookDateEditView.swift
+//  LookBookDateSheet.swift
 //  neggu
 //
 //  Created by 유지호 on 11/19/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LookBookDateEditView: View {
+struct LookBookDateSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var selectedMonth: Date = .currentMonth
@@ -216,5 +216,5 @@ struct LookBookDateEditView: View {
 }
 
 #Preview {
-    LookBookDateEditView(selectedDate: .constant(.now))
+    LookBookDateSheet(selectedDate: .constant(.now))
 }

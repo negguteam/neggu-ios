@@ -91,7 +91,7 @@ final class MainCoordinator: Coordinator {
             LookBookDeleteSheet()
                 .presentationDetents([.fraction(0.8)])
         case .lookbookDateSheet(let date):
-            LookBookDateEditView(selectedDate: date)
+            LookBookDateSheet(selectedDate: date)
             
         case .nicknameEdit(let nickname):
             NameEditView(name: nickname)
