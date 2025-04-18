@@ -87,6 +87,9 @@ final class MainCoordinator: Coordinator {
             LookBookEditView(inviteCode: inviteCode, editingClothes: editingClothes)
         case .lookbookDetail(let lookBookID):
             LookBookDetailView(lookBookID: lookBookID)
+        case .lookbookDelete:
+            LookBookDeleteSheet()
+                .presentationDetents([.fraction(0.8)])
             
         case .nicknameEdit(let nickname):
             NameEditView(name: nickname)
@@ -109,6 +112,7 @@ final class MainCoordinator: Coordinator {
         case lookbook
         case lookbookEdit(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
+        case lookbookDelete
         
         case nicknameEdit(nickname: String)
         case insight
