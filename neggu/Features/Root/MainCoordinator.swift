@@ -82,7 +82,7 @@ final class MainCoordinator: Coordinator {
                 .presentationDetents([.fraction(0.85)])
             
         case .lookbook:
-            LookBookView()
+            LookBookMainView()
         case .lookbookEdit(let inviteCode, let editingClothes):
             LookBookEditView(inviteCode: inviteCode, editingClothes: editingClothes)
         case .lookbookDetail(let lookBookID):

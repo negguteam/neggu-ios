@@ -71,7 +71,7 @@ final class LookBookViewModel: ObservableObject {
     func negguInvite(completion: @escaping (NegguInviteEntity) -> Void) {
         lookBookService.negguInvite()
             .sink { event in
-                print("LookBookView:", event)
+                print("LookBookMainView:", event)
             } receiveValue: { result in
                 completion(result)
             }.store(in: &bag)
@@ -83,7 +83,7 @@ final class LookBookViewModel: ObservableObject {
         
         lookBookService.lookbookList(parameters: ["page": page, "size": 6])
             .sink { event in
-                print("LookBookView:", event)
+                print("LookBookMainView:", event)
             } receiveValue: { result in
                 self.canPagenation = !result.last
                 self.page += !result.last ? 1 : 0

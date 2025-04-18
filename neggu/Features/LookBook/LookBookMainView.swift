@@ -1,5 +1,5 @@
 //
-//  LookBookView.swift
+//  LookBookMainView.swift
 //  neggu
 //
 //  Created by 유지호 on 10/20/24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct LookBookView: View {
+struct LookBookMainView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var viewModel: LookBookViewModel
     
