@@ -21,6 +21,10 @@ extension DIContainer {
         register(SignUpCompleteView.self) {
             return SignUpCompleteView()
         }
+        
+        register(OnboardingView.self) {
+            OnboardingView()
+        }
     }
     
 }

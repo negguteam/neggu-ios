@@ -32,8 +32,6 @@ struct NegguSheet<Header: View, Content: View>: View {
             content()
         }
         .padding(.top, 20)
-        .background(.bgNormal)
-        .presentationCornerRadius(20)
     }
 }
 
