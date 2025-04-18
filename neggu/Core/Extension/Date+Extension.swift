@@ -100,9 +100,7 @@ extension Date {
         if self.yearMonthDay() == Date.now.yearMonthDay() {
             return ("오늘", .negguSecondary)
         } else if self.yearMonthDay() <= twoDaysAfter {
-            let formatter = RelativeDateTimeFormatter()
-            formatter.dateTimeStyle = .named
-            let dayString = formatter.localizedString(for: self.yearMonthDay(), relativeTo: .now.yearMonthDay())
+            let dayString = self.yearMonthDay().toRelativeFormatString()
             return (dayString, .labelNormal)
         } else if week.contains(self.yearMonthDay()) {
             return (self.daySymbol(), .labelNormal)
@@ -123,6 +121,12 @@ extension Date {
         return formatter
     }()
     
+    static let relativeFormatter: RelativeDateTimeFormatter = {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.dateTimeStyle = .named
+        return formatter
+    }()
+    
     static let lookBookDetailDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy년 M월 d일"
@@ -131,6 +135,10 @@ extension Date {
     
     func toISOFormatString() -> String {
         return Self.isoFormatter.string(from: self)
+    }
+    
+    func toRelativeFormatString() -> String {
+        return Self.relativeFormatter.localizedString(for: self, relativeTo: .now.yearMonthDay())
     }
     
     func toLookBookDetailDateString() -> String {
