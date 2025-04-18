@@ -85,6 +85,7 @@ struct ContentView: View {
         .sheet(item: $coordinator.sheet) { scene in
             coordinator.buildScene(scene)
                 .presentationCornerRadius(20)
+                .presentationBackground(.bgNormal)
         }
         .fullScreenCover(item: $coordinator.fullScreenCover) { scene in
             coordinator.buildScene(scene)
