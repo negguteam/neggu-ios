@@ -42,6 +42,9 @@
 		1338892A2C899BF90023CED5 /* BottomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133889292C899BF90023CED5 /* BottomNavigationBar.swift */; };
 		1338892D2C89E7A70023CED5 /* ClosetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338892C2C89E7A70023CED5 /* ClosetView.swift */; };
 		133A43542DAAD2060090E409 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133A43532DAAD2060090E409 /* GradientView.swift */; };
+		133CCC962DB2CC8A008386A8 /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */; };
+		133CCC982DB2CCBC008386A8 /* UserLookBookStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */; };
+		133CCC9A2DB2CDB7008386A8 /* StyleAnalyzeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */; };
 		133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */; };
 		133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */; };
 		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
@@ -187,6 +190,9 @@
 		1338892C2C89E7A70023CED5 /* ClosetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosetView.swift; sourceTree = "<group>"; };
 		133927392C7F1D3C009E623B /* neggu.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = neggu.entitlements; sourceTree = "<group>"; };
 		133A43532DAAD2060090E409 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
+		133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLookBookStateView.swift; sourceTree = "<group>"; };
+		133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleAnalyzeButton.swift; sourceTree = "<group>"; };
 		133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSheet.swift; sourceTree = "<group>"; };
 		133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheet.swift; sourceTree = "<group>"; };
 		134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteAlert.swift; sourceTree = "<group>"; };
@@ -403,6 +409,9 @@
 				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
 				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
 				13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */,
+				133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */,
+				133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */,
+				133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */,
 			);
 			path = LookBook;
 			sourceTree = "<group>";
@@ -864,6 +873,7 @@
 				1347E76B2DA53F910008E127 /* InsightService.swift in Sources */,
 				1386EAD32C5D3F9C0085655D /* ContentView.swift in Sources */,
 				1318DE572D3F79410077972D /* String+Extension.swift in Sources */,
+				133CCC9A2DB2CDB7008386A8 /* StyleAnalyzeButton.swift in Sources */,
 				1352E0062D5F68D100354234 /* LookBookService.swift in Sources */,
 				1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */,
 				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
@@ -875,6 +885,7 @@
 				1350811A2D38CCBF005E2491 /* SubCategory.swift in Sources */,
 				136C79DA2CEC99D6009DEA76 /* LookBookDateEditView.swift in Sources */,
 				13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */,
+				133CCC962DB2CC8A008386A8 /* UserProfileHeader.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */,
 				1301BC812DB1A6130065864D /* ClothesDetail.swift in Sources */,
@@ -951,6 +962,7 @@
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,
 				13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
+				133CCC982DB2CCBC008386A8 /* UserLookBookStateView.swift in Sources */,
 				13FA3B4A2DAE865000D52EF8 /* ColleageItemView.swift in Sources */,
 				136C78802CEB0584009DEA76 /* BorderedChip.swift in Sources */,
 				1301BC7C2DB1A0DE0065864D /* ClothesRegisterViewModel.swift in Sources */,
