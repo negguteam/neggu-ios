@@ -119,7 +119,7 @@ extension Date {
     
     static let isoFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = [.withFullDate, .withFullTime]
+        formatter.formatOptions = [.withFullDate]
         return formatter
     }()
     
