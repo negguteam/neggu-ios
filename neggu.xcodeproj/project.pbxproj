@@ -45,6 +45,7 @@
 		133CCC962DB2CC8A008386A8 /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */; };
 		133CCC982DB2CCBC008386A8 /* UserLookBookStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */; };
 		133CCC9A2DB2CDB7008386A8 /* StyleAnalyzeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */; };
+		133CCC9C2DB2CFAF008386A8 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC9B2DB2CFAF008386A8 /* UINavigationController+Extension.swift */; };
 		133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */; };
 		133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */; };
 		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
@@ -193,6 +194,7 @@
 		133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLookBookStateView.swift; sourceTree = "<group>"; };
 		133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleAnalyzeButton.swift; sourceTree = "<group>"; };
+		133CCC9B2DB2CFAF008386A8 /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSheet.swift; sourceTree = "<group>"; };
 		133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheet.swift; sourceTree = "<group>"; };
 		134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteAlert.swift; sourceTree = "<group>"; };
@@ -680,6 +682,7 @@
 				13B3757E2D34E795001D009E /* CGSize+Extension.swift */,
 				130970682D40C1420050D091 /* UIImage+Extension.swift */,
 				1309706A2D40C1830050D091 /* UIColor+Extension.swift */,
+				133CCC9B2DB2CFAF008386A8 /* UINavigationController+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -938,6 +941,7 @@
 				1308D2732C62790C003F50F3 /* AuthCoordinator.swift in Sources */,
 				1317A4672CE3688D007264C7 /* OnboardingView.swift in Sources */,
 				139728FE2D7356EC0021B356 /* LookBookDeleteSheet.swift in Sources */,
+				133CCC9C2DB2CFAF008386A8 /* UINavigationController+Extension.swift in Sources */,
 				1364C8762C61281200F67E3C /* UserDefaultsKey.swift in Sources */,
 				13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */,
 				136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */,
