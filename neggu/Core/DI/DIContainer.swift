@@ -11,25 +11,81 @@ public final class DIContainer {
     
     public static let shared = DIContainer()
     
-    private var factories = [String: () -> Any]()
+    private var services = [ObjectIdentifier: Any]()
     
     
     private init() { }
     
     
-    public func register<T>(_ serviceType: T.Type, _ object: @escaping () -> T) {
-        let key = String(describing: serviceType)
-        factories[key] = object
+    public func register<Service>(
+        _ serviceType: Service.Type,
+        _ factory: @escaping () -> Service
+    ) {
+        let key = ObjectIdentifier(serviceType)
+        services[key] = factory()
     }
     
-    public func resolve<T>(_ serviceType: T.Type) -> T {
-        let key = String(describing: serviceType)
+    public func register<Service, Parameter>(
+        _ serviceType: Service.Type,
+        _ factory: @escaping (Parameter) -> Service
+    ) {
+        let key = ObjectIdentifier(serviceType)
+        services[key] = factory
+    }
+    
+    public func register<Service, Parameter1, Parameter2>(
+        _ serviceType: Service.Type,
+        _ factory: @escaping (Parameter1, Parameter2) -> Service
+    ) {
+        let key = ObjectIdentifier(serviceType)
+        services[key] = factory
+    }
+    
+    
+    public func resolve<Service>(_ serviceType: Service.Type) -> Service {
+        let key = ObjectIdentifier(serviceType)
         
-        guard let factory = factories[key] else {
+        guard let service = services[key] as? () -> Service else {
             preconditionFailure("\(key) should be registered!")
         }
         
-        return factory() as! T
+        return service()
+    }
+    
+    public func resolve<Service, P>(_ serviceType: Service.Type, parameter: P) -> Service {
+        let key = ObjectIdentifier(serviceType)
+        
+        guard let service = services[key] as? (P) -> Service else {
+            preconditionFailure("\(key) should be registered!")
+        }
+        
+        return service(parameter)
+    }
+    
+    public func resolve<Service, P1, P2>(
+        _ serviceType: Service.Type,
+        parameters p1: P1, _ p2: P2
+    ) -> Service {
+        let key = ObjectIdentifier(serviceType)
+        
+        guard let service = services[key] as? (P1, P2) -> Service else {
+            preconditionFailure("\(key) should be registered!")
+        }
+        
+        return service(p1, p2)
+    }
+    
+    public func resolve<Service, P1, P2, P3>(
+        _ serviceType: Service.Type,
+        parameters p1: P1, _ p2: P2, _ p3: P3
+    ) -> Service {
+        let key = ObjectIdentifier(serviceType)
+        
+        guard let service = services[key] as? (P1, P2, P3) -> Service else {
+            preconditionFailure("\(key) should be registered!")
+        }
+        
+        return service(p1, p2, p3)
     }
     
 }
