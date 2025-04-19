@@ -178,9 +178,9 @@ struct NegguCTAButton: View {
                         }
                         .animation(.easeInOut, value: showInviteCodeCompletion)
                         .onAppear {
-                            lookBookViewModel.negguInvite { invite in
-                                self.generatedInviteCode = invite.id
-                            }
+                            lookBookViewModel.send(action: .generateNeggu(completion: { result in
+                                generatedInviteCode = result.id
+                            }))
                         }
                     case .acceptInvite:
                         VStack(alignment: .leading, spacing: 20) {

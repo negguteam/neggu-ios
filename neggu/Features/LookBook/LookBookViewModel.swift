@@ -10,13 +10,6 @@ import Combine
 
 final class LookBookViewModel: ObservableObject {
         
-    // LookBookRegisterView
-    @Published var lookBookClothes: [ClothesEntity] = []
-    @Published var selectedCategory: Category = .NONE
-    @Published var selectedColor: ColorFilter?
-    @Published private(set) var clothesPage: Int = 0
-    @Published private(set) var canClothesPagenation: Bool = true
-    
     private let userService: UserService = DefaultUserService()
     private let closetService: ClosetService = DefaultClosetService()
     private let lookBookService: LookBookService = DefaultLookBookService()
@@ -60,9 +53,10 @@ final class LookBookViewModel: ObservableObject {
             print(nickname)
         case .deleteLookBookList(let idList):
             print(idList)
+        case .generateNeggu(let completion):
+            negguInvite(completion: completion)
         }
     }
-    
     
     private func fetchUserProfile() {
         userService.profile()
@@ -98,7 +92,7 @@ final class LookBookViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    func deleteLookBook(id: String, completion: @escaping () -> Void) {
+    private func deleteLookBook(id: String, completion: @escaping () -> Void) {
         lookBookService.deleteLookBook(id: id)
             .sink { event in
                 print("LookBookDetailView:", event)
@@ -118,85 +112,13 @@ final class LookBookViewModel: ObservableObject {
         canPagenation = true
     }
     
-    func registerLookBook(
-        image: Data,
-        request: [LookBookClothesRegisterEntity],
-        inviteCode: String = "",
-        completion: @escaping () -> Void
-    ) {
-        lookBookService.register(
-            image: image,
-            request: request,
-            inviteCode: inviteCode
-        ).sink { event in
-            print("LookBookRegisterView", event)
-        } receiveValue: { result in
-            completion()
-        }.store(in: &bag)
-    }
-    
-    func negguInvite(completion: @escaping (NegguInviteEntity) -> Void) {
+    private func negguInvite(completion: @escaping (NegguInviteEntity) -> Void) {
         lookBookService.negguInvite()
             .sink { event in
                 print("LookBookMainView:", event)
             } receiveValue: { result in
                 completion(result)
             }.store(in: &bag)
-    }
-    
-    func getLookBookClothes(inviteCode: String) {
-        if !canClothesPagenation { return }
-        canClothesPagenation = false
-        
-        var parameters: [String: Any] = ["page": clothesPage, "size": 6]
-        
-        if selectedCategory != .UNKNOWN && selectedCategory != .NONE {
-            parameters[inviteCode.isEmpty ? "filterCategory" : "category"] = selectedCategory.id
-        }
-        
-        if let color = selectedColor {
-            parameters["colorGroup"] = color.id
-        } else {
-            parameters["colorGroup"] = "ALL"
-        }
-        
-        if inviteCode.isEmpty {
-            lookBookService.lookbookClothes(parameters: parameters)
-                .sink { event in
-                    print("LookBookRegisterView:", event)
-                } receiveValue: { result in
-                    self.canClothesPagenation = !result.last
-                    self.clothesPage += result.last ? 0 : 1
-                    self.lookBookClothes += result.content
-                }.store(in: &bag)
-        } else {
-            parameters["inviteCode"] = inviteCode
-            
-            closetService.clothesInviteList(parameters: parameters)
-                .sink { event in
-                    print("LookBookRegisterView:", event)
-                } receiveValue: { result in
-                    self.canClothesPagenation = !result.last
-                    self.clothesPage += result.last ? 0 : 1
-                    self.lookBookClothes += result.content
-                }.store(in: &bag)
-        }
-    }
-    
-    func filteredClothes(inviteCode: String) {
-        $selectedCategory.combineLatest($selectedColor)
-            .removeDuplicates { $0 == $1 }
-            .throttle(for: .seconds(0.5), scheduler: DispatchQueue.main, latest: true)
-            .sink { [weak self] category, color in
-                self?.resetLookBookClothes()
-                self?.getLookBookClothes(inviteCode: inviteCode)
-            }.store(in: &bag)
-    }
-    
-    func resetLookBookClothes() {
-        clothesPage = 0
-        canClothesPagenation = true
-        lookBookClothes.removeAll()
     }
     
 }
@@ -214,6 +136,7 @@ extension LookBookViewModel {
         case refresh
         case editNickname(String)
         case deleteLookBookList([String])
+        case generateNeggu(completion: (NegguInviteEntity) -> Void)
     }
     
     enum ProfileState {

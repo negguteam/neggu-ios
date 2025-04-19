@@ -42,11 +42,11 @@ struct LookBookDetailView: View {
                         
                         Spacer()
                         
-                        HStack(spacing: 12) {
-                            Text("데이트룩")
-                                .negguFont(.body1b)
-                        }
-                        .foregroundStyle(.labelNormal)
+//                        HStack(spacing: 12) {
+//                            Text("데이트룩")
+//                                .negguFont(.body1b)
+//                        }
+//                        .foregroundStyle(.labelNormal)
                         
                         Spacer()
                         
@@ -90,7 +90,8 @@ struct LookBookDetailView: View {
                                                 .clipShape(.circle)
                                             
                                             HStack(spacing: 0) {
-                                                Text(decorator.accountId)
+//                                                Text(decorator.accountId)
+                                                Text("친구")
                                                     .foregroundStyle(.negguSecondary)
                                                     .lineLimit(1)
                                                 
@@ -226,7 +227,7 @@ struct LookBookDetailView: View {
             viewModel.send(action: .onTapDelete(
                 id: lookBookID,
                 completion: {
-//                    lookBookViewModel.resetLookBookList()
+                    lookBookViewModel.send(action: .refresh)
                     showDeleteAlert = false
                     coordinator.pop()
                 }

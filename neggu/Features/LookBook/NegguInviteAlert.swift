@@ -138,9 +138,9 @@ struct NegguInviteAlert: View {
         .padding(.horizontal, 48)
         .animation(.easeInOut, value: showCompletion)
         .onAppear {
-            viewModel.negguInvite { invite in
-                self.inviteCode = invite.id
-            }
+            viewModel.send(action: .generateNeggu(completion: { result in
+                inviteCode = result.id
+            }))
         }
     }
 }

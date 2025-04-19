@@ -5,7 +5,7 @@
 //  Created by 유지호 on 9/6/24.
 //
 
-import SwiftUI
+import Foundation
 
 struct ClosetEntity: Decodable {
     let totalElements: Int
@@ -58,17 +58,6 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     let isPurchase: Bool
     let createdAt: String
     let modifiedAt: String
-    
-    func toLookBookItem(image: UIImage, offset: CGSize = .zero, zIndex: CGFloat = .zero) -> LookBookClothesItem {
-        return .init(
-            id: self.id,
-            imageUrl: self.imageUrl,
-            image: image,
-            offset: offset,
-            lastOffset: offset,
-            zIndex: zIndex
-        )
-    }
 }
 
 
