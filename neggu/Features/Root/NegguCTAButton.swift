@@ -207,7 +207,7 @@ struct NegguCTAButton: View {
                                 Button {
                                     closetViewModel.checkInviteCode(inviteCode) { isValid in
                                         if isValid {
-                                            coordinator.fullScreenCover = .lookbookEdit(inviteCode: inviteCode)
+                                            coordinator.fullScreenCover = .lookbookRegister(inviteCode: inviteCode)
                                             isExpanded = false
                                         } else {
                                             showInviteCodeValidation = true

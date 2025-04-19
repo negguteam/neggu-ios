@@ -132,7 +132,7 @@
 		13DC5E762C64AB0900DB5600 /* PresentationDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */; };
 		13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E772C64AB1100DB5600 /* DIContainer.swift */; };
 		13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */; };
-		13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */; };
+		13EE9CD82C8C3F9200FAEB36 /* LookBookRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */; };
 		13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */; };
 		13F8ABD42D19D5A800E08057 /* ExpendableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */; };
 		13F8ABD62D19D91C00E08057 /* BorderedRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */; };
@@ -282,7 +282,7 @@
 		13DC5E742C64AB0900DB5600 /* PresentationDependency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationDependency.swift; sourceTree = "<group>"; };
 		13DC5E772C64AB1100DB5600 /* DIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEntity.swift; sourceTree = "<group>"; };
-		13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEditView.swift; sourceTree = "<group>"; };
+		13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookRegisterView.swift; sourceTree = "<group>"; };
 		13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpendableTextView.swift; sourceTree = "<group>"; };
 		13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedRectangle.swift; sourceTree = "<group>"; };
@@ -408,7 +408,7 @@
 			children = (
 				13DBA7E82CC434DD003A10AE /* LookBookMainView.swift */,
 				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
-				13EE9CD72C8C3F9200FAEB36 /* LookBookEditView.swift */,
+				13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */,
 				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
 				136C79D92CEC99D6009DEA76 /* LookBookDateSheet.swift */,
 				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
@@ -886,7 +886,7 @@
 				1352E0062D5F68D100354234 /* LookBookService.swift in Sources */,
 				1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */,
 				133CCC9E2DB2DE9F008386A8 /* View+Extension.swift in Sources */,
-				13EE9CD82C8C3F9200FAEB36 /* LookBookEditView.swift in Sources */,
+				13EE9CD82C8C3F9200FAEB36 /* LookBookRegisterView.swift in Sources */,
 				13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */,
 				1347E7692DA53D9C0008E127 /* InsightAPI.swift in Sources */,
 				13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */,

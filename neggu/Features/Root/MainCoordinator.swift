@@ -83,8 +83,8 @@ final class MainCoordinator: Coordinator {
             
         case .lookbook:
             LookBookMainView()
-        case .lookbookEdit(let inviteCode, let editingClothes):
-            LookBookEditView(inviteCode: inviteCode, editingClothes: editingClothes)
+        case .lookbookRegister(let inviteCode, let editingClothes):
+            LookBookRegisterView(inviteCode: inviteCode, editingClothes: editingClothes)
         case .lookbookDetail(let lookBookID):
             LookBookDetailView(lookBookID: lookBookID)
         case .lookbookDelete:
@@ -112,7 +112,7 @@ final class MainCoordinator: Coordinator {
         case colorSheet(color: Binding<ColorFilter?>)
         
         case lookbook
-        case lookbookEdit(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
+        case lookbookRegister(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
         case lookbookDelete
         case lookbookDateSheet(date: Binding<Date?>)

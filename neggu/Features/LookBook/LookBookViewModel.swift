@@ -129,7 +129,7 @@ final class LookBookViewModel: ObservableObject {
             request: request,
             inviteCode: inviteCode
         ).sink { event in
-            print("LookBookEditView", event)
+            print("LookBookRegisterView", event)
         } receiveValue: { result in
             completion()
         }.store(in: &bag)
@@ -163,7 +163,7 @@ final class LookBookViewModel: ObservableObject {
         if inviteCode.isEmpty {
             lookBookService.lookbookClothes(parameters: parameters)
                 .sink { event in
-                    print("LookBookEditView:", event)
+                    print("LookBookRegisterView:", event)
                 } receiveValue: { result in
                     self.canClothesPagenation = !result.last
                     self.clothesPage += result.last ? 0 : 1
@@ -174,7 +174,7 @@ final class LookBookViewModel: ObservableObject {
             
             closetService.clothesInviteList(parameters: parameters)
                 .sink { event in
-                    print("LookBookEditView:", event)
+                    print("LookBookRegisterView:", event)
                 } receiveValue: { result in
                     self.canClothesPagenation = !result.last
                     self.clothesPage += result.last ? 0 : 1

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LookBookEditView: View {
+struct LookBookRegisterView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var viewModel: LookBookViewModel
     

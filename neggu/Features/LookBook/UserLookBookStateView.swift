@@ -42,7 +42,7 @@ struct UserLookBookStateView: View {
                 Button {
                     switch viewModel.output.lookBookState {
                     case .needLookBook:
-                        coordinator.fullScreenCover = .lookbookEdit()
+                        coordinator.fullScreenCover = .lookbookRegister()
                     default:
                         coordinator.isGnbOpened = true
                     }
