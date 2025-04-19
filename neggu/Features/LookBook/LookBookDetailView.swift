@@ -6,221 +6,213 @@
 //
 
 import SwiftUI
-import Combine
 
 struct LookBookDetailView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
-    @EnvironmentObject private var viewModel: LookBookViewModel
+    @EnvironmentObject private var lookBookViewModel: LookBookViewModel
+    @StateObject private var viewModel: LookBookDetailViewModel = .init()
     
-    @State private var lookBookState: LookBookState = .loading
     @State private var selectedDate: Date?
     @State private var isPublic: Bool = false
     
-    @State private var showCalendar: Bool = false
     @State private var showDeleteAlert: Bool = false
     
     let lookBookID: String
     
     var body: some View {
-        VStack(spacing: 0) {
-            switch lookBookState {
-            case .loading:
-                ProgressView()
-                    .onAppear {
-                        viewModel.getLookBookDetail(id: lookBookID) { lookBook in
-                            lookBookState = .complete(lookBook: lookBook)
+        GeometryReader {
+            let size = $0.size
+            
+            VStack(spacing: 0) {
+                switch viewModel.state {
+                case .initial:
+                    ProgressView()
+                        .onAppear {
+                            viewModel.send(action: .fetchLookBook(id: lookBookID))
                         }
-                    }
-            case .complete(let lookBook):
-                HStack {
-                    Button {
-                        coordinator.pop()
-                    } label: {
-                        Image(.chevronLeft)
-                            .foregroundStyle(.labelNormal)
-                            .frame(width: 44, height: 44)
-                    }
-                    
-                    Spacer()
-                    
-                    HStack(spacing: 12) {
-                        Text("데이트룩")
-                            .negguFont(.body1b)
-                        
+                case .loaded(let lookBook):
+                    HStack {
                         Button {
-                            
+                            coordinator.pop()
                         } label: {
-                            Image(.edit)
-                                .frame(width: 24, height: 24)
+                            Image(.chevronLeft)
+                                .foregroundStyle(.labelNormal)
+                                .frame(width: 44, height: 44)
                         }
-                    }
-                    .foregroundStyle(.labelNormal)
-                    
-                    Spacer()
-                    
-                    Menu {
-                        Button("이미지로 저장하기") {
-                            Task {
-                                guard let lookBookImage = await lookBook.imageUrl.toImage() else { return }
-                                UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
+                        
+                        Spacer()
+                        
+                        HStack(spacing: 12) {
+                            Text("데이트룩")
+                                .negguFont(.body1b)
+                        }
+                        .foregroundStyle(.labelNormal)
+                        
+                        Spacer()
+                        
+                        Menu {
+                            Button("이미지로 저장하기") {
+                                Task {
+                                    guard let lookBookImage = await lookBook.imageUrl.toImage() else { return }
+                                    UIImageWriteToSavedPhotosAlbum(lookBookImage, nil, nil, nil)
+                                }
                             }
-                        }
-                        
-                        Button("편집하기") {
-                            let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
-                            coordinator.fullScreenCover = .lookbookEdit(editingClothes: editingClothes)
-                        }
-                        
-                        Button("삭제하기", role: .destructive) {
-                            showDeleteAlert = true
-                        }
-                    } label: {
-                        Image(.hamburgerHorizontal)
-                            .foregroundStyle(.labelNormal)
-                            .frame(width: 44, height: 44)
-                    }
-                }
-                .frame(height: 44)
-                .padding(.horizontal, 20)
-                .background(.bgNormal)
-                
-                ScrollView {
-                    VStack(spacing: 24) {
-                        VStack {
-                            CachedAsyncImage(lookBook.imageUrl)
-                                .frame(maxHeight: .infinity)
                             
-                            HStack {
-                                if let decorator = lookBook.decorator {
-                                    HStack(spacing: 12) {
-                                        AsyncImage(url: URL(string: decorator.imageUrl))
-                                            .frame(width: 36, height: 36)
-                                            .clipShape(.circle)
-                                        
-                                        HStack(spacing: 0) {
-                                            Text(decorator.accountId)
-                                                .foregroundStyle(.negguSecondary)
-                                                .lineLimit(1)
+                            Button("편집하기") {
+                                let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
+                                coordinator.fullScreenCover = .lookbookEdit(editingClothes: editingClothes)
+                            }
+                            
+                            Button("삭제하기", role: .destructive) {
+                                showDeleteAlert = true
+                            }
+                        } label: {
+                            Image(.hamburgerHorizontal)
+                                .foregroundStyle(.labelNormal)
+                                .frame(width: 44, height: 44)
+                        }
+                    }
+                    .frame(height: 44)
+                    .padding(.horizontal, 20)
+                    .background(.bgNormal)
+                    
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            VStack {
+                                CachedAsyncImage(lookBook.imageUrl)
+                                    .frame(maxHeight: .infinity)
+                                
+                                HStack {
+                                    if let decorator = lookBook.decorator {
+                                        HStack(spacing: 12) {
+                                            CachedAsyncImage(decorator.imageUrl)
+                                                .frame(width: 36, height: 36)
+                                                .clipShape(.circle)
                                             
-                                            Text("님이 꾸며줬어요")
-                                                .fixedSize()
+                                            HStack(spacing: 0) {
+                                                Text(decorator.accountId)
+                                                    .foregroundStyle(.negguSecondary)
+                                                    .lineLimit(1)
+                                                
+                                                Text("님이 꾸며줬어요")
+                                                    .fixedSize()
+                                            }
+                                            .negguFont(.body2b)
+                                        }
+                                        .frame(height: 56)
+                                        .padding(.horizontal, 14)
+                                        .background(.bgNormal)
+                                        .clipShape(.rect(cornerRadius: 16))
+                                    } else {
+                                        Spacer()
+                                    }
+                                    
+                                    Button {
+                                        coordinator.sheet = .lookbookDateSheet(date: $selectedDate)
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            Image(.calendar)
+                                                .frame(width: 24, height: 24)
+                                            
+                                            if let selectedDate {
+                                                Text(selectedDate.monthDayFormatted())
+                                            }
                                         }
                                         .negguFont(.body2b)
-                                    }
-                                    .frame(height: 56)
-                                    .padding(.horizontal, 14)
-                                    .background(.bgNormal)
-                                    .clipShape(.rect(cornerRadius: 16))
-                                } else {
-                                    Spacer()
-                                }
-                                
-                                Button {
-                                    coordinator.sheet = .lookbookDateSheet(date: $selectedDate)
-                                } label: {
-                                    HStack(spacing: 4) {
-                                        Image(.calendar)
-                                            .frame(width: 24, height: 24)
-                                        
-                                        if let selectedDate {
-                                            Text(selectedDate.monthDayFormatted())
-                                        }
-                                    }
-                                    .negguFont(.body2b)
-                                    .foregroundStyle(selectedDate == nil ? .labelInactive : .negguSecondary)
-                                    .padding(.horizontal, 12)
-                                    .frame(width: selectedDate == nil ? 56 : nil, height: 56)
-                                    .background(.bgNormal)
-                                    .clipShape(.rect(cornerRadius: 16))
-                                }
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 24)
-                        .containerRelativeFrame(.horizontal)
-                        .containerRelativeFrame(.vertical) { length, _ in length * 0.9 }
-                        .background(.white)
-                        .clipShape(.rect(cornerRadius: 20))
-                        
-                        VStack(spacing: 24) {
-                            Text((lookBook.modifiedAt.toISOFormatDate()?.toLookBookDetailDateString() ?? "") + " 편집됨")
-                                .negguFont(.caption)
-                                .foregroundStyle(.black.opacity(0.2))
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                            
-                            VStack {
-                                Text("더보기")
-                                    .negguFont(.title3)
-                                    .foregroundStyle(.labelNormal)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                
-                                LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
-                                    ForEach(lookBook.lookBookClothes) { clothes in
-                                        Button {
-                                            coordinator.sheet = .clothesDetail(id: clothes.id)
-                                        } label: {
-                                            CachedAsyncImage(clothes.imageUrl)
-                                                .aspectRatio(0.8, contentMode: .fit)
-                                        }
+                                        .foregroundStyle(selectedDate == nil ? .labelInactive : .negguSecondary)
+                                        .padding(.horizontal, 12)
+                                        .frame(width: selectedDate == nil ? 56 : nil, height: 56)
+                                        .background(.bgNormal)
+                                        .clipShape(.rect(cornerRadius: 16))
                                     }
                                 }
                             }
-                            .padding(.horizontal, 28)
-                            .padding(.vertical, 32)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 24)
+                            .frame(height: size.height * 0.8)
                             .background(.white)
-                            .clipShape(.rect(cornerRadius: 16))
+                            .clipShape(.rect(cornerRadius: 20))
                             
-                            Toggle("다른사람에게 공개", isOn: $isPublic)
-                                .negguFont(.body2b)
-                                .foregroundStyle(.labelAssistive)
-                                .tint(.safe)
+                            VStack(spacing: 24) {
+                                Text((lookBook.modifiedAt.toISOFormatDate()?.toLookBookDetailDateString() ?? "") + " 편집됨")
+                                    .negguFont(.caption)
+                                    .foregroundStyle(.black.opacity(0.2))
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                
+                                VStack {
+                                    Text("더보기")
+                                        .negguFont(.title3)
+                                        .foregroundStyle(.labelNormal)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    
+                                    LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
+                                        ForEach(lookBook.lookBookClothes) { clothes in
+                                            Button {
+                                                coordinator.sheet = .clothesDetail(id: clothes.id)
+                                            } label: {
+                                                CachedAsyncImage(clothes.imageUrl)
+                                                    .aspectRatio(1, contentMode: .fit)
+                                            }
+                                        }
+                                    }
+                                }
                                 .padding(.horizontal, 28)
-                                .padding(.vertical, 10)
+                                .padding(.vertical, 32)
                                 .background(.white)
                                 .clipShape(.rect(cornerRadius: 16))
-                            
-                            HStack {
-                                Button {
+                                
+                                Toggle("다른사람에게 공개", isOn: $isPublic)
+                                    .negguFont(.body2b)
+                                    .foregroundStyle(.labelAssistive)
+                                    .tint(.safe)
+                                    .padding(.horizontal, 28)
+                                    .padding(.vertical, 10)
+                                    .background(.white)
+                                    .clipShape(.rect(cornerRadius: 16))
+                                
+                                HStack {
+                                    Button {
+                                        
+                                    } label: {
+                                        Image(.share)
+                                            .foregroundStyle(.white)
+                                            .frame(width: 56, height: 56)
+                                            .background {
+                                                RoundedRectangle(cornerRadius: 16)
+                                                    .fill(.black)
+                                            }
+                                    }
                                     
-                                } label: {
-                                    Image(.share)
+                                    Button {
+                                        
+                                    } label: {
+                                        HStack(spacing: 10) {
+                                            Image("neggu_star")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 24, height: 24)
+                                            
+                                            Text("네가 좀 꾸며줘!")
+                                                .negguFont(.body1b)
+                                        }
                                         .foregroundStyle(.white)
-                                        .frame(width: 56, height: 56)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 56)
                                         .background {
                                             RoundedRectangle(cornerRadius: 16)
-                                                .fill(.black)
+                                                .fill(.negguSecondary)
                                         }
-                                }
-                                
-                                Button {
-                                    
-                                } label: {
-                                    HStack(spacing: 10) {
-                                        Image("neggu_star")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 24, height: 24)
-                                        
-                                        Text("네가 좀 꾸며줘!")
-                                            .negguFont(.body1b)
-                                    }
-                                    .foregroundStyle(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 56)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 16)
-                                            .fill(.negguSecondary)
                                     }
                                 }
                             }
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 20)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
+                        .padding(.top, 12)
                     }
-                    .padding(.top, 12)
+                    .scrollIndicators(.hidden)
+                    .background(.bgNormal)
                 }
-                .scrollIndicators(.hidden)
-                .background(.bgNormal)
             }
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -231,14 +223,14 @@ struct LookBookDetailView: View {
             leftContent: "취소하기",
             rightContent: "삭제하기"
         ) {
-            viewModel.deleteLookBook(id: lookBookID) {
-                coordinator.pop()
-            }
+            viewModel.send(action: .onTapDelete(
+                id: lookBookID,
+                completion: {
+//                    lookBookViewModel.resetLookBookList()
+                    showDeleteAlert = false
+                    coordinator.pop()
+                }
+            ))
         }
-    }
-    
-    enum LookBookState {
-        case loading
-        case complete(lookBook: LookBookEntity)
     }
 }

@@ -9,46 +9,113 @@ import Foundation
 import Combine
 
 final class LookBookViewModel: ObservableObject {
-    
-    @Published private(set) var profileState: ProfileState = .unavailable
-    @Published private(set) var lookbookState: LookBookState = .available
-    
-    @Published private(set) var lookBookList: [LookBookEntity] = []
+        
+    // LookBookRegisterView
     @Published var lookBookClothes: [ClothesEntity] = []
-    
     @Published var selectedCategory: Category = .NONE
     @Published var selectedColor: ColorFilter?
-    
-    @Published private(set) var page: Int = 0
     @Published private(set) var clothesPage: Int = 0
-    @Published private(set) var canPagenation: Bool = true
     @Published private(set) var canClothesPagenation: Bool = true
     
     private let userService: UserService = DefaultUserService()
     private let closetService: ClosetService = DefaultClosetService()
     private let lookBookService: LookBookService = DefaultLookBookService()
     
+    private let input = PassthroughSubject<Action, Never>()
+    
+    @Published private(set) var output = State()
+    
     private var bag = Set<AnyCancellable>()
     
+    private var page: Int = 0
+    private var canPagenation: Bool = true
     
-    init() { }
+    
+    init() {
+        fetchUserProfile()
+        
+        input
+            .throttle(for: .seconds(0.5), scheduler: RunLoop.main, latest: true)
+            .sink { self.transform(from: $0) }
+            .store(in: &bag)
+    }
+    
+    deinit {
+        bag.removeAll()
+    }
     
     
-    func fetchProfile() {
+    func send(action: Action) {
+        input.send(action)
+    }
+    
+    private func transform(from action: Action) {
+        switch action {
+        case .fetchLookBookList:
+            getLookBookList()
+        case .refresh:
+            fetchUserProfile()
+            resetLookBookList()
+        case .editNickname(let nickname):
+            print(nickname)
+        case .deleteLookBookList(let idList):
+            print(idList)
+        }
+    }
+    
+    
+    private func fetchUserProfile() {
         userService.profile()
             .sink { event in
-                print("UserProfile:", event)
-            } receiveValue: { profile in
-                self.profileState = .available(profile: profile)
+                print("LookBookMainView:", event)
+            } receiveValue: { [weak self] profile in
+                self?.output.profileState = .loaded(profile)
                 
                 if profile.clothes.isEmpty {
-                    self.lookbookState = .needClothes
-                } else if profile.lookBooks.isEmpty {
-                    self.lookbookState = .none
+                    self?.output.lookBookState = .needClothes
                 } else {
-                    self.lookbookState = .available
+                    self?.output.lookBookState = .needLookBook
                 }
             }.store(in: &bag)
+    }
+    
+    private func getLookBookList() {
+        if !canPagenation { return }
+        canPagenation = false
+        
+        lookBookService.lookbookList(parameters: ["page": page, "size": 6])
+            .sink { event in
+                print("LookBookMainView:", event)
+            } receiveValue: { [weak self] result in
+                self?.canPagenation = !result.last
+                self?.page += !result.last ? 1 : 0
+                self?.output.lookBookList += result.content
+                
+                if result.first {
+                    guard let lookBook = self?.output.lookBookList.first else { return }
+                    self?.output.lookBookState = .available(lookBook)
+                }
+            }.store(in: &bag)
+    }
+    
+    func deleteLookBook(id: String, completion: @escaping () -> Void) {
+        lookBookService.deleteLookBook(id: id)
+            .sink { event in
+                print("LookBookDetailView:", event)
+            } receiveValue: { lookBook in
+                self.resetLookBookList()
+                completion()
+            }.store(in: &bag)
+    }
+    
+    private func resetLookBookList() {
+        resetPage()
+        output.lookBookList.removeAll()
+    }
+    
+    private func resetPage() {
+        page = 0
+        canPagenation = true
     }
     
     func registerLookBook(
@@ -74,29 +141,6 @@ final class LookBookViewModel: ObservableObject {
                 print("LookBookMainView:", event)
             } receiveValue: { result in
                 completion(result)
-            }.store(in: &bag)
-    }
-    
-    func getLookBookList() {
-        if !canPagenation { return }
-        canPagenation = false
-        
-        lookBookService.lookbookList(parameters: ["page": page, "size": 6])
-            .sink { event in
-                print("LookBookMainView:", event)
-            } receiveValue: { result in
-                self.canPagenation = !result.last
-                self.page += !result.last ? 1 : 0
-                self.lookBookList += result.content
-            }.store(in: &bag)
-    }
-    
-    func getLookBookDetail(id: String, completion: @escaping (LookBookEntity) -> Void) {
-        lookBookService.lookbookDetail(id: id)
-            .sink { event in
-                print("LookBookDetailView:", event)
-            } receiveValue: { lookBook in
-                completion(lookBook)
             }.store(in: &bag)
     }
     
@@ -149,41 +193,39 @@ final class LookBookViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    func deleteLookBook(id: String, completion: @escaping () -> Void) {
-        lookBookService.deleteLookBook(id: id)
-            .sink { event in
-                print("LookBookDetailView:", event)
-            } receiveValue: { lookBook in
-                self.resetLookBookList()
-                completion()
-            }.store(in: &bag)
-    }
-    
-    func resetLookBookList() {
-        resetPage()
-        lookBookList.removeAll()
-    }
-    
     func resetLookBookClothes() {
         clothesPage = 0
         canClothesPagenation = true
         lookBookClothes.removeAll()
     }
     
-    func resetPage() {
-        page = 0
-        canPagenation = true
+}
+
+extension LookBookViewModel {
+    
+    struct State {
+        var profileState: ProfileState = .initial
+        var lookBookState: LookBookState = .initial
+        var lookBookList: [LookBookEntity] = []
     }
     
- 
+    enum Action {
+        case fetchLookBookList
+        case refresh
+        case editNickname(String)
+        case deleteLookBookList([String])
+    }
+    
     enum ProfileState {
-        case available(profile: UserProfileEntity)
-        case unavailable
+        case initial
+        case loaded(UserProfileEntity)
     }
     
     enum LookBookState {
-        case available
-        case none
+        case initial
         case needClothes
+        case needLookBook
+        case available(LookBookEntity)
     }
+    
 }

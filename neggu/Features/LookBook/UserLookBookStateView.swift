@@ -16,14 +16,12 @@ struct UserLookBookStateView: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            switch viewModel.lookbookState {
-            case .available:
+            switch viewModel.output.lookBookState {
+            case .available(let lookBook):
                 RoundedRectangle(cornerRadius: 16)
                     .fill(.white)
                     .overlay {
-                        Image(.dummyLookbook)
-                            .resizable()
-                            .scaledToFit()
+                        CachedAsyncImage(lookBook.imageUrl)
                             .overlay(alignment: .bottom) {
                                 Text("내일 입을 룩북")
                                     .negguFont(.body3b)
@@ -37,11 +35,15 @@ struct UserLookBookStateView: View {
                                     .padding(.bottom, 12)
                             }
                     }
+                    .onTapGesture {
+                        coordinator.push(.lookbookDetail(lookBookID: lookBook.id))
+                    }
             default:
                 Button {
-                    if viewModel.lookbookState == .none {
+                    switch viewModel.output.lookBookState {
+                    case .needLookBook:
                         coordinator.fullScreenCover = .lookbookEdit()
-                    } else {
+                    default:
                         coordinator.isGnbOpened = true
                     }
                 } label: {
@@ -163,7 +165,10 @@ struct UserLookBookStateView: View {
         }
     }
     
-    var lookBookStateString: String {
-        viewModel.lookbookState == .none ? "룩북을\n등록해주세요!" : "의상을 먼저\n등록해주세요!"
+    private var lookBookStateString: String {
+        switch viewModel.output.lookBookState {
+        case .needLookBook: "룩북을\n등록해주세요!"
+        default: "의상을 먼저\n등록해주세요!"
+        }
     }
 }

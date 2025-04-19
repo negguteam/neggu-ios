@@ -47,6 +47,7 @@
 		133CCC9A2DB2CDB7008386A8 /* StyleAnalyzeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */; };
 		133CCC9C2DB2CFAF008386A8 /* UINavigationController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC9B2DB2CFAF008386A8 /* UINavigationController+Extension.swift */; };
 		133CCC9E2DB2DE9F008386A8 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC9D2DB2DE9F008386A8 /* View+Extension.swift */; };
+		133CCCA02DB2EAE2008386A8 /* LookBookDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC9F2DB2EAE2008386A8 /* LookBookDetailViewModel.swift */; };
 		133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */; };
 		133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */; };
 		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
@@ -197,6 +198,7 @@
 		133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleAnalyzeButton.swift; sourceTree = "<group>"; };
 		133CCC9B2DB2CFAF008386A8 /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		133CCC9D2DB2DE9F008386A8 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		133CCC9F2DB2EAE2008386A8 /* LookBookDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDetailViewModel.swift; sourceTree = "<group>"; };
 		133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoodSheet.swift; sourceTree = "<group>"; };
 		133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandSheet.swift; sourceTree = "<group>"; };
 		134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteAlert.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
 				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
 				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
+				133CCC9F2DB2EAE2008386A8 /* LookBookDetailViewModel.swift */,
 				13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */,
 				133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */,
 				133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */,
@@ -968,7 +971,8 @@
 				13659CEB2C5FBFA100BB6B91 /* Util.swift in Sources */,
 				13659CD92C5F612200BB6B91 /* BaseAPI.swift in Sources */,
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,
-				13DBA7E92CC434DD003A10AE /* LookBookView.swift in Sources */,
+				13DBA7E92CC434DD003A10AE /* LookBookMainView.swift in Sources */,
+				133CCCA02DB2EAE2008386A8 /* LookBookDetailViewModel.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
 				133CCC982DB2CCBC008386A8 /* UserLookBookStateView.swift in Sources */,
 				13FA3B4A2DAE865000D52EF8 /* ColleageItemView.swift in Sources */,
