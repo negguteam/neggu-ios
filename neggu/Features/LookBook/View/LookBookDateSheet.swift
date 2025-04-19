@@ -1,5 +1,5 @@
 //
-//  LookBookDateEditView.swift
+//  LookBookDateSheet.swift
 //  neggu
 //
 //  Created by 유지호 on 11/19/24.
@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-struct LookBookDateEditView: View {
+struct LookBookDateSheet: View {
     @Environment(\.dismiss) private var dismiss
+    
     @State private var selectedMonth: Date = .currentMonth
+    @State private var sheetHeight: CGFloat = .zero
+    
     @Binding var selectedDate: Date?
     
     var selectedMonthDates: [Day] {
@@ -139,6 +142,8 @@ struct LookBookDateEditView: View {
             }
             .foregroundStyle(.labelNormal)
         }
+        .heightChangePreference { sheetHeight = $0 }
+        .presentationDetents([.height(sheetHeight)])
     }
     
     func updateMonth(_ increment: Bool = true) {
@@ -211,5 +216,5 @@ struct LookBookDateEditView: View {
 }
 
 #Preview {
-    LookBookDateEditView(selectedDate: .constant(.now))
+    LookBookDateSheet(selectedDate: .constant(.now))
 }

@@ -132,7 +132,7 @@ struct BottomNavigationBar: View {
                     
                     GnbOpendedViewItem("룩북 등록하기", leftIcon: .closetFill, rightIcon: .chevronRight) {
                         coordinator.isGnbOpened = false
-                        coordinator.fullScreenCover(.lookbookEdit())
+                        coordinator.fullScreenCover(.lookbookRegister())
                     }
                     .frame(height: 32)
                 }

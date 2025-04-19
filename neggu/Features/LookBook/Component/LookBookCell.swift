@@ -1,0 +1,56 @@
+//
+//  LookBookCell.swift
+//  neggu
+//
+//  Created by 유지호 on 1/10/25.
+//
+
+import SwiftUI
+
+struct LookBookCell: View {
+    private let lookBook: LookBookEntity
+    private let targetDate: Date?
+    
+    init(lookBook: LookBookEntity) {
+        self.lookBook = lookBook
+        self.targetDate = lookBook.decorator?.targetDate.toISOFormatDate()
+    }
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 20)
+            .fill(.white)
+            .overlay {
+                ZStack(alignment: .bottomLeading) {
+                    CachedAsyncImage(lookBook.imageUrl)
+                    
+                    if let decorator = lookBook.decorator {
+                        CachedAsyncImage(decorator.imageUrl)
+                            .frame(width: 36, height: 36)
+                            .clipShape(.circle)
+                    }
+                }
+                .padding(10)
+            }
+            .overlay(alignment: .topTrailing) {
+                if let (dateString, dateColor) = targetDate?.generateLookBookDate() {
+                    HStack(spacing: 4) {
+                        Image(systemName: "alarm")
+                        
+                        Text(dateString)
+                    }
+                    .negguFont(.caption)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .frame(height: 24)
+                    .background {
+                        UnevenRoundedRectangle(
+                            topLeadingRadius: 8,
+                            bottomLeadingRadius: 8,
+                            topTrailingRadius: 8
+                        )
+                        .fill(dateColor)
+                    }
+                }
+            }
+    }
+}

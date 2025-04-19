@@ -21,7 +21,7 @@ struct LookBookDeleteSheet: View {
                     columns: [GridItem](repeating: .init(.flexible(), spacing: 16), count: 2),
                     spacing: 16
                 ) {
-                    ForEach(viewModel.lookBookList) { lookBook in
+                    ForEach(viewModel.output.lookBookList) { lookBook in
                         let isSelected = selectedLookBookList.contains { $0.id == lookBook.id }
                         
                         LookBookDeleteCell(lookBook: lookBook, isSelected: isSelected)
@@ -38,11 +38,11 @@ struct LookBookDeleteSheet: View {
                         .fill(.clear)
                         .frame(height: 56)
                         .onAppear {
-                            viewModel.getLookBookList()
+                            viewModel.send(action: .fetchLookBookList)
                         }
                 }
                 .padding(.horizontal, 48)
-                .padding(.bottom, viewModel.lookBookList.count % 2 == 0 ? 32 : 88)
+                .padding(.bottom, viewModel.output.lookBookList.count % 2 == 0 ? 32 : 88)
             }
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {
@@ -83,6 +83,7 @@ struct LookBookDeleteSheet: View {
                 Spacer()
                 
                 Button {
+                    // TODO: API Call
                     dismiss()
                 } label: {
                     Image(.xLarge)

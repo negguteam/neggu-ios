@@ -178,9 +178,9 @@ struct NegguCTAButton: View {
                         }
                         .animation(.easeInOut, value: showInviteCodeCompletion)
                         .onAppear {
-                            lookBookViewModel.negguInvite { invite in
-                                self.generatedInviteCode = invite.id
-                            }
+                            lookBookViewModel.send(action: .generateNeggu(completion: { result in
+                                generatedInviteCode = result.id
+                            }))
                         }
                     case .acceptInvite:
                         VStack(alignment: .leading, spacing: 20) {
@@ -207,7 +207,7 @@ struct NegguCTAButton: View {
                                 Button {
                                     closetViewModel.checkInviteCode(inviteCode) { isValid in
                                         if isValid {
-                                            coordinator.fullScreenCover = .lookbookEdit(inviteCode: inviteCode)
+                                            coordinator.fullScreenCover = .lookbookRegister(inviteCode: inviteCode)
                                             isExpanded = false
                                         } else {
                                             showInviteCodeValidation = true

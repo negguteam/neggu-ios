@@ -82,11 +82,16 @@ final class MainCoordinator: Coordinator {
                 .presentationDetents([.fraction(0.85)])
             
         case .lookbook:
-            LookBookView()
-        case .lookbookEdit(let inviteCode, let editingClothes):
-            LookBookEditView(inviteCode: inviteCode, editingClothes: editingClothes)
+            LookBookMainView()
+        case .lookbookRegister(let inviteCode, let editingClothes):
+            LookBookRegisterView(inviteCode: inviteCode, editingClothes: editingClothes)
         case .lookbookDetail(let lookBookID):
             LookBookDetailView(lookBookID: lookBookID)
+        case .lookbookDelete:
+            LookBookDeleteSheet()
+                .presentationDetents([.fraction(0.8)])
+        case .lookbookDateSheet(let date):
+            LookBookDateSheet(selectedDate: date)
             
         case .nicknameEdit(let nickname):
             NameEditView(name: nickname)
@@ -107,8 +112,10 @@ final class MainCoordinator: Coordinator {
         case colorSheet(color: Binding<ColorFilter?>)
         
         case lookbook
-        case lookbookEdit(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
+        case lookbookRegister(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
+        case lookbookDelete
+        case lookbookDateSheet(date: Binding<Date?>)
         
         case nicknameEdit(nickname: String)
         case insight
