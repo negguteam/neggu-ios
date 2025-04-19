@@ -410,21 +410,10 @@
 		1337B7092CDCF7200052BFF2 /* LookBook */ = {
 			isa = PBXGroup;
 			children = (
-				13EBFAA32DB42FA9005C393C /* LookBookClothesItem.swift */,
-				13DBA7E82CC434DD003A10AE /* LookBookMainView.swift */,
-				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
-				13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */,
-				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
-				136C79D92CEC99D6009DEA76 /* LookBookDateSheet.swift */,
-				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
-				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
-				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
-				133CCC9F2DB2EAE2008386A8 /* LookBookDetailViewModel.swift */,
-				1304BE032DB3B84900739F0B /* LookBookRegisterViewModel.swift */,
-				13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */,
-				133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */,
-				133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */,
-				133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */,
+				13EBFAA52DB4334B005C393C /* Model */,
+				13EBFAA82DB43407005C393C /* Component */,
+				13EBFAA62DB43358005C393C /* View */,
+				13EBFAA72DB4335F005C393C /* ViewModel */,
 			);
 			path = LookBook;
 			sourceTree = "<group>";
@@ -713,6 +702,49 @@
 				13DC5E772C64AB1100DB5600 /* DIContainer.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		13EBFAA52DB4334B005C393C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				13EBFAA32DB42FA9005C393C /* LookBookClothesItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		13EBFAA62DB43358005C393C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				13DBA7E82CC434DD003A10AE /* LookBookMainView.swift */,
+				13FD7D542CBB874400D21143 /* LookBookDetailView.swift */,
+				13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */,
+				136C79D92CEC99D6009DEA76 /* LookBookDateSheet.swift */,
+				139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		13EBFAA72DB4335F005C393C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				1354444E2DA1897B00112F96 /* LookBookViewModel.swift */,
+				133CCC9F2DB2EAE2008386A8 /* LookBookDetailViewModel.swift */,
+				1304BE032DB3B84900739F0B /* LookBookRegisterViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		13EBFAA82DB43407005C393C /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				13FA3B492DAE865000D52EF8 /* ColleageItemView.swift */,
+				13AEFD462D30EC2C0041C10A /* LookBookCell.swift */,
+				134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */,
+				133CCC992DB2CDB7008386A8 /* StyleAnalyzeButton.swift */,
+				133CCC972DB2CCBB008386A8 /* UserLookBookStateView.swift */,
+				133CCC952DB2CC8A008386A8 /* UserProfileHeader.swift */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
