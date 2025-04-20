@@ -30,6 +30,7 @@ struct UserProfileHeader: View {
                 }
             }
             .frame(width: 74, height: 74)
+            .clipShape(.circle)
             .overlay(alignment: .bottomTrailing) {
                 Button {
                     coordinator.sheet = .nicknameEdit(nickname: profile.nickname)

@@ -24,9 +24,15 @@ struct LookBookCell: View {
                     CachedAsyncImage(lookBook.imageUrl)
                     
                     if let decorator = lookBook.decorator {
-                        CachedAsyncImage(decorator.imageUrl)
-                            .frame(width: 36, height: 36)
-                            .clipShape(.circle)
+                        Group {
+                            if let decoratorImage = decorator.imageUrl {
+                                CachedAsyncImage(decoratorImage)
+                            } else {
+                                Color.black
+                            }
+                        }
+                        .frame(width: 36, height: 36)
+                        .clipShape(.circle)
                     }
                 }
                 .padding(10)

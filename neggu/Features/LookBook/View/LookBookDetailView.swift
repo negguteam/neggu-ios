@@ -93,9 +93,18 @@ struct LookBookDetailView: View {
                                 HStack {
                                     if let decorator = lookBook.decorator {
                                         HStack(spacing: 12) {
-                                            CachedAsyncImage(decorator.imageUrl)
-                                                .frame(width: 36, height: 36)
-                                                .clipShape(.circle)
+                                            if let decoratorImage = decorator.imageUrl {
+                                                CachedAsyncImage(decoratorImage)
+                                                    .frame(width: 36, height: 36)
+                                                    .clipShape(.circle)
+                                            } else {
+                                                Color.negguSecondary
+                                                    .frame(width: 24, height: 24)
+                                                    .mask {
+                                                        Image(.negguStar)
+                                                            .foregroundStyle(.negguSecondary)
+                                                    }
+                                            }
                                             
                                             HStack(spacing: 0) {
 //                                                Text(decorator.accountId)
@@ -108,6 +117,7 @@ struct LookBookDetailView: View {
                                             }
                                             .negguFont(.body2b)
                                         }
+                                        .frame(maxWidth: .infinity)
                                         .frame(height: 56)
                                         .padding(.horizontal, 14)
                                         .background(.bgNormal)
@@ -138,7 +148,7 @@ struct LookBookDetailView: View {
                             }
                             .padding(.horizontal, 20)
                             .padding(.vertical, 24)
-                            .frame(height: size.height * 0.8)
+                            .frame(width: size.width, height: size.height * 0.8)
                             .background(.white)
                             .clipShape(.rect(cornerRadius: 20))
                             
@@ -170,30 +180,30 @@ struct LookBookDetailView: View {
                                 .background(.white)
                                 .clipShape(.rect(cornerRadius: 16))
                                 
-                                Toggle("다른사람에게 공개", isOn: $isPublic)
-                                    .negguFont(.body2b)
-                                    .foregroundStyle(.labelAssistive)
-                                    .tint(.safe)
-                                    .padding(.horizontal, 28)
-                                    .padding(.vertical, 10)
-                                    .background(.white)
-                                    .clipShape(.rect(cornerRadius: 16))
+//                                Toggle("다른사람에게 공개", isOn: $isPublic)
+//                                    .negguFont(.body2b)
+//                                    .foregroundStyle(.labelAssistive)
+//                                    .tint(.safe)
+//                                    .padding(.horizontal, 28)
+//                                    .padding(.vertical, 10)
+//                                    .background(.white)
+//                                    .clipShape(.rect(cornerRadius: 16))
                                 
-                                HStack {
-                                    Button {
-                                        
-                                    } label: {
-                                        Image(.share)
-                                            .foregroundStyle(.white)
-                                            .frame(width: 56, height: 56)
-                                            .background {
-                                                RoundedRectangle(cornerRadius: 16)
-                                                    .fill(.black)
-                                            }
-                                    }
+//                                HStack {
+//                                    Button {
+//                                        
+//                                    } label: {
+//                                        Image(.share)
+//                                            .foregroundStyle(.white)
+//                                            .frame(width: 56, height: 56)
+//                                            .background {
+//                                                RoundedRectangle(cornerRadius: 16)
+//                                                    .fill(.black)
+//                                            }
+//                                    }
                                     
                                     Button {
-                                        
+                                        // TODO: 네가 좀 꾸며줘 Alert
                                     } label: {
                                         HStack(spacing: 10) {
                                             Image("neggu_star")
@@ -212,7 +222,7 @@ struct LookBookDetailView: View {
                                                 .fill(.negguSecondary)
                                         }
                                     }
-                                }
+//                                }
                             }
                             .padding(.horizontal, 20)
                             .padding(.bottom, 20)
