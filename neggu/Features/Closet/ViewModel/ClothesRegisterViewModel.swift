@@ -10,7 +10,7 @@ import Combine
 
 final class ClothesRegisterViewModel: ObservableObject {
     
-    private let closetService: ClosetService
+    private let closetService: any ClosetService
     
     private let input = PassthroughSubject<Action, Never>()
     
@@ -50,7 +50,7 @@ final class ClothesRegisterViewModel: ObservableObject {
     }
     
     
-    init(closetService: ClosetService = DefaultClosetService()) {
+    init(closetService: any ClosetService) {
         self.closetService = closetService
         
         input

@@ -11,8 +11,8 @@ import Combine
 
 final class LookBookRegisterViewModel: ObservableObject {
 
-    private let closetService: ClosetService
-    private let lookBookService: LookBookService
+    private let closetService: any ClosetService
+    private let lookBookService: any LookBookService
 //    private let userService: UserService
     
     private let input = PassthroughSubject<Action, Never>()
@@ -26,8 +26,8 @@ final class LookBookRegisterViewModel: ObservableObject {
     
     
     init(
-        closetService: ClosetService = DefaultClosetService(),
-        lookBookService: LookBookService = DefaultLookBookService()
+        closetService: any ClosetService,
+        lookBookService: any LookBookService
     ) {
         self.closetService = closetService
         self.lookBookService = lookBookService

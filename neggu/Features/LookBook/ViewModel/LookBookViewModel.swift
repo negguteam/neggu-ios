@@ -10,9 +10,9 @@ import Combine
 
 final class LookBookViewModel: ObservableObject {
         
-    private let userService: UserService = DefaultUserService()
-    private let closetService: ClosetService = DefaultClosetService()
-    private let lookBookService: LookBookService = DefaultLookBookService()
+    private let userService: any UserService
+    private let closetService: any ClosetService
+    private let lookBookService: any LookBookService
     
     private let input = PassthroughSubject<Action, Never>()
     
@@ -24,7 +24,15 @@ final class LookBookViewModel: ObservableObject {
     private var canPagenation: Bool = true
     
     
-    init() {
+    init(
+        userService: any UserService,
+        closetService: any ClosetService,
+        lookBookService: any LookBookService
+    ) {
+        self.userService = userService
+        self.closetService = closetService
+        self.lookBookService = lookBookService
+        
         fetchUserProfile()
         
         input

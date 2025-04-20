@@ -11,8 +11,8 @@ import SwiftSoup
 
 final class ClosetViewModel: ObservableObject {
     
-    private let closetService: ClosetService
-    private let userService: UserService
+    private let userService: any UserService
+    private let closetService: any ClosetService
     
     private let input = PassthroughSubject<Action, Never>()
     
@@ -25,8 +25,8 @@ final class ClosetViewModel: ObservableObject {
     
     
     init(
-        closetService: ClosetService = DefaultClosetService(),
-        userService: UserService = DefaultUserService()
+        userService: any UserService,
+        closetService: any ClosetService
     ) {
         self.closetService = closetService
         self.userService = userService

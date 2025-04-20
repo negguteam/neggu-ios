@@ -10,11 +10,16 @@ import SwiftUI
 struct ClothesDetailView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var closetViewModel: ClosetViewModel
-    @StateObject private var viewModel: ClothesDetailViewModel = ClothesDetailViewModel()
+    @ObservedObject private var viewModel: ClothesDetailViewModel
     
     @State private var showAlert: Bool = false
     
-    let clothesID: String
+    private let clothesID: String
+    
+    init(viewModel: ClothesDetailViewModel, clothesID: String) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self.clothesID = clothesID
+    }
     
     var body: some View {
         Group {

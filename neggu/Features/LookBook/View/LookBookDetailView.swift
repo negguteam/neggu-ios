@@ -10,14 +10,22 @@ import SwiftUI
 struct LookBookDetailView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var lookBookViewModel: LookBookViewModel
-    @StateObject private var viewModel: LookBookDetailViewModel = .init()
+    @ObservedObject private var viewModel: LookBookDetailViewModel
     
     @State private var selectedDate: Date?
     @State private var isPublic: Bool = false
     
     @State private var showDeleteAlert: Bool = false
     
-    let lookBookID: String
+    private let lookBookID: String
+    
+    init(
+        viewModel: LookBookDetailViewModel,
+        lookBookID: String
+    ) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self.lookBookID = lookBookID
+    }
     
     var body: some View {
         GeometryReader {

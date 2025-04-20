@@ -10,7 +10,7 @@ import SwiftUI
 struct LookBookRegisterView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var lookBookViewModel: LookBookViewModel
-    @StateObject private var viewModel: LookBookRegisterViewModel = .init()
+    @ObservedObject private var viewModel: LookBookRegisterViewModel
     
     @State private var selectedClothes: [LookBookClothesItem]
     
@@ -28,7 +28,12 @@ struct LookBookRegisterView: View {
     
     private let inviteCode: String
     
-    init(inviteCode: String, editingClothes: [LookBookClothesItem] = []) {
+    init(
+        viewModel: LookBookRegisterViewModel,
+        inviteCode: String,
+        editingClothes: [LookBookClothesItem] = []
+    ) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
         self.inviteCode = inviteCode
         self.selectedClothes = editingClothes
         self.showNegguState = !inviteCode.isEmpty

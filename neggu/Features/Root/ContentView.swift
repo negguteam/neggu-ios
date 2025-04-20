@@ -10,8 +10,9 @@ import PhotosUI
 
 struct ContentView: View {
     @StateObject private var coordinator = MainCoordinator()
-    @StateObject private var closetViewModel = ClosetViewModel()
-    @StateObject private var lookBookViewModel = LookBookViewModel()
+    
+    @StateObject private var closetViewModel = DIContainer.shared.resolve(ClosetViewModel.self)
+    @StateObject private var lookBookViewModel = DIContainer.shared.resolve(LookBookViewModel.self)
     @StateObject private var insightViewModel = InsightViewModel()
     
     @State private var isTabBarHidden: Bool = false

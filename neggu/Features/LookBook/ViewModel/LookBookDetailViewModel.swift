@@ -11,7 +11,7 @@ import Combine
 
 final class LookBookDetailViewModel: ObservableObject {
     
-    private let lookBookService: LookBookService
+    private let lookBookService: any LookBookService
     
     private let input = PassthroughSubject<Action, Never>()
     
@@ -20,7 +20,7 @@ final class LookBookDetailViewModel: ObservableObject {
     private var bag = Set<AnyCancellable>()
     
     
-    init(lookBookService: LookBookService = DefaultLookBookService()) {
+    init(lookBookService: any LookBookService) {
         self.lookBookService = lookBookService
         
         input

@@ -10,7 +10,7 @@ import SwiftUI
 struct ClothesRegisterView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var closetViewModel: ClosetViewModel
-    @StateObject private var viewModel: ClothesRegisterViewModel = ClothesRegisterViewModel()
+    @ObservedObject private var viewModel: ClothesRegisterViewModel
     
     @State private var showNameEditView: Bool = false
     @State private var showCategorySheet: Bool = false
@@ -23,7 +23,12 @@ struct ClothesRegisterView: View {
     private let segmentedImage: UIImage
     private let clothesEntity: ClothesRegisterEntity
     
-    init(segmentedImage: UIImage, clothes: ClothesRegisterEntity) {
+    init(
+        viewModel: ClothesRegisterViewModel,
+        segmentedImage: UIImage,
+        clothes: ClothesRegisterEntity
+    ) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
         self.segmentedImage = segmentedImage
         self.clothesEntity = clothes
     }

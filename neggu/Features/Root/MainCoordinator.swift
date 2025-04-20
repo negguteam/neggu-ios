@@ -65,12 +65,12 @@ final class MainCoordinator: Coordinator {
     func buildScene(_ scene: Destination) -> some View {
         switch scene {
         case .closet:
-            ClosetView()
-        case .clothesRegister(let segmentedImage, let clothes):
-            ClothesRegisterView(segmentedImage: segmentedImage, clothes: clothes)
+            container.resolve(ClosetView.self)
         case .clothesDetail(let id):
-            ClothesDetailView(clothesID: id)
+            container.resolve(ClothesDetailView.self, parameter: id)
                 .presentationDetents([.fraction(0.9)])
+        case .clothesRegister(let segmentedImage, let clothes):
+            container.resolve(ClothesRegisterView.self, parameters: segmentedImage, clothes)
         case .categorySheet(let category, let subCategory):
             CategorySheet(selectedCategory: category, selectedSubCategory: subCategory)
                 .presentationDetents([.fraction(0.85)])
@@ -82,11 +82,11 @@ final class MainCoordinator: Coordinator {
                 .presentationDetents([.fraction(0.85)])
             
         case .lookbook:
-            LookBookMainView()
-        case .lookbookRegister(let inviteCode, let editingClothes):
-            LookBookRegisterView(inviteCode: inviteCode, editingClothes: editingClothes)
+            container.resolve(LookBookMainView.self)
         case .lookbookDetail(let lookBookID):
-            LookBookDetailView(lookBookID: lookBookID)
+            container.resolve(LookBookDetailView.self, parameter: lookBookID)
+        case .lookbookRegister(let code, let clothes):
+            container.resolve(LookBookRegisterView.self, parameters: code, clothes)
         case .lookbookDelete:
             LookBookDeleteSheet()
                 .presentationDetents([.fraction(0.8)])
@@ -105,15 +105,15 @@ final class MainCoordinator: Coordinator {
     
     enum Destination: Sceneable {
         case closet
-        case clothesRegister(segmentedImage: UIImage, clothes: ClothesRegisterEntity)
         case clothesDetail(id: String)
+        case clothesRegister(segmentedImage: UIImage, clothes: ClothesRegisterEntity)
         case categorySheet(category: Binding<Category>, SubCategory: Binding<SubCategory>)
         case moodSheet(mood: Binding<[Mood]>, isSingleSelection: Bool = false)
         case colorSheet(color: Binding<ColorFilter?>)
         
         case lookbook
-        case lookbookRegister(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDetail(lookBookID: String)
+        case lookbookRegister(inviteCode: String = "", editingClothes: [LookBookClothesItem] = [])
         case lookbookDelete
         case lookbookDateSheet(date: Binding<Date?>)
         
