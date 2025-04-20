@@ -13,7 +13,7 @@ struct BrandSheet: View {
     
     @Binding var selectedBrand: String
     
-    @State private var brandList: [BrandEntity] = []
+    @State private var brandList: [BrandEntity]
     @State private var brandName: String = ""
     
     var filteredBrandList: [BrandEntity] {
@@ -24,9 +24,10 @@ struct BrandSheet: View {
         }
     }
     
-    @State private var bag = Set<AnyCancellable>()
-    
-    let service = DefaultClosetService()
+    init(selectedBrand: Binding<String>, brandList: [BrandEntity]) {
+        self._selectedBrand = selectedBrand
+        self.brandList = brandList
+    }
     
     var body: some View {
         NegguSheet {
@@ -108,17 +109,5 @@ struct BrandSheet: View {
                 }
             }
         }
-        .onAppear {
-            service.brandList()
-                .sink { event in
-                    print("Brand Sheet:", event)
-                } receiveValue: { brandList in
-                    self.brandList = brandList
-                }.store(in: &bag)
-        }
     }
-}
-
-#Preview {
-    BrandSheet(selectedBrand: .constant(""))
 }

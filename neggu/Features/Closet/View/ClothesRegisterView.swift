@@ -362,10 +362,13 @@ struct ClothesRegisterView: View {
             .presentationDetents([.fraction(0.85)])
         }
         .sheet(isPresented: $showBrandSheet) {
-            BrandSheet(selectedBrand: Binding(
-                get: { viewModel.output.clothes.brand },
-                set: { viewModel.send(action: .editBrand($0)) }
-            ))
+            BrandSheet(
+                selectedBrand: Binding(
+                    get: { viewModel.output.clothes.brand },
+                    set: { viewModel.send(action: .editBrand($0)) }
+                ),
+                brandList: viewModel.output.brandList
+            )
             .presentationDetents([.fraction(0.85)])
         }
         .negguAlert(
