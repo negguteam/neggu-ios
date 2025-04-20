@@ -452,7 +452,6 @@
 			isa = PBXGroup;
 			children = (
 				1386EAD22C5D3F9C0085655D /* ContentView.swift */,
-				1308D2742C62801F003F50F3 /* Coordinator.swift */,
 				13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */,
 				133889292C899BF90023CED5 /* BottomNavigationBar.swift */,
 				134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */,
@@ -593,6 +592,7 @@
 		1386EAFE2C5D3FCD0085655D /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				13EAAA7C2DB5548400314B05 /* Base */,
 				135FEC992DAB731600E3AFB1 /* Root */,
 				1308D26F2C6274D0003F50F3 /* Auth */,
 				1338892B2C89E73B0023CED5 /* Closet */,
@@ -721,6 +721,14 @@
 				1347E76C2DA540260008E127 /* InsightEntity.swift */,
 			);
 			path = Entity;
+			sourceTree = "<group>";
+		};
+		13EAAA7C2DB5548400314B05 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				1308D2742C62801F003F50F3 /* Coordinator.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		13EBFAA52DB4334B005C393C /* Model */ = {
