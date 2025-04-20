@@ -41,8 +41,6 @@ final class ClothesDetailViewModel: ObservableObject {
         switch action {
         case .fetchClothes(let id):
             getClothesDetail(id)
-        case .onTapModify(let clothes, let completion):
-            modifyClothes(clothes, completion: completion)
         case .onTapDelete(let id, let completion):
             deleteClothes(id, completion: completion)
         }
@@ -51,18 +49,9 @@ final class ClothesDetailViewModel: ObservableObject {
     private func getClothesDetail(_ id: String) {
         closetService.clothesDetail(id: id)
             .sink { event in
-                print("ClosetDetail:", event)
+                print("ClothesDetail:", event)
             } receiveValue: { [weak self] clothes in
-                self?.state = .loaded(ClothesDetail(entity: clothes))
-            }.store(in: &bag)
-    }
-    
-    private func modifyClothes(_ clothes: ClothesEntity, completion: @escaping () -> Void) {
-        closetService.modify(clothes)
-            .sink { event in
-                print("ClosetDetail:", event)
-            } receiveValue: { _ in
-                completion()
+                self?.state = .loaded(clothes)
             }.store(in: &bag)
     }
     
@@ -82,12 +71,11 @@ extension ClothesDetailViewModel {
     
     enum State {
         case initial
-        case loaded(ClothesDetail)
+        case loaded(ClothesEntity)
     }
     
     enum Action {
         case fetchClothes(id: String)
-        case onTapModify(clothes: ClothesEntity, completion: () -> Void)
         case onTapDelete(id: String, completion: () -> Void)
     }
     

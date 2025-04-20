@@ -69,8 +69,8 @@ final class MainCoordinator: Coordinator {
         case .clothesDetail(let id):
             container.resolve(ClothesDetailView.self, parameter: id)
                 .presentationDetents([.fraction(0.9)])
-        case .clothesRegister(let segmentedImage, let clothes):
-            container.resolve(ClothesRegisterView.self, parameters: segmentedImage, clothes)
+        case .clothesRegister(let editType):
+            container.resolve(ClothesRegisterView.self, parameter: editType)
         case .categorySheet(let category, let subCategory):
             CategorySheet(selectedCategory: category, selectedSubCategory: subCategory)
                 .presentationDetents([.fraction(0.85)])
@@ -106,7 +106,7 @@ final class MainCoordinator: Coordinator {
     enum Destination: Sceneable {
         case closet
         case clothesDetail(id: String)
-        case clothesRegister(segmentedImage: UIImage, clothes: ClothesRegisterEntity)
+        case clothesRegister(ClothesEditType)
         case categorySheet(category: Binding<Category>, SubCategory: Binding<SubCategory>)
         case moodSheet(mood: Binding<[Mood]>, isSingleSelection: Bool = false)
         case colorSheet(color: Binding<ColorFilter?>)

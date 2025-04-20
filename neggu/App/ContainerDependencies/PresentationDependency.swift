@@ -58,12 +58,11 @@ extension DIContainer {
             return ClothesRegisterViewModel(closetService: closetService)
         }
         
-        register(ClothesRegisterView.self) { [unowned self] segmentedImage, clothes in
+        register(ClothesRegisterView.self) { [unowned self] editType in
             let viewModel = self.resolve(ClothesRegisterViewModel.self)
             return ClothesRegisterView(
                 viewModel: viewModel,
-                segmentedImage: segmentedImage,
-                clothes: clothes
+                editType: editType
             )
         }
         
