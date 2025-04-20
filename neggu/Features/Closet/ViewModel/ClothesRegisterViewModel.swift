@@ -32,6 +32,8 @@ final class ClothesRegisterViewModel: ObservableObject {
     var categoryString: String {
         if output.clothes.subCategory != .UNKNOWN {
             [output.clothes.category.title, output.clothes.subCategory.title].joined(separator: " > ")
+        } else if output.clothes.category != .UNKNOWN {
+            output.clothes.category.title
         } else {
             "옷의 종류"
         }
