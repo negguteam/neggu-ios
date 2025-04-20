@@ -130,11 +130,10 @@ final class ClothesRegisterViewModel: ObservableObject {
             image: imageData,
             request: output.clothes
         ).sink { event in
-            completion()
             self.output.canRegister = true
             print("ClosetAdd:", event)
         } receiveValue: { _ in
-            
+            completion()
         }.store(in: &bag)
     }
     
