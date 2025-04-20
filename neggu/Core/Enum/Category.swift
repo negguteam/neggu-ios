@@ -11,7 +11,7 @@ enum Category: String, CaseIterable, Identifiable, Codable {
     case TOP
     case BOTTOM
     case OUTER
-    case ONEPIECE
+    case DRESS
     case ACCESSORY
     case BAG
     case SHOES
@@ -25,7 +25,7 @@ enum Category: String, CaseIterable, Identifiable, Codable {
         case .TOP: "상의"
         case .BOTTOM: "하의"
         case .OUTER: "아우터"
-        case .ONEPIECE: "원피스"
+        case .DRESS: "원피스"
         case .ACCESSORY: "악세서리"
         case .BAG: "가방"
         case .SHOES: "신발"
@@ -39,7 +39,7 @@ enum Category: String, CaseIterable, Identifiable, Codable {
         case .TOP: "shirt_fill"
         case .BOTTOM: "pants"
         case .OUTER: "outer"
-        case .ONEPIECE: "one_piece"
+        case .DRESS: "one_piece"
         case .NONE: "hanger"
         case .UNKNOWN: ""
         default: "shose"
@@ -62,8 +62,8 @@ enum Category: String, CaseIterable, Identifiable, Codable {
             [.JEANS, .SLACKS, .SHORTS, .JUMPSUIT, .SKIRT]
         case .OUTER:
             [.JACKET, .ZIP_UP_HOODIE, .CARDIGAN, .FLEECE, .COAT, .PUFFER, .VEST]
-        case .ONEPIECE:
-            [.DRESS]
+        case .DRESS:
+            []
         case .ACCESSORY:
             [.NECKLACE, .EARRINGS, .BRACELET, .RING, .HAIR_ACCESSORY, .BELT, .WATCH]
         case .BAG:
