@@ -49,10 +49,10 @@ extension DefaultClosetService: ClosetService {
             "imageUrl": clothes.imageUrl,
             "colorCode": clothes.colorCode,
             "name": clothes.name,
-            "category": clothes.category,
-            "subCategory": clothes.subCategory,
-            "mood": clothes.mood,
-            "priceRange": clothes.priceRange,
+            "category": clothes.category.id,
+            "subCategory": clothes.subCategory.id,
+            "mood": clothes.mood.map { $0.id },
+            "priceRange": clothes.priceRange.id,
             "memo": clothes.memo,
             "isPurchase": clothes.isPurchase
         ]

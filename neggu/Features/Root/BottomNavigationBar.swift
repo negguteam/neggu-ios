@@ -89,7 +89,8 @@ struct BottomNavigationBar: View {
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    coordinator.fullScreenCover = .clothesRegister(segmentedImage: segmentedImage, clothes: .emptyData)
+                    coordinator.fullScreenCover = .clothesRegister(.register(segmentedImage, .emptyData))
+//                        .clothesRegister(segmentedImage: segmentedImage, clothes: .emptyData)
                     selectedCameraPhoto = nil
                 }
             }
@@ -108,7 +109,7 @@ struct BottomNavigationBar: View {
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    coordinator.fullScreenCover = .clothesRegister(segmentedImage: segmentedImage, clothes: .emptyData)
+                    coordinator.fullScreenCover = .clothesRegister(.register(segmentedImage, .emptyData))
                     selectedAlbumPhoto = nil
                 }
             }

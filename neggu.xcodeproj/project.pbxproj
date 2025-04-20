@@ -134,6 +134,7 @@
 		13DC5E792C64AB1100DB5600 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E772C64AB1100DB5600 /* DIContainer.swift */; };
 		13DCABFA2D60EBA10008A0E7 /* LookBookEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */; };
 		13EAAA782DB51E7900314B05 /* NetworkDependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EAAA772DB51E7900314B05 /* NetworkDependency.swift */; };
+		13EAAA802DB57CBE00314B05 /* ClothesEditType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EAAA7F2DB57CBE00314B05 /* ClothesEditType.swift */; };
 		13EBFAA42DB42FA9005C393C /* LookBookClothesItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EBFAA32DB42FA9005C393C /* LookBookClothesItem.swift */; };
 		13EE9CD82C8C3F9200FAEB36 /* LookBookRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */; };
 		13F6EED42D2B9C1B0053CCA5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */; };
@@ -287,6 +288,7 @@
 		13DC5E772C64AB1100DB5600 /* DIContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookEntity.swift; sourceTree = "<group>"; };
 		13EAAA772DB51E7900314B05 /* NetworkDependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDependency.swift; sourceTree = "<group>"; };
+		13EAAA7F2DB57CBE00314B05 /* ClothesEditType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEditType.swift; sourceTree = "<group>"; };
 		13EBFAA32DB42FA9005C393C /* LookBookClothesItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookClothesItem.swift; sourceTree = "<group>"; };
 		13EE9CD72C8C3F9200FAEB36 /* LookBookRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookRegisterView.swift; sourceTree = "<group>"; };
 		13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 				13AEFD492D30F1FD0041C10A /* ColorFilter.swift */,
 				135081112D38CC84005E2491 /* PriceRange.swift */,
 				135081132D38CC94005E2491 /* Gender.swift */,
+				13EAAA7F2DB57CBE00314B05 /* ClothesEditType.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -1040,6 +1043,7 @@
 				1384FE872CD8FA3E00162AAF /* NegguColor.swift in Sources */,
 				13DBA7E92CC434DD003A10AE /* LookBookMainView.swift in Sources */,
 				133CCCA02DB2EAE2008386A8 /* LookBookDetailViewModel.swift in Sources */,
+				13EAAA802DB57CBE00314B05 /* ClothesEditType.swift in Sources */,
 				1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */,
 				133CCC982DB2CCBC008386A8 /* UserLookBookStateView.swift in Sources */,
 				13FA3B4A2DAE865000D52EF8 /* ColleageItemView.swift in Sources */,

@@ -71,8 +71,13 @@ final class ClothesRegisterViewModel: ObservableObject {
     
     private func transform(from action: Action) {
         switch action {
-        case .initial(let clothes):
-            output.clothes = clothes
+        case .initial(let editType):
+            switch editType {
+            case .register(_, let clothes):
+                output.clothes = clothes
+            case .modify(let clothes):
+                output.clothes = clothes.toRegisterEntity()
+            }
         case .editColor(let colorCode):
             output.clothes.colorCode = colorCode
         case .editName(let string):
@@ -106,14 +111,15 @@ final class ClothesRegisterViewModel: ObservableObject {
             output.isUnknownedCategory = !isValid
         case .validateMood(let isValid):
             output.isUnknownedMood = !isValid
-        case .onTapRegister(let imageData, let clothes, let completion):
-            registerClothes(imageData: imageData, clothes: clothes, completion: completion)
+        case .onTapRegister(let imageData, let completion):
+            registerClothes(imageData: imageData, completion: completion)
+        case .onTapModify(let clothes, let completion):
+            modifyClothes(clothes, completion: completion)
         }
     }
     
     private func registerClothes(
         imageData: Data,
-        clothes: ClothesRegisterEntity,
         completion: @escaping () -> Void
     ) {
         output.canRegister = false
@@ -121,7 +127,7 @@ final class ClothesRegisterViewModel: ObservableObject {
         
         closetService.register(
             image: imageData,
-            request: clothes
+            request: output.clothes
         ).sink { event in
             completion()
             self.output.canRegister = true
@@ -129,6 +135,21 @@ final class ClothesRegisterViewModel: ObservableObject {
         } receiveValue: { _ in
             
         }.store(in: &bag)
+    }
+    
+    private func modifyClothes(_ clothes: ClothesEntity, completion: @escaping () -> Void) {
+        let modifiedClothes = output.clothes.toClothesEntity(
+            id: clothes.id,
+            accountId: clothes.accountId,
+            imageUrl: clothes.imageUrl
+        )
+        
+        closetService.modify(modifiedClothes)
+            .sink { event in
+                print("ClosetDetail:", event)
+            } receiveValue: { _ in
+                completion()
+            }.store(in: &bag)
     }
     
 }
@@ -144,7 +165,7 @@ extension ClothesRegisterViewModel {
     }
     
     enum Action {
-        case initial(ClothesRegisterEntity)
+        case initial(ClothesEditType)
         case editColor(String)
         case editName(String)
         case editCategory(Category)
@@ -157,7 +178,54 @@ extension ClothesRegisterViewModel {
         case editMemo(String)
         case validateCategory(Bool)
         case validateMood(Bool)
-        case onTapRegister(Data, ClothesRegisterEntity, () -> Void)
+        case onTapRegister(Data, completion: () -> Void)
+        case onTapModify(clothes: ClothesEntity, completion: () -> Void)
+    }
+    
+}
+
+
+extension ClothesEntity {
+    
+    func toRegisterEntity() -> ClothesRegisterEntity {
+        return .init(
+            name: self.name,
+            colorCode: self.colorCode,
+            category: self.category,
+            subCategory: self.subCategory,
+            mood: self.mood,
+            brand: self.brand,
+            priceRange: self.priceRange,
+            memo: self.memo,
+            isPurchase: self.isPurchase,
+            link: self.link
+        )
+    }
+    
+}
+
+extension ClothesRegisterEntity {
+    
+    func toClothesEntity(id: String, accountId: String, imageUrl: String) -> ClothesEntity {
+        return .init(
+            id: id,
+            accountId: accountId,
+            clothId: id,
+            name: self.name,
+            link: self.link,
+            imageUrl: imageUrl,
+            category: self.category,
+            subCategory: self.subCategory,
+            mood: self.mood,
+            brand: self.brand,
+            priceRange: self.priceRange,
+            memo: self.memo,
+            color: "",
+            colorCode: self.colorCode ?? "",
+            isPurchase: self.isPurchase,
+            createdAt: "",
+            modifiedAt: ""
+        )
     }
     
 }

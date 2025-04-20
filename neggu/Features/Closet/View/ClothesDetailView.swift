@@ -159,10 +159,8 @@ struct ClothesDetailView: View {
                             }
                             
                             Button {
-//                                viewModel.send(action: .onTapModify(
-//                                    clothes: <#T##ClothesEntity#>,
-//                                    completion: { }
-//                                ))
+                                coordinator.dismissSheet()
+                                coordinator.fullScreenCover = .clothesRegister(.modify(clothes))
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)

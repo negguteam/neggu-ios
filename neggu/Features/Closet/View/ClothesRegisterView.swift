@@ -20,17 +20,14 @@ struct ClothesRegisterView: View {
     
     @FocusState private var focusedField: FocusField?
     
-    private let segmentedImage: UIImage
-    private let clothesEntity: ClothesRegisterEntity
+    private let editType: ClothesEditType
     
     init(
         viewModel: ClothesRegisterViewModel,
-        segmentedImage: UIImage,
-        clothes: ClothesRegisterEntity
+        editType: ClothesEditType
     ) {
         self._viewModel = ObservedObject(wrappedValue: viewModel)
-        self.segmentedImage = segmentedImage
-        self.clothesEntity = clothes
+        self.editType = editType
     }
     
     var body: some View {
@@ -53,10 +50,17 @@ struct ClothesRegisterView: View {
                 ScrollViewReader { scrollProxy in
                     ScrollView {
                         VStack(spacing: 20) {
-                            Image(uiImage: segmentedImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: proxy.size.width, height: proxy.size.width * 1.2)
+                            Group {
+                                switch editType {
+                                case .register(let image, _):
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFit()
+                                case .modify(let clothes):
+                                    CachedAsyncImage(clothes.imageUrl)
+                                }
+                            }
+                            .frame(width: proxy.size.width, height: proxy.size.width * 1.2)
                             
                             LazyVStack(
                                 spacing: 20,
@@ -266,8 +270,6 @@ struct ClothesRegisterView: View {
                             .allowsHitTesting(false)
                             
                             Button {
-                                guard let image = segmentedImage.pngData() else { return }
-                                
                                 guard viewModel.output.clothes.category != .UNKNOWN && !viewModel.output.clothes.mood.isEmpty else {
                                     if viewModel.output.clothes.category == .UNKNOWN {
                                         viewModel.send(action: .validateCategory(false))
@@ -281,14 +283,25 @@ struct ClothesRegisterView: View {
                                     return
                                 }
                                 
-                                viewModel.send(action: .onTapRegister(
-                                    image,
-                                    viewModel.output.clothes,
-                                    {
-                                        closetViewModel.send(action: .refresh)
-                                        coordinator.dismissFullScreenCover()
-                                    }
-                                ))
+                                switch editType {
+                                case .register(let image, _):
+                                    guard let image = image.pngData() else { return }
+                                    
+                                    viewModel.send(action: .onTapRegister(
+                                        image,
+                                        completion: {
+                                            closetViewModel.send(action: .refresh)
+                                            coordinator.dismissFullScreenCover()
+                                        }
+                                    ))
+                                case .modify(let clothes):
+                                    viewModel.send(action: .onTapModify(
+                                        clothes: clothes,
+                                        completion: {
+                                            coordinator.dismissFullScreenCover()
+                                        }
+                                    ))
+                                }
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)
@@ -365,16 +378,21 @@ struct ClothesRegisterView: View {
             coordinator.dismissFullScreenCover()
         }
         .onAppear {
-            viewModel.send(action: .initial(clothesEntity))
-            getMostColor()
+            switch editType {
+            case .register(let image, _):
+                getMostColor(image: image)
+                viewModel.send(action: .initial(editType))
+            case .modify:
+                viewModel.send(action: .initial(editType))
+            }
         }
         .onTapGesture {
             focusedField = nil
         }
     }
     
-    private func getMostColor() {
-        guard let color = segmentedImage.pixelColor(),
+    private func getMostColor(image: UIImage) {
+        guard let color = image.pixelColor(),
               let hexString = color.toHex()
         else { return }
         
