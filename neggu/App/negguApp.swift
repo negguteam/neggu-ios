@@ -22,6 +22,7 @@ struct negguApp: App {
     @StateObject private var authViewModel: AuthViewModel = .init()
     
     init() {
+        DIContainer.shared.registerNetworkDependencies()
         DIContainer.shared.registerPresentationDependencies()
         
         KakaoSDK.initSDK(appKey: NegguEnv.kakaoAppKey)
