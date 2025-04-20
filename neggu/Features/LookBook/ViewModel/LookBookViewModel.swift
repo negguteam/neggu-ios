@@ -52,6 +52,8 @@ final class LookBookViewModel: ObservableObject {
     
     private func transform(from action: Action) {
         switch action {
+        case .fetchUserProfile:
+            fetchUserProfile()
         case .fetchLookBookList:
             getLookBookList()
         case .refresh:
@@ -140,6 +142,7 @@ extension LookBookViewModel {
     }
     
     enum Action {
+        case fetchUserProfile
         case fetchLookBookList
         case refresh
         case editNickname(String)

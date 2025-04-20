@@ -10,6 +10,7 @@ import SwiftUI
 struct ClothesRegisterView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var closetViewModel: ClosetViewModel
+    @EnvironmentObject private var lookBookViewModel: LookBookViewModel
     @ObservedObject private var viewModel: ClothesRegisterViewModel
     
     @State private var showNameEditView: Bool = false
@@ -291,6 +292,7 @@ struct ClothesRegisterView: View {
                                         image,
                                         completion: {
                                             closetViewModel.send(action: .refresh)
+                                            lookBookViewModel.send(action: .fetchUserProfile)
                                             coordinator.dismissFullScreenCover()
                                         }
                                     ))
