@@ -17,12 +17,13 @@ public final class DIContainer {
     private init() { }
     
     
+    // MARK: Register
     public func register<Service>(
         _ serviceType: Service.Type,
         _ factory: @escaping () -> Service
     ) {
         let key = ObjectIdentifier(serviceType)
-        services[key] = factory()
+        services[key] = factory
     }
     
     public func register<Service, Parameter>(
@@ -41,12 +42,21 @@ public final class DIContainer {
         services[key] = factory
     }
     
+    public func register<Service, Parameter1, Parameter2, Parameter3>(
+        _ serviceType: Service.Type,
+        _ factory: @escaping (Parameter1, Parameter2, Parameter3) -> Service
+    ) {
+        let key = ObjectIdentifier(serviceType)
+        services[key] = factory
+    }
     
+    
+    // MARK: Resolve
     public func resolve<Service>(_ serviceType: Service.Type) -> Service {
         let key = ObjectIdentifier(serviceType)
         
         guard let service = services[key] as? () -> Service else {
-            preconditionFailure("\(key) should be registered!")
+            preconditionFailure("\(serviceType) should be registered!")
         }
         
         return service()
@@ -56,7 +66,7 @@ public final class DIContainer {
         let key = ObjectIdentifier(serviceType)
         
         guard let service = services[key] as? (P) -> Service else {
-            preconditionFailure("\(key) should be registered!")
+            preconditionFailure("\(serviceType) should be registered!")
         }
         
         return service(parameter)
@@ -69,7 +79,7 @@ public final class DIContainer {
         let key = ObjectIdentifier(serviceType)
         
         guard let service = services[key] as? (P1, P2) -> Service else {
-            preconditionFailure("\(key) should be registered!")
+            preconditionFailure("\(serviceType) should be registered!")
         }
         
         return service(p1, p2)
@@ -82,7 +92,7 @@ public final class DIContainer {
         let key = ObjectIdentifier(serviceType)
         
         guard let service = services[key] as? (P1, P2, P3) -> Service else {
-            preconditionFailure("\(key) should be registered!")
+            preconditionFailure("\(serviceType) should be registered!")
         }
         
         return service(p1, p2, p3)
