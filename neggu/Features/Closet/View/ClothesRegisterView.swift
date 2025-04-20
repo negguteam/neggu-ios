@@ -68,7 +68,7 @@ struct ClothesRegisterView: View {
                                 pinnedViews: [.sectionHeaders]
                             ) {
                                 Section {
-                                    TitleForm("어떤 종류의 옷인가요?") {
+                                    TitleForm("어떤 종류의 옷인가요?", isNessesory: true) {
                                         Button {
                                             showCategorySheet = true
                                         } label: {
