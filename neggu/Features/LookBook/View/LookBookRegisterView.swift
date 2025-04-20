@@ -67,7 +67,7 @@ struct LookBookRegisterView: View {
                             }
                         } else {
                             Button("저장하기") {
-                                if viewModel.output.clothes.isEmpty { return }
+                                if selectedClothes.isEmpty { return }
                                 
                                 guard let lookBookImage = collageView
                                     .frame(width: size.width, height: size.height)

@@ -29,7 +29,7 @@ extension DefaultLookBookService: LookBookService {
         
         var dictionary: [String: Any] = [
             "lookBookClothes": requestArray,
-            "targetDate": Date.now.toISOFormatString(),
+            "targetDate": Date.now.toISOEncodableFormatString(),
         ]
         
         if !inviteCode.isEmpty {

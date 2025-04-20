@@ -121,6 +121,12 @@ extension Date {
         return formatter
     }()
     
+    static let isoEncodableFormatter: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withFullDate, .withFullTime]
+        return formatter
+    }()
+    
     static let relativeFormatter: RelativeDateTimeFormatter = {
         let formatter = RelativeDateTimeFormatter()
         formatter.dateTimeStyle = .named
@@ -135,6 +141,10 @@ extension Date {
     
     func toISOFormatString() -> String {
         return Self.isoFormatter.string(from: self)
+    }
+    
+    func toISOEncodableFormatString() -> String {
+        return Self.isoEncodableFormatter.string(from: self)
     }
     
     func toRelativeFormatString() -> String {

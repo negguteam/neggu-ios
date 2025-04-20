@@ -106,6 +106,8 @@ final class LookBookRegisterViewModel: ObservableObject {
                     self?.output.clothes += result.content
                 }.store(in: &bag)
         } else {
+            parameters["inviteCode"] = inviteCode
+            
             closetService.clothesInviteList(parameters: parameters)
                 .sink { event in
                     print("LookBookRegisterView:", event)
