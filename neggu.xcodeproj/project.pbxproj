@@ -442,6 +442,7 @@
 		135FEC982DAB719300E3AFB1 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				13595F282DA9587700AFF836 /* DeepLinkManager.swift */,
 				133889272C898B3E0023CED5 /* ImageAnalyzeManager.swift */,
 			);
 			path = Manager;
@@ -471,10 +472,11 @@
 		1364C8742C61280000F67E3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				13659CEA2C5FBFA100BB6B91 /* Util.swift */,
-				1364C8752C61281200F67E3C /* UserDefaultsKey.swift */,
-				1302FE5C2C86EA6B0076D015 /* NegguFont.swift */,
 				1384FE862CD8FA3E00162AAF /* NegguColor.swift */,
+				13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */,
+				1302FE5C2C86EA6B0076D015 /* NegguFont.swift */,
+				1364C8752C61281200F67E3C /* UserDefaultsKey.swift */,
+				13659CEA2C5FBFA100BB6B91 /* Util.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -484,13 +486,10 @@
 			children = (
 				13659CDF2C5F8F1D00BB6B91 /* APIError.swift */,
 				13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */,
-				1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */,
 				13659CD82C5F612200BB6B91 /* BaseAPI.swift */,
 				13659CDA2C5F613500BB6B91 /* BaseService.swift */,
+				1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */,
 				13659CE42C5FA19500BB6B91 /* NegguInterceptor.swift */,
-				13659CE62C5FA8C100BB6B91 /* NegguEnv.swift */,
-				13595F282DA9587700AFF836 /* DeepLinkManager.swift */,
-				13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -529,8 +528,7 @@
 			children = (
 				1386EAFA2C5D3FA40085655D /* App */,
 				1386EB092C5D41B80085655D /* Core */,
-				1386EAFC2C5D3FBD0085655D /* Data */,
-				1386EAFD2C5D3FC50085655D /* Domain */,
+				1386EAFC2C5D3FBD0085655D /* Network */,
 				1386EAFE2C5D3FCD0085655D /* Features */,
 				1386EB0A2C5D41C40085655D /* NegguDS */,
 				1386EAFB2C5D3FAC0085655D /* Resources */,
@@ -581,38 +579,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		1386EAFC2C5D3FBD0085655D /* Data */ = {
+		1386EAFC2C5D3FBD0085655D /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				1364C86E2C6102F500F67E3C /* AuthAPI.swift */,
-				13BE365C2D27975D0033DE7B /* HealthAPI.swift */,
-				1350810B2D38BC95005E2491 /* ClosetAPI.swift */,
-				1352E0032D5F50AD00354234 /* LookBookAPI.swift */,
-				1309706F2D41248D0050D091 /* UserAPI.swift */,
-				1347E7682DA53D9C0008E127 /* InsightAPI.swift */,
-				1364C8702C6102FD00F67E3C /* AuthService.swift */,
-				1350810D2D38C760005E2491 /* ClosetService.swift */,
-				1352E0052D5F68D100354234 /* LookBookService.swift */,
-				130970712D4126290050D091 /* UserService.swift */,
-				1347E76A2DA53F910008E127 /* InsightService.swift */,
+				13EAAA792DB541EC00314B05 /* API */,
+				13EAAA7B2DB5422D00314B05 /* Entity */,
+				13659CE12C5FA13C00BB6B91 /* Foundation */,
+				13EAAA7A2DB5422100314B05 /* Service */,
 			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		1386EAFD2C5D3FC50085655D /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				1364C8722C61031E00F67E3C /* TokenEntity.swift */,
-				1364C8772C61370700F67E3C /* CheckNicknameEntity.swift */,
-				13BE365A2D2797200033DE7B /* ErrorEntity.swift */,
-				136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */,
-				13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */,
-				1350811B2D38D5A4005E2491 /* BrandEntity.swift */,
-				134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */,
-				135A27932DA40A410048AA15 /* NegguInviteEntity.swift */,
-				1347E76C2DA540260008E127 /* InsightEntity.swift */,
-			);
-			path = Domain;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		1386EAFE2C5D3FCD0085655D /* Features */ = {
@@ -634,7 +609,6 @@
 				13DC5E782C64AB1100DB5600 /* DI */,
 				13AEFD482D30F1F20041C10A /* Enum */,
 				13B375782D34E36A001D009E /* Extension */,
-				13659CE12C5FA13C00BB6B91 /* Foundation */,
 				135FEC982DAB719300E3AFB1 /* Manager */,
 				1364C8742C61280000F67E3C /* Util */,
 			);
@@ -647,6 +621,7 @@
 				1317A4682CE4E758007264C7 /* BannerCarousel.swift */,
 				136C787F2CEB0584009DEA76 /* BorderedChip.swift */,
 				13F8ABD52D19D91C00E08057 /* BorderedRectangle.swift */,
+				13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */,
 				1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */,
 				13AEFD442D30E8E30041C10A /* DateSelectButton.swift */,
 				13F8ABD32D19D5A800E08057 /* ExpendableTextView.swift */,
@@ -657,8 +632,8 @@
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
 				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
 				1318DE542D3F600D0077972D /* PickerField.swift */,
-				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
 				1346D4632DAC7B9F00638C0E /* SkeletonView.swift */,
+				13F8ABD72D19DF5600E08057 /* TitleForm.swift */,
 			);
 			path = NegguDS;
 			sourceTree = "<group>";
@@ -666,12 +641,12 @@
 		13AEFD482D30F1F20041C10A /* Enum */ = {
 			isa = PBXGroup;
 			children = (
-				135081192D38CCBF005E2491 /* SubCategory.swift */,
 				135081172D38CCB2005E2491 /* Category.swift */,
+				135081192D38CCBF005E2491 /* SubCategory.swift */,
 				135081152D38CCA1005E2491 /* Mood.swift */,
-				135081132D38CC94005E2491 /* Gender.swift */,
-				135081112D38CC84005E2491 /* PriceRange.swift */,
 				13AEFD492D30F1FD0041C10A /* ColorFilter.swift */,
+				135081112D38CC84005E2491 /* PriceRange.swift */,
+				135081132D38CC94005E2491 /* Gender.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -679,11 +654,11 @@
 		13B375782D34E36A001D009E /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				1318DE562D3F79410077972D /* String+Extension.swift */,
-				13B375792D34E37D001D009E /* Date+Extension.swift */,
 				13B3757E2D34E795001D009E /* CGSize+Extension.swift */,
-				130970682D40C1420050D091 /* UIImage+Extension.swift */,
+				13B375792D34E37D001D009E /* Date+Extension.swift */,
+				1318DE562D3F79410077972D /* String+Extension.swift */,
 				1309706A2D40C1830050D091 /* UIColor+Extension.swift */,
+				130970682D40C1420050D091 /* UIImage+Extension.swift */,
 				133CCC9B2DB2CFAF008386A8 /* UINavigationController+Extension.swift */,
 				133CCC9D2DB2DE9F008386A8 /* View+Extension.swift */,
 			);
@@ -705,6 +680,47 @@
 				13DC5E772C64AB1100DB5600 /* DIContainer.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		13EAAA792DB541EC00314B05 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				1364C86E2C6102F500F67E3C /* AuthAPI.swift */,
+				1350810B2D38BC95005E2491 /* ClosetAPI.swift */,
+				1352E0032D5F50AD00354234 /* LookBookAPI.swift */,
+				1309706F2D41248D0050D091 /* UserAPI.swift */,
+				1347E7682DA53D9C0008E127 /* InsightAPI.swift */,
+				13BE365C2D27975D0033DE7B /* HealthAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		13EAAA7A2DB5422100314B05 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				1364C8702C6102FD00F67E3C /* AuthService.swift */,
+				1350810D2D38C760005E2491 /* ClosetService.swift */,
+				1352E0052D5F68D100354234 /* LookBookService.swift */,
+				130970712D4126290050D091 /* UserService.swift */,
+				1347E76A2DA53F910008E127 /* InsightService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		13EAAA7B2DB5422D00314B05 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				1364C8722C61031E00F67E3C /* TokenEntity.swift */,
+				1364C8772C61370700F67E3C /* CheckNicknameEntity.swift */,
+				13BE365A2D2797200033DE7B /* ErrorEntity.swift */,
+				136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */,
+				13DCABF92D60EBA10008A0E7 /* LookBookEntity.swift */,
+				1350811B2D38D5A4005E2491 /* BrandEntity.swift */,
+				134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */,
+				135A27932DA40A410048AA15 /* NegguInviteEntity.swift */,
+				1347E76C2DA540260008E127 /* InsightEntity.swift */,
+			);
+			path = Entity;
 			sourceTree = "<group>";
 		};
 		13EBFAA52DB4334B005C393C /* Model */ = {
