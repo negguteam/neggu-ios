@@ -23,7 +23,7 @@ struct UserLookBookStateView: View {
                     .overlay {
                         CachedAsyncImage(lookBook.imageUrl)
                             .overlay(alignment: .bottom) {
-                                Text("내일 입을 룩북")
+                                Text(lookBookDateString)
                                     .negguFont(.body3b)
                                     .foregroundStyle(.labelRNormal)
                                     .frame(height: 30)
@@ -169,6 +169,19 @@ struct UserLookBookStateView: View {
         switch viewModel.output.lookBookState {
         case .needLookBook: "룩북을\n등록해주세요!"
         default: "의상을 먼저\n등록해주세요!"
+        }
+    }
+    
+    private var lookBookDateString: String {
+        switch viewModel.output.lookBookState {
+        case .available(let lookBook):
+            if let targetDate = lookBook.decorator?.targetDate,
+               let date = targetDate.toISOFormatDate() {
+                date.generateLookBookDate().0 + " 입을 룩북"
+            } else {
+                "입을 룩북"
+            }
+        default: ""
         }
     }
 }

@@ -96,8 +96,13 @@ final class LookBookViewModel: ObservableObject {
                 self?.output.lookBookList += result.content
                 
                 if result.first {
-                    guard let lookBook = self?.output.lookBookList.first else { return }
-                    self?.output.lookBookState = .available(lookBook)
+                    if let lookBook = self?.output.lookBookList.filter({ $0.decorator != nil }).first,
+                       let targetDate = lookBook.decorator?.targetDate.toISOFormatDate()?.yearMonthDay(),
+                       targetDate >= .now.yearMonthDay() {
+                        self?.output.lookBookState = .available(lookBook)
+                    } else if let lookBook = self?.output.lookBookList.first {
+                        self?.output.lookBookState = .available(lookBook)
+                    }
                 }
             }.store(in: &bag)
     }
