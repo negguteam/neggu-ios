@@ -78,6 +78,7 @@ final class ClothesRegisterViewModel: ObservableObject {
             case .modify(let clothes):
                 output.clothes = clothes.toRegisterEntity()
             }
+            getBrandList()
         case .editColor(let colorCode):
             output.clothes.colorCode = colorCode
         case .editName(let string):
@@ -129,11 +130,10 @@ final class ClothesRegisterViewModel: ObservableObject {
             image: imageData,
             request: output.clothes
         ).sink { event in
-            completion()
             self.output.canRegister = true
             print("ClosetAdd:", event)
         } receiveValue: { _ in
-            
+            completion()
         }.store(in: &bag)
     }
     
@@ -152,6 +152,15 @@ final class ClothesRegisterViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
+    private func getBrandList() {
+        closetService.brandList()
+            .sink { event in
+                print("Brand Sheet:", event)
+            } receiveValue: { [weak self] brandList in
+                self?.output.brandList = brandList
+            }.store(in: &bag)
+    }
+    
 }
 
 
@@ -159,6 +168,7 @@ extension ClothesRegisterViewModel {
     
     struct State {
         var clothes: ClothesRegisterEntity = .emptyData
+        var brandList: [BrandEntity] = []
         var isUnknownedCategory: Bool = false
         var isUnknownedMood: Bool = false
         var canRegister: Bool = true
@@ -185,7 +195,7 @@ extension ClothesRegisterViewModel {
 }
 
 
-extension ClothesEntity {
+fileprivate extension ClothesEntity {
     
     func toRegisterEntity() -> ClothesRegisterEntity {
         return .init(
@@ -204,7 +214,7 @@ extension ClothesEntity {
     
 }
 
-extension ClothesRegisterEntity {
+fileprivate extension ClothesRegisterEntity {
     
     func toClothesEntity(id: String, accountId: String, imageUrl: String) -> ClothesEntity {
         return .init(

@@ -9,19 +9,34 @@ import SwiftUI
 
 struct TitleForm<Content: View>: View {
     let title: String
+    let isNeccsory: Bool
     var spacing: CGFloat?
     let content: () -> Content
     
-    init(_ title: String, spacing: CGFloat? = nil, @ViewBuilder content: @escaping () -> Content) {
+    init(
+        _ title: String,
+        isNessesory: Bool = false,
+        spacing: CGFloat? = nil,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
         self.title = title
+        self.isNeccsory = isNessesory
         self.spacing = spacing
         self.content = content
     }
     
     var body: some View {
         VStack(alignment:. leading, spacing: spacing) {
-            Text(title)
-                .negguFont(.body1b)
+            HStack(spacing: 4) {
+                Text(title)
+                    .foregroundStyle(.labelNormal)
+                
+                if isNeccsory {
+                    Text("*")
+                        .foregroundStyle(.warning)
+                }
+            }
+            .negguFont(.body1b)
             
             content()
         }

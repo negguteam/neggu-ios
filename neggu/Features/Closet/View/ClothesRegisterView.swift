@@ -10,6 +10,7 @@ import SwiftUI
 struct ClothesRegisterView: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var closetViewModel: ClosetViewModel
+    @EnvironmentObject private var lookBookViewModel: LookBookViewModel
     @ObservedObject private var viewModel: ClothesRegisterViewModel
     
     @State private var showNameEditView: Bool = false
@@ -67,7 +68,7 @@ struct ClothesRegisterView: View {
                                 pinnedViews: [.sectionHeaders]
                             ) {
                                 Section {
-                                    TitleForm("어떤 종류의 옷인가요?") {
+                                    TitleForm("어떤 종류의 옷인가요?", isNessesory: true) {
                                         Button {
                                             showCategorySheet = true
                                         } label: {
@@ -291,6 +292,7 @@ struct ClothesRegisterView: View {
                                         image,
                                         completion: {
                                             closetViewModel.send(action: .refresh)
+                                            lookBookViewModel.send(action: .fetchUserProfile)
                                             coordinator.dismissFullScreenCover()
                                         }
                                     ))
@@ -362,10 +364,13 @@ struct ClothesRegisterView: View {
             .presentationDetents([.fraction(0.85)])
         }
         .sheet(isPresented: $showBrandSheet) {
-            BrandSheet(selectedBrand: Binding(
-                get: { viewModel.output.clothes.brand },
-                set: { viewModel.send(action: .editBrand($0)) }
-            ))
+            BrandSheet(
+                selectedBrand: Binding(
+                    get: { viewModel.output.clothes.brand },
+                    set: { viewModel.send(action: .editBrand($0)) }
+                ),
+                brandList: viewModel.output.brandList
+            )
             .presentationDetents([.fraction(0.85)])
         }
         .negguAlert(
