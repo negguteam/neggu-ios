@@ -76,7 +76,12 @@ struct LookBookDateSheet: View {
                     ForEach(selectedMonthDates) { day in
                         if day.date >= selectedMonth {
                             Circle()
-                                .fill(selectedDate == day.date ? .negguSecondary : day.date == Date.now.yearMonthDay() ? .negguSecondaryAlt : .clear)
+                                .fill(selectedDate == day.date
+                                      ? .negguSecondary
+                                      : day.date == Date.now.yearMonthDay()
+                                      ? .negguSecondaryAlt
+                                      : .clear
+                                )
                                 .overlay {
                                     Text(day.date.dayFormatted())
                                         .negguFont(.body2b)
@@ -148,11 +153,9 @@ struct LookBookDateSheet: View {
     
     func updateMonth(_ increment: Bool = true) {
         let calendar = Calendar.current
-        guard let month = calendar.date(
-            byAdding: .month,
-            value: increment ? 1 : -1,
-            to: selectedMonth
-        ) else { return }
+        guard let month = calendar.date(byAdding: .month, value: increment ? 1 : -1, to: selectedMonth),
+              calendar.component(.month, from: month) >= calendar.component(.month, from: .now)
+        else { return }
         
         selectedMonth = month
     }
@@ -160,6 +163,8 @@ struct LookBookDateSheet: View {
     func dateColor(_ day: Day) -> some ShapeStyle {
         if selectedDate == day.date {
             return .white
+        } else if day.date < .now.yearMonthDay() {
+            return .labelInactive
         } else if day.shortSymbol == "Sun" {
             return .warning
         } else if day.shortSymbol == "Sat" {
