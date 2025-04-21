@@ -15,7 +15,9 @@ struct LookBookDetailView: View {
     @State private var selectedDate: Date?
     @State private var isPublic: Bool = false
     
+    @State private var showDateSheet: Bool = false
     @State private var showDeleteAlert: Bool = false
+    @State private var showNegguInviteAlert: Bool = false
     
     private let lookBookID: String
     
@@ -47,14 +49,6 @@ struct LookBookDetailView: View {
                                 .foregroundStyle(.labelNormal)
                                 .frame(width: 44, height: 44)
                         }
-                        
-                        Spacer()
-                        
-//                        HStack(spacing: 12) {
-//                            Text("데이트룩")
-//                                .negguFont(.body1b)
-//                        }
-//                        .foregroundStyle(.labelNormal)
                         
                         Spacer()
                         
@@ -107,7 +101,6 @@ struct LookBookDetailView: View {
                                             }
                                             
                                             HStack(spacing: 0) {
-//                                                Text(decorator.accountId)
                                                 Text("친구")
                                                     .foregroundStyle(.negguSecondary)
                                                     .lineLimit(1)
@@ -127,7 +120,7 @@ struct LookBookDetailView: View {
                                     }
                                     
                                     Button {
-                                        coordinator.sheet = .lookbookDateSheet(date: $selectedDate)
+                                        showDateSheet = true
                                     } label: {
                                         HStack(spacing: 4) {
                                             Image(.calendar)
@@ -203,7 +196,7 @@ struct LookBookDetailView: View {
 //                                    }
                                     
                                     Button {
-                                        // TODO: 네가 좀 꾸며줘 Alert
+                                        showNegguInviteAlert = true
                                     } label: {
                                         HStack(spacing: 10) {
                                             Image("neggu_star")
@@ -235,6 +228,18 @@ struct LookBookDetailView: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
+        .overlay {
+            if showNegguInviteAlert {
+                Color.bgDimmed
+                    .ignoresSafeArea()
+                
+                NegguInviteAlert(showAlert: $showNegguInviteAlert)
+            }
+        }
+        .sheet(isPresented: $showDateSheet) {
+            LookBookDateSheet(selectedDate: $selectedDate)
+                .presentationCornerRadius(20)
+        }
         .negguAlert(
             showAlert: $showDeleteAlert,
             title: "룩북을 삭제할까요?",
