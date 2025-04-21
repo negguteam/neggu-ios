@@ -57,7 +57,8 @@ struct LinkBanner: View {
                     .strokeBorder(.lineAlt)
             }
         }
-        .padding()
+        .padding(.horizontal)
+        .padding(.vertical, 20)
         .background {
             RoundedRectangle(cornerRadius: 24)
                 .fill(.negguSecondary)
