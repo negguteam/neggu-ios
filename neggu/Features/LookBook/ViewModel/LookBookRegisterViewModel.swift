@@ -64,6 +64,8 @@ final class LookBookRegisterViewModel: ObservableObject {
         case .onTapRegister(let image, let clothes, let inviteCode, let completion):
             let request = clothes.compactMap { $0.toEntity() }
             register(image: image, request: request, inviteCode: inviteCode, completion: completion)
+        case .onTapDismissClothesAlert:
+            output.showRegisterClothesAlert = false
         }
     }
     
@@ -103,7 +105,12 @@ final class LookBookRegisterViewModel: ObservableObject {
                 } receiveValue: { [weak self] result in
                     self?.canPagenation = !result.last
                     self?.page += result.last ? 0 : 1
-                    self?.output.clothes += result.content
+                    
+                    if result.totalPages == 0 {
+                        self?.output.showRegisterClothesAlert = true
+                    } else {
+                        self?.output.clothes += result.content
+                    }
                 }.store(in: &bag)
         } else {
             parameters["inviteCode"] = inviteCode
@@ -135,6 +142,7 @@ extension LookBookRegisterViewModel {
         var editingClothes: LookBookClothesItem?
         var selectedCategory: Category = .NONE
         var selectedColor: ColorFilter?
+        var showRegisterClothesAlert: Bool = false
     }
     
     enum Action {
@@ -142,6 +150,7 @@ extension LookBookRegisterViewModel {
         case onTapCategory(Category, inviteCode: String = "")
         case onTapColor(ColorFilter?, inviteCode: String = "")
         case onTapRegister(image: Data, clothes: [LookBookClothesItem], inviteCode: String = "", completion: () -> Void)
+        case onTapDismissClothesAlert
     }
     
 }
