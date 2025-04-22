@@ -240,13 +240,7 @@ struct LookBookDetailView: View {
             LookBookDateSheet(selectedDate: $selectedDate)
                 .presentationCornerRadius(20)
         }
-        .negguAlert(
-            showAlert: $showDeleteAlert,
-            title: "룩북을 삭제할까요?",
-            description: "삭제한 룩북은 복구되지 않습니다.",
-            leftContent: "취소하기",
-            rightContent: "삭제하기"
-        ) {
+        .negguAlert(.delete(.lookBook), showAlert: $showDeleteAlert) {
             viewModel.send(action: .onTapDelete(
                 id: lookBookID,
                 completion: {

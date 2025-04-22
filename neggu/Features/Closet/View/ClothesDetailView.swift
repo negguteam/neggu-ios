@@ -176,13 +176,7 @@ struct ClothesDetailView: View {
                         .padding(.bottom, 20)
                     }
                 }
-                .negguAlert(
-                    showAlert: $showAlert,
-                    title: "의상을 삭제할까요?",
-                    description: "삭제한 의상은 복구되지 않습니다.",
-                    leftContent: "취소하기",
-                    rightContent: "삭제하기"
-                ) {
+                .negguAlert(.delete(.clothes), showAlert: $showAlert) {
                     viewModel.send(action: .onTapDelete(
                         id: clothesID,
                         completion: {
