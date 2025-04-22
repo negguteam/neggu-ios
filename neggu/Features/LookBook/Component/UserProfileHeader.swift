@@ -13,8 +13,22 @@ struct UserProfileHeader: View {
     let profile: UserProfileEntity
     
     var body: some View {
-        Image("title_badge")
+        if let mood = profile.mood.first {
+            HStack(spacing: 4) {
+                Image(.titleBadgeIcon)
+                
+                Text(mood.title + "에 관심이 많은")
+                    .negguFont(.body2b)
+            }
+            .foregroundStyle(.labelNormal)
             .frame(height: 28)
+            .padding(.horizontal, 8)
+            .background {
+                Image(.titleBadge)
+                    .resizable()
+                    .clipShape(.rect(cornerRadius: 8))
+            }
+        }
         
         HStack(spacing: 16) {
             Text("\(profile.nickname)님\n안녕하세요!")

@@ -36,7 +36,6 @@ struct ClosetView: View {
                                 else { return }
                                 
                                 coordinator.fullScreenCover = .clothesRegister(.register(image, result.clothes))
-//                                    .clothesRegister(segmentedImage: image, clothes: result.clothes)
                                 clothesLink.removeAll()
                                 isFocused = false
                             }
@@ -47,26 +46,28 @@ struct ClosetView: View {
                 .id(0)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(userNickname + " 옷장")
-                        .negguFont(.title2)
-                        .foregroundStyle(.labelNormal)
-                        .lineLimit(1)
-                    
-                    HStack {
-                        FilterButton(title: filter.categoryTitle) {
-                            coordinator.sheet = .categorySheet(category: $filter.category, SubCategory: $filter.subCategory)
-                        }
+                    if !viewModel.output.clothes.isEmpty {
+                        Text(userNickname + " 옷장")
+                            .negguFont(.title2)
+                            .foregroundStyle(.labelNormal)
+                            .lineLimit(1)
                         
-                        FilterButton(title: filter.moodTitle) {
-                            coordinator.sheet = .moodSheet(mood: $filter.moodList, isSingleSelection: true)
+                        HStack {
+                            FilterButton(title: filter.categoryTitle) {
+                                coordinator.sheet = .categorySheet(category: $filter.category, SubCategory: $filter.subCategory)
+                            }
+                            
+                            FilterButton(title: filter.moodTitle) {
+                                coordinator.sheet = .moodSheet(mood: $filter.moodList, isSingleSelection: true)
+                            }
+                            
+                            FilterButton(title: filter.colorTitle) {
+                                coordinator.sheet = .colorSheet(color: $filter.color)
+                            }
                         }
-                        
-                        FilterButton(title: filter.colorTitle) {
-                            coordinator.sheet = .colorSheet(color: $filter.color)
-                        }
+                        .padding(.top)
+                        .padding(.bottom, 24)
                     }
-                    .padding(.top)
-                    .padding(.bottom, 24)
                     
                     ScrollView {
                         LazyVGrid(
@@ -99,7 +100,14 @@ struct ClosetView: View {
                     .scrollDisabled(scrollPosition == 0)
                     .padding(.horizontal, 12)
                 }
-                .containerRelativeFrame(.vertical)
+                .containerRelativeFrame(.vertical) { (length, _) in viewModel.output.clothes.isEmpty ? length * 0.5 : length }
+                .background {
+                    ListEmptyView(
+                        title: "등록된 옷이 없어요!",
+                        description: "갖고 있는 옷을 등록해보세요!"
+                    )
+                    .opacity(viewModel.output.clothes.isEmpty ? 1 : 0)
+                }
                 .id(1)
             }
             .scrollTargetLayout()

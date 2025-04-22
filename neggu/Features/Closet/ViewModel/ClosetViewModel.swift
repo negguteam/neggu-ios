@@ -31,7 +31,7 @@ final class ClosetViewModel: ObservableObject {
         self.closetService = closetService
         self.userService = userService
 
-        fetchUserProfile()
+//        fetchUserProfile()
         
         input
             .throttle(for: .seconds(0.5), scheduler: RunLoop.main, latest: true)

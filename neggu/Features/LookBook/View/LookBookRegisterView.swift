@@ -392,6 +392,20 @@ struct LookBookRegisterView: View {
         .task {
             await convertUrlToImage()
         }
+        .negguAlert(
+            .needClothes,
+            showAlert: Binding(
+                get: { viewModel.output.showRegisterClothesAlert },
+                set: { _ in viewModel.send(action: .onTapDismissClothesAlert) }
+            ),
+            leftAction: {
+                coordinator.dismissFullScreenCover()
+            },
+            rightAction: {
+                coordinator.dismissFullScreenCover()
+                coordinator.isGnbOpened = true
+            }
+        )
     }
     
     private var collageView: some View {

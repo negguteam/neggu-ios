@@ -373,13 +373,7 @@ struct ClothesRegisterView: View {
             )
             .presentationDetents([.fraction(0.85)])
         }
-        .negguAlert(
-            showAlert: $showAlert,
-            title: "의상 등록을 그만둘까요?",
-            description: "지금까지 편집한 내용은 저장되지 않습니다.",
-            leftContent: "이어서 편집하기",
-            rightContent: "그만하기"
-        ) {
+        .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
             coordinator.dismissFullScreenCover()
         }
         .onAppear {

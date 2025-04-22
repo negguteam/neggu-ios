@@ -74,6 +74,7 @@
 		1354444F2DA1897B00112F96 /* LookBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1354444E2DA1897B00112F96 /* LookBookViewModel.swift */; };
 		13595F292DA9587700AFF836 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13595F282DA9587700AFF836 /* DeepLinkManager.swift */; };
 		135A27942DA40A410048AA15 /* NegguInviteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135A27932DA40A410048AA15 /* NegguInviteEntity.swift */; };
+		135EE9372DB61DB600B54008 /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135EE9362DB61DB600B54008 /* ListEmptyView.swift */; };
 		13624D412DA6CA5900732B01 /* InsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13624D402DA6CA5900732B01 /* InsightViewModel.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
@@ -229,6 +230,7 @@
 		1354444E2DA1897B00112F96 /* LookBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookViewModel.swift; sourceTree = "<group>"; };
 		13595F282DA9587700AFF836 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		135A27932DA40A410048AA15 /* NegguInviteEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NegguInviteEntity.swift; sourceTree = "<group>"; };
+		135EE9362DB61DB600B54008 /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		13624D402DA6CA5900732B01 /* InsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightViewModel.swift; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
@@ -457,7 +459,6 @@
 				13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */,
 				133889292C899BF90023CED5 /* BottomNavigationBar.swift */,
 				134AD9A22D368C9400B18C1B /* NegguCTAButton.swift */,
-				13B663792DB22D0300B373B0 /* NameEditView.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -631,7 +632,7 @@
 				133A43532DAAD2060090E409 /* GradientView.swift */,
 				1390E0E02D687D1000848920 /* ImagePicker.swift */,
 				134AD9A02D363F4D00B18C1B /* LinkBanner.swift */,
-				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
+				135EE9362DB61DB600B54008 /* ListEmptyView.swift */,
 				13F951AA2D9C4B7900F69C94 /* NegguSheet.swift */,
 				1318DE542D3F600D0077972D /* PickerField.swift */,
 				1346D4632DAC7B9F00638C0E /* SkeletonView.swift */,
@@ -730,6 +731,8 @@
 			isa = PBXGroup;
 			children = (
 				1308D2742C62801F003F50F3 /* Coordinator.swift */,
+				13B663792DB22D0300B373B0 /* NameEditView.swift */,
+				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -966,6 +969,7 @@
 				133CCC962DB2CC8A008386A8 /* UserProfileHeader.swift in Sources */,
 				1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */,
 				13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */,
+				135EE9372DB61DB600B54008 /* ListEmptyView.swift in Sources */,
 				1301BC812DB1A6130065864D /* ClothesDetail.swift in Sources */,
 				1309706E2D40C4A20050D091 /* SettingView.swift in Sources */,
 				135081142D38CC94005E2491 /* Gender.swift in Sources */,

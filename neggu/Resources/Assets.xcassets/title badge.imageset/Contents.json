@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Rectangle 5958.png",
+      "filename" : "title badge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Rectangle 5958@2x.png",
+      "filename" : "title badge@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Rectangle 5959.png",
+      "filename" : "title badge@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
