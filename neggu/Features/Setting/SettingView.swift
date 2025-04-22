@@ -11,6 +11,7 @@ import Combine
 struct SettingView: View {
     @EnvironmentObject private var coodinator: MainCoordinator
     
+    @State private var allowNotification: Bool = false
     @State private var showAlert: Bool = false
     @State private var bag = Set<AnyCancellable>()
     
@@ -42,6 +43,14 @@ struct SettingView: View {
             
             ScrollView {
                 VStack(spacing: 0) {
+                    Toggle("알림 수신", isOn: $allowNotification)
+                        .tint(.safe)
+                        .frame(height: 52)
+                    
+                    Rectangle()
+                        .fill(.lineAlt)
+                        .frame(height: 1)
+                    
                     Button {
                         
                     } label: {
