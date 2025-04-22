@@ -51,16 +51,9 @@ struct InsightView: View {
                             ScrollView(.horizontal) {
                                 HStack(spacing: 0) {
                                     ForEach(insight.lookBooks) { lookBook in
-                                        RoundedRectangle(cornerRadius: 30)
-                                            .fill(.white)
+                                        ImageCardView(imageUrl: lookBook.imageUrl)
                                             .padding(.horizontal, 48)
                                             .frame(width: size.width)
-                                            .shadow(color: .black.opacity(0.05), radius: 4, x: 4, y: 4)
-                                            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
-                                            .overlay {
-                                                CachedAsyncImage(lookBook.imageUrl)
-                                                    .padding()
-                                            }
                                             .visualEffect { effect, proxy in
                                                 effect
                                                     .scaleEffect(scale(proxy, scale: 0.1), anchor: .trailing)
@@ -86,47 +79,41 @@ struct InsightView: View {
                     }
                     .tag(0)
                     
-                    VStack(spacing: 0) {
-                        Spacer()
-                        
-                        RoundedRectangle(cornerRadius: 30)
-                            .fill(.white)
-                            .aspectRatio(3/4, contentMode: .fit)
-                            .overlay {
-                                CachedAsyncImage(insight.clothes.first?.imageUrl ?? "")
-                                    .padding(.horizontal)
-                            }
-                        
-                        Spacer()
-                        
-                        Text("지금까지\n옷을 \(insight.clothCount)벌 수집했어요")
-                            .negguFont(.title3)
-                            .foregroundStyle(.labelNormal)
-                            .multilineTextAlignment(.center)
+                    if let clothes = insight.clothes.first {
+                        VStack(spacing: 0) {
+                            Spacer()
+                            
+                            ImageCardView(imageUrl: clothes.imageUrl)
+                                .frame(height: 390)
+                            
+                            Spacer()
+                            
+                            Text("지금까지\n옷을 \(insight.clothCount)벌 수집했어요")
+                                .negguFont(.title3)
+                                .foregroundStyle(.labelNormal)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal, 48)
+                        .tag(1)
                     }
-                    .padding(.horizontal, 48)
-                    .tag(1)
                     
-                    VStack(spacing: 0) {
-                        Spacer()
-                        
-                        RoundedRectangle(cornerRadius: 30)
-                            .fill(.white)
-                            .aspectRatio(3/4, contentMode: .fit)
-                            .overlay {
-                                CachedAsyncImage(insight.lookBooks.first?.imageUrl ?? "")
-                                    .padding(.horizontal)
-                            }
-                        
-                        Spacer()
-                        
-                        Text("지금까지\n룩북을 \(insight.lookBookCount)벌 코디했어요")
-                            .negguFont(.title3)
-                            .foregroundStyle(.labelNormal)
-                            .multilineTextAlignment(.center)
+                    if let lookBook = insight.lookBooks.first {
+                        VStack(spacing: 0) {
+                            Spacer()
+                            
+                            ImageCardView(imageUrl: lookBook.imageUrl)
+                                .frame(height: 390)
+                            
+                            Spacer()
+                            
+                            Text("지금까지\n룩북을 \(insight.lookBookCount)벌 코디했어요")
+                                .negguFont(.title3)
+                                .foregroundStyle(.labelNormal)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal, 48)
+                        .tag(2)
                     }
-                    .padding(.horizontal, 48)
-                    .tag(2)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 
@@ -181,6 +168,22 @@ struct InsightView: View {
     enum InsightState {
         case valid(InsightEntity)
         case invalid
+    }
+}
+
+struct ImageCardView: View {
+    let imageUrl: String
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 30)
+            .fill(.white)
+            .shadow(color: .black.opacity(0.05), radius: 4, x: 4, y: 4)
+            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
+            .overlay {
+                CachedAsyncImage(imageUrl)
+                    .aspectRatio(3/4, contentMode: .fit)
+                    .padding()
+            }
     }
 }
 
