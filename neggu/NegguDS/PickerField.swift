@@ -83,6 +83,7 @@ class PickerTextField: UITextField {
         )
 
         toolbar.setItems([flexibleSpace, doneButton], animated: false)
+        toolbar.tintColor = .orange40
         toolbar.sizeToFit()
         return toolbar
     }()
