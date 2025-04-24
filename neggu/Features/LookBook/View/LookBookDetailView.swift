@@ -60,10 +60,10 @@ struct LookBookDetailView: View {
                                 }
                             }
                             
-                            Button("편집하기") {
-                                let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
-                                coordinator.fullScreenCover = .lookbookRegister(editingClothes: editingClothes)
-                            }
+//                            Button("편집하기") {
+//                                let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
+//                                coordinator.fullScreenCover = .lookbookRegister(editingClothes: editingClothes)
+//                            }
                             
                             Button("삭제하기", role: .destructive) {
                                 showDeleteAlert = true
