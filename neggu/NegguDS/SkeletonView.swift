@@ -24,7 +24,7 @@ struct SkeletonView: View {
                     let maxX = size.width + skeletonWidth + blurDiameter
                     
                     Rectangle()
-                        .fill(.gray)
+                        .fill(.gray20)
                         .frame(width: skeletonWidth, height: size.height * 2)
                         .frame(height: size.height)
                         .blur(radius: blurRadius)
