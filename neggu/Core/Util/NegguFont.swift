@@ -49,7 +49,7 @@ enum NegguFont {
     var lineHeight: CGFloat {
         switch self {
         case .title1, .title2, .title3, .title4:
-            return self.fontSize// * 1.3
+            return self.fontSize * 1.3
         default:
             return self.fontSize
         }
@@ -58,8 +58,8 @@ enum NegguFont {
     var letterSpacing: CGFloat {
         switch self {
         case .title1, .title2, .title3, .title4:  
-            return self.fontSize * -0.04
-        default:       
+            return self.fontSize * -0.03
+        default:
             return 0.0
         }
     }
@@ -74,15 +74,15 @@ struct FontModifier: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        let lineHeight = font.lineHeight
         let fontHeight = font.fontSize
+//        let lineHeight = font.lineHeight
         let letterSpacing = font.letterSpacing
         
         content
             .font(.custom(font.fontName, size: font.fontSize))
-            .tracking(letterSpacing)
-            .lineSpacing(lineHeight - fontHeight)
-            .padding(.vertical, (lineHeight - fontHeight) / 2)
+            .kerning(letterSpacing)
+//            .lineSpacing(lineHeight - fontHeight)
+            .padding(.vertical, -(fontHeight * 0.3) / 2)
     }
 }
 
