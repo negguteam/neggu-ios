@@ -158,6 +158,7 @@ struct SettingView: View {
                 } receiveValue: { _ in
                     UserDefaultsKey.clearUserData()
                     UserDefaultsKey.Auth.isLogined = false
+                    Messaging.messaging().deleteToken { _ in }
                 }.store(in: &bag)
         }
     }
