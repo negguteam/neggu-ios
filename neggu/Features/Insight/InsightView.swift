@@ -41,100 +41,113 @@ struct InsightView: View {
             
             switch insightState {
             case .valid(let insight):
-                TabView(selection: $page) {
-                    VStack(spacing: 0) {
-                        Spacer()
-                        
-                        GeometryReader {
-                            let size = $0.size
+                if insight.clothCount == 0 || insight.lookBookCount == 0 {
+                    Color.clear
+                        .overlay {
+                            ListEmptyView(
+                                title: "취향을 분석할 수 없어요",
+                                description: "옷장과 룩북을 채우고 취향을 분석해봐요!"
+                            )
+                        }
+                } else {
+                    TabView(selection: $page) {
+                        VStack(spacing: 0) {
+                            Spacer()
                             
-                            ScrollView(.horizontal) {
-                                HStack(spacing: 0) {
-                                    ForEach(insight.lookBooks) { lookBook in
-                                        ImageCardView(imageUrl: lookBook.imageUrl)
-                                            .padding(.horizontal, 48)
-                                            .frame(width: size.width)
-                                            .visualEffect { effect, proxy in
-                                                effect
-                                                    .scaleEffect(scale(proxy, scale: 0.1), anchor: .trailing)
-                                                    .offset(x: minX(proxy))
-                                                    .offset(x: excessMinX(proxy, offset: 10))
-                                            }
-                                            .zIndex(insight.lookBooks.zIndex(lookBook))
+                            GeometryReader {
+                                let size = $0.size
+                                
+                                ScrollView(.horizontal) {
+                                    HStack(spacing: 0) {
+                                        ForEach(insight.lookBooks) { lookBook in
+                                            ImageCardView(imageUrl: lookBook.imageUrl)
+                                                .padding(.horizontal, 48)
+                                                .frame(width: size.width)
+                                                .visualEffect { effect, proxy in
+                                                    effect
+                                                        .scaleEffect(scale(proxy, scale: 0.1), anchor: .trailing)
+                                                        .offset(x: minX(proxy))
+                                                        .offset(x: excessMinX(proxy, offset: 10))
+                                                }
+                                                .zIndex(insight.lookBooks.zIndex(lookBook))
+                                        }
                                     }
                                 }
+                                .scrollIndicators(.hidden)
+                                .scrollTargetBehavior(.paging)
+                                .scrollClipDisabled()
                             }
-                            .scrollIndicators(.hidden)
-                            .scrollTargetBehavior(.paging)
-                            .scrollClipDisabled()
-                        }
-                        .frame(height: 390)
-                        
-                        Spacer()
-                        
-                        Text("\(insight.mood.title)에 관심이 많은\n\(insight.nickname)님")
-                            .negguFont(.title3)
-                            .foregroundStyle(.labelNormal)
-                            .multilineTextAlignment(.center)
-                    }
-                    .tag(0)
-                    
-                    if let clothes = insight.clothes.first {
-                        VStack(spacing: 0) {
-                            Spacer()
-                            
-                            ImageCardView(imageUrl: clothes.imageUrl)
-                                .frame(height: 390)
+                            .frame(height: 390)
                             
                             Spacer()
                             
-                            Text("지금까지\n옷을 \(insight.clothCount)벌 수집했어요")
+                            Text("\(insight.mood.title)에 관심이 많은\n\(insight.nickname)님")
                                 .negguFont(.title3)
                                 .foregroundStyle(.labelNormal)
                                 .multilineTextAlignment(.center)
                         }
-                        .padding(.horizontal, 48)
-                        .tag(1)
-                    }
-                    
-                    if let lookBook = insight.lookBooks.first {
-                        VStack(spacing: 0) {
-                            Spacer()
-                            
-                            ImageCardView(imageUrl: lookBook.imageUrl)
-                                .frame(height: 390)
-                            
-                            Spacer()
-                            
-                            Text("지금까지\n룩북을 \(insight.lookBookCount)벌 코디했어요")
-                                .negguFont(.title3)
-                                .foregroundStyle(.labelNormal)
-                                .multilineTextAlignment(.center)
-                        }
-                        .padding(.horizontal, 48)
-                        .tag(2)
-                    }
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                
-                HStack(spacing: 4) {
-                    ForEach(0..<3, id: \.self) { index in
-                        Capsule()
-                            .fill(page == index ? .labelNormal : .labelInactive)
-                            .frame(width: page == index ? 24 : 8, height: 8)
-                            .onTapGesture {
-                                page = index
+                        .tag(0)
+                        
+                        if let clothes = insight.clothes.first {
+                            VStack(spacing: 0) {
+                                Spacer()
+                                
+                                ImageCardView(imageUrl: clothes.imageUrl)
+                                    .frame(height: 390)
+                                
+                                Spacer()
+                                
+                                Text("지금까지\n옷을 \(insight.clothCount)벌 수집했어요")
+                                    .negguFont(.title3)
+                                    .foregroundStyle(.labelNormal)
+                                    .multilineTextAlignment(.center)
                             }
+                            .padding(.horizontal, 48)
+                            .tag(1)
+                        }
+                        
+                        if let lookBook = insight.lookBooks.first {
+                            VStack(spacing: 0) {
+                                Spacer()
+                                
+                                ImageCardView(imageUrl: lookBook.imageUrl)
+                                    .frame(height: 390)
+                                
+                                Spacer()
+                                
+                                Text("지금까지\n룩북을 \(insight.lookBookCount)벌 코디했어요")
+                                    .negguFont(.title3)
+                                    .foregroundStyle(.labelNormal)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .padding(.horizontal, 48)
+                            .tag(2)
+                        }
                     }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    
+                    HStack(spacing: 4) {
+                        ForEach(0..<3, id: \.self) { index in
+                            Capsule()
+                                .fill(page == index ? .labelNormal : .labelInactive)
+                                .frame(width: page == index ? 24 : 8, height: 8)
+                                .onTapGesture {
+                                    page = index
+                                }
+                        }
+                    }
+                    .frame(height: 56)
+                    .animation(.smooth, value: page)
                 }
-                .frame(height: 56)
-                .animation(.smooth, value: page)
             case .invalid:
-                ProgressView()
-                    .onAppear {
-                        viewModel.getInsight { insight in
-                            self.insightState = .valid(insight)
-                        }
+                Color.clear
+                    .overlay {
+                        ProgressView()
+                            .onAppear {
+                                viewModel.getInsight { insight in
+                                    self.insightState = .valid(insight)
+                                }
+                            }
                     }
             }
         }
