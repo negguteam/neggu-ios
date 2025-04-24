@@ -7,12 +7,14 @@
 
 import SwiftUI
 import Combine
+import FirebaseMessaging
 
 struct SettingView: View {
     @EnvironmentObject private var coodinator: MainCoordinator
     
     @State private var allowNotification: Bool = false
-    @State private var showAlert: Bool = false
+    @State private var showLogoutAlert: Bool = false
+    @State private var showWithdrawAlert: Bool = false
     @State private var bag = Set<AnyCancellable>()
     
     let service: UserService = DefaultUserService()
@@ -59,7 +61,7 @@ struct SettingView: View {
                             
                             Spacer()
                             
-                            Image(systemName: "chevron.right")
+                            Image(.chevronRight)
                                 .frame(width: 24, height: 24)
                                 .foregroundStyle(.labelAlt)
                         }
@@ -78,7 +80,7 @@ struct SettingView: View {
                             
                             Spacer()
                             
-                            Image(systemName: "chevron.right")
+                            Image(.chevronRight)
                                 .frame(width: 24, height: 24)
                                 .foregroundStyle(.labelAlt)
                         }
@@ -109,14 +111,7 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        service.logout()
-                            .sink { event in
-                                print("SettingView:", event)
-                            } receiveValue: { _ in
-                                UserDefaultsKey.clearUserData()
-//                                UserDefaultsKey.clearPushToken()
-                                UserDefaultsKey.Auth.isLogined = false
-                            }.store(in: &bag)
+                        showLogoutAlert = true
                     } label: {
                         HStack {
                             Text("로그아웃")
@@ -131,7 +126,7 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        showAlert = true
+                        showWithdrawAlert = true
                     } label: {
                         HStack {
                             Text("회원탈퇴")
@@ -151,7 +146,17 @@ struct SettingView: View {
         }
         .toolbar(.hidden, for: .navigationBar)
         .padding(.horizontal, 20)
-        .negguAlert(.withdraw, showAlert: $showAlert) {
+        .negguAlert(.logout, showAlert: $showLogoutAlert) {
+            service.logout()
+                .sink { event in
+                    print("SettingView:", event)
+                } receiveValue: { _ in
+                    UserDefaultsKey.clearUserData()
+                    UserDefaultsKey.Auth.isLogined = false
+                    Messaging.messaging().deleteToken { _ in }
+                }.store(in: &bag)
+        }
+        .negguAlert(.withdraw, showAlert: $showWithdrawAlert) {
             service.withdraw()
                 .sink { event in
                     print("SettingView:", event)
