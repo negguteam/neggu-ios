@@ -18,9 +18,11 @@ struct OnboardingView: View {
     ]
     
     var body: some View {
-        GeometryReader { proxy in
+        GeometryReader {
+            let size = $0.size
+            
             ZStack {
-                VStack(spacing: 0) {
+                VStack(spacing: 40) {
                     HStack(spacing: 4) {
                         ForEach(onboardingList.indices, id: \.self) { index in
                             Capsule()
@@ -45,7 +47,7 @@ struct OnboardingView: View {
                     HStack {
                         ForEach(onboardingList.indices, id: \.self) { index in
                             Color.clear
-                                .frame(width: proxy.size.width)
+                                .frame(width: size.width)
                                 .id(index)
                         }
                     }
@@ -79,7 +81,7 @@ struct OnboardingView: View {
                 Capsule()
                     .fill(.cyan)
                     .blur(radius: 100)
-                    .offset(y: proxy.size.height - CGFloat(tabIndex ?? 0) * proxy.size.height * 0.2)
+                    .offset(y: size.height - CGFloat(tabIndex ?? 0) * size.height * 0.2)
             }
         }
         .background(.black)
