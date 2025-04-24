@@ -56,21 +56,13 @@ final class ClosetViewModel: ObservableObject {
             filteredClothes(filter: filter)
         case .refresh:
             resetCloset()
+            getClothes()
         case .parseHTML(let link, let completion):
             Task {
                 await parseHTML(link: link)
                 completion()
             }
         }
-    }
-        
-    func fetchUserProfile() {
-        userService.profile()
-            .sink { event in
-                print("ClosetView:", event)
-            } receiveValue: { [weak self] profile in
-                self?.output.userProfile = profile
-            }.store(in: &bag)
     }
     
     func getClothes() {
@@ -227,7 +219,6 @@ final class ClosetViewModel: ObservableObject {
 extension ClosetViewModel {
     
     struct State {
-        var userProfile: UserProfileEntity?
         var clothes: [ClothesEntity] = []
         var parsingResult: HTMLParsingResult?
         var filter: ClothesFilter = .init()

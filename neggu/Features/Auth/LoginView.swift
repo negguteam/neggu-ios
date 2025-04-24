@@ -12,8 +12,11 @@ struct LoginView: View {
     @EnvironmentObject private var authViewModel: AuthViewModel
     
     var body: some View {
-        VStack {
-            Spacer()
+        VStack(spacing: 100) {
+            Image(.appLogo)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 240, height: 240)
             
             VStack(spacing: 12) {
                 Button {
@@ -80,9 +83,9 @@ struct LoginView: View {
                 }
             }
         }
+        .frame(maxHeight: .infinity)
         .padding(.horizontal, 48)
-        .padding(.vertical, 80)
-        .background(.bgNormal)
+        .background(.bgRNormal)
         .onChange(of: authViewModel.needEditNickname) { _, newValue in
             if !newValue { return }
             authCoordinator.push(.signUp)

@@ -132,6 +132,7 @@ enum AlertType {
     case needClothes
     case cancelRegister(Entry)
     case delete(Entry)
+    case logout
     case withdraw
     
     enum Entry {
@@ -152,6 +153,12 @@ enum AlertType {
             case .clothes: "의상을 삭제할까요?"
             case .lookBook: "룩북을 삭제할까요?"
             }
+        case .logout:
+            if let nickname = UserDefaultsKey.User.nickname {
+                nickname + "님"
+            } else {
+                ""
+            }
         case .withdraw: "탈퇴하시겠습니까?"
         }
     }
@@ -165,6 +172,7 @@ enum AlertType {
             case .clothes: "삭제한 의상은 복구할 수 없습니다"
             case .lookBook: "삭제한 룩북은 복구할 수 없습니다"
             }
+        case .logout: "로그아웃하시겠습니까?"
         case .withdraw: "모든 정보는 즉시 삭제되며, 탈퇴 이후에는 복구할 수 없습니다"
         }
     }
@@ -173,7 +181,7 @@ enum AlertType {
         switch self {
         case .needClothes: "닫기"
         case .cancelRegister: "이어서 편집하기"
-        case .delete, .withdraw: "취소하기"
+        case .delete, .logout, .withdraw: "취소하기"
         }
     }
     
@@ -182,6 +190,7 @@ enum AlertType {
         case .needClothes: "의상 등록하기"
         case .cancelRegister: "그만하기"
         case .delete: "삭제하기"
+        case .logout: "로그아웃하기"
         case .withdraw: "탈퇴하기"
         }
     }

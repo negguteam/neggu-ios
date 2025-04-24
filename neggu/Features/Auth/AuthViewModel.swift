@@ -12,6 +12,7 @@ import AuthenticationServices
 import KakaoSDKAuth
 import KakaoSDKUser
 import CryptoKit
+import FirebaseMessaging
 
 final class AuthViewModel: NSObject, ObservableObject {
     
@@ -34,6 +35,14 @@ final class AuthViewModel: NSObject, ObservableObject {
     
     private func login(_ socialType: SocialType, idToken: String) {
         needEditNickname = false
+        
+        if UserDefaultsKey.User.fcmToken == nil {
+            Messaging.messaging().token { token, error in
+                if let token {
+                    UserDefaultsKey.User.fcmToken = token
+                }
+            }
+        }
         
         authService.login(
             socialType: socialType,

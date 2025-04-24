@@ -20,22 +20,22 @@ struct LookBookCell: View {
         RoundedRectangle(cornerRadius: 20)
             .fill(.white)
             .overlay {
-                ZStack(alignment: .bottomLeading) {
-                    CachedAsyncImage(lookBook.imageUrl)
-                    
-                    if let decorator = lookBook.decorator {
-                        Group {
-                            if let decoratorImage = decorator.imageUrl {
-                                CachedAsyncImage(decoratorImage)
-                            } else {
-                                Color.black
-                            }
+                CachedAsyncImage(lookBook.imageUrl)
+                    .padding(10)
+            }
+            .overlay(alignment: .bottomLeading) {
+                if let decorator = lookBook.decorator {
+                    Group {
+                        if let decoratorImage = decorator.imageUrl {
+                            CachedAsyncImage(decoratorImage)
+                        } else {
+                            Color.black
                         }
-                        .frame(width: 36, height: 36)
-                        .clipShape(.circle)
                     }
+                    .frame(width: 36, height: 36)
+                    .clipShape(.circle)
+                    .padding(10)
                 }
-                .padding(10)
             }
             .overlay(alignment: .topTrailing) {
                 if let (dateString, dateColor) = targetDate?.generateLookBookDate() {

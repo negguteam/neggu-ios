@@ -106,7 +106,6 @@
 		1386EAE22C5D3F9D0085655D /* negguTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EAE12C5D3F9D0085655D /* negguTests.swift */; };
 		1386EAEC2C5D3F9D0085655D /* negguUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EAEB2C5D3F9D0085655D /* negguUITests.swift */; };
 		1386EAEE2C5D3F9D0085655D /* negguUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1386EAED2C5D3F9D0085655D /* negguUITestsLaunchTests.swift */; };
-		1386EB002C5D40350085655D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */; };
 		1386EB022C5D416D0085655D /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB012C5D416D0085655D /* Colors.xcassets */; };
 		1386EB082C5D419B0085655D /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 1386EB072C5D419B0085655D /* Localizable.xcstrings */; };
 		13897EC02DAB9AB600CBD97F /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */; };
@@ -128,6 +127,7 @@
 		13BE36612D2845CF0033DE7B /* SignUpMoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */; };
 		13BE36632D2845F20033DE7B /* SignUpNicknameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */; };
 		13CDE7532D3AC61E00D9E316 /* SignUpAgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */; };
+		13D1B61F2DBA4E67002EE66A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13D1B61E2DBA4E67002EE66A /* LaunchScreen.storyboard */; };
 		13D7EEE22D2CE2BB00E1017F /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */; };
 		13DBA7E92CC434DD003A10AE /* LookBookMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DBA7E82CC434DD003A10AE /* LookBookMainView.swift */; };
 		13DC5E732C64AA3900DB5600 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */; };
@@ -261,7 +261,6 @@
 		1386EAE72C5D3F9D0085655D /* negguUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = negguUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1386EAEB2C5D3F9D0085655D /* negguUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = negguUITests.swift; sourceTree = "<group>"; };
 		1386EAED2C5D3F9D0085655D /* negguUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = negguUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1386EB012C5D416D0085655D /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		1386EB072C5D419B0085655D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		13897EBF2DAB9AB600CBD97F /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
@@ -283,6 +282,7 @@
 		13BE36602D2845CF0033DE7B /* SignUpMoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMoodView.swift; sourceTree = "<group>"; };
 		13BE36622D2845F20033DE7B /* SignUpNicknameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNicknameView.swift; sourceTree = "<group>"; };
 		13CDE7522D3AC61E00D9E316 /* SignUpAgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpAgeView.swift; sourceTree = "<group>"; };
+		13D1B61E2DBA4E67002EE66A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		13D7EEE12D2CE2BB00E1017F /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		13DBA7E82CC434DD003A10AE /* LookBookMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookMainView.swift; sourceTree = "<group>"; };
 		13DC5E722C64AA3900DB5600 /* AuthViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -558,7 +558,7 @@
 		1386EAFA2C5D3FA40085655D /* App */ = {
 			isa = PBXGroup;
 			children = (
-				1386EAFF2C5D40350085655D /* LaunchScreen.storyboard */,
+				13D1B61E2DBA4E67002EE66A /* LaunchScreen.storyboard */,
 				13F6EED32D2B9C1B0053CCA5 /* AppDelegate.swift */,
 				1386EAD02C5D3F9C0085655D /* negguApp.swift */,
 				13DC5E752C64AB0900DB5600 /* ContainerDependencies */,
@@ -859,7 +859,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					1386EACC2C5D3F9C0085655D = {
 						CreatedOnToolsVersion = 15.3;
@@ -909,13 +909,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				1302FE5B2C86EA180076D015 /* Pretendard-Medium.otf in Resources */,
+				13D1B61F2DBA4E67002EE66A /* LaunchScreen.storyboard in Resources */,
 				13FE61FB2D2AA1DD00578BB5 /* GoogleService-Info.plist in Resources */,
 				1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */,
 				1386EB022C5D416D0085655D /* Colors.xcassets in Resources */,
 				1302FE5A2C86EA180076D015 /* Pretendard-Regular.otf in Resources */,
 				1386EAD52C5D3F9C0085655D /* Assets.xcassets in Resources */,
 				1386EB082C5D419B0085655D /* Localizable.xcstrings in Resources */,
-				1386EB002C5D40350085655D /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1099,6 +1099,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1163,6 +1164,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1303,7 +1305,6 @@
 		1386EAF52C5D3F9D0085655D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1322,7 +1323,6 @@
 		1386EAF62C5D3F9D0085655D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1341,7 +1341,6 @@
 		1386EAF82C5D3F9D0085655D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1358,7 +1357,6 @@
 		1386EAF92C5D3F9D0085655D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

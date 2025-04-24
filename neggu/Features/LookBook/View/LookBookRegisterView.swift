@@ -272,39 +272,47 @@ struct LookBookRegisterView: View {
                         .overlay(alignment: .top) {
                             ScrollView(.horizontal) {
                                 LazyHStack {
-                                    ForEach(viewModel.output.clothes) { clothes in
-                                        let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
-                                        let isEditingClothes = editingClothes == clothes.id
-                                        
-                                        Button {
-                                            if !isSelected {
-                                                guard selectedClothes.count < 15 else { return }
-                                                
-                                                Task {
-                                                    guard let uiImage = await clothes.imageUrl.toImage() else { return }
-                                                    
-                                                    selectedClothes.append(clothes.toLookBookItem(
-                                                        image: uiImage,
-                                                        offset: .init(width: midX, height: midY),
-                                                        zIndex: Double(selectedClothes.count)
-                                                    ))
-                                                }
-                                            } else {
-                                                selectedClothes.removeAll(where: { $0.id == clothes.id })
-                                                
-                                                if isEditingClothes {
-                                                    editingClothes = ""
-                                                }
-                                            }
-                                        } label: {
-                                            CachedAsyncImage(clothes.imageUrl)
+                                    if viewModel.output.clothes.isEmpty {
+                                        ForEach(0..<3, id: \.self) { index in
+                                            SkeletonView()
                                                 .frame(width: 100, height: 100)
-                                                .background(isSelected ? .negguSecondaryAlt : .bgNormal)
-                                                .overlay {
-                                                    RoundedRectangle(cornerRadius: 16)
-                                                        .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
-                                                }
                                                 .clipShape(.rect(cornerRadius: 16))
+                                        }
+                                    } else {
+                                        ForEach(viewModel.output.clothes) { clothes in
+                                            let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
+                                            let isEditingClothes = editingClothes == clothes.id
+                                            
+                                            Button {
+                                                if !isSelected {
+                                                    guard selectedClothes.count < 15 else { return }
+                                                    
+                                                    Task {
+                                                        guard let uiImage = await clothes.imageUrl.toImage() else { return }
+                                                        
+                                                        selectedClothes.append(clothes.toLookBookItem(
+                                                            image: uiImage,
+                                                            offset: .init(width: midX, height: midY),
+                                                            zIndex: Double(selectedClothes.count)
+                                                        ))
+                                                    }
+                                                } else {
+                                                    selectedClothes.removeAll(where: { $0.id == clothes.id })
+                                                    
+                                                    if isEditingClothes {
+                                                        editingClothes = ""
+                                                    }
+                                                }
+                                            } label: {
+                                                CachedAsyncImage(clothes.imageUrl)
+                                                    .frame(width: 100, height: 100)
+                                                    .background(isSelected ? .negguSecondaryAlt : .bgNormal)
+                                                    .overlay {
+                                                        RoundedRectangle(cornerRadius: 16)
+                                                            .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
+                                                    }
+                                                    .clipShape(.rect(cornerRadius: 16))
+                                            }
                                         }
                                     }
                                     

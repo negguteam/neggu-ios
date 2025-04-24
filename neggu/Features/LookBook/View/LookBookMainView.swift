@@ -25,10 +25,10 @@ struct LookBookMainView: View {
                         coordinator.push(.setting)
                     }
                     
-                    Button("룩북 삭제하기", role: .destructive) {
-                        coordinator.sheet = .lookbookDelete
-                        showDeleteList = true
-                    }
+//                    Button("룩북 삭제하기", role: .destructive) {
+//                        coordinator.sheet = .lookbookDelete
+//                        showDeleteList = true
+//                    }
                 } label: {
                     Image(.hamburgerHorizontal)
                         .foregroundStyle(.labelNormal)

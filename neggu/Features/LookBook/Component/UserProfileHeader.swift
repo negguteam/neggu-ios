@@ -24,7 +24,7 @@ struct UserProfileHeader: View {
             .frame(height: 28)
             .padding(.horizontal, 8)
             .background {
-                Image(.titleBadge)
+                Image(.titleBadgeBg)
                     .resizable()
                     .clipShape(.rect(cornerRadius: 8))
             }
@@ -45,23 +45,23 @@ struct UserProfileHeader: View {
             }
             .frame(width: 74, height: 74)
             .clipShape(.circle)
-            .overlay(alignment: .bottomTrailing) {
-                Button {
-                    coordinator.sheet = .nicknameEdit(nickname: profile.nickname)
-                } label: {
-                    Circle()
-                        .fill(.negguSecondary)
-                        .frame(width: 24, height: 24)
-                        .overlay {
-                            Image(.edit)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 12, height: 12)
-                                .foregroundStyle(.white)
-                        }
-                }
-                .offset(y: 8)
-            }
+//            .overlay(alignment: .bottomTrailing) {
+//                Button {
+//                    coordinator.sheet = .nicknameEdit(nickname: profile.nickname)
+//                } label: {
+//                    Circle()
+//                        .fill(.negguSecondary)
+//                        .frame(width: 24, height: 24)
+//                        .overlay {
+//                            Image(.edit)
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 12, height: 12)
+//                                .foregroundStyle(.white)
+//                        }
+//                }
+//                .offset(y: 8)
+//            }
         }
         
         Text("옷장이 잘 채워지고 있어요!")

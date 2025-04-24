@@ -59,6 +59,7 @@ final class LookBookViewModel: ObservableObject {
         case .refresh:
             fetchUserProfile()
             resetLookBookList()
+            getLookBookList()
         case .editNickname(let nickname):
             print(nickname)
         case .deleteLookBookList(let idList):
@@ -73,6 +74,7 @@ final class LookBookViewModel: ObservableObject {
             .sink { event in
                 print("LookBookMainView:", event)
             } receiveValue: { [weak self] profile in
+                UserDefaultsKey.User.nickname = profile.nickname
                 self?.output.profileState = .loaded(profile)
                 
                 if profile.clothes.isEmpty {

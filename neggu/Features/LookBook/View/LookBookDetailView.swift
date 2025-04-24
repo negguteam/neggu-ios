@@ -36,9 +36,27 @@ struct LookBookDetailView: View {
             VStack(spacing: 0) {
                 switch viewModel.state {
                 case .initial:
-                    ProgressView()
-                        .onAppear {
-                            viewModel.send(action: .fetchLookBook(id: lookBookID))
+                    HStack {
+                        Button {
+                            coordinator.pop()
+                        } label: {
+                            Image(.chevronLeft)
+                                .foregroundStyle(.labelNormal)
+                                .frame(width: 44, height: 44)
+                        }
+                        
+                        Spacer()
+                    }
+                    .frame(height: 44)
+                    .padding(.horizontal, 20)
+                    .background(.bgNormal)
+                    
+                    Color.clear
+                        .overlay {
+                            ProgressView()
+                                .onAppear {
+                                    viewModel.send(action: .fetchLookBook(id: lookBookID))
+                                }
                         }
                 case .loaded(let lookBook):
                     HStack {
@@ -60,10 +78,10 @@ struct LookBookDetailView: View {
                                 }
                             }
                             
-                            Button("편집하기") {
-                                let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
-                                coordinator.fullScreenCover = .lookbookRegister(editingClothes: editingClothes)
-                            }
+//                            Button("편집하기") {
+//                                let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
+//                                coordinator.fullScreenCover = .lookbookRegister(editingClothes: editingClothes)
+//                            }
                             
                             Button("삭제하기", role: .destructive) {
                                 showDeleteAlert = true

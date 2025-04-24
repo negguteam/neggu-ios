@@ -19,6 +19,7 @@ struct SignUpNicknameView: View {
             Text("닉네임을 입력해주세요!")
                 .negguFont(.title4)
                 .foregroundStyle(.labelNormal)
+                .padding(.bottom, 12)
             
             HStack {
                 TextField("", text: $viewModel.nickname)
@@ -45,7 +46,7 @@ struct SignUpNicknameView: View {
                     viewModel.nickname.removeAll()
                     isFocused.toggle()
                 } label: {
-                    Image(systemName: "multiply")
+                    Image(.xSmall)
                         .frame(width: 24, height: 24)
                         .foregroundStyle(.labelAlt)
                 }
@@ -64,12 +65,12 @@ struct SignUpNicknameView: View {
                 .frame(height: 32)
                 .overlay {
                     HStack(spacing: 4) {
-                        Image(systemName: "multiply")
+                        Image(.xSmall)
                             .frame(width: 24, height: 24)
                             .foregroundStyle(.warning)
                         
                         Text(fieldState.description)
-                            .negguFont(.caption)
+                            .negguFont(.body3b)
                             .foregroundStyle(.warning)
                         
                         Spacer()
@@ -82,7 +83,7 @@ struct SignUpNicknameView: View {
         .padding(.bottom, 80)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
-            Color.white
+            Color.bgNormal
                 .onTapGesture {
                     isFocused = false
                 }
