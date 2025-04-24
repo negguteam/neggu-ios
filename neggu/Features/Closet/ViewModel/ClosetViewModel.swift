@@ -56,6 +56,7 @@ final class ClosetViewModel: ObservableObject {
             filteredClothes(filter: filter)
         case .refresh:
             resetCloset()
+            getClothes()
         case .parseHTML(let link, let completion):
             Task {
                 await parseHTML(link: link)
