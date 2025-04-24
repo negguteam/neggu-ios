@@ -152,7 +152,7 @@ struct ClosetView: View {
     }
     
     var userNickname: String {
-        if let nickname = viewModel.output.userProfile?.nickname {
+        if let nickname = UserDefaultsKey.User.nickname {
             nickname + "의"
         } else {
             "내"
