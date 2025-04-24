@@ -15,22 +15,27 @@ struct SignUpView: View {
     
     var body: some View {
         VStack {
-            GeometryReader { proxy in
-                Capsule()
-                    .fill(.black.opacity(0.1))
-                    .overlay(alignment: .topLeading) {
-                        Capsule()
-                            .fill(.orange40)
-                            .frame(width: CGFloat(viewModel.step) * proxy.size.width / 4, height: 8)
-                    }
+            VStack(spacing: 24) {
+                GeometryReader { proxy in
+                    Capsule()
+                        .fill(.black.opacity(0.1))
+                        .overlay(alignment: .topLeading) {
+                            Capsule()
+                                .fill(.orange40)
+                                .frame(
+                                    width: CGFloat(viewModel.step) * proxy.size.width / 4,
+                                    height: 8
+                                )
+                        }
+                }
+                .frame(width: 204, height: 8)
+                .animation(.smooth, value: viewModel.step)
+                
+                Text("STEP \(viewModel.step)/4")
+                    .negguFont(.caption)
+                    .foregroundStyle(.labelAssistive)
             }
-            .frame(width: 204, height: 8)
-            .animation(.smooth, value: viewModel.step)
-            
-            Text("STEP \(viewModel.step)/4")
-                .negguFont(.caption)
-                .foregroundStyle(.labelAssistive)
-                .padding(.top, 8)
+            .padding(.top, 12)
             
             GeometryReader { proxy in
                 ZStack {
@@ -56,7 +61,7 @@ struct SignUpView: View {
                 .clipped()
                 .animation(.smooth(duration: 0.5), value: viewModel.step)
                 .overlay(alignment: .bottom) {
-                    VStack {
+                    VStack(spacing: 24) {
                         Button {
                             switch viewModel.step {
                             case 1:
@@ -96,9 +101,7 @@ struct SignUpView: View {
                                     viewModel.step -= 1
                                 } label: {
                                     HStack(spacing: 0) {
-                                        Image(systemName: "chevron.left")
-                                            .scaledToFit()
-                                            .frame(width: 24, height: 24)
+                                        Image(.chevronLeft)
                                         
                                         Text("이전으로")
                                             .negguFont(.body2)
@@ -138,6 +141,7 @@ struct SignUpView: View {
             }
         }
         .padding(.horizontal, 20)
+        .background(.bgNormal)
     }
 }
 
