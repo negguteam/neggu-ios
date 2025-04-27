@@ -10,7 +10,7 @@ import Combine
 import FirebaseMessaging
 
 struct SettingView: View {
-    @EnvironmentObject private var coodinator: MainCoordinator
+    @EnvironmentObject private var coordinator: MainCoordinator
     
     @State private var allowNotification: Bool = false
     @State private var showLogoutAlert: Bool = false
@@ -23,7 +23,7 @@ struct SettingView: View {
         VStack(spacing: 0) {
             HStack {
                 Button {
-                    coodinator.pop()
+                    coordinator.pop()
                 } label: {
                     Image(systemName: "chevron.left")
                         .frame(width: 44, height: 44)
