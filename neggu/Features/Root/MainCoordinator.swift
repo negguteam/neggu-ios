@@ -100,6 +100,8 @@ final class MainCoordinator: Coordinator {
             InsightView()
         case .setting:
             SettingView()
+        case .webView(let url):
+            CustomWebView(url: url)
         }
     }
     
@@ -120,6 +122,7 @@ final class MainCoordinator: Coordinator {
         case nicknameEdit(nickname: String)
         case insight
         case setting
+        case webView(url: String)
         
         var id: String { "\(self)" }
         

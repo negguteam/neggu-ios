@@ -112,6 +112,7 @@
 		1390E0E12D687D1000848920 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1390E0E02D687D1000848920 /* ImagePicker.swift */; };
 		139728FE2D7356EC0021B356 /* LookBookDeleteSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */; };
 		13A4D6CA2CAAC13E003F2E7C /* ClothesRegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A4D6C92CAAC13E003F2E7C /* ClothesRegisterView.swift */; };
+		13A9372C2DBE0D8D00368E2C /* CustomWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A9372B2DBE0D8D00368E2C /* CustomWebView.swift */; };
 		13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD442D30E8E30041C10A /* DateSelectButton.swift */; };
 		13AEFD472D30EC2C0041C10A /* LookBookCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD462D30EC2C0041C10A /* LookBookCell.swift */; };
 		13AEFD4A2D30F1FD0041C10A /* ColorFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AEFD492D30F1FD0041C10A /* ColorFilter.swift */; };
@@ -267,6 +268,7 @@
 		1390E0E02D687D1000848920 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		139728FD2D7356EC0021B356 /* LookBookDeleteSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookDeleteSheet.swift; sourceTree = "<group>"; };
 		13A4D6C92CAAC13E003F2E7C /* ClothesRegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesRegisterView.swift; sourceTree = "<group>"; };
+		13A9372B2DBE0D8D00368E2C /* CustomWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWebView.swift; sourceTree = "<group>"; };
 		13AEFD442D30E8E30041C10A /* DateSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectButton.swift; sourceTree = "<group>"; };
 		13AEFD462D30EC2C0041C10A /* LookBookCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookBookCell.swift; sourceTree = "<group>"; };
 		13AEFD492D30F1FD0041C10A /* ColorFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorFilter.swift; sourceTree = "<group>"; };
@@ -733,6 +735,7 @@
 				1308D2742C62801F003F50F3 /* Coordinator.swift */,
 				13B663792DB22D0300B373B0 /* NameEditView.swift */,
 				136C79D72CEC9780009DEA76 /* NegguAlert.swift */,
+				13A9372B2DBE0D8D00368E2C /* CustomWebView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1038,6 +1041,7 @@
 				13BA78A22D376B0800ADB1C1 /* CategorySheet.swift in Sources */,
 				1338892A2C899BF90023CED5 /* BottomNavigationBar.swift in Sources */,
 				13FE61FD2D2ABDF100578BB5 /* SignUpCompleteView.swift in Sources */,
+				13A9372C2DBE0D8D00368E2C /* CustomWebView.swift in Sources */,
 				13AEFD452D30E8E40041C10A /* DateSelectButton.swift in Sources */,
 				13B3757F2D34E795001D009E /* CGSize+Extension.swift in Sources */,
 				13BE365B2D2797200033DE7B /* ErrorEntity.swift in Sources */,
