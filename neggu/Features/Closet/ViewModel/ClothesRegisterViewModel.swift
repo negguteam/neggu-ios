@@ -233,7 +233,7 @@ fileprivate extension ClothesRegisterEntity {
             color: "",
             colorCode: self.colorCode ?? "",
             isPurchase: self.isPurchase,
-            createdAt: "",
+//            createdAt: "",
             modifiedAt: ""
         )
     }

@@ -56,7 +56,7 @@ struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     var color: String
     var colorCode: String
     let isPurchase: Bool
-    let createdAt: String
+//    let createdAt: String
     let modifiedAt: String
 }
 
