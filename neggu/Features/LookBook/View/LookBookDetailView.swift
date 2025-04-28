@@ -13,6 +13,7 @@ struct LookBookDetailView: View {
     @ObservedObject private var viewModel: LookBookDetailViewModel
     
     @State private var selectedDate: Date?
+    @State private var selectedClothes: LookBookClothesEntity?
     @State private var isPublic: Bool = false
     
     @State private var showDateSheet: Bool = false
@@ -178,7 +179,7 @@ struct LookBookDetailView: View {
                                     LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
                                         ForEach(lookBook.lookBookClothes) { clothes in
                                             Button {
-                                                coordinator.sheet = .clothesDetail(id: clothes.id)
+                                                selectedClothes = clothes
                                             } label: {
                                                 CachedAsyncImage(clothes.imageUrl)
                                                     .aspectRatio(1, contentMode: .fit)
@@ -257,6 +258,10 @@ struct LookBookDetailView: View {
         .sheet(isPresented: $showDateSheet) {
             LookBookDateSheet(selectedDate: $selectedDate)
                 .presentationCornerRadius(20)
+        }
+        .sheet(item: $selectedClothes) { clothes in
+            DIContainer.shared.resolve(ClothesDetailView.self, parameter: clothes.id)
+                .presentationDetents([.fraction(0.9)])
         }
         .negguAlert(.delete(.lookBook), showAlert: $showDeleteAlert) {
             viewModel.send(action: .onTapDelete(
