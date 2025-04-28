@@ -32,6 +32,7 @@
 		1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317A4682CE4E758007264C7 /* BannerCarousel.swift */; };
 		1318DE552D3F600D0077972D /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318DE542D3F600D0077972D /* PickerField.swift */; };
 		1318DE572D3F79410077972D /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1318DE562D3F79410077972D /* String+Extension.swift */; };
+		131EF9952DBFCFB4003D8C7E /* PolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131EF9942DBFCFB4003D8C7E /* PolicyView.swift */; };
 		132247122C5E924F004557EF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 132247112C5E924F004557EF /* FirebaseAnalytics */; };
 		132247142C5E924F004557EF /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 132247132C5E924F004557EF /* FirebaseAuth */; };
 		132247162C5E924F004557EF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 132247152C5E924F004557EF /* FirebaseCrashlytics */; };
@@ -191,6 +192,7 @@
 		1317A4682CE4E758007264C7 /* BannerCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerCarousel.swift; sourceTree = "<group>"; };
 		1318DE542D3F600D0077972D /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
 		1318DE562D3F79410077972D /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		131EF9942DBFCFB4003D8C7E /* PolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolicyView.swift; sourceTree = "<group>"; };
 		132247202C5E946A004557EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		132247232C5E972F004557EF /* NegguKeys.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = NegguKeys.xcconfig; sourceTree = "<group>"; };
 		1334DBF82CAA73AA00928C4C /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				1309706D2D40C4A20050D091 /* SettingView.swift */,
+				131EF9942DBFCFB4003D8C7E /* PolicyView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -1014,6 +1017,7 @@
 				135081122D38CC84005E2491 /* PriceRange.swift in Sources */,
 				1350811C2D38D5A4005E2491 /* BrandEntity.swift in Sources */,
 				13BA78A42D378B0000ADB1C1 /* ColorSheet.swift in Sources */,
+				131EF9952DBFCFB4003D8C7E /* PolicyView.swift in Sources */,
 				13BA78A02D376A5400ADB1C1 /* FilterButton.swift in Sources */,
 				1301BC742DB066D70065864D /* ClothesFilter.swift in Sources */,
 				135081182D38CCB2005E2491 /* Category.swift in Sources */,

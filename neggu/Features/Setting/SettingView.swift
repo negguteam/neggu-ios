@@ -73,7 +73,7 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        
+                        coordinator.push(.policyView(.privacyPolicy))
                     } label: {
                         HStack {
                             Text("개인정보 처리방침")
@@ -92,7 +92,7 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        
+                        coordinator.push(.policyView(.termsOfUse))
                     } label: {
                         HStack {
                             Text("서비스 이용약관")
