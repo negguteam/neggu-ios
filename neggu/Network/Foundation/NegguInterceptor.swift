@@ -60,6 +60,8 @@ class NegguInterceptor: RequestInterceptor {
             if isSuccessed {
                 completion(.retryWithDelay(1))
             } else {
+                UserDefaultsKey.clearUserData()
+                UserDefaultsKey.Auth.isLogined = false
                 completion(.doNotRetryWithError(error))
             }
         }
