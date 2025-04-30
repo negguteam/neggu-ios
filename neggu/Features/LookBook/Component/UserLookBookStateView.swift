@@ -35,6 +35,7 @@ struct UserLookBookStateView: View {
                                     .padding(.bottom, 12)
                             }
                     }
+                    .clipped()
                     .onTapGesture {
                         coordinator.push(.lookbookDetail(lookBookID: lookBook.id))
                     }
