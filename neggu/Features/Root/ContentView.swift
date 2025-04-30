@@ -26,6 +26,7 @@ struct ContentView: View {
                             coordinator.buildScene(.closet)
                                 .navigationDestination(for: MainCoordinator.Destination.self) { scene in
                                     coordinator.buildScene(scene)
+                                        .toolbarVisibility(.hidden, for: .navigationBar)
                                 }
                         }
                         .toolbarVisibility(.hidden, for: .tabBar)
@@ -36,6 +37,7 @@ struct ContentView: View {
                             coordinator.buildScene(.lookbook)
                                 .navigationDestination(for: MainCoordinator.Destination.self) { scene in
                                     coordinator.buildScene(scene)
+                                        .toolbarVisibility(.hidden, for: .navigationBar)
                                 }
                         }
                         .toolbarVisibility(.hidden, for: .tabBar)
@@ -47,6 +49,7 @@ struct ContentView: View {
                         coordinator.buildScene(.closet)
                             .navigationDestination(for: MainCoordinator.Destination.self) { scene in
                                 coordinator.buildScene(scene)
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                     }
                     .tag(NegguTab.closet)
@@ -62,6 +65,7 @@ struct ContentView: View {
                         coordinator.buildScene(.lookbook)
                             .navigationDestination(for: MainCoordinator.Destination.self) { scene in
                                 coordinator.buildScene(scene)
+                                    .toolbar(.hidden, for: .navigationBar)
                             }
                     }
                     .tag(NegguTab.lookbook)
