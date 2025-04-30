@@ -12,7 +12,7 @@ struct SkeletonView: View {
     
     var body: some View {
         Rectangle()
-            .fill(.gray.opacity(0.3))
+            .fill(.clear)
             .overlay {
                 GeometryReader {
                     let size = $0.size
@@ -24,7 +24,7 @@ struct SkeletonView: View {
                     let maxX = size.width + skeletonWidth + blurDiameter
                     
                     Rectangle()
-                        .fill(.gray20)
+                        .fill(.gray10)
                         .frame(width: skeletonWidth, height: size.height * 2)
                         .frame(height: size.height)
                         .blur(radius: blurRadius)

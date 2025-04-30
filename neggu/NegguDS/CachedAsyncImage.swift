@@ -23,13 +23,8 @@ struct CachedAsyncImage: View {
             image
                 .resizable()
                 .scaledToFit()
-        case .failure:
-            Color.clear
-                .overlay {
-                    ProgressView()
-                }
         default:
-            Color.clear
+            SkeletonView()
                 .task {
                     await loadImage()
                 }
