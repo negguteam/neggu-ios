@@ -46,28 +46,26 @@ struct ClosetView: View {
                 .id(0)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    if !viewModel.output.clothes.isEmpty {
-                        Text(userNickname + " 옷장")
-                            .negguFont(.title2)
-                            .foregroundStyle(.labelNormal)
-                            .lineLimit(1)
-                        
-                        HStack {
-                            FilterButton(title: filter.categoryTitle) {
-                                coordinator.sheet = .categorySheet(category: $filter.category, SubCategory: $filter.subCategory)
-                            }
-                            
-                            FilterButton(title: filter.moodTitle) {
-                                coordinator.sheet = .moodSheet(mood: $filter.moodList, isSingleSelection: true)
-                            }
-                            
-                            FilterButton(title: filter.colorTitle) {
-                                coordinator.sheet = .colorSheet(color: $filter.color)
-                            }
+                    Text(userNickname + " 옷장")
+                        .negguFont(.title2)
+                        .foregroundStyle(.labelNormal)
+                        .lineLimit(1)
+                    
+                    HStack {
+                        FilterButton(title: filter.categoryTitle) {
+                            coordinator.sheet = .categorySheet(category: $filter.category, SubCategory: $filter.subCategory)
                         }
-                        .padding(.top)
-                        .padding(.bottom, 24)
+                        
+                        FilterButton(title: filter.moodTitle) {
+                            coordinator.sheet = .moodSheet(mood: $filter.moodList, isSingleSelection: true)
+                        }
+                        
+                        FilterButton(title: filter.colorTitle) {
+                            coordinator.sheet = .colorSheet(color: $filter.color)
+                        }
                     }
+                    .padding(.top)
+                    .padding(.bottom, 24)
                     
                     ScrollView {
                         LazyVGrid(
@@ -99,14 +97,16 @@ struct ClosetView: View {
                     .scrollIndicators(.hidden)
                     .scrollDisabled(scrollPosition == 0)
                     .padding(.horizontal, 12)
+                    .background {
+                        ListEmptyView(
+                            title: "등록된 옷이 없어요!",
+                            description: "갖고 있는 옷을 등록해보세요!"
+                        )
+                        .opacity(viewModel.output.clothes.isEmpty ? 1 : 0)
+                    }
                 }
-                .containerRelativeFrame(.vertical) { (length, _) in viewModel.output.clothes.isEmpty ? length * 0.5 : length }
-                .background {
-                    ListEmptyView(
-                        title: "등록된 옷이 없어요!",
-                        description: "갖고 있는 옷을 등록해보세요!"
-                    )
-                    .opacity(viewModel.output.clothes.isEmpty ? 1 : 0)
+                .containerRelativeFrame(.vertical) { (length, _) in
+                    viewModel.output.clothes.isEmpty ? length * 0.5 : length
                 }
                 .id(1)
             }
