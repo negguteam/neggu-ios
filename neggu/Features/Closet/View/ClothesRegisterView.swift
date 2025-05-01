@@ -391,11 +391,9 @@ struct ClothesRegisterView: View {
     }
     
     private func getMostColor(image: UIImage) {
-        guard let color = image.pixelColor(),
-              let hexString = color.toHex()
-        else { return }
+        guard let color = image.pixelColor() else { return }
         
-        viewModel.send(action: .editColor(hexString))
+        viewModel.send(action: .editColor(ColorFilter(color: color)))
     }
     
     enum FocusField {

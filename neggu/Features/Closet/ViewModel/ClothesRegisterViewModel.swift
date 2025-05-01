@@ -21,7 +21,7 @@ final class ClothesRegisterViewModel: ObservableObject {
     var name: String {
         if output.clothes.name.isEmpty {
             [output.clothes.brand,
-//             (clothes.colorCode ?? "").uppercased(),
+             output.colorName,
              output.clothes.subCategory == .UNKNOWN ? output.clothes.category.title : output.clothes.subCategory.title]
                 .filter { !$0.isEmpty }.joined(separator: " ")
         } else {
@@ -79,8 +79,9 @@ final class ClothesRegisterViewModel: ObservableObject {
                 output.clothes = clothes.toRegisterEntity()
             }
             getBrandList()
-        case .editColor(let colorCode):
-            output.clothes.colorCode = colorCode
+        case .editColor(let color):
+            output.colorName = color.title
+            output.clothes.colorCode = color.hexCode
         case .editName(let string):
             output.clothes.name = string
         case .editCategory(let category):
@@ -168,6 +169,7 @@ extension ClothesRegisterViewModel {
     
     struct State {
         var clothes: ClothesRegisterEntity = .emptyData
+        var colorName: String = ""
         var brandList: [BrandEntity] = []
         var isUnknownedCategory: Bool = false
         var isUnknownedMood: Bool = false
@@ -176,7 +178,7 @@ extension ClothesRegisterViewModel {
     
     enum Action {
         case initial(ClothesEditType)
-        case editColor(String)
+        case editColor(ColorFilter)
         case editName(String)
         case editCategory(Category)
         case editSubCategory(SubCategory)

@@ -23,4 +23,17 @@ extension UIColor {
         return String(format: "#%06x", rgb)
     }
     
+    func toRGB() -> (r: Int, g: Int, b: Int)? {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        
+        guard self.getRed(&r, green: &g, blue: &b, alpha: &a) else {
+            return nil
+        }
+        
+        return (Int(r * 255), Int(g * 255), Int(b * 255))
+    }
+    
 }
