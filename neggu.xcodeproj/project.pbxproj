@@ -79,7 +79,6 @@
 		13624D412DA6CA5900732B01 /* InsightViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13624D402DA6CA5900732B01 /* InsightViewModel.swift */; };
 		136470CE2C8A34FC00A0D545 /* ClothesEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */; };
 		136470D12C8A360600A0D545 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 136470D02C8A360600A0D545 /* SwiftSoup */; };
-		1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */; };
 		1364C86F2C6102F500F67E3C /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C86E2C6102F500F67E3C /* AuthAPI.swift */; };
 		1364C8712C6102FD00F67E3C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C8702C6102FD00F67E3C /* AuthService.swift */; };
 		1364C8732C61031E00F67E3C /* TokenEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1364C8722C61031E00F67E3C /* TokenEntity.swift */; };
@@ -237,7 +236,6 @@
 		13607EA62C80E4770073FCE2 /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		13624D402DA6CA5900732B01 /* InsightViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightViewModel.swift; sourceTree = "<group>"; };
 		136470CD2C8A34FC00A0D545 /* ClothesEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClothesEntity.swift; sourceTree = "<group>"; };
-		1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponse.swift; sourceTree = "<group>"; };
 		1364C86E2C6102F500F67E3C /* AuthAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		1364C8702C6102FD00F67E3C /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		1364C8722C61031E00F67E3C /* TokenEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenEntity.swift; sourceTree = "<group>"; };
@@ -495,7 +493,6 @@
 				13659CEC2C5FE0EE00BB6B91 /* APIEventLogger.swift */,
 				13659CD82C5F612200BB6B91 /* BaseAPI.swift */,
 				13659CDA2C5F613500BB6B91 /* BaseService.swift */,
-				1364C86C2C60FF0500F67E3C /* ErrorResponse.swift */,
 				13659CE42C5FA19500BB6B91 /* NegguInterceptor.swift */,
 			);
 			path = Foundation;
@@ -991,7 +988,6 @@
 				1386EAD12C5D3F9C0085655D /* negguApp.swift in Sources */,
 				1352E0042D5F50AD00354234 /* LookBookAPI.swift in Sources */,
 				1317A4692CE4E758007264C7 /* BannerCarousel.swift in Sources */,
-				1364C86D2C60FF0500F67E3C /* ErrorResponse.swift in Sources */,
 				1347E7672DA519A30008E127 /* InsightView.swift in Sources */,
 				13F8ABD82D19DF5600E08057 /* TitleForm.swift in Sources */,
 				1334DBF92CAA73AA00928C4C /* CustomScrollView.swift in Sources */,
