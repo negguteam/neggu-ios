@@ -60,8 +60,16 @@ class NegguInterceptor: RequestInterceptor {
             if isSuccessed {
                 completion(.retryWithDelay(1))
             } else {
-                UserDefaultsKey.clearUserData()
-                UserDefaultsKey.Auth.isLogined = false
+                DispatchQueue.main.async {
+                    AlertManager.shared.setAlert(
+                        title: "안내",
+                        message: "토큰이 만료되었습니다. 다시 로그인 해주세요."
+                    ) {
+                        UserDefaultsKey.clearUserData()
+                        UserDefaultsKey.Auth.isLogined = false
+                    }
+                }
+                
                 completion(.doNotRetryWithError(error))
             }
         }
