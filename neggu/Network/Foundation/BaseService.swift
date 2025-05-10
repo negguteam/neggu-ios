@@ -133,13 +133,21 @@ extension BaseService {
                             promise(.success(body))
                         case 400..<500:
                             let error = try JSONDecoder().decode(ErrorEntity.self, from: value.data)
-                            throw error
+                            let apiError = APIError(statusCode: error.code, message: error.message)
+                            throw apiError
                         default: break
                         }
                     } catch {
                         promise(.failure(error))
                     }
                 case .failure(let error):
+                    if case MoyaError.underlying(let error, _) = error,
+                       case AFError.requestRetryFailed(let retryError, _) = error {
+                        DispatchQueue.main.async {
+                            AlertManager.shared.setAlert(message: retryError.localizedDescription)
+                        }
+                    }
+                    
                     promise(.failure(error))
                 }
             }

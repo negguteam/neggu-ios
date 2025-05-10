@@ -73,8 +73,7 @@ struct ContentView: View {
             }
             
             if coordinator.isGnbOpened {
-                Color.black
-                    .opacity(0.5)
+                Color.bgDimmed
                     .ignoresSafeArea()
                     .onTapGesture {
                         coordinator.isGnbOpened = false
@@ -84,6 +83,8 @@ struct ContentView: View {
             if coordinator.showGnb {
                 BottomNavigationBar()
             }
+            
+            AlertView()
         }
         .animation(.smooth(duration: 0.2), value: coordinator.isGnbOpened)
         .ignoresSafeArea(.keyboard)
