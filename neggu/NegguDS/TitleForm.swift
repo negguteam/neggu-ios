@@ -16,7 +16,7 @@ struct TitleForm<Content: View>: View {
     init(
         _ title: String,
         isNessesory: Bool = false,
-        spacing: CGFloat? = nil,
+        spacing: CGFloat? = 12,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.title = title
@@ -37,6 +37,7 @@ struct TitleForm<Content: View>: View {
                 }
             }
             .negguFont(.body1b)
+            .padding(.bottom, 20)
             
             content()
         }
