@@ -79,26 +79,6 @@ class BaseService<Target: TargetType> {
 
 extension BaseService {
     
-    var `default`: BaseService {
-        self.provider = self.defaultProvider
-        return self
-    }
-    
-    var test: BaseService {
-        self.provider = self.testingProvider
-        return self
-    }
-    
-    var testWithError: BaseService {
-        self.provider = self.testingProviderWithError
-        return self
-    }
-    
-}
-
-
-extension BaseService {
-    
     func requestObject<T: Decodable>(_ target: API) -> AnyPublisher<T, Error> {
         return Future { [weak self] promise in
             self?.provider.request(target) { result in
@@ -133,21 +113,13 @@ extension BaseService {
                             promise(.success(body))
                         case 400..<500:
                             let error = try JSONDecoder().decode(ErrorEntity.self, from: value.data)
-                            let apiError = APIError(statusCode: error.code, message: error.message)
-                            throw apiError
+                            throw error
                         default: break
                         }
                     } catch {
                         promise(.failure(error))
                     }
                 case .failure(let error):
-                    if case MoyaError.underlying(let error, _) = error,
-                       case AFError.requestRetryFailed(let retryError, _) = error {
-                        DispatchQueue.main.async {
-                            AlertManager.shared.setAlert(message: retryError.localizedDescription)
-                        }
-                    }
-                    
                     promise(.failure(error))
                 }
             }

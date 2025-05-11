@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import Moya
 
 class NegguInterceptor: RequestInterceptor {
     
@@ -49,29 +48,39 @@ class NegguInterceptor: RequestInterceptor {
         dueTo error: any Error,
         completion: @escaping (RetryResult) -> Void
     ) {
-        guard let pathComponents = request.request?.url?.pathComponents,
-              !pathComponents.contains("token"),
-              request.response?.statusCode == 401 else {
-            completion(.doNotRetryWithError(error))
+        guard let response = request.response,
+              let pathComponents = request.request?.url?.pathComponents,
+              !pathComponents.contains("token")
+        else {
+            DispatchQueue.main.async {
+                AlertManager.shared.setAlert(message: error.localizedDescription)
+            }
+            
+            completion(.retryWithDelay(10))
             return
         }
         
-        authService.tokenReissuance { isSuccessed in
-            if isSuccessed {
-                completion(.retryWithDelay(1))
-            } else {
-                DispatchQueue.main.async {
-                    AlertManager.shared.setAlert(
-                        title: "안내",
-                        message: "토큰이 만료되었습니다. 다시 로그인 해주세요."
-                    ) {
-                        UserDefaultsKey.clearUserData()
-                        UserDefaultsKey.Auth.isLogined = false
+        switch response.statusCode {
+        case 401:
+            authService.tokenReissuance { isSuccessed in
+                if isSuccessed {
+                    completion(.retry)
+                } else {
+                    DispatchQueue.main.async {
+                        AlertManager.shared.setAlert(
+                            title: "안내",
+                            message: "토큰이 만료되었습니다. 다시 로그인 해주세요."
+                        ) {
+                            UserDefaultsKey.clearUserData()
+                            UserDefaultsKey.Auth.isLogined = false
+                        }
                     }
+                    
+                    completion(.doNotRetry)
                 }
-                
-                completion(.doNotRetryWithError(error))
             }
+        default:
+            completion(.doNotRetryWithError(error))
         }
     }
     
