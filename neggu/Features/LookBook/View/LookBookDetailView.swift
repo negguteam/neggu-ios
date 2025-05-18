@@ -14,7 +14,6 @@ struct LookBookDetailView: View {
     
     @State private var selectedDate: Date?
     @State private var selectedClothes: LookBookClothesEntity?
-    @State private var isPublic: Bool = false
     
     @State private var showDateSheet: Bool = false
     @State private var showDeleteAlert: Bool = false
@@ -79,11 +78,6 @@ struct LookBookDetailView: View {
                                 }
                             }
                             
-//                            Button("편집하기") {
-//                                let editingClothes = lookBook.lookBookClothes.map { $0.toLookBookItem() }
-//                                coordinator.fullScreenCover = .lookbookRegister(editingClothes: editingClothes)
-//                            }
-                            
                             Button("삭제하기", role: .destructive) {
                                 showDeleteAlert = true
                             }
@@ -124,7 +118,7 @@ struct LookBookDetailView: View {
                                                     .foregroundStyle(.negguSecondary)
                                                     .lineLimit(1)
                                                 
-                                                Text("님이 꾸며줬어요")
+                                                Text("가 꾸며줬어요")
                                                     .fixedSize()
                                             }
                                             .negguFont(.body2b)
@@ -145,6 +139,9 @@ struct LookBookDetailView: View {
                                             Image(.calendar)
                                                 .frame(width: 24, height: 24)
                                             
+//                                            if let date = lookBook.decorator?.targetDate.toISOFormatDate() {
+//                                                Text(date.monthDayFormatted())
+//                                            }
                                             if let selectedDate {
                                                 Text(selectedDate.monthDayFormatted())
                                             }
@@ -191,50 +188,27 @@ struct LookBookDetailView: View {
                                 .padding(.vertical, 32)
                                 .background(.white)
                                 .clipShape(.rect(cornerRadius: 16))
-                                
-//                                Toggle("다른사람에게 공개", isOn: $isPublic)
-//                                    .negguFont(.body2b)
-//                                    .foregroundStyle(.labelAssistive)
-//                                    .tint(.safe)
-//                                    .padding(.horizontal, 28)
-//                                    .padding(.vertical, 10)
-//                                    .background(.white)
-//                                    .clipShape(.rect(cornerRadius: 16))
-                                
-//                                HStack {
-//                                    Button {
-//                                        
-//                                    } label: {
-//                                        Image(.share)
-//                                            .foregroundStyle(.white)
-//                                            .frame(width: 56, height: 56)
-//                                            .background {
-//                                                RoundedRectangle(cornerRadius: 16)
-//                                                    .fill(.black)
-//                                            }
-//                                    }
-                                    
-                                    Button {
-                                        showNegguInviteAlert = true
-                                    } label: {
-                                        HStack(spacing: 10) {
-                                            Image("neggu_star")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 24, height: 24)
-                                            
-                                            Text("네가 좀 꾸며줘!")
-                                                .negguFont(.body1b)
-                                        }
-                                        .foregroundStyle(.white)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 56)
-                                        .background {
-                                            RoundedRectangle(cornerRadius: 16)
-                                                .fill(.negguSecondary)
-                                        }
+                                                                    
+                                Button {
+                                    showNegguInviteAlert = true
+                                } label: {
+                                    HStack(spacing: 10) {
+                                        Image("neggu_star")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 24, height: 24)
+                                        
+                                        Text("네가 좀 꾸며줘!")
+                                            .negguFont(.body1b)
                                     }
-//                                }
+                                    .foregroundStyle(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 56)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .fill(.negguSecondary)
+                                    }
+                                }
                             }
                             .padding(.horizontal, 20)
                             .padding(.bottom, 20)

@@ -175,13 +175,8 @@ struct UserLookBookStateView: View {
     
     private var lookBookDateString: String {
         switch viewModel.output.lookBookState {
-        case .available(let lookBook):
-            if let targetDate = lookBook.decorator?.targetDate,
-               let date = targetDate.toISOFormatDate() {
-                date.generateLookBookDate().0 + " 입을 룩북"
-            } else {
-                "입을 룩북"
-            }
+        case .available:
+            "입을 룩북"
         default: ""
         }
     }
