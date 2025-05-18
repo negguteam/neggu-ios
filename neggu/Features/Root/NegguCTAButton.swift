@@ -116,39 +116,6 @@ struct NegguCTAButton: View {
                                     .padding(.leading)
                                     .padding(.trailing, 8)
                                 }
-                            
-                            HStack(spacing: 16) {
-                                Button {
-                                    print("Share to X")
-                                } label: {
-                                    Image(.xLogo)
-                                        .frame(width: 48, height: 48)
-                                }
-                                
-                                Button {
-                                    let urlString = DeepLinkManager.shared.generateUrl("invite", ["code": generatedInviteCode])
-                                    UIPasteboard.general.string = urlString
-                                    
-//                                    AppsFlyerShareInviteHelper.generateInviteUrl { generator in
-//                                        generator.addParameterValue("LookBookAdd", forKey: "deep_link_value")
-//                                        generator.addParameterValue(createdInviteCode, forKey: "deep_link_sub1")
-//                                        generator.addParameterValue("negguapp://", forKey: "af_dp")
-//                                        return generator
-//                                    } completionHandler: { url in
-//
-//                                    }
-                                } label: {
-                                    Image(.kakaotalkLogo)
-                                        .frame(width: 48, height: 48)
-                                }
-                                
-                                Button {
-                                    print("Share to Instagram")
-                                } label: {
-                                    Image(.instagramLogo)
-                                        .frame(width: 48, height: 48)
-                                }
-                            }
                         }
                         .overlay {
                             if showInviteCodeCompletion {

@@ -72,29 +72,6 @@ struct NegguInviteAlert: View {
                     .padding(.leading)
                     .padding(.trailing, 8)
                 }
-            
-            HStack(spacing: 16) {
-                Button {
-                    print("Share to X")
-                } label: {
-                    Image(.xLogo)
-                        .frame(width: 48, height: 48)
-                }
-                
-                Button {
-                    print("Share to KakaoTalk")
-                } label: {
-                    Image(.kakaotalkLogo)
-                        .frame(width: 48, height: 48)
-                }
-                
-                Button {
-                    print("Share to Instagram")
-                } label: {
-                    Image(.instagramLogo)
-                        .frame(width: 48, height: 48)
-                }
-            }
         }
         .padding(.horizontal, 36)
         .padding(.vertical, 28)
