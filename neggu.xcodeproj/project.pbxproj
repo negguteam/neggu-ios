@@ -52,6 +52,7 @@
 		133CCCA02DB2EAE2008386A8 /* LookBookDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133CCC9F2DB2EAE2008386A8 /* LookBookDetailViewModel.swift */; };
 		133D798E2D3A19DF00B0D0E3 /* MoodSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798D2D3A19DF00B0D0E3 /* MoodSheet.swift */; };
 		133D79902D3A31AA00B0D0E3 /* BrandSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133D798F2D3A31AA00B0D0E3 /* BrandSheet.swift */; };
+		134246932DD98A7C009F2AEC /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 134246922DD98A7C009F2AEC /* MarkdownUI */; };
 		134342462D7CCDD800D3F1A3 /* NegguInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342452D7CCDD800D3F1A3 /* NegguInviteAlert.swift */; };
 		134342482D7CE4FF00D3F1A3 /* UserProfileEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134342472D7CE4FF00D3F1A3 /* UserProfileEntity.swift */; };
 		1346786E2C97316C009A6F92 /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1346786D2C97316C009A6F92 /* Pretendard-Bold.otf */; };
@@ -315,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1322471B2C5E931A004557EF /* GoogleSignIn in Frameworks */,
+				134246932DD98A7C009F2AEC /* MarkdownUI in Frameworks */,
 				13830E2B2C6FA4C200CA385F /* KakaoSDKCommon in Frameworks */,
 				1308D2682C61F08E003F50F3 /* KakaoSDK in Frameworks */,
 				132247182C5E924F004557EF /* FirebaseMessaging in Frameworks */,
@@ -816,6 +818,7 @@
 				13830E2A2C6FA4C200CA385F /* KakaoSDKCommon */,
 				136470D02C8A360600A0D545 /* SwiftSoup */,
 				1368D4912DA833A800DFE166 /* AppsFlyerLib-Static */,
+				134246922DD98A7C009F2AEC /* MarkdownUI */,
 			);
 			productName = neggu;
 			productReference = 1386EACD2C5D3F9C0085655D /* neggu.app */;
@@ -897,6 +900,7 @@
 				1308D2662C61F08E003F50F3 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				136470CF2C8A360600A0D545 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				1368D4902DA833A800DFE166 /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */,
+				134246912DD98A7C009F2AEC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			productRefGroup = 1386EACE2C5D3F9C0085655D /* Products */;
 			projectDirPath = "";
@@ -1444,6 +1448,14 @@
 				minimumVersion = 7.1.0;
 			};
 		};
+		134246912DD98A7C009F2AEC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.1;
+			};
+		};
 		136470CF2C8A360600A0D545 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
@@ -1510,6 +1522,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 132247192C5E931A004557EF /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignIn;
+		};
+		134246922DD98A7C009F2AEC /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 134246912DD98A7C009F2AEC /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 		136470D02C8A360600A0D545 /* SwiftSoup */ = {
 			isa = XCSwiftPackageProductDependency;

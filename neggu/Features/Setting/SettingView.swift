@@ -54,25 +54,6 @@ struct SettingView: View {
                         .frame(height: 1)
                     
                     Button {
-                        
-                    } label: {
-                        HStack {
-                            Text("오픈소스")
-                            
-                            Spacer()
-                            
-                            Image(.chevronRight)
-                                .frame(width: 24, height: 24)
-                                .foregroundStyle(.labelAlt)
-                        }
-                        .frame(height: 52)
-                    }
-                    
-                    Rectangle()
-                        .fill(.lineAlt)
-                        .frame(height: 1)
-                    
-                    Button {
                         coordinator.push(.policyView(.privacyPolicy))
                     } label: {
                         HStack {
