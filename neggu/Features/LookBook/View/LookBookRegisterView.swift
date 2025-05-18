@@ -85,6 +85,8 @@ struct LookBookRegisterView: View {
                                     }
                                 ))
                             }
+                            .foregroundStyle(selectedClothes.isEmpty ? .labelInactive : .labelNormal)
+                            .disabled(selectedClothes.isEmpty)
                         }
                     }
                     .frame(height: 44)
@@ -407,7 +409,7 @@ struct LookBookRegisterView: View {
                 set: { _ in viewModel.send(action: .onTapDismissClothesAlert) }
             ),
             leftAction: {
-                coordinator.dismissFullScreenCover()
+                viewModel.send(action: .onTapDismissClothesAlert)
             },
             rightAction: {
                 coordinator.dismissFullScreenCover()

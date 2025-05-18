@@ -26,9 +26,9 @@ enum Category: String, CaseIterable, Identifiable, Codable {
         case .BOTTOM: "하의"
         case .OUTER: "아우터"
         case .DRESS: "원피스"
+        case .SHOES: "신발"
         case .ACCESSORY: "악세서리"
         case .BAG: "가방"
-        case .SHOES: "신발"
         case .NONE: "전체"
         case .UNKNOWN: ""
         }
@@ -40,9 +40,9 @@ enum Category: String, CaseIterable, Identifiable, Codable {
         case .BOTTOM: "pants"
         case .OUTER: "outer"
         case .DRESS: "one_piece"
-        case .NONE: "hanger"
+        case .SHOES: "shose"
         case .UNKNOWN: ""
-        default: "shose"
+        default: "hanger"
         }
     }
     
@@ -64,12 +64,12 @@ enum Category: String, CaseIterable, Identifiable, Codable {
             [.JACKET, .ZIP_UP_HOODIE, .CARDIGAN, .FLEECE, .COAT, .PUFFER, .VEST]
         case .DRESS:
             []
+        case .SHOES:
+            [.SNEAKERS, .DRESS_SHOES, .BOOTS, .SANDALS, .SLIPPERS, .FLATS]
         case .ACCESSORY:
             [.NECKLACE, .EARRINGS, .BRACELET, .RING, .HAIR_ACCESSORY, .BELT, .WATCH]
         case .BAG:
             [.BACKPACK, .TOTEBAG, .CLUTHCH, .CROSSBODY_BAG, .SHOULDER_BAG, .LUGGAGE]
-        case .SHOES:
-            [.SNEAKERS, .DRESS_SHOES, .BOOTS, .SANDALS, .SLIPPERS, .FLATS]
         case .NONE, .UNKNOWN:
             []
         }
