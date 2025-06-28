@@ -70,6 +70,7 @@ public extension TargetDependency {
         public static let KakaoSDKAuth = TargetDependency.external(name: "KakaoSDKAuth")
         public static let KakaoSDKCommon = TargetDependency.external(name: "KakaoSDKCommon")
         public static let KakaoSDKShare = TargetDependency.external(name: "KakaoSDKShare")
+        public static let KakaoSDKUser = TargetDependency.external(name: "KakaoSDKUser")
         
         public static let SwiftSoup = TargetDependency.external(name: "SwiftSoup")
     }
