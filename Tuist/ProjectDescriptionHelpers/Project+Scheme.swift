@@ -16,10 +16,10 @@ public extension Scheme {
             buildAction: .buildAction(targets: ["\(name)"]),
             testAction: .targets(
                 ["\(name)Tests"],
-                configuration: config,
+//                configuration: config,
                 options: .options(coverage: true, codeCoverageTargets: ["\(name)"])
             ),
-            runAction: .runAction(configuration: config)
+            runAction: .runAction()
         )
     }
     
@@ -28,7 +28,7 @@ public extension Scheme {
             name: name + "Demo",
             shared: true,
             buildAction: .buildAction(targets: ["\(name)Demo"]),
-            runAction: .runAction(configuration: config)
+            runAction: .runAction()
         )
     }
     

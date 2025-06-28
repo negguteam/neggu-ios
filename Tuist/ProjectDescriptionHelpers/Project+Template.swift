@@ -44,7 +44,7 @@ public extension Project {
                 resources: [.glob(pattern: "Resources/**")],
                 entitlements: "\(name).entitlements",
                 dependencies: featureDependencies + moduleDependencies + externalDependencies,
-                settings: .settings(base: baseSettings)
+                settings: .settings(base: baseSettings, configurations: XCConfig.project)
             )
             
             projectTargets.append(target)
@@ -65,7 +65,7 @@ public extension Project {
                 infoPlist: .default,
                 sources: ["Interface/Sources/**"],
                 dependencies: interfaceDependencies,
-                settings: .settings(base: settings)
+                settings: .settings(base: settings, configurations: XCConfig.framework)
             )
             
             projectTargets.append(target)
@@ -90,7 +90,7 @@ public extension Project {
                 sources: ["Sources/**"],
                 resources: hasResource ? [.glob(pattern: "Resources/**")] : [],
                 dependencies: deps + featureDependencies + moduleDependencies + externalDependencies,
-                settings: .settings(base: settings)
+                settings: .settings(base: settings, configurations: XCConfig.framework)
             )
             
             projectTargets.append(target)
@@ -111,7 +111,7 @@ public extension Project {
                 infoPlist: .default,
                 sources: ["Tests/Sources/**"],
                 dependencies: [.target(name: name)],
-                settings: .settings(base: settings)
+                settings: .settings(base: settings, configurations: XCConfig.tests)
             )
             
             projectTargets.append(target)
@@ -131,7 +131,7 @@ public extension Project {
                 sources: ["Demo/Sources/**"],
                 resources: [.glob(pattern: "Demo/Resources/**")],
                 dependencies: [.target(name: name)],
-                settings: .settings(base: baseSettings)
+                settings: .settings(base: baseSettings, configurations: XCConfig.demo)
             )
             
             projectTargets.append(target)
