@@ -113,7 +113,7 @@ public extension Date {
 
 
 // MARK: ISOFormat
-extension Date {
+public extension Date {
     
     static let isoFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
