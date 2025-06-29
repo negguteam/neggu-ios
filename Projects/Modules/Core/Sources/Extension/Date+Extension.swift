@@ -81,34 +81,6 @@ public extension Date {
         return formatter.string(from: self)
     }
     
-    func generateLookBookDate() -> (String, Color) {
-        let twoDaysAfter = Calendar.current.date(byAdding: .day, value: 2, to: Date.now.yearMonthDay())!
-        
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2
-        let today = calendar.startOfDay(for: Date.now)
-        var week: [Date] = []
-        
-        if let weekInterval = calendar.dateInterval(of: .weekOfYear, for: today) {
-            for i in 0...6 {
-                if let day = calendar.date(byAdding: .day, value: i, to: weekInterval.start) {
-                    week += [day]
-                }
-            }
-        }
-        
-        if self.yearMonthDay() == Date.now.yearMonthDay() {
-            return ("오늘", .negguSecondary)
-        } else if self.yearMonthDay() <= twoDaysAfter {
-            let dayString = self.yearMonthDay().toRelativeFormatString()
-            return (dayString, .labelNormal)
-        } else if week.contains(self.yearMonthDay()) {
-            return (self.daySymbol(), .labelNormal)
-        } else {
-            return (self.monthDayFormatted(), .gray50)
-        }
-    }
-    
 }
 
 

@@ -8,9 +8,9 @@
 import SwiftUI
 
 public struct SizeKey: PreferenceKey {
-    static var defaultValue: CGFloat = .zero
+    public static var defaultValue: CGFloat = .zero
     
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    public static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
 }
@@ -25,6 +25,10 @@ public extension View {
                     .onPreferenceChange(SizeKey.self, perform: completion)
             }
         }
+    }
+    
+    func eraseToAnyView() -> AnyView {
+        AnyView(self)
     }
     
     @MainActor

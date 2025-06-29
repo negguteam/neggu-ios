@@ -5,6 +5,8 @@
 //  Created by 유지호 on 1/10/25.
 //
 
+import Core
+import NegguDS
 
 import SwiftUI
 
@@ -42,16 +44,16 @@ public enum ColorFilter: CaseIterable, Identifiable {
     public var color: Color {
         switch self {
         case .WHITE: .white
-        case .GRAY: .gray30
+        case .GRAY: NegguDSAsset.Colors.gray30.swiftUIColor
         case .BLACK: .black
         case .RED: .red
-        case .ORANGE: .filterOrange
-        case .YELLOW: .filterYellow
-        case .GREEN: .filterGreen
-        case .BLUE: .filterBlue
-        case .PURPLE: .filterPurple
-        case .PINK: .filterPink
-        case .BROWN: .filterBrown
+        case .ORANGE: NegguDSAsset.Colors.filterOrange.swiftUIColor
+        case .YELLOW: NegguDSAsset.Colors.filterYellow.swiftUIColor
+        case .GREEN: NegguDSAsset.Colors.filterGreen.swiftUIColor
+        case .BLUE: NegguDSAsset.Colors.filterBlue.swiftUIColor
+        case .PURPLE: NegguDSAsset.Colors.filterPurple.swiftUIColor
+        case .PINK: NegguDSAsset.Colors.filterPink.swiftUIColor
+        case .BROWN: NegguDSAsset.Colors.filterBrown.swiftUIColor
         }
     }
     
@@ -112,4 +114,37 @@ public enum ColorFilter: CaseIterable, Identifiable {
 
         return closestColor
     }
+}
+
+
+public extension Date {
+    
+    func generateLookBookDate() -> (String, Color) {
+        let twoDaysAfter = Calendar.current.date(byAdding: .day, value: 2, to: Date.now.yearMonthDay())!
+        
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let today = calendar.startOfDay(for: Date.now)
+        var week: [Date] = []
+        
+        if let weekInterval = calendar.dateInterval(of: .weekOfYear, for: today) {
+            for i in 0...6 {
+                if let day = calendar.date(byAdding: .day, value: i, to: weekInterval.start) {
+                    week += [day]
+                }
+            }
+        }
+        
+        if self.yearMonthDay() == Date.now.yearMonthDay() {
+            return ("오늘", .negguSecondary)
+        } else if self.yearMonthDay() <= twoDaysAfter {
+            let dayString = self.yearMonthDay().toRelativeFormatString()
+            return (dayString, .labelNormal)
+        } else if week.contains(self.yearMonthDay()) {
+            return (self.daySymbol(), .labelNormal)
+        } else {
+            return (self.monthDayFormatted(), NegguDSAsset.Colors.gray50.swiftUIColor)
+        }
+    }
+    
 }

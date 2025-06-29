@@ -42,6 +42,8 @@ public final class AlertManager: ObservableObject {
 public struct AlertView: View {
     @StateObject private var alertManager = AlertManager.shared
     
+    public init() { }
+    
     public var body: some View {
         Color.clear
             .alert(
@@ -55,6 +57,6 @@ public struct AlertView: View {
             } message: {
                 Text(alertManager.message)
             }
-            .tint(.negguSecondary)
+            .tint(.orange)
     }
 }
