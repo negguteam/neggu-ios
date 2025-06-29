@@ -13,7 +13,7 @@ import Alamofire
 final class NegguInterceptor: RequestInterceptor {
     
     public typealias AdapterResult = Result<URLRequest, Error>
-    private let authService = DefaultAuthService()
+    private var authService: AuthService { DefaultAuthService() }
     
     public func adapt(
         _ urlRequest: URLRequest,

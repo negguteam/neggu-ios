@@ -30,8 +30,6 @@ public protocol Coordinator: ObservableObject {
 
 public extension Coordinator {
     
-    var container: DIContainer { DIContainer.shared }
-    
     // MARK: Navigation
     func push(_ destination: Destination) {
         path.append(destination)

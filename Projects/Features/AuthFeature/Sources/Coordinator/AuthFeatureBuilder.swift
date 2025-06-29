@@ -6,14 +6,15 @@
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
+import Core
+
 import AuthFeatureInterface
-import Networks
 
 import SwiftUI
 
 public final class AuthFeatureBuilder: AuthFeatureBuildable {
     
-    private let signUpViewModel: SignUpViewModel = SignUpViewModel()
+    private let signUpViewModel: SignUpViewModel = DIContainer.shared.resolve(SignUpViewModel.self)
     
     public init() { }
     
@@ -24,7 +25,7 @@ public final class AuthFeatureBuilder: AuthFeatureBuildable {
     }
     
     public func makeLogin() -> AnyView {
-        let viewModel = LoginViewModel()
+        let viewModel = DIContainer.shared.resolve(LoginViewModel.self)
         let view = LoginView(viewModel: viewModel)
         return view.eraseToAnyView()
     }

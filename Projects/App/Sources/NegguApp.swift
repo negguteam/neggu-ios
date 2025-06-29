@@ -25,6 +25,8 @@ struct NegguApp: App {
     @AppStorage("isLogined") private var isLogined: Bool = false
     
     init() {
+        registerDependency()
+        
         KakaoSDK.initSDK(appKey: NegguEnv.kakaoAppKey)
     }
     
