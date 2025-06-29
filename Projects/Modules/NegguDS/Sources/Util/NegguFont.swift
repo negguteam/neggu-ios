@@ -22,6 +22,17 @@ public enum NegguFont {
     
     case caption
     
+    public var font: Font {
+        switch self {
+        case .title1, .title2, .title3, .title4, .body1b, .body2b, .body3b:
+            NegguDSFontFamily.Pretendard.bold.swiftUIFont(size: fontSize)
+        case .body3:
+            NegguDSFontFamily.Pretendard.medium.swiftUIFont(size: fontSize)
+        default:
+            NegguDSFontFamily.Pretendard.regular.swiftUIFont(size: fontSize)
+        }
+    }
+    
     public var fontName: String {
         switch self {
         case .title1, .title2, .title3, .title4, .body1b, .body2b, .body3b:
@@ -79,7 +90,7 @@ public struct FontModifier: ViewModifier {
         let letterSpacing = font.letterSpacing
         
         content
-            .font(.custom(font.fontName, size: font.fontSize))
+            .font(font.font)
             .kerning(letterSpacing)
 //            .lineSpacing(lineHeight - fontHeight)
             .padding(.vertical, -(fontHeight * 0.3) / 2)
