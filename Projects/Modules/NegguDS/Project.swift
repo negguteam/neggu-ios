@@ -10,5 +10,6 @@ let project = Project.createModule(
     targets: [.dynamicFramework],
     moduleDependencies: [
         .Module.Core.project
-    ]
+    ],
+    hasResource: true
 )
