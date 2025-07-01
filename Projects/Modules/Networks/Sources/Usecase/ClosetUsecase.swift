@@ -100,6 +100,8 @@ public final class DefaultClosetUsecase: ClosetUsecase {
                 }
             } receiveValue: { owner, clothes in
                 owner.registeredClothes.send(clothes)
+                owner.resetClothesList()
+                owner.fetchClothesList(parameters: [:])
             }.store(in: &bag)
     }
     

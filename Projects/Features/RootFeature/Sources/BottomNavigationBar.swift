@@ -9,6 +9,7 @@ import Core
 import NegguDS
 
 import BaseFeature
+import ClosetFeature
 import ClosetFeatureInterface
 
 import SwiftUI
@@ -16,6 +17,7 @@ import PhotosUI
 
 public struct BottomNavigationBar: View {
     @EnvironmentObject private var coordinator: MainCoordinator
+    @EnvironmentObject private var closetCoordinator: ClosetCoordinator
     
     @State private var gnbState: GnbState = .main
     
@@ -93,11 +95,14 @@ public struct BottomNavigationBar: View {
                       let segmentedImage = await ImageAnalyzeManager.shared.segmentation(imageData)
                 else { return }
                 
-                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
+                await MainActor.run {
+                    coordinator.activeTab = .closet
+                }
+                
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    coordinator.fullScreenCover = .clothesRegister(entry: .register(segmentedImage, .emptyData))
+                    closetCoordinator.push(.register(entry: .register(segmentedImage, .emptyData)))
                     selectedCameraPhoto = nil
                 }
             }
@@ -112,11 +117,14 @@ public struct BottomNavigationBar: View {
                       let segmentedImage = await ImageAnalyzeManager.shared.segmentation(data)?.resize(newWidth: 128)
                 else { return }
                 
-                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
+                await MainActor.run {
+                    coordinator.activeTab = .closet
+                }
+                
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    coordinator.fullScreenCover = .clothesRegister(entry: .register(segmentedImage, .emptyData))
+                    closetCoordinator.push(.register(entry: .register(segmentedImage, .emptyData)))
                     selectedAlbumPhoto = nil
                 }
             }

@@ -181,8 +181,6 @@ public struct ClosetView: View {
                     return
                 }
                 
-                try await Task.sleep(for: .seconds(0.5))
-                
                 await MainActor.run {
                     clothesLink.removeAll()
                     isFocused = false

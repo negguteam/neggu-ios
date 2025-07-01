@@ -51,6 +51,7 @@ struct RootView: View {
                             closetCoordinator.buildScene(scene)
                                 .presentationBackground(.bgNormal)
                         }
+                        .environmentObject(closetCoordinator)
                     }
                     
                     Tab.init(value: NegguTab.lookbook) {
@@ -101,6 +102,7 @@ struct RootView: View {
                             }
                     }
                     .tag(NegguTab.lookbook)
+                    .environmentObject(lookBookCoordinator)
                 }
             }
             
@@ -114,21 +116,14 @@ struct RootView: View {
             
             if mainCoordinator.showGnb {
                 BottomNavigationBar()
+                    .environmentObject(closetCoordinator)
+                    .environmentObject(lookBookCoordinator)
             }
             
             AlertView()
         }
         .animation(.smooth(duration: 0.2), value: mainCoordinator.isGnbOpened)
         .ignoresSafeArea(.keyboard)
-//        .sheet(item: $mainCoordinator.sheet) { scene in
-//            
-//        }
-        .fullScreenCover(item: $mainCoordinator.fullScreenCover) { scene in
-            mainCoordinator.buildScene(scene)
-                .presentationBackground(.bgNormal)
-        }
-        .environmentObject(closetCoordinator)
-        .environmentObject(lookBookCoordinator)
     }
 }
 

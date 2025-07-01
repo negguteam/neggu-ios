@@ -38,8 +38,8 @@ struct NegguApp: App {
             } else {
                 NavigationStack(path: $authCoordinator.path) {
                     authCoordinator.buildScene(isFirstVisit ? .onboarding : .login)
-                        .navigationDestination(for: AuthCoordinator.Destination.self) { destination in
-                            authCoordinator.buildScene(destination)
+                        .navigationDestination(for: AuthCoordinator.Destination.self) { scene in
+                            authCoordinator.buildScene(scene)
                         }
                         .environmentObject(authCoordinator)
                 }

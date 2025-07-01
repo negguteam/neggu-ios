@@ -305,7 +305,6 @@ public struct ClothesRegisterView: View {
                                 switch newValue {
                                 case .success:
                                     coordinator.pop()
-                                    coordinator.rootCoordinator?.dismissFullScreenCover()
                                 case .failure:
                                     AlertManager.shared.setAlert(message: "의상 편집에 실패했습니다. 다시 시도해주세요.")
                                 default:
@@ -331,7 +330,6 @@ public struct ClothesRegisterView: View {
         }
         .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
             coordinator.pop()
-            coordinator.rootCoordinator?.dismissFullScreenCover()
         }
         .onAppear {
             coordinator.rootCoordinator?.showGnb = false
