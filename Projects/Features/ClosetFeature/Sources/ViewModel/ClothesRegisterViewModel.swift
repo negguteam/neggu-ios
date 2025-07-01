@@ -42,11 +42,15 @@ final class ClothesRegisterViewModel: ObservableObject {
     @Published private(set) var isValidMood: Bool = true
     @Published private(set) var registState: RegistState = .idle
     
-    var joinedName: String {
-        [clothesColorName, registerClothes.brand,
-         registerClothes.subCategory == .UNKNOWN ? registerClothes.category.title : registerClothes.subCategory.title]
-            .filter { !$0.isEmpty }
-            .joined(separator: " ")
+    var joinedClothesName: String {
+        if registerClothes.name.isEmpty {
+            [clothesColorName, registerClothes.brand,
+             registerClothes.subCategory == .UNKNOWN ? registerClothes.category.title : registerClothes.subCategory.title]
+                .filter { !$0.isEmpty }
+                .joined(separator: " ")
+        } else {
+            registerClothes.name
+        }
     }
     
     var categoryString: String {
@@ -83,19 +87,29 @@ final class ClothesRegisterViewModel: ObservableObject {
     
     
     private func bind() {
-        closetUsecase.fetchBrandList()
+//        closetUsecase.fetchBrandList()
         
         nameDidEdit
             .assign(to: \.registerClothes.name, on: self)
             .store(in: &bag)
         
         categoryDidSelect
-            .assign(to: \.registerClothes.category, on: self)
-            .store(in: &bag)
+            .withUnretained(self)
+            .sink { owner, category in
+                owner.isValidCategory = true
+                owner.registerClothes.category = category
+            }.store(in: &bag)
             
         subCategoryDidSelect
             .assign(to: \.registerClothes.subCategory, on: self)
             .store(in: &bag)
+        
+        moodDidSelect
+            .withUnretained(self)
+            .sink { owner, mood in
+                owner.isValidMood = true
+                owner.registerClothes.mood = mood
+            }.store(in: &bag)
         
         brandDidSelect
             .assign(to: \.registerClothes.brand, on: self)
@@ -129,6 +143,9 @@ final class ClothesRegisterViewModel: ObservableObject {
             .withUnretained(self)
             .sink { owner, imageData in
                 guard owner.validateField() else { return }
+                owner.registerClothes.name = owner.joinedClothesName
+                
+                print(owner.registerClothes)
 //                owner.closetUsecase.registerClothes(image: imageData, request: owner.registerClothes)
             }.store(in: &bag)
         
@@ -137,6 +154,7 @@ final class ClothesRegisterViewModel: ObservableObject {
             .withUnretained(self)
             .sink { owner, clothes in
                 guard owner.validateField() else { return }
+                owner.registerClothes.name = owner.joinedClothesName
                 
                 let request = owner.registerClothes.toClothesEntity(
                     id: clothes.id,
@@ -144,7 +162,8 @@ final class ClothesRegisterViewModel: ObservableObject {
                     imageUrl: clothes.imageUrl
                 )
                 
-                owner.closetUsecase.modifyClothes(request)
+                print(request)
+//                owner.closetUsecase.modifyClothes(request)
             }.store(in: &bag)
         
         closetUsecase.registeredClothes
@@ -156,35 +175,6 @@ final class ClothesRegisterViewModel: ObservableObject {
         closetUsecase.brandList
             .assign(to: \.brandList, on: self)
             .store(in: &bag)
-        
-        $registerClothes
-            .removeDuplicates()
-            .withUnretained(self)
-            .sink { owner, clothes in
-                owner.registerClothes.name = clothes.name.isEmpty ? owner.joinedName : clothes.name
-                
-                // TODO: 카테고리, 분위기 필드 검증
-                
-            }.store(in: &bag)
-    }
-    
-    public func configureClothes(_ entry: ClothesEditType) {
-        switch entry {
-        case .register(let image, let clothes):
-            if let color = image.pixelColor() {
-                colorDidConfigure.send(.init(color: color))
-            }
-            
-            nameDidEdit.send(clothes.name)
-            brandDidSelect.send(clothes.brand)
-            categoryDidSelect.send(clothes.category)
-            subCategoryDidSelect.send(clothes.subCategory)
-        case .modify(let clothes):
-            nameDidEdit.send(clothes.name)
-            brandDidSelect.send(clothes.brand)
-            categoryDidSelect.send(clothes.category)
-            subCategoryDidSelect.send(clothes.subCategory)
-        }
     }
     
     private func validateField() -> Bool {

@@ -18,10 +18,11 @@ struct ClothesRegisterView: View {
     
     @StateObject private var viewModel: ClothesRegisterViewModel
     
-    @State private var showNameEditView: Bool = false
-    @State private var showCategorySheet: Bool = false
-    @State private var showMoodSheet: Bool = false
-    @State private var showBrandSheet: Bool = false
+    @State private var categorySelection: Core.Category = .UNKNOWN
+    @State private var subCategorySelection: Core.SubCategory = .UNKNOWN
+    @State private var moodSelection: [Core.Mood] = []
+    @State private var brandSelection: String = ""
+    
     @State private var showAlert: Bool = false
     
     @FocusState private var focusedField: FocusField?
@@ -75,7 +76,10 @@ struct ClothesRegisterView: View {
                                 Section {
                                     TitleForm("어떤 종류의 옷인가요?", isNessesory: true) {
                                         Button {
-                                            showCategorySheet = true
+                                            coordinator.sheet = .categorySheet(
+                                                category: $categorySelection,
+                                                subCategory: $subCategorySelection
+                                            )
                                         } label: {
                                             HStack {
                                                 Text(viewModel.categoryString)
@@ -100,7 +104,7 @@ struct ClothesRegisterView: View {
                                         }
                                         
                                         Button {
-                                            showMoodSheet = true
+                                            coordinator.sheet = .moodSheet(selection: $moodSelection)
                                         } label: {
                                             HStack {
                                                 Text(viewModel.moodString)
@@ -128,7 +132,10 @@ struct ClothesRegisterView: View {
                                     
                                     TitleForm("어느 브랜드인가요?") {
                                         Button {
-                                            showBrandSheet = true
+                                            coordinator.sheet = .brandSheet(
+                                                selection: $brandSelection,
+                                                brandList: viewModel.brandList
+                                            )
                                         } label: {
                                             HStack {
                                                 Text(viewModel.brandString)
@@ -157,7 +164,6 @@ struct ClothesRegisterView: View {
                                                         BorderedChip(title: select.title, isSelected: isSelected)
                                                             .id(select.id)
                                                             .onTapGesture {
-                                                                priceScrollProxy.scrollTo(select.id, anchor: .center)
                                                                 viewModel.priceRangeDidSelect.send(select)
                                                             }
                                                     }
@@ -166,6 +172,9 @@ struct ClothesRegisterView: View {
                                             }
                                             .scrollIndicators(.hidden)
                                             .padding(.horizontal, -28)
+                                            .onAppear {
+                                                priceScrollProxy.scrollTo(viewModel.registerClothes.priceRange.id, anchor: .center)
+                                            }
                                         }
                                     }
                                     
@@ -219,12 +228,15 @@ struct ClothesRegisterView: View {
                                         .focused($focusedField, equals: .memo)
                                     }
                                 } header: {
-                                    if !viewModel.registerClothes.name.isEmpty {
+                                    if !viewModel.joinedClothesName.isEmpty {
                                         HStack {
                                             Button {
-                                                showNameEditView = true
+                                                coordinator.sheet = .clothesNameSheet(name: Binding(
+                                                    get: { viewModel.registerClothes.name },
+                                                    set: { viewModel.nameDidEdit.send($0) }
+                                                ))
                                             } label: {
-                                                Text(viewModel.registerClothes.name)
+                                                Text(viewModel.joinedClothesName)
                                                     .negguFont(.body1b)
                                                     .lineLimit(1)
                                                 
@@ -316,53 +328,48 @@ struct ClothesRegisterView: View {
                 .foregroundStyle(.negguSecondary)
             }
         }
-//        .sheet(isPresented: $showNameEditView) {
-//            ClothesNameSheet(
-//                clothesName: Binding(
-//                    get: { viewModel.registerClothes.name },
-//                    set: { viewModel.nameDidEdit.send($0) }
-//                )
-//            )
-//            .presentationDetents([.height(270)])
-//        }
-//        .sheet(isPresented: $showCategorySheet) {
-//            CategorySheet(
-//                selectedCategory: Binding(
-//                    get: { viewModel.registerClothes.category },
-//                    set: { viewModel.categoryDidSelect.send($0) }
-//                ),
-//                selectedSubCategory: Binding(
-//                    get: { viewModel.registerClothes.subCategory },
-//                    set: { viewModel.subCategoryDidSelect.send($0) }
-//                )
-//            )
-//            .presentationDetents([.fraction(0.85)])
-//        }
-//        .sheet(isPresented: $showMoodSheet) {
-//            MoodSheet(selectedMoodList: Binding(
-//                get: { viewModel.output.clothes.mood },
-//                set: { viewModel.send(action: .editMood($0)) }
-//            ))
-//            .presentationDetents([.fraction(0.85)])
-//        }
-//        .sheet(isPresented: $showBrandSheet) {
-//            BrandSheet(
-//                selectedBrand: Binding(
-//                    get: { viewModel.output.clothes.brand },
-//                    set: { viewModel.send(action: .editBrand($0)) }
-//                ),
-//                brandList: viewModel.output.brandList
-//            )
-//            .presentationDetents([.fraction(0.85)])
-//        }
         .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
             coordinator.dismissFullScreenCover()
         }
         .onAppear {
-            viewModel.configureClothes(entry)
+            // 시트 -> 이름, 카테고리, 분위기, 브랜드
+            // 옷 등록 -> 색, 이름, 브랜드
+            // 옷 수정 -> 이름, 카테고리, 분위기, 브랜드
+            switch entry {
+            case .register(let image, let clothes):
+                if let color = image.pixelColor() {
+                    viewModel.colorDidConfigure.send(.init(color: color))
+                }
+
+                viewModel.nameDidEdit.send(clothes.name)
+                viewModel.brandDidSelect.send(clothes.brand)
+            case .modify(let clothes):
+                viewModel.nameDidEdit.send(clothes.name)
+                viewModel.priceRangeDidSelect.send(clothes.priceRange)
+                viewModel.purchaseStateDidSelect.send(clothes.isPurchase)
+                viewModel.linkDidEdit.send(clothes.link)
+                viewModel.memoDidEdit.send(clothes.memo)
+                
+                categorySelection = clothes.category
+                subCategorySelection = clothes.subCategory
+                moodSelection = clothes.mood
+                brandSelection = clothes.brand
+            }
         }
         .onTapGesture {
             focusedField = nil
+        }
+        .onChange(of: categorySelection) { _, newValue in
+            viewModel.categoryDidSelect.send(newValue)
+        }
+        .onChange(of: subCategorySelection) { _, newValue in
+            viewModel.subCategoryDidSelect.send(newValue)
+        }
+        .onChange(of: moodSelection) { _, newValue in
+            viewModel.moodDidSelect.send(newValue)
+        }
+        .onChange(of: brandSelection) { _, newValue in
+            viewModel.brandDidSelect.send(newValue)
         }
     }
     
