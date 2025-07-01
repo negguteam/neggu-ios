@@ -19,6 +19,7 @@ import KakaoSDKCommon
 struct NegguApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
+    @StateObject private var mainCoordinator = MainCoordinator()
     @StateObject private var authCoordinator = AuthCoordinator()
     
     @AppStorage("isFirstVisit") private var isFirstVisit: Bool = true
@@ -33,7 +34,7 @@ struct NegguApp: App {
     var body: some Scene {
         WindowGroup {
             if isLogined {
-
+                mainCoordinator.buildScene()
             } else {
                 NavigationStack(path: $authCoordinator.path) {
                     authCoordinator.buildScene(isFirstVisit ? .onboarding : .login)
@@ -44,5 +45,6 @@ struct NegguApp: App {
                 }
             }
         }
+        .environmentObject(mainCoordinator)
     }
 }

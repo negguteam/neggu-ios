@@ -52,8 +52,8 @@ public enum NegguImage {
         public static let pin = NegguDSAsset.Assets.pin.swiftUIImage
         public static let colorRainbow = NegguDSAsset.Assets.colorRainbow.swiftUIImage
         
-        public static let horizontalHamburger = NegguDSAsset.Assets.hamburgerHorizontal
-        public static let verticalHamburger = NegguDSAsset.Assets.hamburgerVertical
+        public static let horizontalHamburger = NegguDSAsset.Assets.hamburgerHorizontal.swiftUIImage
+        public static let verticalHamburger = NegguDSAsset.Assets.hamburgerVertical.swiftUIImage
         
         public static let person = NegguDSAsset.Assets.person.swiftUIImage
         public static let personFill = NegguDSAsset.Assets.personFill.swiftUIImage

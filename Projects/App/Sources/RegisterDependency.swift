@@ -10,13 +10,15 @@ import Core
 import Networks
 
 import BaseFeature
+import RootFeature
 import AuthFeature
+import ClosetFeature
 
 import SwiftUI
 
 extension App {
     
-    private var container: DIContainer { DIContainer.shared }
+    var container: DIContainer { DIContainer.shared }
     
     func registerDependency() {
         container.register(LoginViewModel.self) {
@@ -27,6 +29,10 @@ extension App {
         container.register(SignUpViewModel.self) {
             let authService = DefaultAuthService()
             return SignUpViewModel(authService: authService)
+        }
+        
+        container.register(ClosetUsecase.self) {
+            return DefaultClosetUsecase(closetService: DefaultClosetService())
         }
     }
     

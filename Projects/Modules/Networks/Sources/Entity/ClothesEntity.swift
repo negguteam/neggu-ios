@@ -24,21 +24,45 @@ public struct ClosetEntity: Decodable {
 public struct ClothesRegisterEntity: Codable, Equatable, Hashable {
     public var name: String
     public var colorCode: String?
-    public var category: Core.Category = .UNKNOWN
-    public var subCategory: SubCategory = .UNKNOWN
-    public var mood: [Mood] = []
+    public var category: Core.Category
+    public var subCategory: SubCategory
+    public var mood: [Mood]
     public var brand: String
-    public var priceRange: PriceRange = .UNKNOWN
-    public var memo: String = ""
-    public var isPurchase: Bool = false
+    public var priceRange: PriceRange
+    public var memo: String
+    public var isPurchase: Bool
     public var link: String
-    
+        
     public static var mockData: Self {
         return .init(name: "멋진 옷", brand: "Neggu", link: "www.neggu.com")
     }
     
     public static var emptyData: Self {
         return .init(name: "", brand: "", link: "")
+    }
+    
+    public init(
+        name: String,
+        colorCode: String? = nil,
+        category: Core.Category = .UNKNOWN,
+        subCategory: SubCategory = .UNKNOWN,
+        mood: [Mood] = [],
+        brand: String,
+        priceRange: PriceRange = .UNKNOWN,
+        memo: String = "",
+        isPurchase: Bool = false,
+        link: String
+    ) {
+        self.name = name
+        self.colorCode = colorCode
+        self.category = category
+        self.subCategory = subCategory
+        self.mood = mood
+        self.brand = brand
+        self.priceRange = priceRange
+        self.memo = memo
+        self.isPurchase = isPurchase
+        self.link = link
     }
 }
 
@@ -60,6 +84,42 @@ public struct ClothesEntity: Decodable, Identifiable, Equatable, Hashable {
     public let isPurchase: Bool
 //    let createdAt: String
     public let modifiedAt: String
+    
+    public init(
+        id: String,
+        accountId: String,
+        clothId: String,
+        name: String,
+        link: String,
+        imageUrl: String,
+        category: Core.Category,
+        subCategory: SubCategory,
+        mood: [Mood],
+        brand: String,
+        priceRange: PriceRange,
+        memo: String,
+        color: String,
+        colorCode: String,
+        isPurchase: Bool,
+        modifiedAt: String
+    ) {
+        self.id = id
+        self.accountId = accountId
+        self.clothId = clothId
+        self.name = name
+        self.link = link
+        self.imageUrl = imageUrl
+        self.category = category
+        self.subCategory = subCategory
+        self.mood = mood
+        self.brand = brand
+        self.priceRange = priceRange
+        self.memo = memo
+        self.color = color
+        self.colorCode = colorCode
+        self.isPurchase = isPurchase
+        self.modifiedAt = modifiedAt
+    }
 }
 
 
