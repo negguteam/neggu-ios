@@ -87,7 +87,7 @@ final class ClothesRegisterViewModel: ObservableObject {
     
     
     private func bind() {
-//        closetUsecase.fetchBrandList()
+        closetUsecase.fetchBrandList()
         
         nameDidEdit
             .assign(to: \.registerClothes.name, on: self)
@@ -145,8 +145,7 @@ final class ClothesRegisterViewModel: ObservableObject {
                 guard owner.validateField() else { return }
                 owner.registerClothes.name = owner.joinedClothesName
                 
-                print(owner.registerClothes)
-//                owner.closetUsecase.registerClothes(image: imageData, request: owner.registerClothes)
+                owner.closetUsecase.registerClothes(image: imageData, request: owner.registerClothes)
             }.store(in: &bag)
         
         modifyButtonDidTap
@@ -162,8 +161,7 @@ final class ClothesRegisterViewModel: ObservableObject {
                     imageUrl: clothes.imageUrl
                 )
                 
-                print(request)
-//                owner.closetUsecase.modifyClothes(request)
+                owner.closetUsecase.modifyClothes(request)
             }.store(in: &bag)
         
         closetUsecase.registeredClothes
