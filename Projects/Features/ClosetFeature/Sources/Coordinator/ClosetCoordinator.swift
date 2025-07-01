@@ -6,6 +6,7 @@
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
+import Core
 import Networks
 
 import BaseFeature
@@ -36,6 +37,19 @@ public final class ClosetCoordinator: Coordinator {
                 .presentationDetents([.fraction(0.9)])
         case .register(let entry):
             builder.makeRegister(entry)
+            
+        case .clothesNameSheet(let name):
+            ClothesNameSheet(clothesName: name)
+                .presentationDetents([.height(270)])
+        case .categorySheet(let category, let subCategory):
+            CategorySheet(selectedCategory: category, selectedSubCategory: subCategory)
+                .presentationDetents([.fraction(0.85)])
+        case .moodSheet(let selection):
+            MoodSheet(selectedMoodList: selection)
+                .presentationDetents([.fraction(0.85)])
+        case .brandSheet(let selection, let brandList):
+            BrandSheet(selectedBrand: selection, brandList: brandList)
+                .presentationDetents([.fraction(0.85)])
         }
     }
     
@@ -44,7 +58,20 @@ public final class ClosetCoordinator: Coordinator {
         case detail(clothesId: String)
         case register(entry: ClothesEditType)
         
+        case clothesNameSheet(name: Binding<String>)
+        case categorySheet(category: Binding<Core.Category>, subCategory: Binding<Core.SubCategory>)
+        case moodSheet(selection: Binding<[Mood]>)
+        case brandSheet(selection: Binding<String>, brandList: [BrandEntity])
+        
         public var id: String { "\(self)" }
+        
+        public static func == (lhs: Destination, rhs: Destination) -> Bool {
+            lhs.id == rhs.id
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
     
 }
