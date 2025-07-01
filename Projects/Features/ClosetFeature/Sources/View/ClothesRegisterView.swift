@@ -329,7 +329,6 @@ struct ClothesRegisterView: View {
             }
         }
         .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
-//            coordinator.dismissFullScreenCover()
             coordinator.pop()
         }
         .onAppear {
@@ -346,6 +345,7 @@ struct ClothesRegisterView: View {
 
                 viewModel.nameDidEdit.send(clothes.name)
                 viewModel.brandDidSelect.send(clothes.brand)
+                viewModel.linkDidEdit.send(clothes.link)
             case .modify(let clothes):
                 viewModel.nameDidEdit.send(clothes.name)
                 viewModel.priceRangeDidSelect.send(clothes.priceRange)

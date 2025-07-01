@@ -48,20 +48,6 @@ public struct ClosetView: View {
                 .onTapGesture {
                     isFocused = false
                 }
-                .onChange(of: viewModel.parsingResult) { _, newValue in
-                    Task { @MainActor in
-                        guard let result = newValue
-//                              let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
-                        else {
-                            print("No Result")
-                            return
-                        }
-                        
-//                        coordinator.fullScreenCover = .clothesRegister(.register(image, result.clothes))
-                        clothesLink.removeAll()
-                        isFocused = false
-                    }
-                }
                 
                 LazyVGrid(
                     columns: [GridItem](repeating: GridItem(.flexible(), spacing: 14), count: 3),
@@ -184,6 +170,21 @@ public struct ClosetView: View {
         }
         .onDisappear {
             ctaButtonExpanded = false
+        }
+        .onChange(of: viewModel.parsingResult) { _, newValue in
+            guard let result = newValue
+//                    let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
+            else {
+                print("No Result")
+                return
+            }
+            
+            clothesLink.removeAll()
+            isFocused = false
+            
+            DispatchQueue.main.async {
+                coordinator.push(.register(entry: .register(.checkmark, result.clothes)))
+            }
         }
     }
 }

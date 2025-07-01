@@ -70,7 +70,11 @@ public final class ClosetViewModel: ObservableObject {
         urlDidParse
             .withUnretained(self)
             .sink { owner, urlString in
-                Task { await owner.parseHTML(link: urlString) }
+                Task {
+                    await owner.parseHTML(link: urlString)
+                }
+                
+                owner.parsingResult = nil
             }.store(in: &bag)
         
         closetUsecase.clothesList

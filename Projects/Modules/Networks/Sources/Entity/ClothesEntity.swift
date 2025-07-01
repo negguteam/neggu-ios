@@ -172,7 +172,7 @@ public struct AblyProduct: Clothesable {
         let goods = props.serverQueryClient.queries[0].state.data.goods
         return .init(
             name: goods.name,
-            brand: goods.market.name,
+            brand: goods.market.name.capitalizedSplit,
             link: urlString
         )
     }
@@ -219,7 +219,7 @@ public struct MusinsaProduct: Clothesable {
         
         return .init(
             name: product.goodsNm,
-            brand: product.brand,
+            brand: product.brand.capitalizedSplit,
             link: urlString
         )
     }
@@ -265,7 +265,7 @@ public struct ZigzagProduct: Clothesable {
         
         return .init(
             name: product.name,
-            brand: product.brand,
+            brand: product.brand.capitalizedSplit,
             link: urlString
         )
     }
@@ -315,7 +315,7 @@ public struct QueenitProduct: Clothesable {
         
         return .init(
             name: product.name,
-            brand: product.brand,
+            brand: product.brand.capitalizedSplit,
             link: urlString
         )
     }
@@ -370,7 +370,7 @@ public struct TwentyNineCMProduct: Clothesable {
         
         return .init(
             name: goods.itemName,
-            brand: goods.frontBrand.brandNameKor,
+            brand: goods.frontBrand.brandNameEng.capitalizedSplit,
             link: urlString
         )
     }
@@ -401,7 +401,7 @@ public struct KreamProduct: Clothesable {
     public func toProduct(urlString: String) -> ClothesRegisterEntity {
         return .init(
             name: name,
-            brand: brand.name,
+            brand: brand.name.capitalizedSplit,
             link: urlString
         )
     }

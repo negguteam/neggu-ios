@@ -87,8 +87,6 @@ final class ClothesRegisterViewModel: ObservableObject {
     
     
     private func bind() {
-        closetUsecase.fetchBrandList()
-        
         nameDidEdit
             .assign(to: \.registerClothes.name, on: self)
             .store(in: &bag)

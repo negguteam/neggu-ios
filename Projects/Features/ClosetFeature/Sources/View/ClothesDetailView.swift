@@ -158,9 +158,13 @@ public struct ClothesDetailView: View {
                             }
                             
                             Button {
-                                coordinator.sheet = nil
-//                                coordinator.fullScreenCover = .register(entry: .modify(clothes))
-                                coordinator.push(.register(entry: .modify(clothes)))
+                                Task {
+                                    coordinator.sheet = nil
+                                    
+                                    try? await Task.sleep(for: .seconds(0.5))
+                                    
+                                    coordinator.push(.register(entry: .modify(clothes)))
+                                }
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)
