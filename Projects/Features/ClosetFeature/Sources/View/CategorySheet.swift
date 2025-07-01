@@ -13,8 +13,18 @@ import SwiftUI
 struct CategorySheet: View {
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var selectedCategory: Core.Category
-    @Binding var selectedSubCategory: Core.SubCategory
+    @Binding var categorySelection: Core.Category
+    @Binding var subCategorySelection: Core.SubCategory
+    
+    @State private var selectedCategory: Core.Category
+    @State private var selectedSubCategory: Core.SubCategory
+    
+    init(categorySelection: Binding<Core.Category>, subCategorySelection: Binding<Core.SubCategory>) {
+        self._categorySelection = categorySelection
+        self._subCategorySelection = subCategorySelection
+        self.selectedCategory = categorySelection.wrappedValue
+        self.selectedSubCategory = subCategorySelection.wrappedValue
+    }
     
     var body: some View {
         NegguSheet {
@@ -29,8 +39,38 @@ struct CategorySheet: View {
                     }
                 }
                 .padding(.horizontal, 48)
+                .padding(.bottom, 76)
             }
             .scrollIndicators(.hidden)
+            .overlay(alignment: .bottom) {
+                Button {
+                    categorySelection = selectedCategory
+                    subCategorySelection = selectedSubCategory
+                    dismiss()
+                } label: {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.negguSecondary)
+                        .frame(height: 56)
+                        .overlay {
+                            Text("선택완료")
+                                .negguFont(.body1b)
+                                .foregroundStyle(.labelRNormal)
+                        }
+                }
+                .padding(.horizontal, 48)
+                .padding(.top, 20)
+                .background {
+                    LinearGradient(
+                        colors: [
+                            Color(red: 248, green: 248, blue: 248, opacity: 0),
+                            Color(red: 248, green: 248, blue: 248, opacity: 1)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                }
+            }
         } header: {
             HStack {
                 Text("옷의 종류")
@@ -43,7 +83,6 @@ struct CategorySheet: View {
                     Button {
                         selectedCategory = .UNKNOWN
                         selectedSubCategory = .UNKNOWN
-                        dismiss()
                     } label: {
                         NegguImage.Icon.refresh
                             .frame(width: 24, height: 24)
@@ -105,7 +144,6 @@ struct DropDownButton: View {
                             selectedSubCategory = .UNKNOWN
                         } else {
                             selectedSubCategory = subCategory
-                            dismiss()
                         }
                     } label: {
                         HStack {

@@ -13,7 +13,9 @@ import SwiftUI
 struct MoodSheet: View {
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var selectedMoodList: [Mood]
+    @Binding var moodSelection: [Mood]
+    
+    @State private var selectedMoodList: [Mood]
     
     let isSingleSelection: Bool
     
@@ -21,9 +23,10 @@ struct MoodSheet: View {
         isSingleSelection ? 1 : 3
     }
     
-    init(selectedMoodList: Binding<[Mood]>, isSingleSelection: Bool = false) {
-        self._selectedMoodList = selectedMoodList
+    init(selection: Binding<[Mood]>, isSingleSelection: Bool = false) {
+        self._moodSelection = selection
         self.isSingleSelection = isSingleSelection
+        self.selectedMoodList = selection.wrappedValue
     }
     
     var body: some View {
@@ -71,18 +74,18 @@ struct MoodSheet: View {
             .scrollIndicators(.hidden)
             .overlay(alignment: .bottom) {
                 Button {
+                    moodSelection = selectedMoodList
                     dismiss()
                 } label: {
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(selectedMoodList.isEmpty ? .bgInactive : .negguSecondary)
+                        .fill(.negguSecondary)
                         .frame(height: 56)
                         .overlay {
                             Text("선택완료")
                                 .negguFont(.body1b)
-                                .foregroundStyle(selectedMoodList.isEmpty ? .labelInactive : .labelRNormal)
+                                .foregroundStyle(.labelRNormal)
                         }
                 }
-                .disabled(selectedMoodList.isEmpty)
                 .padding(.horizontal, 48)
                 .padding(.top, 20)
                 .padding(.bottom)
@@ -109,7 +112,6 @@ struct MoodSheet: View {
                 if !selectedMoodList.isEmpty {
                     Button {
                         selectedMoodList.removeAll()
-                        dismiss()
                     } label: {
                         NegguImage.Icon.refresh
                             .frame(width: 24, height: 24)
@@ -119,8 +121,4 @@ struct MoodSheet: View {
             }
         }
     }
-}
-
-#Preview {
-    MoodSheet(selectedMoodList: .constant([]))
 }

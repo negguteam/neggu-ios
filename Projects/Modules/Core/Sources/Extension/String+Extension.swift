@@ -9,6 +9,17 @@ import UIKit
 
 public extension String {
     
+    var capitalizedFirst: String {
+        guard let first else { return self }
+        return first.uppercased() + dropFirst()
+    }
+    
+    var capitalizedSplit: String {
+        self.split(separator: " ")
+            .map { "\($0)".capitalizedFirst }
+            .joined(separator: " ")
+    }
+    
     func isValidNickname() -> Bool {
         let nicknameRegex = "^[가-힣a-z0-9]{1,7}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", nicknameRegex)

@@ -70,6 +70,23 @@ struct BrandSheet: View {
                 
                 ScrollView {
                     VStack(spacing: 4) {
+                        if !brandName.isEmpty && filteredBrandList.isEmpty {
+                            Button {
+                                selectedBrand = brandName.capitalizedSplit
+                                dismiss()
+                            } label: {
+                                HStack {
+                                    Text("\"\(brandName)\" 사용하기")
+                                        .negguFont(.body2)
+                                        .foregroundStyle(.labelAlt)
+                                    
+                                    Spacer()
+                                }
+                                .frame(height: 52)
+                                .padding(.horizontal, 12)
+                            }
+                        }
+                        
                         ForEach(filteredBrandList) { brand in
                             let isSelected = selectedBrand == brand.en
                             
@@ -114,4 +131,5 @@ struct BrandSheet: View {
             }
         }
     }
+    
 }

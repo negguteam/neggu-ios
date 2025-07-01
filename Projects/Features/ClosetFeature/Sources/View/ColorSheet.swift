@@ -14,21 +14,23 @@ import SwiftUI
 struct ColorSheet: View {
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var selectedColor: ColorFilter?
+    @Binding var colorSelection: ColorFilter?
+    
+    @State private var selectedColor: ColorFilter?
+    
+    init(selection: Binding<ColorFilter?>) {
+        self._colorSelection = selection
+    }
     
     var body: some View {
         NegguSheet {
             ScrollView {
                 VStack(spacing: 4) {
                     ForEach(ColorFilter.allCases) { color in
+                        let isSelected = selectedColor == color
+                        
                         Button {
-                            if selectedColor == color {
-                                selectedColor = nil
-                            } else {
-                                selectedColor = color
-                            }
-                            
-                            dismiss()
+                            selectedColor = isSelected ? nil : color
                         } label: {
                             HStack(spacing: 12) {
                                 Circle()
@@ -38,18 +40,52 @@ struct ColorSheet: View {
                                 
                                 Text(color.title)
                                     .negguFont(.body2)
-                                    .foregroundStyle(selectedColor == color ? .negguSecondary : .labelNormal)
                                 
                                 Spacer()
                             }
+                            .foregroundStyle(.labelNormal)
                             .frame(height: 52)
+                            .padding(.horizontal, 12)
+                            .background {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(isSelected ? .negguSecondaryAlt : .clear)
+                            }
                         }
                     }
                 }
                 .padding(.horizontal, 48)
-                .padding(.bottom, 56)
+                .padding(.bottom, 76)
             }
             .scrollIndicators(.hidden)
+            .overlay(alignment: .bottom) {
+                Button {
+                    colorSelection = selectedColor
+                    dismiss()
+                } label: {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.negguSecondary)
+                        .frame(height: 56)
+                        .overlay {
+                            Text("선택완료")
+                                .negguFont(.body1b)
+                                .foregroundStyle(.labelRNormal)
+                        }
+                }
+                .padding(.horizontal, 48)
+                .padding(.top, 20)
+                .padding(.bottom)
+                .background {
+                    LinearGradient(
+                        colors: [
+                            Color(red: 248, green: 248, blue: 248, opacity: 0),
+                            Color(red: 248, green: 248, blue: 248, opacity: 1)
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                }
+            }
         } header: {
             HStack {
                 Text("색상")
@@ -61,7 +97,6 @@ struct ColorSheet: View {
                 if selectedColor != nil {
                     Button {
                         selectedColor = nil
-                        dismiss()
                     } label: {
                         NegguImage.Icon.refresh
                             .frame(width: 24, height: 24)
@@ -69,6 +104,9 @@ struct ColorSheet: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            selectedColor = colorSelection
         }
     }
 }

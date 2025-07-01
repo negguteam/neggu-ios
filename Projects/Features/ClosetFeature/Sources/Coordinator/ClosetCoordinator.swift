@@ -42,13 +42,16 @@ public final class ClosetCoordinator: Coordinator {
             ClothesNameSheet(clothesName: name)
                 .presentationDetents([.height(270)])
         case .categorySheet(let category, let subCategory):
-            CategorySheet(selectedCategory: category, selectedSubCategory: subCategory)
+            CategorySheet(categorySelection: category, subCategorySelection: subCategory)
                 .presentationDetents([.fraction(0.85)])
-        case .moodSheet(let selection):
-            MoodSheet(selectedMoodList: selection)
+        case .moodSheet(let selection, let isSingle):
+            MoodSheet(selection: selection, isSingleSelection: isSingle)
                 .presentationDetents([.fraction(0.85)])
         case .brandSheet(let selection, let brandList):
             BrandSheet(selectedBrand: selection, brandList: brandList)
+                .presentationDetents([.fraction(0.85)])
+        case .colorSheet(let selection):
+            ColorSheet(selection: selection)
                 .presentationDetents([.fraction(0.85)])
         }
     }
@@ -60,8 +63,9 @@ public final class ClosetCoordinator: Coordinator {
         
         case clothesNameSheet(name: Binding<String>)
         case categorySheet(category: Binding<Core.Category>, subCategory: Binding<Core.SubCategory>)
-        case moodSheet(selection: Binding<[Mood]>)
+        case moodSheet(selection: Binding<[Mood]>, isSingleSelection: Bool = false)
         case brandSheet(selection: Binding<String>, brandList: [BrandEntity])
+        case colorSheet(selection: Binding<ColorFilter?>)
         
         public var id: String { "\(self)" }
         
