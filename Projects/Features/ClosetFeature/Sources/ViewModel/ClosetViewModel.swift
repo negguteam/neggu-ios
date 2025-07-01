@@ -26,9 +26,6 @@ public final class ClosetViewModel: ObservableObject {
     @Published private(set) var clothesList: [ClothesEntity] = []
     @Published private(set) var filter: ClothesFilter = .init()
     @Published private(set) var parsingResult: HTMLParsingResult?
-    @Published private(set) var isLoading: Bool = false
-    
-    private var page: Int = 0
     
     private let closetUsecase: any ClosetUsecase
     
@@ -48,10 +45,8 @@ public final class ClosetViewModel: ObservableObject {
     private func bind() {
         closetDidScroll
             .throttle(for: .seconds(1), scheduler: RunLoop.main, latest: true)
-            .filter { _ in !self.isLoading }
             .withUnretained(self)
             .sink { owner, _ in
-                owner.isLoading = true
                 owner.fetchClothes()
             }.store(in: &bag)
         
@@ -59,10 +54,7 @@ public final class ClosetViewModel: ObservableObject {
             .throttle(for: .seconds(0.5), scheduler: RunLoop.main, latest: false)
             .withUnretained(self)
             .sink { owner, _ in
-                owner.isLoading = false
-                owner.page = 0
-                owner.clothesList = []
-                owner.fetchClothes()
+                owner.closetUsecase.resetClothesList()
             }.store(in: &bag)
         
         filterDidSelect
@@ -70,9 +62,7 @@ public final class ClosetViewModel: ObservableObject {
             .removeDuplicates()
             .withUnretained(self)
             .sink { owner, filter in
-                owner.isLoading = false
-                owner.page = 0
-                owner.clothesList = []
+                owner.closetUsecase.resetClothesList()
                 owner.filter = filter
                 owner.fetchClothes()
             }.store(in: &bag)
@@ -84,17 +74,12 @@ public final class ClosetViewModel: ObservableObject {
             }.store(in: &bag)
         
         closetUsecase.clothesList
-            .withUnretained(self)
-            .sink { owner, clothesList in
-                guard !clothesList.isEmpty else { return }
-                owner.isLoading = clothesList.count % 18 != 0
-                owner.clothesList += clothesList
-                owner.page += 1
-            }.store(in: &bag)
+            .assign(to: \.clothesList, on: self)
+            .store(in: &bag)
     }
     
     private func fetchClothes() {
-        var parameters: [String: Any] = ["page": page, "size": 18]
+        var parameters: [String: Any] = [:]
         
         if filter.subCategory == .UNKNOWN {
             if filter.category != .UNKNOWN {
@@ -112,7 +97,6 @@ public final class ClosetViewModel: ObservableObject {
             parameters["colorGroup"] = color.id
         }
         
-        isLoading = true
         closetUsecase.fetchClothesList(parameters: parameters)
     }
     

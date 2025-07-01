@@ -104,18 +104,18 @@ public struct ClosetView: View {
                                 .lineLimit(1)
                             
                             HStack {
-                                FilterButton(title: viewModel.filter.categoryTitle) {
+                                FilterButton(title: filterSelection.categoryTitle) {
                                     coordinator.sheet = .categorySheet(
                                         category: $filterSelection.category,
                                         subCategory: $filterSelection.subCategory
                                     )
                                 }
                                 
-                                FilterButton(title: viewModel.filter.moodTitle) {
+                                FilterButton(title: filterSelection.moodTitle) {
                                     coordinator.sheet = .moodSheet(selection: $filterSelection.moodList, isSingleSelection: true)
                                 }
                                 
-                                FilterButton(title: viewModel.filter.colorTitle) {
+                                FilterButton(title: filterSelection.colorTitle) {
                                     coordinator.sheet = .colorSheet(selection: $filterSelection.color)
                                 }
                                 
@@ -150,6 +150,7 @@ public struct ClosetView: View {
                     isFocused = false
                 }
             }
+            .padding(.bottom, 80)
         }
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)

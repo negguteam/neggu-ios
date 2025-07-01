@@ -19,10 +19,11 @@ public protocol ClosetUsecase {
     
     func fetchClothesList(parameters: [String: Any])
     func fetchClothesDetail(_ id: String)
+    func fetchBrandList()
     func registerClothes(image: Data, request: ClothesRegisterEntity)
     func modifyClothes(_ clothes: ClothesEntity)
     func deleteClothes(_ id: String)
-    func fetchBrandList()
+    func resetClothesList()
 }
 
 public final class DefaultClosetUsecase: ClosetUsecase {
@@ -31,6 +32,9 @@ public final class DefaultClosetUsecase: ClosetUsecase {
     public let clothes = PassthroughSubject<ClothesEntity?, Never>()
     public let registeredClothes = PassthroughSubject<ClothesEntity?, Never>()
     public let brandList = PassthroughSubject<[BrandEntity], Never>()
+    
+    private var isLoading: Bool = false
+    private var page: Int = 0
     
     private let closetService: ClosetService
     
@@ -42,12 +46,24 @@ public final class DefaultClosetUsecase: ClosetUsecase {
     
     
     public func fetchClothesList(parameters: [String: Any]) {
+        if isLoading { return }
+        isLoading = true
+        
+        var parameters = parameters
+        parameters["page"] = page
+        parameters["size"] = 18
+        
         closetService.clothesList(parameters: parameters)
             .withUnretained(self)
             .sink { event in
                 print("FetchClothesList:", event)
             } receiveValue: { owner, closet in
-                owner.clothesList.send(closet.content)
+                owner.isLoading = closet.last
+                owner.page += closet.last ? 0 : 1
+                
+                var current = owner.clothesList.value
+                current += closet.content
+                owner.clothesList.send(current)
             }.store(in: &bag)
     }
     
@@ -58,6 +74,16 @@ public final class DefaultClosetUsecase: ClosetUsecase {
                 print("FetchClothesDetail:", event)
             } receiveValue: { owner, clothes in
                 owner.clothes.send(clothes)
+            }.store(in: &bag)
+    }
+    
+    public func fetchBrandList() {
+        closetService.brandList()
+            .withUnretained(self)
+            .sink { event in
+                print("FetchBrandList:", event)
+            } receiveValue: { owner, brandList in
+                owner.brandList.send(brandList)
             }.store(in: &bag)
     }
     
@@ -98,14 +124,10 @@ public final class DefaultClosetUsecase: ClosetUsecase {
             }.store(in: &bag)
     }
     
-    public func fetchBrandList() {
-        closetService.brandList()
-            .withUnretained(self)
-            .sink { event in
-                print("FetchBrandList:", event)
-            } receiveValue: { owner, brandList in
-                owner.brandList.send(brandList)
-            }.store(in: &bag)
+    public func resetClothesList() {
+        page = 0
+        isLoading = false
+        clothesList.send([])
     }
     
 }
