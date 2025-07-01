@@ -34,7 +34,7 @@ struct NegguApp: App {
     var body: some Scene {
         WindowGroup {
             if isLogined {
-                mainCoordinator.buildScene()
+                mainCoordinator.start()
             } else {
                 NavigationStack(path: $authCoordinator.path) {
                     authCoordinator.buildScene(isFirstVisit ? .onboarding : .login)

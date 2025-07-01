@@ -113,6 +113,7 @@ public struct ClosetView: View {
                                             .frame(width: 24, height: 24)
                                             .foregroundStyle(.labelAssistive)
                                     }
+                                    .padding(.leading, 4)
                                 }
                             }
                             .padding(.vertical)
@@ -172,18 +173,21 @@ public struct ClosetView: View {
             ctaButtonExpanded = false
         }
         .onChange(of: viewModel.parsingResult) { _, newValue in
-            guard let result = newValue
-//                    let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
-            else {
-                print("No Result")
-                return
-            }
-            
-            clothesLink.removeAll()
-            isFocused = false
-            
-            DispatchQueue.main.async {
-                coordinator.push(.register(entry: .register(.checkmark, result.clothes)))
+            Task.detached(priority: .high) {
+                guard let result = newValue,
+                      let image = await ImageAnalyzeManager.shared.segmentation(result.imageData)
+                else {
+                    print("No Result")
+                    return
+                }
+                
+                try await Task.sleep(for: .seconds(0.5))
+                
+                await MainActor.run {
+                    clothesLink.removeAll()
+                    isFocused = false
+                    coordinator.push(.register(entry: .register(image, result.clothes)))
+                }
             }
         }
     }

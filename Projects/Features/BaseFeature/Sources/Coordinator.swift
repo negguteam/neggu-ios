@@ -36,7 +36,7 @@ public extension Coordinator {
     }
     
     func pop() {
-        path.removeLast()
+        path.removeLast(path.isEmpty ? 0 : 1)
     }
     
     func popToRoot() {

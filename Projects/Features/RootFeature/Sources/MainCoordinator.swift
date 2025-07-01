@@ -7,9 +7,11 @@
 //
 
 import Core
+import Networks
 
 import BaseFeature
 import ClosetFeature
+import ClosetFeatureInterface
 
 import SwiftUI
 
@@ -27,8 +29,18 @@ public final class MainCoordinator: MainCoordinatorable {
     
     
     @ViewBuilder
-    public func buildScene() -> some View {
+    public func start() -> some View {
         RootView(mainCoordinator: self)
+    }
+    
+    @ViewBuilder
+    public func buildScene(_ scene: Destination) -> some View {
+        switch scene {
+        case .clothesRegister(let entry):
+            let viewModel = ClothesRegisterViewModel(closetUsecase: DIContainer.shared.resolve(ClosetUsecase.self))
+            let clothesRegisterView = ClothesRegisterView(viewModel: viewModel, entry: entry)
+            clothesRegisterView.eraseToAnyView()
+        }
     }
     
     public func makeClosetCoordinator() -> ClosetCoordinator {
@@ -43,7 +55,9 @@ public final class MainCoordinator: MainCoordinatorable {
         return coordinator
     }
     
-    public enum Destination: Sceneable {        
+    public enum Destination: Sceneable {
+        case clothesRegister(entry: ClothesEditType)
+        
         public var id: String { "\(self)" }
     }
     

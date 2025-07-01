@@ -14,7 +14,7 @@ import ClosetFeatureInterface
 import Foundation
 import Combine
 
-final class ClothesRegisterViewModel: ObservableObject {
+public final class ClothesRegisterViewModel: ObservableObject {
     
     // MARK: Input
     let colorDidConfigure = PassthroughSubject<ColorFilter, Never>()

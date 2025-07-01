@@ -13,7 +13,7 @@ import ClosetFeatureInterface
 
 import SwiftUI
 
-struct ClothesRegisterView: View {
+public struct ClothesRegisterView: View {
     @EnvironmentObject private var coordinator: ClosetCoordinator
     
     @StateObject private var viewModel: ClothesRegisterViewModel
@@ -29,7 +29,7 @@ struct ClothesRegisterView: View {
     
     private let entry: ClothesEditType
     
-    init(
+    public init(
         viewModel: ClothesRegisterViewModel,
         entry: ClothesEditType
     ) {
@@ -37,7 +37,7 @@ struct ClothesRegisterView: View {
         self.entry = entry
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             HStack {
                 Spacer()
@@ -304,7 +304,8 @@ struct ClothesRegisterView: View {
                             .onChange(of: viewModel.registState) { _, newValue in
                                 switch newValue {
                                 case .success:
-                                    coordinator.fullScreenCover = nil
+                                    coordinator.pop()
+                                    coordinator.rootCoordinator?.dismissFullScreenCover()
                                 case .failure:
                                     AlertManager.shared.setAlert(message: "의상 편집에 실패했습니다. 다시 시도해주세요.")
                                 default:
@@ -330,6 +331,7 @@ struct ClothesRegisterView: View {
         }
         .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
             coordinator.pop()
+            coordinator.rootCoordinator?.dismissFullScreenCover()
         }
         .onAppear {
             coordinator.rootCoordinator?.showGnb = false

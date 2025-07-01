@@ -7,7 +7,9 @@
 
 import Core
 import NegguDS
+
 import BaseFeature
+import ClosetFeatureInterface
 
 import SwiftUI
 import PhotosUI
@@ -85,39 +87,39 @@ public struct BottomNavigationBar: View {
         .onChange(of: selectedCameraPhoto) { _, newValue in
             if newValue == nil { return }
             
-//            Task.detached(priority: .high) {
-//                guard let image = newValue,
-//                      let imageData = image.heicData(),
-//                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(imageData)
-//                else { return }
-//                
-//                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
-//                try await Task.sleep(for: .seconds(0.5))
-//                
-//                await MainActor.run {
-//                    coordinator.fullScreenCover = .clothesRegister(.register(segmentedImage.resize(newWidth: 128), .emptyData))
-//                    selectedCameraPhoto = nil
-//                }
-//            }
+            Task.detached(priority: .high) {
+                guard let image = newValue,
+                      let imageData = image.heicData(),
+                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(imageData)
+                else { return }
+                
+                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
+                try await Task.sleep(for: .seconds(0.5))
+                
+                await MainActor.run {
+                    coordinator.fullScreenCover = .clothesRegister(entry: .register(segmentedImage, .emptyData))
+                    selectedCameraPhoto = nil
+                }
+            }
         }
         .onChange(of: selectedAlbumPhoto) { _, newValue in
             if newValue == nil { return }
             
-//            Task.detached(priority: .high) {
-//                let data = try await newValue?.loadTransferable(type: Data.self)
-//                
-//                guard let data,
-//                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(data)
-//                else { return }
-//                
-//                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
-//                try await Task.sleep(for: .seconds(0.5))
-//                
-//                await MainActor.run {
-//                    coordinator.fullScreenCover = .clothesRegister(.register(segmentedImage.resize(newWidth: 128), .emptyData))
-//                    selectedAlbumPhoto = nil
-//                }
-//            }
+            Task.detached(priority: .high) {
+                let data = try await newValue?.loadTransferable(type: Data.self)
+                
+                guard let data,
+                      let segmentedImage = await ImageAnalyzeManager.shared.segmentation(data)?.resize(newWidth: 128)
+                else { return }
+                
+                // fullScreenSheet에서 safeArea가 제대로 적용되지 않는 것을 방지
+                try await Task.sleep(for: .seconds(0.5))
+                
+                await MainActor.run {
+                    coordinator.fullScreenCover = .clothesRegister(entry: .register(segmentedImage, .emptyData))
+                    selectedAlbumPhoto = nil
+                }
+            }
         }
     }
     
