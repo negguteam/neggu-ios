@@ -28,6 +28,7 @@ public struct FilterButton: View {
             HStack(spacing: 4) {
                 Text(title)
                     .negguFont(.body2b)
+                    .lineLimit(1)
                 
                 Image(systemName: "chevron.down")
                     .frame(width: 20, height: 20)

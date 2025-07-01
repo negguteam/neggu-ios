@@ -70,6 +70,9 @@ public final class ClosetViewModel: ObservableObject {
             .removeDuplicates()
             .withUnretained(self)
             .sink { owner, filter in
+                owner.isLoading = false
+                owner.page = 0
+                owner.clothesList = []
                 owner.filter = filter
                 owner.fetchClothes()
             }.store(in: &bag)
@@ -84,7 +87,7 @@ public final class ClosetViewModel: ObservableObject {
             .withUnretained(self)
             .sink { owner, clothesList in
                 guard !clothesList.isEmpty else { return }
-                owner.isLoading = false
+                owner.isLoading = clothesList.count % 18 != 0
                 owner.clothesList += clothesList
                 owner.page += 1
             }.store(in: &bag)

@@ -15,15 +15,24 @@ import SwiftUI
 public struct ClosetView: View {
     @EnvironmentObject private var coordinator: ClosetCoordinator
     
-    @ObservedObject private var viewModel: ClosetViewModel
+    @StateObject private var viewModel: ClosetViewModel
     
     @State private var clothesLink: String = ""
+    @State private var filterSelection: ClothesFilter = .init()
     @State private var ctaButtonExpanded: Bool = false
     
     @FocusState private var isFocused: Bool
     
+    private var userNickname: String {
+        if let nickname = UserDefaultsKey.User.nickname {
+            nickname + "의"
+        } else {
+            "내"
+        }
+    }
+    
     public init(viewModel: ClosetViewModel) {
-        self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
@@ -96,18 +105,35 @@ public struct ClosetView: View {
                             
                             HStack {
                                 FilterButton(title: viewModel.filter.categoryTitle) {
-//                                    coordinator.sheet = .categorySheet(category: $filter.category, SubCategory: $filter.subCategory)
+                                    coordinator.sheet = .categorySheet(
+                                        category: $filterSelection.category,
+                                        subCategory: $filterSelection.subCategory
+                                    )
                                 }
                                 
                                 FilterButton(title: viewModel.filter.moodTitle) {
-//                                    coordinator.sheet = .moodSheet(mood: $filter.moodList, isSingleSelection: true)
+                                    coordinator.sheet = .moodSheet(selection: $filterSelection.moodList, isSingleSelection: true)
                                 }
                                 
                                 FilterButton(title: viewModel.filter.colorTitle) {
-//                                    coordinator.sheet = .colorSheet(color: $filter.color)
+                                    coordinator.sheet = .colorSheet(selection: $filterSelection.color)
+                                }
+                                
+                                if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty || filterSelection.color != nil {
+                                    Button {
+                                        filterSelection.reset()
+                                    } label: {
+                                        NegguImage.Icon.refresh
+                                            .frame(width: 24, height: 24)
+                                            .foregroundStyle(.labelAssistive)
+                                    }
                                 }
                             }
                             .padding(.vertical)
+                            .onChange(of: filterSelection) { oldValue, newValue in
+                                guard oldValue != newValue else { return }
+                                viewModel.filterDidSelect.send(newValue)
+                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.bgNormal)
@@ -157,14 +183,6 @@ public struct ClosetView: View {
         }
         .onDisappear {
             ctaButtonExpanded = false
-        }
-    }
-    
-    private var userNickname: String {
-        if let nickname = UserDefaultsKey.User.nickname {
-            nickname + "의"
-        } else {
-            "내"
         }
     }
 }
