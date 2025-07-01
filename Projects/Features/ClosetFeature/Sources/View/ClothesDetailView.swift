@@ -15,14 +15,14 @@ import SwiftUI
 public struct ClothesDetailView: View {
     @EnvironmentObject private var coordinator: ClosetCoordinator
     
-    @ObservedObject private var viewModel: ClothesDetailViewModel
+    @StateObject private var viewModel: ClothesDetailViewModel
     
     @State private var showAlert: Bool = false
     
     private let clothesId: String
     
     public init(viewModel: ClothesDetailViewModel, clothesId: String) {
-        self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self._viewModel = StateObject(wrappedValue: viewModel)
         self.clothesId = clothesId
     }
     
@@ -158,8 +158,9 @@ public struct ClothesDetailView: View {
                             }
                             
                             Button {
-                                coordinator.dismissSheet()
-                                coordinator.fullScreenCover = .register(entry: .modify(clothes))
+                                coordinator.sheet = nil
+//                                coordinator.fullScreenCover = .register(entry: .modify(clothes))
+                                coordinator.push(.register(entry: .modify(clothes)))
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(.negguSecondary)
