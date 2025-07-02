@@ -17,6 +17,26 @@ public struct LookBookEntity: Decodable, Identifiable {
     public let createdAt: String
     public let modifiedAt: String
     
+    public init(
+        id: String,
+        accountId: String,
+        lookBookId: String,
+        imageUrl: String,
+        lookBookClothes: [LookBookClothesEntity],
+        decorator: Decorator?,
+        createdAt: String,
+        modifiedAt: String
+    ) {
+        self.id = id
+        self.accountId = accountId
+        self.lookBookId = lookBookId
+        self.imageUrl = imageUrl
+        self.lookBookClothes = lookBookClothes
+        self.decorator = decorator
+        self.createdAt = createdAt
+        self.modifiedAt = modifiedAt
+    }
+    
     public struct Decorator: Decodable {
         public let accountId: String
         public let imageUrl: String?
@@ -29,6 +49,18 @@ public struct LookBookListEntity: Decodable {
     public let first: Bool
     public let last: Bool
     public let empty: Bool
+    
+    public init(
+        content: [LookBookEntity],
+        first: Bool,
+        last: Bool,
+        empty: Bool
+    ) {
+        self.content = content
+        self.first = first
+        self.last = last
+        self.empty = empty
+    }
 }
 
 
@@ -40,6 +72,24 @@ public struct LookBookClothesEntity: Decodable, Identifiable, Equatable {
     public var xRatio: Float
     public var yRatio: Float
     public var zIndex: Int
+    
+    public init(
+        id: String,
+        imageUrl: String,
+        scale: Float,
+        angle: Int,
+        xRatio: Float,
+        yRatio: Float,
+        zIndex: Int
+    ) {
+        self.id = id
+        self.imageUrl = imageUrl
+        self.scale = scale
+        self.angle = angle
+        self.xRatio = xRatio
+        self.yRatio = yRatio
+        self.zIndex = zIndex
+    }
     
     enum CodingKeys: String, CodingKey {
         case id, imageUrl, scale, angle
@@ -58,4 +108,22 @@ public struct LookBookClothesRegisterEntity: Encodable {
     public let xRatio: Float
     public let yRatio: Float
     public let zIndex: Int
+    
+    public init(
+        id: String,
+        imageUrl: String,
+        scale: Float,
+        angle: Int,
+        xRatio: Float,
+        yRatio: Float,
+        zIndex: Int
+    ) {
+        self.id = id
+        self.imageUrl = imageUrl
+        self.scale = scale
+        self.angle = angle
+        self.xRatio = xRatio
+        self.yRatio = yRatio
+        self.zIndex = zIndex
+    }
 }

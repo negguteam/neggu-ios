@@ -34,6 +34,14 @@ extension App {
         container.register(ClosetUsecase.self) {
             return DefaultClosetUsecase(closetService: DefaultClosetService())
         }
+        
+        container.register(LookBookUsecase.self) {
+            return DefaultLookBookUsecase(lookBookService: DefaultLookBookService())
+        }
+        
+        container.register(UserUsecase.self) {
+            return DefaultUserUsecase(userService: DefaultUserService())
+        }
     }
     
 }
