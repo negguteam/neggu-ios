@@ -63,6 +63,14 @@ struct RootView: View {
                                 }
                         }
                         .toolbarVisibility(.hidden, for: .tabBar)
+                        .sheet(item: $lookBookCoordinator.sheet) { scene in
+                            lookBookCoordinator.buildScene(scene)
+                                .presentationCornerRadius(20)
+                                .presentationBackground(.bgNormal)
+                        }
+                        .fullScreenCover(item: $lookBookCoordinator.fullScreenCover) { scene in
+                            lookBookCoordinator.buildScene(scene)
+                        }
                         .environmentObject(lookBookCoordinator)
                     }
                 }
@@ -83,7 +91,6 @@ struct RootView: View {
                     }
                     .fullScreenCover(item: $closetCoordinator.fullScreenCover) { scene in
                         closetCoordinator.buildScene(scene)
-                            .presentationBackground(.bgNormal)
                     }
                     .environmentObject(closetCoordinator)
                     .background {
@@ -102,6 +109,14 @@ struct RootView: View {
                             }
                     }
                     .tag(NegguTab.lookbook)
+                    .sheet(item: $lookBookCoordinator.sheet) { scene in
+                        lookBookCoordinator.buildScene(scene)
+                            .presentationCornerRadius(20)
+                            .presentationBackground(.bgNormal)
+                    }
+                    .fullScreenCover(item: $lookBookCoordinator.fullScreenCover) { scene in
+                        lookBookCoordinator.buildScene(scene)
+                    }
                     .environmentObject(lookBookCoordinator)
                 }
             }
