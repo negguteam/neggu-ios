@@ -16,7 +16,12 @@ import SwiftUI
 
 public final class ClosetCoordinator: Coordinator {
     
-    @Published public var path: NavigationPath = .init()
+    @Published public var path: NavigationPath = .init() {
+        didSet {
+            rootCoordinator?.showGnb = path.isEmpty
+        }
+    }
+    
     @Published public var sheet: Destination?
     @Published public var fullScreenCover: Destination?
     

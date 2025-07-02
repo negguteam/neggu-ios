@@ -10,6 +10,12 @@ import SwiftUI
 
 public protocol MainCoordinatorable: Coordinator {
     var activeTab: NegguTab { get set }
+    var gnbState: GnbState { get set }
     var showGnb: Bool { get set }
     var isGnbOpened: Bool { get set }
+}
+
+public enum GnbState {
+    case main
+    case clothes
 }

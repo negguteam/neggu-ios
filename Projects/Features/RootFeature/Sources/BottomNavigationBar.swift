@@ -19,7 +19,7 @@ public struct BottomNavigationBar: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var closetCoordinator: ClosetCoordinator
     
-    @State private var gnbState: GnbState = .main
+//    @State private var gnbState: GnbState = .main
     
     @State private var selectedCameraPhoto: UIImage?
     @State private var selectedAlbumPhoto: PhotosPickerItem?
@@ -84,7 +84,7 @@ public struct BottomNavigationBar: View {
         .photosPicker(isPresented: $showAlbumSheet, selection: $selectedAlbumPhoto, matching: .images)
         .onChange(of: coordinator.isGnbOpened) { _, newValue in
             if newValue { return }
-            gnbState = .main
+            coordinator.gnbState = .main
         }
         .onChange(of: selectedCameraPhoto) { _, newValue in
             if newValue == nil { return }
@@ -134,7 +134,7 @@ public struct BottomNavigationBar: View {
     @ViewBuilder
     private var bottomNavigationOpenedView: some View {
         Group {
-            switch gnbState {
+            switch coordinator.gnbState {
             case .main:
                 VStack(spacing: 16) {
                     expandedGnbRowItem(
@@ -142,7 +142,7 @@ public struct BottomNavigationBar: View {
                         leftIcon: NegguImage.Icon.shirtFill,
                         rightIcon: NegguImage.Icon.chevronRight
                     ) {
-                        gnbState = .clothes
+                        coordinator.gnbState = .clothes
                     }
                     .frame(height: 32)
                     
@@ -164,7 +164,7 @@ public struct BottomNavigationBar: View {
             case .clothes:
                 HStack(alignment: .top, spacing: 20) {
                     Button {
-                        gnbState = .main
+                        coordinator.gnbState = .main
                     } label: {
                         NegguImage.Icon.chevronLeft
                             .frame(width: 24, height: 24)
@@ -229,11 +229,6 @@ public struct BottomNavigationBar: View {
                 }
             }
         }
-    }
-    
-    private enum GnbState {
-        case main
-        case clothes
     }
 }
 

@@ -12,12 +12,15 @@ import Networks
 import BaseFeature
 import ClosetFeature
 import ClosetFeatureInterface
+import LookBookFeature
+import LookBookFeatureInterface
 
 import SwiftUI
 
 public final class MainCoordinator: MainCoordinatorable {
 
     @Published public var activeTab: NegguTab = .closet
+    @Published public var gnbState: GnbState = .main
     @Published public var showGnb: Bool = true
     @Published public var isGnbOpened: Bool = false
     
@@ -57,33 +60,6 @@ public final class MainCoordinator: MainCoordinatorable {
     
     public enum Destination: Sceneable {
         case clothesRegister(entry: ClothesEditType)
-        
-        public var id: String { "\(self)" }
-    }
-    
-}
-
-
-public final class LookBookCoordinator: Coordinator {
-    
-    @Published public var path: NavigationPath = .init()
-    @Published public var sheet: Destination?
-    @Published public var fullScreenCover: Destination?
-    
-    public weak var rootCoordinator: (any MainCoordinatorable)?
-    
-    public init() { }
-    
-    
-    @ViewBuilder
-    public func buildScene(_ scene: Destination) -> some View {
-        Color.red
-    }
-    
-    public enum Destination: Sceneable {
-        case main
-        case detail
-        case register
         
         public var id: String { "\(self)" }
     }
