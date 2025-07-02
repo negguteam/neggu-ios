@@ -71,9 +71,9 @@ public final class ClothesRegisterViewModel: ObservableObject {
         registerClothes.brand.isEmpty ? "브랜드" : registerClothes.brand
     }
     
-    private let closetUsecase: any ClosetUsecase
-    
     private var bag = Set<AnyCancellable>()
+    
+    private let closetUsecase: any ClosetUsecase
     
     public init(closetUsecase: any ClosetUsecase) {
         self.closetUsecase = closetUsecase

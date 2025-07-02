@@ -17,6 +17,7 @@ import SwiftSoup
 public final class ClosetViewModel: ObservableObject {
     
     // MARK: Input
+    let viewDidAppear = PassthroughSubject<Void, Never>()
     let closetDidScroll = PassthroughSubject<Void, Never>()
     let closetDidRefresh = PassthroughSubject<Void, Never>()
     let filterDidSelect = PassthroughSubject<ClothesFilter, Never>()
@@ -24,8 +25,9 @@ public final class ClosetViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var clothesList: [ClothesEntity] = []
-    @Published private(set) var filter: ClothesFilter = .init()
     @Published private(set) var parsingResult: HTMLParsingResult?
+    
+    private var filter: ClothesFilter = .init()
     
     private let closetUsecase: any ClosetUsecase
     
@@ -43,8 +45,15 @@ public final class ClosetViewModel: ObservableObject {
     
     
     private func bind() {
+        viewDidAppear
+            .filter { _ in self.clothesList.isEmpty }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.fetchClothes()
+            }.store(in: &bag)
+        
         closetDidScroll
-            .throttle(for: .seconds(1), scheduler: RunLoop.main, latest: true)
+            .throttle(for: .seconds(0.5), scheduler: RunLoop.main, latest: false)
             .withUnretained(self)
             .sink { owner, _ in
                 owner.fetchClothes()
@@ -72,9 +81,8 @@ public final class ClosetViewModel: ObservableObject {
             .sink { owner, urlString in
                 Task {
                     await owner.parseHTML(link: urlString)
+                    owner.parsingResult = nil
                 }
-                
-                owner.parsingResult = nil
             }.store(in: &bag)
         
         closetUsecase.clothesList

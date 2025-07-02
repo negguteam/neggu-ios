@@ -62,26 +62,26 @@ public struct ClosetView: View {
                                     .aspectRatio(5/6, contentMode: .fit)
                             }
                         } else {
-                            ForEach(viewModel.clothesList) { item in
+                            ForEach(viewModel.clothesList) { clothes in
                                 Button {
-                                    coordinator.present(.detail(clothesId: item.id))
+                                    coordinator.present(.detail(clothesId: clothes.id))
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
                                         .aspectRatio(5/6, contentMode: .fit)
                                         .overlay {
-                                            CachedAsyncImage(item.imageUrl)
+                                            CachedAsyncImage(clothes.imageUrl)
                                         }
+                                }
+                                .onAppear {
+                                    guard let last = viewModel.clothesList.last,
+                                          clothes.id == last.id
+                                    else { return }
+                                    
+                                    viewModel.closetDidScroll.send(())
                                 }
                             }
                         }
-                        
-                        Rectangle()
-                            .fill(.clear)
-                            .frame(height: 56)
-                            .onAppear {
-                                viewModel.closetDidScroll.send(())
-                            }
                     } header: {
                         VStack(alignment: .leading, spacing: 0) {
                             Text(userNickname + " 옷장")
@@ -143,34 +143,14 @@ public struct ClosetView: View {
         .scrollDismissesKeyboard(.immediately)
         .padding(.horizontal, 20)
         .padding(.top, 1)
-        .overlay {
-            if ctaButtonExpanded  {
-                Color.bgDimmed
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        ctaButtonExpanded = false
-                    }
-            }
-        }
-        .overlay(alignment: .bottom) {
-            // TODO: Morphing Button으로 리팩토링하기
-            NegguCTAButton(isExpanded: $ctaButtonExpanded)
-                .offset(y: -78)
-                .animation(.smooth(duration: 0.3), value: ctaButtonExpanded)
-                .onChange(of: coordinator.rootCoordinator?.isGnbOpened) { _, newValue in
-                    if newValue == true {
-                        ctaButtonExpanded = false
-                    }
-                }
-
-        }
         .ignoresSafeArea(.keyboard)
         .background(.bgNormal)
         .refreshable {
+            filterSelection = .init()
             viewModel.closetDidRefresh.send(())
         }
-        .onDisappear {
-            ctaButtonExpanded = false
+        .onAppear {
+            viewModel.viewDidAppear.send(())
         }
         .onChange(of: viewModel.parsingResult) { _, newValue in
             Task.detached(priority: .high) {

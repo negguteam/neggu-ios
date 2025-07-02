@@ -332,8 +332,6 @@ public struct ClothesRegisterView: View {
             coordinator.pop()
         }
         .onAppear {
-            coordinator.rootCoordinator?.showGnb = false
-            
             // 시트 -> 이름, 카테고리, 분위기, 브랜드
             // 옷 등록 -> 색, 이름, 브랜드
             // 옷 수정 -> 이름, 카테고리, 분위기, 브랜드
@@ -358,9 +356,6 @@ public struct ClothesRegisterView: View {
                 moodSelection = clothes.mood
                 brandSelection = clothes.brand
             }
-        }
-        .onDisappear {
-            coordinator.rootCoordinator?.showGnb = true
         }
         .onTapGesture {
             focusedField = nil

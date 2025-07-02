@@ -19,6 +19,7 @@ public protocol ClosetUsecase {
     
     func fetchClothesList(parameters: [String: Any])
     func fetchClothesDetail(_ id: String)
+    func fetchBrandList()
     func registerClothes(image: Data, request: ClothesRegisterEntity)
     func modifyClothes(_ clothes: ClothesEntity)
     func deleteClothes(_ id: String)
@@ -41,8 +42,6 @@ public final class DefaultClosetUsecase: ClosetUsecase {
     
     public init(closetService: ClosetService) {
         self.closetService = closetService
-        
-        fetchBrandList()
     }
     
     
