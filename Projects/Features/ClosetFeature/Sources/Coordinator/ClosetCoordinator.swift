@@ -27,21 +27,23 @@ public final class ClosetCoordinator: Coordinator {
     
     public weak var rootCoordinator: (any MainCoordinatorable)?
     
-    private let builder: any ClosetFeatureBuildable = ClosetFeatureBuilder()
+    private let closetBuilder: any ClosetFeatureBuildable
     
-    public init() { }
+    public init(closetBuilder: any ClosetFeatureBuildable) {
+        self.closetBuilder = closetBuilder
+    }
     
     
     @ViewBuilder
     public func buildScene(_ scene: Destination) -> some View {
         switch scene {
         case .main:
-            builder.makeMain()
+            closetBuilder.makeMain()
         case .detail(let clothesId):
-            builder.makeDetail(clothesId)
+            closetBuilder.makeDetail(clothesId)
                 .presentationDetents([.fraction(0.9)])
         case .register(let entry):
-            builder.makeRegister(entry)
+            closetBuilder.makeRegister(entry)
             
         case .clothesNameSheet(let name):
             ClothesNameSheet(clothesName: name)

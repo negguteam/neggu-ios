@@ -47,13 +47,17 @@ public final class MainCoordinator: MainCoordinatorable {
     }
     
     public func makeClosetCoordinator() -> ClosetCoordinator {
-        let coordinator = ClosetCoordinator()
+        let coordinator = ClosetCoordinator(closetBuilder: ClosetFeatureBuilder())
         coordinator.rootCoordinator = self
         return coordinator
     }
     
     public func makeLookBookCoordinator() -> LookBookCoordinator {
-        let coordinator = LookBookCoordinator()
+        let coordinator = LookBookCoordinator(
+            closetBuilder: ClosetFeatureBuilder(),
+            lookBookBuilder: LookBookFeatureBuilder()
+        )
+        
         coordinator.rootCoordinator = self
         return coordinator
     }

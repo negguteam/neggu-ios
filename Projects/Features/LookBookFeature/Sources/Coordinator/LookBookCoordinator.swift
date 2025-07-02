@@ -6,7 +6,10 @@
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
+import Networks
+
 import BaseFeature
+import ClosetFeatureInterface
 import LookBookFeatureInterface
 
 import SwiftUI
@@ -24,20 +27,32 @@ public final class LookBookCoordinator: Coordinator {
     
     public weak var rootCoordinator: (any MainCoordinatorable)?
     
-    private let builder = LookBookFeatureBuilder()
+    private let closetBuilder: any ClosetFeatureBuildable
+    private let lookBookBuilder: any LookBookFeatureBuildable
     
-    public init() { }
+    public init(
+        closetBuilder: any ClosetFeatureBuildable,
+        lookBookBuilder: any LookBookFeatureBuildable
+    ) {
+        self.closetBuilder = closetBuilder
+        self.lookBookBuilder = lookBookBuilder
+    }
     
     
     @ViewBuilder
     public func buildScene(_ scene: Destination) -> some View {
         switch scene {
         case .main:
-            builder.makeMain()
+            lookBookBuilder.makeMain()
         case .detail(let id):
-            builder.makeDetail(id)
+            lookBookBuilder.makeDetail(id)
         case .register:
-            builder.makeRegister()
+            lookBookBuilder.makeRegister()
+        
+        case .clothesDetail(let id):
+            closetBuilder.makeDetail(id)
+        case .clothesRegister(let clothes):
+            closetBuilder.makeRegister(.modify(clothes))
         }
     }
     
@@ -45,6 +60,9 @@ public final class LookBookCoordinator: Coordinator {
         case main
         case detail(id: String)
         case register
+        
+        case clothesDetail(id: String)
+        case clothesRegister(_ clothes: ClothesEntity)
         
         public var id: String { "\(self)" }
     }
