@@ -13,37 +13,42 @@ import BaseFeature
 import ClosetFeatureInterface
 
 import SwiftUI
+import Combine
 
-public final class ClosetCoordinator: Coordinator {
-    
-    @Published public var path: NavigationPath = .init() {
-        didSet {
-            rootCoordinator?.showGnb = path.isEmpty
-        }
-    }
-    
-    @Published public var sheet: Destination?
-    @Published public var fullScreenCover: Destination?
+public final class ClosetCoordinator: BaseCoordinator {
     
     public weak var rootCoordinator: (any MainCoordinatorable)?
+    
+    private var bag = Set<AnyCancellable>()
     
     private let closetBuilder: any ClosetFeatureBuildable
     
     public init(closetBuilder: any ClosetFeatureBuildable) {
         self.closetBuilder = closetBuilder
+        super.init()
+        
+        $path
+            .withUnretained(self)
+            .sink { owner, path in
+                owner.rootCoordinator?.showGnb = path.isEmpty
+            }.store(in: &bag)
+    }
+    
+    deinit {
+        bag = .init()
     }
     
     
     @ViewBuilder
-    public func buildScene(_ scene: Destination) -> some View {
+    public func buildScene(_ scene: MainScene) -> some View {
         switch scene {
-        case .main:
-            closetBuilder.makeMain()
-        case .detail(let clothesId):
-            closetBuilder.makeDetail(clothesId)
+        case .clothesMain:
+            closetBuilder.makeMain(self)
+        case .clothesDetail(let clothesId):
+            closetBuilder.makeDetail(self, clothesId)
                 .presentationDetents([.fraction(0.9)])
-        case .register(let entry):
-            closetBuilder.makeRegister(entry)
+        case .clothesRegister(let entry):
+            closetBuilder.makeRegister(self, entry)
             
         case .clothesNameSheet(let name):
             ClothesNameSheet(clothesName: name)
@@ -60,28 +65,8 @@ public final class ClosetCoordinator: Coordinator {
         case .colorSheet(let selection):
             ColorSheet(selection: selection)
                 .presentationDetents([.fraction(0.85)])
-        }
-    }
-    
-    public enum Destination: Sceneable {
-        case main
-        case detail(clothesId: String)
-        case register(entry: ClothesEditType)
-        
-        case clothesNameSheet(name: Binding<String>)
-        case categorySheet(category: Binding<Core.Category>, subCategory: Binding<Core.SubCategory>)
-        case moodSheet(selection: Binding<[Mood]>, isSingleSelection: Bool = false)
-        case brandSheet(selection: Binding<String>, brandList: [BrandEntity])
-        case colorSheet(selection: Binding<ColorFilter?>)
-        
-        public var id: String { "\(self)" }
-        
-        public static func == (lhs: Destination, rhs: Destination) -> Bool {
-            lhs.id == rhs.id
-        }
-        
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
+        default:
+            EmptyView()
         }
     }
     

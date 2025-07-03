@@ -14,7 +14,7 @@ import ClosetFeatureInterface
 import SwiftUI
 
 public struct ClothesRegisterView: View {
-    @EnvironmentObject private var coordinator: ClosetCoordinator
+    @ObservedObject private var coordinator: BaseCoordinator
     
     @StateObject private var viewModel: ClothesRegisterViewModel
     
@@ -30,9 +30,11 @@ public struct ClothesRegisterView: View {
     private let entry: ClothesEditType
     
     public init(
+        coordinator: BaseCoordinator,
         viewModel: ClothesRegisterViewModel,
         entry: ClothesEditType
     ) {
+        self._coordinator = ObservedObject(wrappedValue: coordinator)
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.entry = entry
     }
@@ -76,10 +78,10 @@ public struct ClothesRegisterView: View {
                                 Section {
                                     TitleForm("어떤 종류의 옷인가요?", isNessesory: true) {
                                         Button {
-                                            coordinator.sheet = .categorySheet(
+                                            coordinator.present(.categorySheet(
                                                 category: $categorySelection,
                                                 subCategory: $subCategorySelection
-                                            )
+                                            ))
                                         } label: {
                                             HStack {
                                                 Text(viewModel.categoryString)
@@ -104,7 +106,7 @@ public struct ClothesRegisterView: View {
                                         }
                                         
                                         Button {
-                                            coordinator.sheet = .moodSheet(selection: $moodSelection)
+                                            coordinator.present(.moodSheet(selection: $moodSelection))
                                         } label: {
                                             HStack {
                                                 Text(viewModel.moodString)
@@ -132,10 +134,10 @@ public struct ClothesRegisterView: View {
                                     
                                     TitleForm("어느 브랜드인가요?") {
                                         Button {
-                                            coordinator.sheet = .brandSheet(
+                                            coordinator.present(.brandSheet(
                                                 selection: $brandSelection,
                                                 brandList: viewModel.brandList
-                                            )
+                                            ))
                                         } label: {
                                             HStack {
                                                 Text(viewModel.brandString)

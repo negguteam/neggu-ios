@@ -34,9 +34,9 @@ struct RootView: View {
                 TabView(selection: $mainCoordinator.activeTab) {
                     Tab.init(value: NegguTab.closet) {
                         NavigationStack(path: $closetCoordinator.path) {
-                            closetCoordinator.buildScene(.main)
+                            closetCoordinator.buildScene(.clothesMain)
                                 .toolbar(.hidden, for: .navigationBar)
-                                .navigationDestination(for: ClosetCoordinator.Destination.self) { scene in
+                                .navigationDestination(for: MainScene.self) { scene in
                                     closetCoordinator.buildScene(scene)
                                         .toolbarVisibility(.hidden, for: .navigationBar)
                                 }
@@ -51,13 +51,12 @@ struct RootView: View {
                             closetCoordinator.buildScene(scene)
                                 .presentationBackground(.bgNormal)
                         }
-                        .environmentObject(closetCoordinator)
                     }
                     
                     Tab.init(value: NegguTab.lookbook) {
                         NavigationStack(path: $lookBookCoordinator.path) {
-                            lookBookCoordinator.buildScene(.main)
-                                .navigationDestination(for: LookBookCoordinator.Destination.self) { scene in
+                            lookBookCoordinator.buildScene(.lookBookMain)
+                                .navigationDestination(for: MainScene.self) { scene in
                                     lookBookCoordinator.buildScene(scene)
                                         .toolbarVisibility(.hidden, for: .navigationBar)
                                 }
@@ -71,14 +70,15 @@ struct RootView: View {
                         .fullScreenCover(item: $lookBookCoordinator.fullScreenCover) { scene in
                             lookBookCoordinator.buildScene(scene)
                         }
-                        .environmentObject(lookBookCoordinator)
                     }
                 }
+                .environmentObject(closetCoordinator)
+                .environmentObject(lookBookCoordinator)
             } else {
                 TabView(selection: $mainCoordinator.activeTab) {
                     NavigationStack(path: $closetCoordinator.path) {
-                        closetCoordinator.buildScene(.main)
-                            .navigationDestination(for: ClosetCoordinator.Destination.self) { scene in
+                        closetCoordinator.buildScene(.lookBookMain)
+                            .navigationDestination(for: MainScene.self) { scene in
                                 closetCoordinator.buildScene(scene)
                                     .toolbar(.hidden, for: .navigationBar)
                             }
@@ -102,8 +102,8 @@ struct RootView: View {
                     }
                     
                     NavigationStack(path: $lookBookCoordinator.path) {
-                        lookBookCoordinator.buildScene(.main)
-                            .navigationDestination(for: LookBookCoordinator.Destination.self) { scene in
+                        lookBookCoordinator.buildScene(.clothesMain)
+                            .navigationDestination(for: MainScene.self) { scene in
                                 lookBookCoordinator.buildScene(scene)
                                     .toolbar(.hidden, for: .navigationBar)
                             }

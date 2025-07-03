@@ -13,7 +13,7 @@ import BaseFeature
 import SwiftUI
 
 public struct ClothesDetailView: View {
-    @EnvironmentObject private var coordinator: ClosetCoordinator
+    @ObservedObject private var coordinator: BaseCoordinator
     
     @StateObject private var viewModel: ClothesDetailViewModel
     
@@ -21,7 +21,8 @@ public struct ClothesDetailView: View {
     
     private let clothesId: String
     
-    public init(viewModel: ClothesDetailViewModel, clothesId: String) {
+    public init(coordinator: BaseCoordinator, viewModel: ClothesDetailViewModel, clothesId: String) {
+        self._coordinator = ObservedObject(wrappedValue: coordinator)
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.clothesId = clothesId
     }
@@ -147,8 +148,8 @@ public struct ClothesDetailView: View {
                                             .negguFont(.body2b)
                                             .foregroundStyle(.labelAlt)
                                             .multilineTextAlignment(.leading)
+                                            .frame(maxWidth: .infinity, minHeight: 48, alignment: .topLeading)
                                             .padding()
-                                            .frame(maxWidth: .infinity, alignment: .leading)
                                             .background {
                                                 RoundedRectangle(cornerRadius: 16)
                                                     .strokeBorder(.lineAlt)
@@ -159,11 +160,9 @@ public struct ClothesDetailView: View {
                             
                             Button {
                                 Task {
-                                    coordinator.sheet = nil
-                                    
+                                    coordinator.dismiss()
                                     try? await Task.sleep(for: .seconds(0.5))
-                                    
-                                    coordinator.push(.register(entry: .modify(clothes)))
+                                    coordinator.push(.clothesRegister(entry: .modify(clothes)))
                                 }
                             } label: {
                                 RoundedRectangle(cornerRadius: 16)
@@ -182,7 +181,7 @@ public struct ClothesDetailView: View {
                 }
                 .negguAlert(.delete(.clothes), showAlert: $showAlert) {
                     viewModel.deleteButtonDidTap.send(clothesId)
-                    coordinator.sheet = nil
+                    coordinator.dismiss()
                 }
             } else {
                 ProgressView()

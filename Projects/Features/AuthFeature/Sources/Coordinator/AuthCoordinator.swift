@@ -10,8 +10,8 @@ import AuthFeatureInterface
 
 import SwiftUI
 
-public final class AuthCoordinator: Coordinator {
-    
+public final class AuthCoordinator: ObservableObject {
+ 
     @Published public var path: NavigationPath = .init()
     @Published public var sheet: Destination?
     @Published public var fullScreenCover: Destination?
@@ -35,6 +35,17 @@ public final class AuthCoordinator: Coordinator {
         }
     }
     
+    func push(_ scene: Destination) {
+        path.append(scene)
+    }
+    
+    func pop() {
+        path.removeLast(path.isEmpty ? 0 : 1)
+    }
+    
+    func popToRoot() {
+        path.removeLast(path.count)
+    }
     
     public enum Destination: Sceneable {
         case onboarding

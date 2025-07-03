@@ -10,7 +10,7 @@ import NegguDS
 
 import BaseFeature
 import ClosetFeature
-import ClosetFeatureInterface
+import LookBookFeature
 
 import SwiftUI
 import PhotosUI
@@ -18,8 +18,7 @@ import PhotosUI
 public struct BottomNavigationBar: View {
     @EnvironmentObject private var coordinator: MainCoordinator
     @EnvironmentObject private var closetCoordinator: ClosetCoordinator
-    
-//    @State private var gnbState: GnbState = .main
+    @EnvironmentObject private var lookBookCoordinator: LookBookCoordinator
     
     @State private var selectedCameraPhoto: UIImage?
     @State private var selectedAlbumPhoto: PhotosPickerItem?
@@ -102,7 +101,7 @@ public struct BottomNavigationBar: View {
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    closetCoordinator.push(.register(entry: .register(segmentedImage, .emptyData)))
+                    closetCoordinator.push(.clothesRegister(entry: .register(segmentedImage, .emptyData)))
                     selectedCameraPhoto = nil
                 }
             }
@@ -124,7 +123,7 @@ public struct BottomNavigationBar: View {
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    closetCoordinator.push(.register(entry: .register(segmentedImage, .emptyData)))
+                    closetCoordinator.push(.clothesRegister(entry: .register(segmentedImage, .emptyData)))
                     selectedAlbumPhoto = nil
                 }
             }
@@ -156,7 +155,7 @@ public struct BottomNavigationBar: View {
                         rightIcon: NegguImage.Icon.chevronRight
                     ) {
                         coordinator.isGnbOpened = false
-//                        coordinator.fullScreenCover(.lookbookRegister())
+                        coordinator.presentFullScreen(.lookBookRegister)
                     }
                     .frame(height: 32)
                 }

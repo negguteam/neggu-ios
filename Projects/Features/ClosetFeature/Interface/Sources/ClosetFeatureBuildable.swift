@@ -6,11 +6,13 @@
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
+import BaseFeature
+
 import SwiftUI
 
 public protocol ClosetFeatureBuildable {
-    func makeMain() -> AnyView
-    func makeDetail(_ clothesId: String) -> AnyView
-    func makeRegister(_ entry: ClothesEditType) -> AnyView
-    func makeClothesNameEdit() -> AnyView
+    func makeMain(_ coordinator: BaseCoordinator) -> AnyView
+    func makeDetail(_ coordinator: BaseCoordinator, _ clothesId: String) -> AnyView
+    func makeRegister(_ coordinator: BaseCoordinator, _ entry: ClothesEditType) -> AnyView
+    func makeNameSheet(clothesName: Binding<String>) -> AnyView
 }

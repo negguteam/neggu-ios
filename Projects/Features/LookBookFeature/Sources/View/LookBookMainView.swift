@@ -10,16 +10,16 @@ import NegguDS
 
 import SwiftUI
 
-struct LookBookMainView: View {
+public struct LookBookMainView: View {
     @EnvironmentObject private var coordinator: LookBookCoordinator
     
     @StateObject private var viewModel: LookBookMainViewModel
     
-    init(viewModel: LookBookMainViewModel) {
+    public init(viewModel: LookBookMainViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 20) {
                 Spacer()
@@ -64,7 +64,7 @@ struct LookBookMainView: View {
                         ) {
                             ForEach(viewModel.lookBookList) { lookBook in
                                 Button {
-                                    coordinator.push(.detail(id: lookBook.id))
+                                    coordinator.push(.lookBookDetail(id: lookBook.id))
                                 } label: {
                                     LookBookCell(lookBook: lookBook)
                                         .aspectRatio(3/4, contentMode: .fit)

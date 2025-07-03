@@ -11,7 +11,7 @@ import Networks
 import Foundation
 import Combine
 
-final class LookBookMainViewModel: ObservableObject {
+public final class LookBookMainViewModel: ObservableObject {
      
     // MARK: Input
     let viewDidAppear = PassthroughSubject<Void, Never>()

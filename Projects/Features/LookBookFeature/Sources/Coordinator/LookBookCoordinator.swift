@@ -13,19 +13,13 @@ import ClosetFeatureInterface
 import LookBookFeatureInterface
 
 import SwiftUI
+import Combine
 
-public final class LookBookCoordinator: Coordinator {
-    
-    @Published public var path: NavigationPath = .init() {
-        didSet {
-            rootCoordinator?.showGnb = path.isEmpty
-        }
-    }
-    
-    @Published public var sheet: Destination?
-    @Published public var fullScreenCover: Destination?
+public final class LookBookCoordinator: BaseCoordinator {
     
     public weak var rootCoordinator: (any MainCoordinatorable)?
+    
+    private var bag = Set<AnyCancellable>()
     
     private let closetBuilder: any ClosetFeatureBuildable
     private let lookBookBuilder: any LookBookFeatureBuildable
@@ -36,35 +30,37 @@ public final class LookBookCoordinator: Coordinator {
     ) {
         self.closetBuilder = closetBuilder
         self.lookBookBuilder = lookBookBuilder
+        super.init()
+        
+        $path
+            .withUnretained(self)
+            .sink { owner, path in
+                owner.rootCoordinator?.showGnb = path.isEmpty
+            }.store(in: &bag)
+    }
+    
+    deinit {
+        bag = .init()
     }
     
     
     @ViewBuilder
-    public func buildScene(_ scene: Destination) -> some View {
+    public func buildScene(_ scene: MainScene) -> some View {
         switch scene {
-        case .main:
+        case .lookBookMain:
             lookBookBuilder.makeMain()
-        case .detail(let id):
+        case .lookBookDetail(let id):
             lookBookBuilder.makeDetail(id)
-        case .register:
+        case .lookBookRegister:
             lookBookBuilder.makeRegister()
-        
-        case .clothesDetail(let id):
-            closetBuilder.makeDetail(id)
-        case .clothesRegister(let clothes):
-            closetBuilder.makeRegister(.modify(clothes))
+            
+        case .clothesDetail(let clothesID):
+            closetBuilder.makeDetail(self, clothesID)
+        case .clothesRegister(let entry):
+            closetBuilder.makeRegister(self, entry)
+        default:
+            EmptyView()
         }
-    }
-    
-    public enum Destination: Sceneable {
-        case main
-        case detail(id: String)
-        case register
-        
-        case clothesDetail(id: String)
-        case clothesRegister(_ clothes: ClothesEntity)
-        
-        public var id: String { "\(self)" }
     }
     
 }

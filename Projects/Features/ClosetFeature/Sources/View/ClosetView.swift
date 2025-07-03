@@ -13,7 +13,7 @@ import BaseFeature
 import SwiftUI
 
 public struct ClosetView: View {
-    @EnvironmentObject private var coordinator: ClosetCoordinator
+    @ObservedObject private var coordinator: BaseCoordinator
     
     @StateObject private var viewModel: ClosetViewModel
     
@@ -31,13 +31,14 @@ public struct ClosetView: View {
         }
     }
     
-    public init(viewModel: ClosetViewModel) {
+    public init(coordinator: BaseCoordinator, viewModel: ClosetViewModel) {
+        self._coordinator = ObservedObject(wrappedValue: coordinator)
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         ScrollView {
-            LazyVStack {
+            VStack {
                 LinkBanner(urlString: $clothesLink) {
                     if clothesLink.isEmpty { return }
                     clothesLink = clothesLink.split(separator: " ").filter { $0.contains("https://") }.joined()
@@ -64,7 +65,7 @@ public struct ClosetView: View {
                         } else {
                             ForEach(viewModel.clothesList) { clothes in
                                 Button {
-                                    coordinator.present(.detail(clothesId: clothes.id))
+                                    coordinator.present(.clothesDetail(clothesId: clothes.id))
                                 } label: {
                                     Rectangle()
                                         .fill(.clear)
@@ -91,18 +92,23 @@ public struct ClosetView: View {
                             
                             HStack {
                                 FilterButton(title: filterSelection.categoryTitle) {
-                                    coordinator.sheet = .categorySheet(
+                                    coordinator.present(.categorySheet(
                                         category: $filterSelection.category,
                                         subCategory: $filterSelection.subCategory
-                                    )
+                                    ))
                                 }
                                 
                                 FilterButton(title: filterSelection.moodTitle) {
-                                    coordinator.sheet = .moodSheet(selection: $filterSelection.moodList, isSingleSelection: true)
+                                    coordinator.present(.moodSheet(
+                                        selection: $filterSelection.moodList,
+                                        isSingleSelection: true
+                                    ))
                                 }
                                 
                                 FilterButton(title: filterSelection.colorTitle) {
-                                    coordinator.sheet = .colorSheet(selection: $filterSelection.color)
+                                    coordinator.present(.colorSheet(
+                                        selection: $filterSelection.color
+                                    ))
                                 }
                                 
                                 if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty || filterSelection.color != nil {
@@ -164,7 +170,9 @@ public struct ClosetView: View {
                 await MainActor.run {
                     clothesLink.removeAll()
                     isFocused = false
-                    coordinator.push(.register(entry: .register(image, result.clothes)))
+                    coordinator.push(.clothesRegister(
+                        entry: .register(image, result.clothes)
+                    ))
                 }
             }
         }
