@@ -64,3 +64,37 @@ public final class DefaultUserUsecase: UserUsecase {
     }
     
 }
+
+public final class MockUserUsecase: UserUsecase {
+    
+    public let userProfile = PassthroughSubject<UserProfileEntity, Never>()
+    
+    private var bag = Set<AnyCancellable>()
+    
+    public init() { }
+    
+    
+    public func fetchProfile() {
+        let mock: UserProfileEntity = .init(
+            id: "abcd",
+            email: "abcd@neggu.com",
+            nickname: "네꾸네꾸",
+            gender: .MALE,
+            mood: [.MODERN],
+            age: 29,
+            profileImage: nil,
+            clothes: [String](repeating: "n", count: 18),
+            lookBooks: [String](repeating: "e", count: 18),
+            oauthProvider: "kakao",
+            fcmToken: nil
+        )
+        
+        UserDefaultsKey.User.nickname = mock.nickname
+        userProfile.send(mock)
+    }
+    
+    public func logout() { }
+    
+    public func withdraw() { }
+    
+}

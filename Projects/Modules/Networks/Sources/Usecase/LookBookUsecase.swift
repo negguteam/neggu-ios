@@ -150,11 +150,22 @@ public final class MockLookBookUsecase: LookBookUsecase {
     
     public func fetchLookBookList() {
         if isLoading { return }
-        isLoading = true
         
-        let mockList: [LookBookEntity] = (0...5).map {
-            .init(id: "\($0)", accountId: "\($0)", lookBookId: "\($0)", imageUrl: "", lookBookClothes: [], decorator: nil, createdAt: "", modifiedAt: "")
+        let mockList: [LookBookEntity] = ((page * 6)...((page + 1) * 6 - 1)).map {
+            .init(
+                id: "\($0)",
+                accountId: "\($0)",
+                lookBookId: "\($0)",
+                imageUrl: "https://cdn.tvj.co.kr/news/photo/202504/108548_248894_2935.jpg",
+                lookBookClothes: [],
+                decorator: nil,
+                createdAt: "",
+                modifiedAt: ""
+            )
         }
+        
+        isLoading = page == 2
+        page += 1
         
         var current = lookBookList.value
         current += mockList
@@ -166,8 +177,18 @@ public final class MockLookBookUsecase: LookBookUsecase {
             id: "abcd",
             accountId: "abcd",
             lookBookId: "abcd",
-            imageUrl: "",
-            lookBookClothes: [],
+            imageUrl: "https://cdn.tvj.co.kr/news/photo/202504/108548_248894_2935.jpg",
+            lookBookClothes: (0...3).map {
+                .init(
+                    id: "\($0)",
+                    imageUrl: "https://cdn.tvj.co.kr/news/photo/202504/108548_248894_2935.jpg",
+                    scale: 1.0,
+                    angle: [0, 90, 180, 360].randomElement() ?? 0,
+                    xRatio: [0, 50, 100, 150].randomElement() ?? 0,
+                    yRatio: [0, 50, 100, 150].randomElement() ?? 0,
+                    zIndex: $0
+                )
+            },
             decorator: nil,
             createdAt: "",
             modifiedAt: Date.now.toISOFormatString()
@@ -177,7 +198,42 @@ public final class MockLookBookUsecase: LookBookUsecase {
     }
     
     public func fetchLookBookCloset(parameters: [String : Any]) {
+        let page = parameters["page"] as? Int ?? 1
         
+        let mockList: [ClothesEntity] = ((page * 6)...((page + 1) * 6 - 1)).map {
+            .init(
+                id: "\($0)",
+                accountId: "\($0)",
+                clothId: "\($0)",
+                name: "의상\($0)",
+                link: "www.neggu.com",
+                imageUrl: "https://cdn.tvj.co.kr/news/photo/202504/108548_248894_2935.jpg",
+                category: Category.allCasesArray.randomElement() ?? .TOP,
+                subCategory: SubCategory.allCasesArray.randomElement() ?? .T_SHIRT,
+                mood: [.MODERN],
+                brand: "Neggu",
+                priceRange: .UNKNOWN,
+                memo: "테스트 메모",
+                color: "",
+                colorCode: "",
+                isPurchase: Bool.random(),
+                modifiedAt: Date.now.toISOFormatString()
+            )
+        }
+        
+        let mock: ClosetEntity = .init(
+            totalElements: 12,
+            totalPages: 2,
+            size: 12,
+            content: mockList,
+            number: 0,
+            numberOfElements: 12,
+            first: page == 0,
+            last: page == 1,
+            empty: false
+        )
+        
+        lookBookCloset.send(mock)
     }
     
     public func fetchRecentLookBook() {

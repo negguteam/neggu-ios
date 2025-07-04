@@ -32,15 +32,18 @@ extension App {
         }
         
         container.register(ClosetUsecase.self) {
-            return DefaultClosetUsecase(closetService: DefaultClosetService())
+//            return DefaultClosetUsecase(closetService: DefaultClosetService())
+            return MockClosetUsecase()
         }
         
         container.register(LookBookUsecase.self) {
-            return DefaultLookBookUsecase(lookBookService: DefaultLookBookService())
+//            return DefaultLookBookUsecase(lookBookService: DefaultLookBookService())
+            return MockLookBookUsecase()
         }
         
         container.register(UserUsecase.self) {
-            return DefaultUserUsecase(userService: DefaultUserService())
+//            return DefaultUserUsecase(userService: DefaultUserService())
+            return MockUserUsecase()
         }
     }
     
