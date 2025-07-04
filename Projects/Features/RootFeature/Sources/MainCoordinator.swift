@@ -23,10 +23,22 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorable {
     
     public weak var childCoordinator: (any Coordinator)?
     
+    private let lookBookBuilder = LookBookFeatureBuilder()
+    
     
     @ViewBuilder
     public func start() -> some View {
         RootView(mainCoordinator: self)
+    }
+    
+    @ViewBuilder
+    public func buildScene(_ scene: MainScene) -> some View {
+        switch scene {
+        case .lookBookRegister:
+            lookBookBuilder.makeRegister(self)
+        default:
+            EmptyView()
+        }
     }
     
     public func makeClosetCoordinator() -> ClosetCoordinator {

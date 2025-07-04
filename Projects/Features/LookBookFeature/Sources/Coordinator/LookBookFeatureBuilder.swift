@@ -9,6 +9,7 @@
 import Core
 import Networks
 
+import BaseFeature
 import LookBookFeatureInterface
 
 import SwiftUI
@@ -33,9 +34,9 @@ public final class LookBookFeatureBuilder: LookBookFeatureBuildable {
         return lookBookDetailView.eraseToAnyView()
     }
     
-    public func makeRegister() -> AnyView {
+    public func makeRegister(_ coordinator: BaseCoordinator) -> AnyView {
         let viewModel = LookBookRegisterViewModel(lookBookUsecase: lookBookUsecase)
-        let lookBookRegisterView = LookBookRegisterView(viewModel: viewModel)
+        let lookBookRegisterView = LookBookRegisterView(coordinator: coordinator, viewModel: viewModel)
         return lookBookRegisterView.eraseToAnyView()
     }
     

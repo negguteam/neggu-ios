@@ -52,12 +52,25 @@ public final class LookBookCoordinator: BaseCoordinator {
         case .lookBookDetail(let id):
             lookBookBuilder.makeDetail(id)
         case .lookBookRegister:
-            lookBookBuilder.makeRegister()
+            lookBookBuilder.makeRegister(self)
             
         case .clothesDetail(let clothesID):
             closetBuilder.makeDetail(self, clothesID)
         case .clothesRegister(let entry):
             closetBuilder.makeRegister(self, entry)
+        case .clothesNameSheet(let name):
+            closetBuilder.makeNameSheet(clothesName: name)
+                .presentationDetents([.height(270)])
+        case .categorySheet(let category, let subCategory):
+            closetBuilder.makeCategorySheet(category: category, subCategory: subCategory)
+                .presentationDetents([.fraction(0.85)])
+        case .moodSheet(let selection, let isSingle):
+            closetBuilder.makeMoodSheet(selection: selection, isSingle: isSingle)
+                .presentationDetents([.fraction(0.85)])
+        case .brandSheet(let selection, let brandList):
+            closetBuilder.makeBrandSheet(selection: selection, brandList: brandList)
+                .presentationDetents([.fraction(0.85)])
+            
         default:
             EmptyView()
         }

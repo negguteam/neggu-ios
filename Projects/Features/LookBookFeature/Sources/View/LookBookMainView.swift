@@ -44,6 +44,7 @@ public struct LookBookMainView: View {
                                     scrollProxy: scrollProxy
                                 )
                             }
+                            .padding(.bottom, 16)
                             
                             Text(profile.nickname + "의 룩북")
                                 .negguFont(.title2)
@@ -67,7 +68,6 @@ public struct LookBookMainView: View {
                                     coordinator.push(.lookBookDetail(id: lookBook.id))
                                 } label: {
                                     LookBookCell(lookBook: lookBook)
-                                        .aspectRatio(3/4, contentMode: .fit)
                                 }
                                 .onAppear {
                                     guard let last = viewModel.lookBookList.last,

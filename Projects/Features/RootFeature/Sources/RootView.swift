@@ -137,6 +137,14 @@ struct RootView: View {
             
             AlertView()
         }
+        .sheet(item: $mainCoordinator.sheet) { scene in
+            mainCoordinator.buildScene(scene)
+                .presentationCornerRadius(20)
+                .presentationBackground(.bgNormal)
+        }
+        .fullScreenCover(item: $mainCoordinator.fullScreenCover) { scene in
+            mainCoordinator.buildScene(scene)
+        }
         .animation(.smooth(duration: 0.2), value: mainCoordinator.isGnbOpened)
         .ignoresSafeArea(.keyboard)
     }
