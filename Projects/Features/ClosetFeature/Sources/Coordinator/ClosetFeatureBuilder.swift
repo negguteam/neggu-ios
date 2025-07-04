@@ -19,9 +19,7 @@ public final class ClosetFeatureBuilder: ClosetFeatureBuildable {
     
     private let closetUsecase: ClosetUsecase = DIContainer.shared.resolve(ClosetUsecase.self)
     
-    public init() {
-        closetUsecase.fetchBrandList()
-    }
+    public init() { }
     
     
     public func makeMain(_ coordinator: BaseCoordinator) -> AnyView {

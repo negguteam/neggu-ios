@@ -64,6 +64,7 @@ public final class ClosetViewModel: ObservableObject {
             .withUnretained(self)
             .sink { owner, _ in
                 owner.closetUsecase.resetClothesList()
+                owner.fetchClothes()
             }.store(in: &bag)
         
         filterDidSelect
@@ -79,10 +80,8 @@ public final class ClosetViewModel: ObservableObject {
         urlDidParse
             .withUnretained(self)
             .sink { owner, urlString in
-                Task {
-                    await owner.parseHTML(link: urlString)
-                    owner.parsingResult = nil
-                }
+                owner.parseHTML(link: urlString)
+                owner.parsingResult = nil
             }.store(in: &bag)
         
         closetUsecase.clothesList
@@ -112,100 +111,80 @@ public final class ClosetViewModel: ObservableObject {
         closetUsecase.fetchClothesList(parameters: parameters)
     }
     
-    private func parseHTML(link: String) async {
-        do {
-            guard let url = URL(string: link) else {
-                throw NSError(domain: "Invalid url", code: 1)
-            }
-            
-            var request = URLRequest(url: url)
-            
-            // 모바일 기기의 경우 랜딩 페이지로 이동하기 때문에 웹으로 들어간 것으로 처리해야함
-//            if link.contains("musinsa") || link.contains("zigzag") {
-                request.setValue("Chrome/92.0.4515.107", forHTTPHeaderField: "User-Agent")
-//            } else {
-//                request.setValue(Util.deviceName, forHTTPHeaderField: "User-Agent")
-//            }
-            
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            guard let htmlString = String(data: data, encoding: .utf8) else {
-                throw NSError(domain: "Failed to get HTML content", code: 2)
-            }
-            
-            let document = try SwiftSoup.parse(htmlString)
-            
-            // 무신사, 에이블리, 지그재그, 29cm, 퀸잇 -> application/json
-            // 크림 -> application/ld+json
-            let scriptElements = link.contains("kream")
-            ? try document.select("script[type=application/ld+json]")
-            : try document.select("script[type=application/json]")
-            
-            for element in scriptElements {
-                let jsonString = try element.html()
+    private func parseHTML(link: String) {
+        Task {
+            do {
+                let htmlString = try await convertURLToHTMLString(urlString: link)
+                let jsonData = try convertHTMLToJSON(from: htmlString, urlString: link)
+                let product = try decodeProduct(data: jsonData, urlString: link)
+                let convertedProduct = product.toProduct(urlString: link)
                 
-                guard let data = jsonString.data(using: .utf8) else {
-                    throw NSError(domain: "Failed to get JSON data", code: 3)
-                }
-                
-                let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                    .documentType: NSAttributedString.DocumentType.html,
-                    .characterEncoding: String.Encoding.utf8.rawValue
-                ]
-                
-                let attributedString = try NSAttributedString(data: data, options: options, documentAttributes: nil)
-                debugPrint(attributedString)
-                
-                guard let parsedData = attributedString.string.data(using: .utf8) else {
-                    throw NSError(domain: "Failed to get parsed data", code: 4)
-                }
-                
-                var product: Clothesable?
-                
-                switch link {
-                case _ where link.contains("kream"):
-                    product = try? JSONDecoder().decode(KreamProduct.self, from: parsedData)
-                case _ where link.contains("musinsa"):
-                    product = try? JSONDecoder().decode(MusinsaProduct.self, from: parsedData)
-                case _ where link.contains("zigzag"):
-                    product = try? JSONDecoder().decode(ZigzagProduct.self, from: parsedData)
-                case _ where link.contains("a-bly"):
-                    product = try? JSONDecoder().decode(AblyProduct.self, from: parsedData)
-                case _ where link.contains("queenit."):
-                    product = try? JSONDecoder().decode(QueenitProduct.self, from: parsedData)
-                case _ where link.contains("29cm."):
-                    product = try? JSONDecoder().decode(TwentyNineCMProduct.self, from: parsedData)
-                default:
-                    product = nil
-                }
-                
-                guard let convertedProduct = product?.toProduct(urlString: link),
-                      let imageUrl = URL(string: product?.imageUrl ?? ""),
+                guard let imageUrl = URL(string: product.imageUrl),
                       let (imageData, _) = try? await URLSession.shared.data(from: imageUrl)
-                else { continue }
+                else {
+                    throw NSError(domain: "Failed to parse product.", code: 3)
+                }
                 
                 await MainActor.run {
                     parsingResult = .init(clothes: convertedProduct, imageData: imageData)
                 }
+            } catch {
+                print(error.localizedDescription)
             }
-        } catch {
-            print(error.localizedDescription)
         }
     }
     
-//    func checkInviteCode(_ code: String, completion: @escaping (Bool) -> Void) {
-//        closetService.clothesInviteList(
-//            parameters: ["inviteCode": code, "page": 0, "size": 1]
-//        ).sink { event in
-//            switch event {
-//            case .finished:
-//                print("CheckInviteCode:", event)
-//            case .failure:
-//                completion(false)
-//            }
-//        } receiveValue: { _ in
-//            completion(true)
-//        }.store(in: &bag)
-//    }
+    private func convertURLToHTMLString(urlString: String) async throws -> String {
+        guard let url = URL(string: urlString) else {
+            throw NSError(domain: "Invalid url", code: 0)
+        }
+        
+        var request = URLRequest(url: url)
+        // 모바일 기기의 경우 랜딩 페이지로 이동하기 때문에 웹으로 들어간 것으로 처리해야함
+        request.setValue("Chrome/92.0.4515.107", forHTTPHeaderField: "User-Agent")
+        
+        let (data, _) = try await URLSession.shared.data(for: request)
+        
+        guard let htmlString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "Failed to get HTML content", code: 1)
+        }
+        
+        return htmlString
+    }
+    
+    private func convertHTMLToJSON(from html: String, urlString: String) throws -> Data {
+        let document = try SwiftSoup.parse(html)
+        let type = urlString.contains("kream") ? "ld+json" : "json"
+        let scripts = try document.select("script[type=application/\(type)]")
+        
+        for script in scripts {
+            let jsonString = try script.html()
+            
+            if let data = jsonString.data(using: .utf8) {
+                return data
+            }
+        }
+        
+        throw NSError(domain: "Failed to get JSON", code: 1)
+    }
+    
+    private func decodeProduct(data: Data, urlString: String) throws -> Clothesable {
+        switch urlString {
+        case _ where urlString.contains("kream"):
+            return try JSONDecoder().decode(KreamProduct.self, from: data)
+        case _ where urlString.contains("musinsa"):
+            return try JSONDecoder().decode(MusinsaProduct.self, from: data)
+        case _ where urlString.contains("zigzag"):
+            return try JSONDecoder().decode(ZigzagProduct.self, from: data)
+        case _ where urlString.contains("a-bly"):
+            return try JSONDecoder().decode(AblyProduct.self, from: data)
+        case _ where urlString.contains("queenit."):
+            return try JSONDecoder().decode(QueenitProduct.self, from: data)
+        case _ where urlString.contains("29cm."):
+            return try JSONDecoder().decode(TwentyNineCMProduct.self, from: data)
+        default:
+            throw NSError(domain: "Failed to decode data.", code: 2)
+        }
+    }
     
 }

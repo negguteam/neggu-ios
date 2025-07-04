@@ -110,6 +110,7 @@ public final class ClothesRegisterViewModel: ObservableObject {
             }.store(in: &bag)
         
         brandDidSelect
+            .receive(on: RunLoop.main)
             .assign(to: \.registerClothes.brand, on: self)
             .store(in: &bag)
         
@@ -169,6 +170,7 @@ public final class ClothesRegisterViewModel: ObservableObject {
             }.store(in: &bag)
         
         closetUsecase.brandList
+            .receive(on: RunLoop.main)
             .assign(to: \.brandList, on: self)
             .store(in: &bag)
     }

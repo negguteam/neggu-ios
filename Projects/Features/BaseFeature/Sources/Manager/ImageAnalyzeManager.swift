@@ -6,18 +6,19 @@
 //
 
 import VisionKit
+import Combine
 
-@MainActor
-public struct ImageAnalyzeManager {
-    let analyzer = ImageAnalyzer()
-    let configuration = ImageAnalyzer.Configuration([.text, .machineReadableCode, .visualLookUp])
+public final class ImageAnalyzeManager {
     
-    let interaction = ImageAnalysisInteraction()
+    private let analyzer = ImageAnalyzer()
+    private let configuration = ImageAnalyzer.Configuration([.visualLookUp])
     
     public static let shared = ImageAnalyzeManager()
     
     private init() { }
     
+    
+    @MainActor
     public func segmentation(_ data: Data) async -> UIImage? {
         do {
             guard let image = UIImage(data: data) else {
@@ -25,7 +26,7 @@ public struct ImageAnalyzeManager {
             }
             
             let analysis = try await analyzer.analyze(image, configuration: configuration)
-            
+            let interaction = ImageAnalysisInteraction()
             interaction.analysis = analysis
             interaction.preferredInteractionTypes = .imageSubject
             
@@ -46,4 +47,5 @@ public struct ImageAnalyzeManager {
             return nil
         }
     }
+    
 }

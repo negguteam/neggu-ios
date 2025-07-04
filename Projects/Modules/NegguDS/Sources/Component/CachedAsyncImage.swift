@@ -10,7 +10,6 @@ import SwiftUI
 public struct CachedAsyncImage: View {
     @State private var phase: AsyncImagePhase = .empty
     
-    private let session = URLSession.shared
     private let urlString: String
     
     public init(_ urlString: String) {
@@ -31,6 +30,7 @@ public struct CachedAsyncImage: View {
         }
     }
     
+    @MainActor
     private func loadImage() async {
         do {
             guard let url = URL(string: urlString) else {
@@ -39,14 +39,14 @@ public struct CachedAsyncImage: View {
             
             let request = URLRequest(url: url)
             
-            if let cache = session.configuration.urlCache,
+            if let cache = URLSession.shared.configuration.urlCache,
                let cachedData = cache.cachedResponse(for: request)?.data,
                let uiImage = UIImage(data: cachedData) {
                     withAnimation(.easeIn) {
                         phase = .success(Image(uiImage: uiImage))
                     }
             } else {
-                let (data, response) = try await session.data(for: request)
+                let (data, response) = try await URLSession.shared.data(for: request)
                 let cachedData = CachedURLResponse(response: response, data: data)
                 URLCache.shared.storeCachedResponse(cachedData, for: request)
                 

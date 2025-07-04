@@ -124,7 +124,7 @@ public struct ClothesDetailView: View {
                                                         .padding(.leading, 8)
                                                     
                                                     Text(clothes.link.isEmpty ? "구매 링크" : clothes.link)
-                                                        .negguFont(.caption)
+                                                        .negguFont(.body2b)
                                                         .foregroundStyle(.labelInactive)
                                                         .lineLimit(1)
                                                         .frame(maxWidth: .infinity, alignment: .leading)

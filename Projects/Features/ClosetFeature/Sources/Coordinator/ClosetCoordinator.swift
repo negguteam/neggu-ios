@@ -51,19 +51,19 @@ public final class ClosetCoordinator: BaseCoordinator {
             closetBuilder.makeRegister(self, entry)
             
         case .clothesNameSheet(let name):
-            ClothesNameSheet(clothesName: name)
+            closetBuilder.makeNameSheet(clothesName: name)
                 .presentationDetents([.height(270)])
         case .categorySheet(let category, let subCategory):
-            CategorySheet(categorySelection: category, subCategorySelection: subCategory)
+            closetBuilder.makeCategorySheet(category: category, subCategory: subCategory)
                 .presentationDetents([.fraction(0.85)])
         case .moodSheet(let selection, let isSingle):
-            MoodSheet(selection: selection, isSingleSelection: isSingle)
+            closetBuilder.makeMoodSheet(selection: selection, isSingle: isSingle)
                 .presentationDetents([.fraction(0.85)])
         case .brandSheet(let selection, let brandList):
-            BrandSheet(selectedBrand: selection, brandList: brandList)
+            closetBuilder.makeBrandSheet(selection: selection, brandList: brandList)
                 .presentationDetents([.fraction(0.85)])
         case .colorSheet(let selection):
-            ColorSheet(selection: selection)
+            closetBuilder.makeColorSheet(selection: selection)
                 .presentationDetents([.fraction(0.85)])
         default:
             EmptyView()
