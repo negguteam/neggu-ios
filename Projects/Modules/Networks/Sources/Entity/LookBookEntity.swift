@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LookBookEntity: Decodable, Identifiable {
+public struct LookBookEntity: Codable, Identifiable {
     public let id: String
     public let accountId: String
     public let lookBookId: String
@@ -37,7 +37,7 @@ public struct LookBookEntity: Decodable, Identifiable {
         self.modifiedAt = modifiedAt
     }
     
-    public struct Decorator: Decodable {
+    public struct Decorator: Codable {
         public let accountId: String
         public let imageUrl: String?
         public let targetDate: String
@@ -64,7 +64,7 @@ public struct LookBookListEntity: Decodable {
 }
 
 
-public struct LookBookClothesEntity: Decodable, Identifiable, Equatable {
+public struct LookBookClothesEntity: Codable, Identifiable, Equatable {
     public let id: String
     public let imageUrl: String
     public var scale: Float

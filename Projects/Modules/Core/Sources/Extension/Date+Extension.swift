@@ -101,6 +101,7 @@ public extension Date {
     
     static let relativeFormatter: RelativeDateTimeFormatter = {
         let formatter = RelativeDateTimeFormatter()
+        formatter.locale = .init(identifier: "ko-KR")
         formatter.dateTimeStyle = .named
         return formatter
     }()
