@@ -24,7 +24,7 @@ final class LookBookRegisterViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var clothesList: [ClothesEntity] = []
-    @Published private(set) var registerState: RegistState = .idle
+    @Published private(set) var registState: RegistState = .idle
     @Published private(set) var filter: ClothesFilter = .init()
     @Published var isEmptyCloset: Bool = false
 
@@ -105,7 +105,7 @@ final class LookBookRegisterViewModel: ObservableObject {
         lookBookUsecase.registeredLookBook
             .withUnretained(self)
             .sink { owner, lookBook in
-                owner.registerState = lookBook != nil ? .success : .failure
+                owner.registState = lookBook != nil ? .success : .failure
             }.store(in: &bag)
     }
     

@@ -74,14 +74,13 @@ struct LookBookRegisterView: View {
                             }
                             .foregroundStyle(selectedClothes.isEmpty ? .labelInactive : .labelNormal)
                             .disabled(selectedClothes.isEmpty)
-                            .onChange(of: viewModel.registerState) { _, newValue in
+                            .onChange(of: viewModel.registState) { _, newValue in
                                 switch newValue {
                                 case .success:
                                     coordinator.dismissFullScreen()
                                 case .failure:
                                     AlertManager.shared.setAlert(message: "룩북 등록에 실패했습니다. 다시 시도해주세요.")
-                                default:
-                                    return
+                                default: return
                                 }
                             }
                         }
