@@ -14,10 +14,12 @@ let project = Project.createModule(
         .Library.FirebaseMessaging,
         .Library.FirebaseAnalytics,
         .Library.GoogleSignIn,
+        .Library.GoogleMobileAds,
         .Library.KakaoSDKCommon,
         .Library.KakaoSDKAuth,
         .Library.KakaoSDKShare,
         .Library.KakaoSDKUser,
-        .Library.SwiftSoup
+        .Library.SwiftSoup,
+//        .Library.MarkdownUI
     ]
 )

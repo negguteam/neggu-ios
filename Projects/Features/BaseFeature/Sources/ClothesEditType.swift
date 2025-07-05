@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Networks
+import Domain
 
 public enum ClothesEditType: Equatable, Hashable {
     case register(UIImage, ClothesRegisterEntity)

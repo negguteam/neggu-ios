@@ -6,7 +6,7 @@
 //
 
 import NegguDS
-import Networks
+import Domain
 
 import SwiftUI
 

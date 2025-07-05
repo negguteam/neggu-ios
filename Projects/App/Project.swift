@@ -12,6 +12,7 @@ let project = Project.createModule(
     featureDependencies: [
         .Feature.RootFeature
     ],
-    moduleDependencies: [],
-    externalDependencies: []
+    moduleDependencies: [
+        .Module.Networks.project
+    ]
 )

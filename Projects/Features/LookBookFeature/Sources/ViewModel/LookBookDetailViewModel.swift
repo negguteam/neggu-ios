@@ -6,7 +6,7 @@
 //
 
 import Core
-import Networks
+import Domain
 
 import Foundation
 import Combine

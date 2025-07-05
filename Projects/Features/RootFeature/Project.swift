@@ -11,11 +11,7 @@ let project = Project.createModule(
     featureDependencies: [
         .Feature.Auth.project,
         .Feature.Closet.project,
-        .Feature.LookBook.project,
-        .Feature.ImageSegment.project,
-        .Feature.Invite.project,
-        .Feature.Insight.project,
-        .Feature.Setting.project
+        .Feature.LookBook.project
     ],
     interfaceDependencies: [],
     moduleDependencies: []

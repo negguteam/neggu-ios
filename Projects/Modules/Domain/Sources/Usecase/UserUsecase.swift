@@ -7,9 +7,11 @@
 //
 
 import Core
+import Network
 
 import Foundation
 import Combine
+import FirebaseMessaging
 
 public protocol UserUsecase {
     var userProfile: PassthroughSubject<UserProfileEntity, Never> { get }
@@ -45,11 +47,12 @@ public final class DefaultUserUsecase: UserUsecase {
     
     public func logout() {
         userService.logout()
-            .withUnretained(self)
             .sink { event in
                 print("Logout:", event)
-            } receiveValue: { owner, _ in
-                
+            } receiveValue: { _ in
+                UserDefaultsKey.clearUserData()
+                UserDefaultsKey.Auth.isLogined = false
+                Messaging.messaging().deleteToken { _ in }
             }.store(in: &bag)
     }
     
@@ -59,7 +62,9 @@ public final class DefaultUserUsecase: UserUsecase {
             .sink { event in
                 print("Withdraw:", event)
             } receiveValue: { owner, _ in
-                
+                UserDefaultsKey.clearUserData()
+                UserDefaultsKey.Auth.isLogined = false
+                Messaging.messaging().deleteToken { _ in }
             }.store(in: &bag)
     }
     

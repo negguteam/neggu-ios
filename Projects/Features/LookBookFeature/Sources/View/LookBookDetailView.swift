@@ -7,7 +7,7 @@
 
 import Core
 import NegguDS
-import Networks
+import Domain
 
 import BaseFeature
 

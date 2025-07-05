@@ -9,11 +9,9 @@ let project = Project.createModule(
     name: "LookBookFeature",
     targets: [.staticFramework, .interface, .unitTest, .demo],
     featureDependencies: [
-        .Feature.Invite.interface,
-        .Feature.Setting.interface
+        .Feature.Closet.interface
     ],
     interfaceDependencies: [
         .Feature.BaseFeature
-    ],
-    moduleDependencies: []
+    ]
 )

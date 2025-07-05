@@ -6,7 +6,7 @@
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
-import Networks
+import Domain
 
 import Foundation
 import Combine

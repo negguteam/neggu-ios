@@ -5,16 +5,12 @@
 //  Created by 유지호 on 1/22/25.
 //
 
+import Domain
+
 import Foundation
 import Combine
 
 public typealias DefaultUserService = BaseService<UserAPI>
-
-public protocol UserService {
-    func profile() -> AnyPublisher<UserProfileEntity, Error>
-    func logout() -> AnyPublisher<Void, Error>
-    func withdraw() -> AnyPublisher<Void, Error>
-}
 
 extension DefaultUserService: UserService {
     

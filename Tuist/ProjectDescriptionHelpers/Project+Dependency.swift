@@ -13,10 +13,6 @@ public extension TargetDependency {
         case Auth
         case Closet
         case LookBook
-        case ImageSegment
-        case Invite
-        case Insight
-        case Setting
         
         public var project: TargetDependency {
             .project(
@@ -46,6 +42,7 @@ public extension TargetDependency {
     
     enum Module {
         case Core
+        case Domain
         case Networks
         case NegguDS
         
@@ -63,6 +60,7 @@ public extension TargetDependency {
         public static let CombineMoya = TargetDependency.external(name: "CombineMoya")
         
         public static let GoogleSignIn = TargetDependency.external(name: "GoogleSignIn")
+        public static let GoogleMobileAds = TargetDependency.external(name: "GoogleMobileAds")
         public static let FirebaseCore = TargetDependency.external(name: "FirebaseCore")
         public static let FirebaseMessaging = TargetDependency.external(name: "FirebaseMessaging")
         public static let FirebaseAnalytics = TargetDependency.external(name: "FirebaseAnalytics")
@@ -73,6 +71,7 @@ public extension TargetDependency {
         public static let KakaoSDKUser = TargetDependency.external(name: "KakaoSDKUser")
         
         public static let SwiftSoup = TargetDependency.external(name: "SwiftSoup")
+//        public static let MarkdownUI = TargetDependency.external(name: "MarkdownUI")
     }
     
 }

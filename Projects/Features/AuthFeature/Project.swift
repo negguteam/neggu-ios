@@ -11,6 +11,5 @@ let project = Project.createModule(
     featureDependencies: [],
     interfaceDependencies: [
         .Feature.BaseFeature
-    ],
-    moduleDependencies: []
+    ]
 )

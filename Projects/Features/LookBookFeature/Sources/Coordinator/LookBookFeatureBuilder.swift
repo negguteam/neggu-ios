@@ -7,7 +7,7 @@
 //
 
 import Core
-import Networks
+import Domain
 
 import BaseFeature
 import LookBookFeatureInterface

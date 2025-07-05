@@ -6,10 +6,9 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.createModule(
-    name: "BaseFeature",
-    targets: [.dynamicFramework],
+    name: "Domain",
+    targets: [.dynamicFramework, .unitTest],
     moduleDependencies: [
-        .Module.NegguDS.project,
-        .Module.Domain.project
+        .Module.Core.project
     ]
 )

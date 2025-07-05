@@ -42,7 +42,7 @@ public extension Project {
                 infoPlist: .extendingDefault(with: Self.defaultInfoPlist),
                 sources: ["Sources/**"],
                 resources: [.glob(pattern: "Resources/**")],
-                entitlements: "\(name).entitlements",
+                entitlements: "Resources/\(name).entitlements",
                 dependencies: featureDependencies + moduleDependencies + externalDependencies,
                 settings: .settings(base: baseSettings, configurations: XCConfig.project)
             )

@@ -6,21 +6,12 @@
 //
 
 import Core
+import Domain
 
 import Foundation
 import Combine
 
 public typealias DefaultLookBookService = BaseService<LookBookAPI>
-
-public protocol LookBookService {
-    func register(image: Data, request: [LookBookClothesRegisterEntity], inviteCode: String) -> AnyPublisher<LookBookEntity, Error>
-    func negguInvite() -> AnyPublisher<NegguInviteEntity, Error>
-    func lookbookDetail(id: String) -> AnyPublisher<LookBookEntity, Error>
-    func lookbookList(parameters: [String: Any]) -> AnyPublisher<LookBookListEntity, Error>
-    func lookbookClothes(parameters: [String: Any]) -> AnyPublisher<ClosetEntity, Error>
-    func modifyDate(id: String, targetDate: String) -> AnyPublisher<LookBookEntity, Error>
-    func deleteLookBook(id: String) -> AnyPublisher<LookBookEntity, Error>
-}
 
 extension DefaultLookBookService: LookBookService {
     

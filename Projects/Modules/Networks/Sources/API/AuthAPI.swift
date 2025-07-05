@@ -6,16 +6,11 @@
 //
 
 import Core
+import Domain
 
 import Foundation
 import Alamofire
 import Moya
-
-public enum SocialType: String, Codable {
-    case apple
-    case google
-    case kakao
-}
 
 public enum AuthAPI {
     case login(socialType: SocialType, idToken: String)

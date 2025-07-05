@@ -7,22 +7,19 @@
 
 import Core
 import NegguDS
-import Networks
+import Domain
 
 import BaseFeature
 
 import SwiftUI
-import Combine
-import FirebaseMessaging
 
 struct SettingView: View {
     @EnvironmentObject private var coordinator: LookBookCoordinator
     
     @State private var showLogoutAlert: Bool = false
     @State private var showWithdrawAlert: Bool = false
-    @State private var bag = Set<AnyCancellable>()
     
-    private let service: UserService = DefaultUserService()
+    private let usecase = DIContainer.shared.resolve(UserUsecase.self)
     
     var body: some View {
         VStack(spacing: 0) {
@@ -130,24 +127,10 @@ struct SettingView: View {
         }
         .background(.bgNormal)
         .negguAlert(.logout, showAlert: $showLogoutAlert) {
-            service.logout()
-                .sink { event in
-                    print("SettingView:", event)
-                } receiveValue: { _ in
-                    UserDefaultsKey.clearUserData()
-                    UserDefaultsKey.Auth.isLogined = false
-                    Messaging.messaging().deleteToken { _ in }
-                }.store(in: &bag)
+            usecase.logout()
         }
         .negguAlert(.withdraw, showAlert: $showWithdrawAlert) {
-            service.withdraw()
-                .sink { event in
-                    print("SettingView:", event)
-                } receiveValue: { _ in
-                    UserDefaultsKey.clearUserData()
-                    UserDefaultsKey.Auth.isLogined = false
-                    Messaging.messaging().deleteToken { _ in }
-                }.store(in: &bag)
+            usecase.withdraw()
         }
     }
 }

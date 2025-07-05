@@ -5,7 +5,7 @@
 //  Created by 유지호 on 4/20/25.
 //
 
-import Networks
+import Domain
 
 import SwiftUI
 
