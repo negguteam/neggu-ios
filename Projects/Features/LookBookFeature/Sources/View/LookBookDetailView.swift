@@ -49,7 +49,7 @@ struct LookBookDetailView: View {
                     Spacer()
                     
                     Text("코디")
-                        .negguFont(.body2b)
+                        .negguFont(.body1b)
                     
                     Spacer()
 
@@ -70,7 +70,7 @@ struct LookBookDetailView: View {
                             .overlay {
                                 CachedAsyncImage(lookBook.imageUrl)
                             }
-                            .overlay(alignment: .topTrailing) {
+                            .overlay(alignment: .bottomTrailing) {
                                 Button {
                                     showDateSheet = true
                                 } label: {
@@ -175,10 +175,9 @@ struct LookBookDetailView: View {
                             }
                         }
                         .padding(.horizontal, 20)
-                        .padding(.bottom, 40)
+                        .padding(.vertical, 40)
                     }
                 }
-                .background(.bgNormal)
             } else {
                 HStack {
                     Button {
@@ -205,6 +204,7 @@ struct LookBookDetailView: View {
                     }
             }
         }
+        .background(.bgNormal)
         .sheet(isPresented: $showDateSheet) {
             LookBookDateSheet(selectedDate: $selectedDate)
                 .presentationCornerRadius(20)

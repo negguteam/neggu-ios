@@ -7,6 +7,8 @@
 //
 
 import Networks
+
+import Foundation
 import Combine
 
 public struct LookBookCalendarItem: Codable, Identifiable {
