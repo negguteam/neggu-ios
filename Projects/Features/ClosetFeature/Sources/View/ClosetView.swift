@@ -71,7 +71,14 @@ public struct ClosetView: View {
                                         .fill(.clear)
                                         .aspectRatio(5/6, contentMode: .fit)
                                         .overlay {
-                                            CachedAsyncImage(clothes.imageUrl)
+//                                            CachedAsyncImage(clothes.imageUrl)
+                                            AsyncImage(url: URL(string: clothes.imageUrl)) { image in
+                                                image
+                                                    .resizable()
+                                                    .scaledToFit()
+                                            } placeholder: {
+                                                SkeletonView()
+                                            }
                                         }
                                 }
                                 .onAppear {
@@ -86,7 +93,7 @@ public struct ClosetView: View {
                     } header: {
                         VStack(alignment: .leading, spacing: 0) {
                             Text(userNickname + " 옷장")
-                                .negguFont(.title2)
+                                .negguFont(.title3)
                                 .foregroundStyle(.labelNormal)
                                 .lineLimit(1)
                             
@@ -143,13 +150,12 @@ public struct ClosetView: View {
                     isFocused = false
                 }
             }
+            .padding(.horizontal, 20)
             .padding(.bottom, 80)
         }
-        .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)
-        .padding(.horizontal, 20)
-        .padding(.top, 1)
         .ignoresSafeArea(.keyboard)
+        .padding(.top, 1)
         .background(.bgNormal)
         .refreshable {
             filterSelection = .init()
