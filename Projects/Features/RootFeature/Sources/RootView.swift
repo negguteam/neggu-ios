@@ -147,6 +147,21 @@ struct RootView: View {
         }
         .animation(.smooth(duration: 0.2), value: mainCoordinator.isGnbOpened)
         .ignoresSafeArea(.keyboard)
+        .onReceive(NotificationCenter.default.publisher(for: .init("DeepLink"))) { notification in
+            if let url = notification.userInfo?["url"] as? String {
+                let components = url.components(separatedBy: "/")
+                
+                if url.contains("lookBook/detail") {
+                    guard let lookBookID = components.last else { return }
+                    
+                    Task { @MainActor in
+                        mainCoordinator.activeTab = .lookbook
+                        try? await Task.sleep(for: .seconds(0.5))
+                        lookBookCoordinator.push(.lookBookDetail(id: lookBookID))
+                    }
+                }
+            }
+        }
     }
 }
 

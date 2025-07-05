@@ -143,6 +143,7 @@ struct LookBookDetailView: View {
                                 switch newValue {
                                 case .success:
                                     coordinator.dismissFullScreen()
+                                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [lookBookID])
                                 case .failure:
                                     AlertManager.shared.setAlert(message: "코디 삭제에 실패했습니다. 다시 시도해주세요.")
                                 default: return
@@ -233,6 +234,8 @@ struct LookBookDetailView: View {
         content.title = "입을 예정인 코디가 있어요!"
         content.body = "코디 정보를 확인해보세요"
         content.sound = .default
+        content.userInfo["lookBookID"] = lookBook.id
+        content.userInfo["url"] = "neggu://lookBook/detail/\(lookBook.id)"
         
         let targetDateComponents = Calendar.current.dateComponents(
             [.year, .month, .day],
