@@ -30,10 +30,12 @@ public final class ClothesDetailViewModel: ObservableObject {
         self.closetUsecase = closetUsecase
         
         bind()
+        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
+        print("\(self) deinit")
     }
     
     

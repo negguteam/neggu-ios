@@ -39,10 +39,12 @@ final class LookBookRegisterViewModel: ObservableObject {
         self.lookBookUsecase = lookBookUsecase
         
         bind()
+        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
+        print("\(self) deinit")
     }
     
     
@@ -55,8 +57,8 @@ final class LookBookRegisterViewModel: ObservableObject {
         
         closetDidScroll
             .throttle(for: .seconds(0.5), scheduler: RunLoop.main, latest: false)
-            .filter { _ in !self.isLoading }
             .withUnretained(self)
+            .filter { owner, _ in !owner.isLoading }
             .sink { owner, _ in
                 owner.isLoading = true
                 owner.fetchCloset()

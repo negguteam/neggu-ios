@@ -37,10 +37,12 @@ public final class ClosetViewModel: ObservableObject {
         self.closetUsecase = closetUsecase
         
         bind()
+        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
+        print("\(self) deinit")
     }
     
     

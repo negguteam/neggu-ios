@@ -38,10 +38,12 @@ public final class LookBookMainViewModel: ObservableObject {
         self.userUsecase = userUsecase
 
         bind()
+        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
+        print("\(self) deinit")
     }
     
     

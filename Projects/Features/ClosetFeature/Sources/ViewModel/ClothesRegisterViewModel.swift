@@ -79,10 +79,12 @@ public final class ClothesRegisterViewModel: ObservableObject {
         self.closetUsecase = closetUsecase
         
         bind()
+        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
+        print("\(self) deinit")
     }
     
     
