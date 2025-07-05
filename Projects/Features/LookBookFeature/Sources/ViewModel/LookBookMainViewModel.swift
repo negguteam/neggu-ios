@@ -21,6 +21,7 @@ public final class LookBookMainViewModel: ObservableObject {
     // MARK: Output
     @Published private(set) var userProfile: UserProfileEntity?
     @Published private(set) var lookBookState: UserLookBookState = .initial
+    @Published private(set) var lookBookCalenar: [LookBookCalendarItem] = []
     @Published private(set) var lookBookList: [LookBookEntity] = []
     
     private var bag = Set<AnyCancellable>()
@@ -35,7 +36,7 @@ public final class LookBookMainViewModel: ObservableObject {
     ) {
         self.lookBookUsecase = lookBookUsecase
         self.userUsecase = userUsecase
-        
+
         bind()
     }
     
@@ -67,6 +68,14 @@ public final class LookBookMainViewModel: ObservableObject {
             .sink { owner, _ in
                 owner.lookBookUsecase.resetLookBookList()
                 owner.lookBookUsecase.fetchLookBookList()
+            }.store(in: &bag)
+        
+        LookBookCalendarManager.shared.lookBookList
+            .receive(on: RunLoop.main)
+            .withUnretained(self)
+            .sink { owner, lookBookList in
+                print(lookBookList.map { ($0.id, $0.targetDate) })
+                owner.lookBookCalenar = lookBookList
             }.store(in: &bag)
         
         lookBookUsecase.lookBookList
