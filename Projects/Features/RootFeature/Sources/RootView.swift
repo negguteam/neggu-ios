@@ -77,7 +77,7 @@ struct RootView: View {
             } else {
                 TabView(selection: $mainCoordinator.activeTab) {
                     NavigationStack(path: $closetCoordinator.path) {
-                        closetCoordinator.buildScene(.lookBookMain)
+                        closetCoordinator.buildScene(.clothesMain)
                             .navigationDestination(for: MainScene.self) { scene in
                                 closetCoordinator.buildScene(scene)
                                     .toolbar(.hidden, for: .navigationBar)
@@ -102,7 +102,7 @@ struct RootView: View {
                     }
                     
                     NavigationStack(path: $lookBookCoordinator.path) {
-                        lookBookCoordinator.buildScene(.clothesMain)
+                        lookBookCoordinator.buildScene(.lookBookMain)
                             .navigationDestination(for: MainScene.self) { scene in
                                 lookBookCoordinator.buildScene(scene)
                                     .toolbar(.hidden, for: .navigationBar)

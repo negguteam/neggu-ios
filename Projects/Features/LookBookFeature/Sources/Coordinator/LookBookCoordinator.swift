@@ -51,8 +51,8 @@ public final class LookBookCoordinator: BaseCoordinator {
             lookBookBuilder.makeMain()
         case .lookBookDetail(let id):
             lookBookBuilder.makeDetail(id)
-        case .lookBookRegister:
-            lookBookBuilder.makeRegister(self)
+//        case .lookBookRegister:
+//            lookBookBuilder.makeRegister(self)
             
         case .clothesDetail(let clothesID):
             closetBuilder.makeDetail(self, clothesID)
