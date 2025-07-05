@@ -27,6 +27,9 @@ public enum MainScene: Sceneable {
     case lookBookDetail(id: String)
     case lookBookRegister
     
+    case setting
+    case policy(_ type: PolicyType)
+    
     public var id: String { "\(self)" }
     
     public static func == (lhs: MainScene, rhs: MainScene) -> Bool {

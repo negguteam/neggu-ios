@@ -71,6 +71,10 @@ public final class LookBookCoordinator: BaseCoordinator {
             closetBuilder.makeBrandSheet(selection: selection, brandList: brandList)
                 .presentationDetents([.fraction(0.85)])
             
+        case .setting:
+            SettingView()
+        case .policy(let policyType):
+            PolicyView(policyType)
         default:
             EmptyView()
         }
