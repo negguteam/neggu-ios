@@ -23,6 +23,7 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorable {
     
     public weak var childCoordinator: (any Coordinator)?
     
+    private let closetBuilder = ClosetFeatureBuilder()
     private let lookBookBuilder = LookBookFeatureBuilder()
     
     
@@ -42,15 +43,15 @@ public final class MainCoordinator: BaseCoordinator, MainCoordinatorable {
     }
     
     public func makeClosetCoordinator() -> ClosetCoordinator {
-        let coordinator = ClosetCoordinator(closetBuilder: ClosetFeatureBuilder())
+        let coordinator = ClosetCoordinator(closetBuilder: closetBuilder)
         coordinator.rootCoordinator = self
         return coordinator
     }
     
     public func makeLookBookCoordinator() -> LookBookCoordinator {
         let coordinator = LookBookCoordinator(
-            closetBuilder: ClosetFeatureBuilder(),
-            lookBookBuilder: LookBookFeatureBuilder()
+            closetBuilder: closetBuilder,
+            lookBookBuilder: lookBookBuilder
         )
         
         coordinator.rootCoordinator = self

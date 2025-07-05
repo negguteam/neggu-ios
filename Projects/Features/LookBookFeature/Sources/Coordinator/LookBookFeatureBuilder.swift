@@ -19,11 +19,13 @@ public final class LookBookFeatureBuilder: LookBookFeatureBuildable {
     private let lookBookUsecase: LookBookUsecase = DIContainer.shared.resolve(LookBookUsecase.self)
     private let userUsecase: UserUsecase = DIContainer.shared.resolve(UserUsecase.self)
     
+    private lazy var mainViewModel = LookBookMainViewModel(lookBookUsecase: lookBookUsecase, userUsecase: userUsecase)
+    
     public init() { }
     
     
     public func makeMain() -> AnyView {
-        let viewModel = LookBookMainViewModel(lookBookUsecase: lookBookUsecase, userUsecase: userUsecase)
+        let viewModel = mainViewModel
         let lookBookMainView = LookBookMainView(viewModel: viewModel)
         return lookBookMainView.eraseToAnyView()
     }
