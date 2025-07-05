@@ -17,6 +17,7 @@ public protocol LookBookUsecase {
     var lookBookCloset: PassthroughSubject<ClosetEntity, Never> { get }
     var recentLookBook: PassthroughSubject<LookBookEntity, Never> { get }
     var registeredLookBook: PassthroughSubject<LookBookEntity?, Never> { get }
+    var deletedLookBook: PassthroughSubject<LookBookEntity?, Never> { get }
     
     func fetchLookBookList()
     func fetchLookBookDetail(_ id: String)
@@ -34,6 +35,7 @@ public final class DefaultLookBookUsecase: LookBookUsecase {
     public let lookBookCloset = PassthroughSubject<ClosetEntity, Never>()
     public let recentLookBook = PassthroughSubject<LookBookEntity, Never>()
     public let registeredLookBook = PassthroughSubject<LookBookEntity?, Never>()
+    public let deletedLookBook = PassthroughSubject<LookBookEntity?, Never>()
     
     private var isLoading: Bool = false
     private var page: Int = 0
@@ -121,6 +123,7 @@ public final class DefaultLookBookUsecase: LookBookUsecase {
             } receiveValue: { owner, lookBook in
                 owner.resetLookBookList()
                 owner.fetchLookBookList()
+                owner.deletedLookBook.send(lookBook)
             }.store(in: &bag)
     }
     
@@ -140,6 +143,7 @@ public final class MockLookBookUsecase: LookBookUsecase {
     public let lookBookCloset = PassthroughSubject<ClosetEntity, Never>()
     public let recentLookBook = PassthroughSubject<LookBookEntity, Never>()
     public let registeredLookBook = PassthroughSubject<LookBookEntity?, Never>()
+    public let deletedLookBook = PassthroughSubject<LookBookEntity?, Never>()
     
     private var isLoading: Bool = false
     private var page: Int = 0
@@ -174,9 +178,9 @@ public final class MockLookBookUsecase: LookBookUsecase {
     
     public func fetchLookBookDetail(_ id: String) {
         let mock = LookBookEntity(
-            id: "abcd",
-            accountId: "abcd",
-            lookBookId: "abcd",
+            id: id,
+            accountId: id,
+            lookBookId: id,
             imageUrl: "https://cdn.tvj.co.kr/news/photo/202504/108548_248894_2935.jpg",
             lookBookClothes: (0...3).map {
                 .init(
@@ -258,9 +262,11 @@ public final class MockLookBookUsecase: LookBookUsecase {
     }
     
     public func deleteLookBook(_ id: String) {
+        let lookBook = lookBookList.value.first(where: { $0.id == id })
         var current = lookBookList.value
         current.removeAll(where: { $0.id == id })
         lookBookList.send(current)
+        deletedLookBook.send(lookBook)
     }
     
     public func resetLookBookList() {

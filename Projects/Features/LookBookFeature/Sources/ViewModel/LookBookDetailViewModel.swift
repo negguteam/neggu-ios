@@ -19,6 +19,7 @@ final class LookBookDetailViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var lookBookDetail: LookBookEntity?
+    @Published private(set) var deleteState: DeleteState = .idle
     
     private var bag = Set<AnyCancellable>()
     
@@ -32,6 +33,7 @@ final class LookBookDetailViewModel: ObservableObject {
     
     deinit {
         bag.removeAll()
+        print("\(self) deinit")
     }
     
     
@@ -53,6 +55,23 @@ final class LookBookDetailViewModel: ObservableObject {
             .sink { owner, lookBook in
                 owner.lookBookDetail = lookBook
             }.store(in: &bag)
+        
+        lookBookUsecase.deletedLookBook
+            .withUnretained(self)
+            .sink { owner, lookBook in
+                if let lookBook {
+                    LookBookCalendarManager.shared.removeLookBook(id: lookBook.id)
+                    owner.deleteState = .success
+                } else {
+                    owner.deleteState = .failure
+                }
+            }.store(in: &bag)
+    }
+    
+    enum DeleteState: Equatable {
+        case idle
+        case success
+        case failure
     }
     
 }
