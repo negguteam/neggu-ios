@@ -21,7 +21,7 @@ public struct LinkBanner: View {
         VStack(alignment: .leading, spacing: 30) {
             VStack(alignment: .leading, spacing: 24) {
                 Text("갖고 있는 옷을\n한눈에 모아보세요!")
-                    .negguFont(.title3)
+                    .negguFont(.title4)
                     .foregroundStyle(.labelRNormal)
                 
                 Text("링크를 입력해 옷장에 담고 코디해보세요!")
