@@ -19,11 +19,13 @@ public final class ClosetFeatureBuilder: ClosetFeatureBuildable {
     
     private let closetUsecase: ClosetUsecase = DIContainer.shared.resolve(ClosetUsecase.self)
     
+    private lazy var mainViewModel = ClosetViewModel(closetUsecase: closetUsecase)
+    
     public init() { }
     
     
     public func makeMain(_ coordinator: BaseCoordinator) -> AnyView {
-        let viewModel = ClosetViewModel(closetUsecase: closetUsecase)
+        let viewModel = mainViewModel
         let closetView = ClosetView(coordinator: coordinator, viewModel: viewModel)
         return closetView.eraseToAnyView()
     }
