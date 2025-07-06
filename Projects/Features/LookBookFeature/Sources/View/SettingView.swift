@@ -124,6 +124,9 @@ struct SettingView: View {
             .scrollContentBackground(.hidden)
             .negguFont(.body2b)
             .foregroundStyle(.labelNormal)
+            
+            BannerViewContainer()
+                .frame(height: 50)
         }
         .background(.bgNormal)
         .negguAlert(.logout, showAlert: $showLogoutAlert) {

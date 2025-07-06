@@ -36,31 +36,31 @@ struct LookBookDetailView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if let lookBook = viewModel.lookBookDetail {
-                HStack {
-                    Button {
-                        coordinator.pop()
-                    } label: {
-                        NegguImage.Icon.chevronLeft
-                            .foregroundStyle(.labelNormal)
-                            .frame(width: 44, height: 44)
-                    }
-                    
-                    Spacer()
-                    
-                    Text("코디")
-                        .negguFont(.body1b)
-                    
-                    Spacer()
-
-                    Rectangle()
-                        .fill(.clear)
+            HStack {
+                Button {
+                    coordinator.pop()
+                } label: {
+                    NegguImage.Icon.chevronLeft
+                        .foregroundStyle(.labelNormal)
                         .frame(width: 44, height: 44)
                 }
-                .frame(height: 44)
-                .padding(.horizontal, 20)
-                .background(.bgNormal)
                 
+                Spacer()
+                
+                Text("코디")
+                    .negguFont(.body1b)
+                
+                Spacer()
+
+                Rectangle()
+                    .fill(.clear)
+                    .frame(width: 44, height: 44)
+            }
+            .frame(height: 44)
+            .padding(.horizontal, 20)
+            .background(.bgNormal)
+            
+            if let lookBook = viewModel.lookBookDetail {
                 ScrollView {
                     VStack(spacing: 24) {
                         RoundedRectangle(cornerRadius: 20)
@@ -121,7 +121,7 @@ struct LookBookDetailView: View {
                         .clipShape(.rect(cornerRadius: 16))
                         .padding(.horizontal, 20)
                         
-                        HStack {
+                        HStack(spacing: 20) {
                             Button {
                                 showDeleteAlert = true
                             } label: {
@@ -180,21 +180,6 @@ struct LookBookDetailView: View {
                     }
                 }
             } else {
-                HStack {
-                    Button {
-                        coordinator.pop()
-                    } label: {
-                        NegguImage.Icon.chevronLeft
-                            .foregroundStyle(.labelNormal)
-                            .frame(width: 44, height: 44)
-                    }
-                    
-                    Spacer()
-                }
-                .frame(height: 44)
-                .padding(.horizontal, 20)
-                .background(.bgNormal)
-                
                 Color.clear
                     .overlay {
                         ProgressView()
@@ -204,6 +189,9 @@ struct LookBookDetailView: View {
                             }
                     }
             }
+            
+            BannerViewContainer()
+                .frame(height: 50)
         }
         .background(.bgNormal)
         .sheet(isPresented: $showDateSheet) {
