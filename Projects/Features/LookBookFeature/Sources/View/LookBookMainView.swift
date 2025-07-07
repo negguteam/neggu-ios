@@ -131,7 +131,7 @@ struct LookBookMainView: View {
                 .negguFont(.title3)
             
             ScrollView(.horizontal) {
-                LazyHStack {
+                LazyHStack(spacing: 12) {
                     if viewModel.lookBookCalenar.isEmpty {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(.clear)
