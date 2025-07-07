@@ -98,8 +98,16 @@ public final class MockUserUsecase: UserUsecase {
         userProfile.send(mock)
     }
     
-    public func logout() { }
+    public func logout() {
+        UserDefaultsKey.clearUserData()
+        UserDefaultsKey.Auth.isLogined = false
+//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
     
-    public func withdraw() { }
+    public func withdraw() {
+        UserDefaultsKey.clearUserData()
+        UserDefaultsKey.Auth.isLogined = false
+//        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
     
 }
