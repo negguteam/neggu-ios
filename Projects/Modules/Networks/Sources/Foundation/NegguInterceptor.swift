@@ -6,6 +6,7 @@
 //
 
 import Core
+import Domain
 
 import Foundation
 import Alamofire

@@ -7,6 +7,7 @@
 //
 
 import Core
+import Domain
 
 import AuthFeatureInterface
 
@@ -14,7 +15,7 @@ import SwiftUI
 
 public final class AuthFeatureBuilder: AuthFeatureBuildable {
     
-    private let signUpViewModel: SignUpViewModel = DIContainer.shared.resolve(SignUpViewModel.self)
+    private let authUsecase = DIContainer.shared.resolve(AuthUsecase.self)
     
     public init() { }
     
@@ -25,14 +26,15 @@ public final class AuthFeatureBuilder: AuthFeatureBuildable {
     }
     
     public func makeLogin() -> AnyView {
-        let viewModel = DIContainer.shared.resolve(LoginViewModel.self)
+        let viewModel = LoginViewModel(authUsecase: authUsecase)
         let view = LoginView(viewModel: viewModel)
         return view.eraseToAnyView()
     }
     
     public func makeSignUp() -> AnyView {
-        SignUpView(viewModel: signUpViewModel)
-            .eraseToAnyView()
+        let viewModel = SignUpViewModel(authUsecase: authUsecase)
+        let view = SignUpView(viewModel: viewModel)
+        return view.eraseToAnyView()
     }
     
     public func makeSignUpComplete() -> AnyView {

@@ -7,6 +7,7 @@
 //
 
 import Core
+import Domain
 import Networks
 
 import BaseFeature
@@ -21,14 +22,9 @@ extension App {
     var container: DIContainer { DIContainer.shared }
     
     func registerDependency() {
-        container.register(LoginViewModel.self) {
-            let authService = DefaultAuthService()
-            return LoginViewModel(authService: authService)
-        }
-        
-        container.register(SignUpViewModel.self) {
-            let authService = DefaultAuthService()
-            return SignUpViewModel(authService: authService)
+        container.register(AuthUsecase.self) {
+//            return DefaultAuthUsecase(authService: DefaultAuthService())
+            return MockAuthUsecase()
         }
         
         container.register(ClosetUsecase.self) {

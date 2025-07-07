@@ -13,13 +13,6 @@ import Combine
 
 public typealias DefaultAuthService = BaseService<AuthAPI>
 
-public protocol AuthService {
-    func login(socialType: SocialType, idToken: String) -> AnyPublisher<TokenEntity, Error>
-    func register(userProfile: [String: Any]) -> AnyPublisher<TokenEntity, Error>
-    func checkNickname(nickname: String) -> AnyPublisher<CheckNicknameEntity, Error>
-    func tokenReissuance(completion: @escaping (Bool) -> Void)
-}
-
 extension DefaultAuthService: AuthService {
 
     public func login(socialType: SocialType, idToken: String) -> AnyPublisher<TokenEntity, Error> {
