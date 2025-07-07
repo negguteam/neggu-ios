@@ -9,18 +9,16 @@ import NegguDS
 
 import SwiftUI
 
-public struct SignUpView: View {
-    @EnvironmentObject private var authCoordinator: AuthCoordinator
+struct SignUpView: View {
+    @EnvironmentObject private var coordinator: AuthCoordinator
     
-    @ObservedObject private var viewModel: SignUpViewModel
+    @StateObject private var viewModel: SignUpViewModel
     
-    @State private var fieldState: InputFieldState = .empty
-    
-    public init(viewModel: SignUpViewModel) {
-        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    init(viewModel: SignUpViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    public var body: some View {
+    var body: some View {
         VStack {
             VStack(spacing: 24) {
                 GeometryReader { proxy in
@@ -46,20 +44,20 @@ public struct SignUpView: View {
             
             GeometryReader { proxy in
                 ZStack {
-                    SignUpNicknameView(viewModel: viewModel, fieldState: $fieldState)
+                    SignUpNicknameView()
                         .offset(y: viewModel.step == 1 ? 0 : viewModel.step > 1 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 1 ? 1 : 0)
                     
-                    SignUpAgeView(viewModel: viewModel)
+                    SignUpAgeView()
                         .offset(y: viewModel.step == 2 ? 0 : viewModel.step > 2 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 2 ? 1 : 0)
                     
-                    SignUpGenderView(viewModel: viewModel)
+                    SignUpGenderView()
                         .frame(height: proxy.size.height)
                         .offset(y: viewModel.step == 3 ? 0 : viewModel.step > 3 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 3 ? 1 : 0)
                     
-                    SignUpMoodView(viewModel: viewModel)
+                    SignUpMoodView()
                         .frame(height: proxy.size.height)
                         .offset(y: viewModel.step == 4 ? 0 : proxy.size.height)
                         .opacity(viewModel.step == 4 ? 1 : 0)
@@ -70,28 +68,10 @@ public struct SignUpView: View {
                 .overlay(alignment: .bottom) {
                     VStack(spacing: 24) {
                         Button {
-                            switch viewModel.step {
-                            case 1:
-                                if viewModel.nickname.isValidNickname() {
-                                    viewModel.checkNickname()
-                                } else {
-                                    fieldState = .error(message: "영소문자, 한글, 숫자 포함 7자까지 가능해요")
-                                    viewModel.canNextStep = false
-                                }
-                            case 2..<4:
-                                viewModel.step += 1
-                            default:
-                                viewModel.register { isSuccessed in
-                                    if isSuccessed {
-                                        authCoordinator.push(.complete)
-                                    } else {
-                                        print("회원가입에 실패했습니다.")
-                                    }
-                                }
-                            }
+                            viewModel.nextButtonDidTap.send()
                         } label: {
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(viewModel.canNextStep ? .negguSecondary : .labelInactive)
+                                .fill(.negguSecondary)
                                 .frame(height: 56)
                                 .overlay {
                                     Text("다음으로")
@@ -99,13 +79,11 @@ public struct SignUpView: View {
                                         .foregroundStyle(.white)
                                 }
                         }
-                        .disabled(!viewModel.canNextStep)
                         
                         if viewModel.step > 1 {
                             HStack {
                                 Button {
-                                    if viewModel.step < 1 { return }
-                                    viewModel.step -= 1
+                                    viewModel.tapBackButton()
                                 } label: {
                                     HStack(spacing: 0) {
                                         NegguImage.Icon.chevronLeft
@@ -125,50 +103,13 @@ public struct SignUpView: View {
                     .contentShape(.rect)
                 }
             }
-            .onChange(of: viewModel.step) { oldValue, newValue in
-                if oldValue < newValue {
-                    if newValue == 2 {
-                        viewModel.canNextStep = true
-                    } else {
-                        viewModel.canNextStep = false
-                    }
-                } else {
-                    switch viewModel.step {
-                    case 1:
-                        viewModel.age = 19
-                    case 2:
-                        viewModel.gender = .UNKNOWN
-                    case 3:
-                        viewModel.moodList.removeAll()
-                    default: return
-                    }
-                    
-                    viewModel.canNextStep = true
-                }
-            }
+            .environmentObject(viewModel)
         }
         .padding(.horizontal, 20)
         .background(.bgNormal)
-        .toolbar(.hidden, for: .navigationBar)
-    }
-}
-
-public enum InputFieldState: Equatable {
-    case empty
-    case editing
-    case error(message: String)
-    
-    public var description: String {
-        switch self {
-        case .error(let message): message
-        default: ""
-        }
-    }
-    
-    public var lineColor: Color {
-        switch self {
-        case .error: .systemWarning
-        default: .lineNormal
+        .onChange(of: viewModel.isRegistered) { _, newValue in
+            coordinator.switchRoot(.complete)
+            viewModel.reset()
         }
     }
 }

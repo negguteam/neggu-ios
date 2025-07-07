@@ -13,8 +13,6 @@ import SwiftUI
 public final class AuthCoordinator: ObservableObject {
  
     @Published public var path: NavigationPath = .init()
-    @Published public var sheet: Destination?
-    @Published public var fullScreenCover: Destination?
     
     private let builder: any AuthFeatureBuildable = AuthFeatureBuilder()
     
@@ -45,6 +43,10 @@ public final class AuthCoordinator: ObservableObject {
     
     func popToRoot() {
         path.removeLast(path.count)
+    }
+    
+    func switchRoot(_ scene: Destination) {
+        path = .init([scene])
     }
     
     public enum Destination: Sceneable {

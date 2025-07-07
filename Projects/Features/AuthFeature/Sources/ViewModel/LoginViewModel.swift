@@ -7,7 +7,7 @@
 //
 
 import Core
-import Networks
+import Domain
 
 import Foundation
 import Combine
@@ -18,60 +18,45 @@ import KakaoSDKUser
 import CryptoKit
 import FirebaseMessaging
 
-public final class LoginViewModel: NSObject, ObservableObject {
+final class LoginViewModel: NSObject, ObservableObject {
     
-    @Published private(set) var needEditNickname: Bool = false
-    
-    private let authService: any AuthService
+    @Published private(set) var isSignUpFlow: Bool = false
     
     private var bag = Set<AnyCancellable>()
     
-    public init(authService: any AuthService) {
-        self.authService = authService
+    private let authUsecase: any AuthUsecase
+    
+    init(authUsecase: any AuthUsecase) {
+        self.authUsecase = authUsecase
+        super.init()
+        
+        bind()
+        print("\(self) init")
+    }
+    
+    deinit {
+        print("\(self) deinit")
     }
     
     
+    private func bind() {
+        authUsecase.isSignUpFlow
+            .receive(on: RunLoop.main)
+            .assign(to: \.isSignUpFlow, on: self)
+            .store(in: &bag)
+    }
+    
     private func login(_ socialType: SocialType, idToken: String) {
-        needEditNickname = false
+        isSignUpFlow = false
         
         if UserDefaultsKey.User.fcmToken == nil {
             Messaging.messaging().token { token, error in
-                if let token {
-                    UserDefaultsKey.User.fcmToken = token
-                }
+                guard let token else { return }
+                UserDefaultsKey.User.fcmToken = token
             }
         }
         
-        authService.login(
-            socialType: socialType,
-            idToken: idToken
-        ).sink { event in
-            switch event {
-            case .finished:
-                print("AuthViewModel: \(event)")
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        } receiveValue: { entity in
-            if let registerToken = entity.registerToken {
-                print("회원가입 플로우 !", registerToken)
-                self.needEditNickname = entity.status == "pending"
-                UserDefaultsKey.Auth.registerToken = registerToken
-            } else {
-                print("로그인 완료")
-                guard let accessToken = entity.accessToken,
-                      let accessTokenExpiresIn = entity.accessTokenExpiresIn,
-                      let refreshToken = entity.refreshToken,
-                      let refreshTokenExpiresIn = entity.refreshTokenExpiresIn
-                else { return }
-                
-                UserDefaultsKey.Auth.accessToken = accessToken
-                UserDefaultsKey.Auth.accessTokenExpiresIn = Date.now.addingTimeInterval(Double(accessTokenExpiresIn))
-                UserDefaultsKey.Auth.refreshToken = refreshToken
-                UserDefaultsKey.Auth.refreshTokenExpiresIn = Date.now.addingTimeInterval(Double(refreshTokenExpiresIn))
-                UserDefaultsKey.Auth.isLogined = true
-            }
-        }.store(in: &bag)
+        authUsecase.login(socialType, idToken: idToken)
     }
     
 }
@@ -79,7 +64,7 @@ public final class LoginViewModel: NSObject, ObservableObject {
 
 extension LoginViewModel {
     
-    public func requestGoogleLogin() {
+    func requestGoogleLogin() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
               let rootViewController = window.rootViewController
@@ -94,7 +79,7 @@ extension LoginViewModel {
         }
     }
     
-    public func requestKakaoLogin() {
+    func requestKakaoLogin() {
         if UserApi.isKakaoTalkLoginAvailable() {
             UserApi.shared.loginWithKakaoTalk { oauthToken, error in
                 if let error {
@@ -116,7 +101,7 @@ extension LoginViewModel {
         }
     }
     
-    public func requestAppleLogin() {
+    func requestAppleLogin() {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = [.fullName, .email]
         
@@ -133,7 +118,7 @@ extension LoginViewModel {
 
 extension LoginViewModel: ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
         
-    public func authorizationController(
+    func authorizationController(
         controller: ASAuthorizationController,
         didCompleteWithAuthorization authorization: ASAuthorization
     ) {
@@ -143,14 +128,14 @@ extension LoginViewModel: ASAuthorizationControllerDelegate, ASAuthorizationCont
         login(.apple, idToken: idToken)
     }
     
-    public func authorizationController(
+    func authorizationController(
         controller: ASAuthorizationController,
         didCompleteWithError error: any Error
     ) {
         print(error.localizedDescription)
     }
     
-    public func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first
         else {

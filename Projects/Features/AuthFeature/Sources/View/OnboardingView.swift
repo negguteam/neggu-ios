@@ -67,7 +67,7 @@ public struct OnboardingView: View {
                         if tabIndex == onboardingList.count - 1 {
                             UserDefaultsKey.Auth.isFirstVisit = false
                         } else {
-                        tabIndex = (tabIndex ?? 0) + 1
+                            tabIndex = (tabIndex ?? 0) + 1
                         }
                     } label: {
                         RoundedRectangle(cornerRadius: 16)

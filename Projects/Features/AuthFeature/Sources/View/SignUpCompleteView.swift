@@ -9,12 +9,10 @@ import Core
 
 import SwiftUI
 
-public struct SignUpCompleteView: View {
+struct SignUpCompleteView: View {
     @EnvironmentObject private var authCoordinator: AuthCoordinator
     
-    public init() { }
-    
-    public var body: some View {
+    var body: some View {
         GeometryReader {
             let size = $0.size
             
@@ -54,9 +52,9 @@ public struct SignUpCompleteView: View {
             .padding(.bottom, 24)
             .background {
                 Capsule()
-                    .fill(.cyan)
+                    .fill(.negguSecondary)
                     .blur(radius: 100)
-                    .offset(y: size.height)
+                    .offset(y: size.height * 0.9)
             }
         }
         .background(.black)

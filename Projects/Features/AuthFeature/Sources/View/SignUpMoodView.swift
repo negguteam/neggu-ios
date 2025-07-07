@@ -10,14 +10,12 @@ import NegguDS
 
 import SwiftUI
 
-public struct SignUpMoodView: View {
-    @ObservedObject private var viewModel: SignUpViewModel
+struct SignUpMoodView: View {
+    @EnvironmentObject private var viewModel: SignUpViewModel
     
-    public init(viewModel: SignUpViewModel) {
-        self._viewModel = ObservedObject(wrappedValue: viewModel)
-    }
+    @State private var moodSelection: [Mood] = []
     
-    public var body: some View {
+    var body: some View {
         ScrollViewReader { scrollProxy in
             ScrollView {
                 VStack(spacing: 24) {
@@ -39,11 +37,11 @@ public struct SignUpMoodView: View {
                     ) {
                         ForEach(Mood.allCasesArray) { mood in
                             Button {
-                                if viewModel.moodList.contains(mood) {
-                                    viewModel.moodList.removeAll(where: { $0 == mood })
+                                if moodSelection.contains(mood) {
+                                    moodSelection.removeAll(where: { $0 == mood })
                                 } else {
-                                    if viewModel.moodList.count >= 3 { return }
-                                    viewModel.moodList.append(mood)
+                                    if moodSelection.count >= 3 { return }
+                                    moodSelection.append(mood)
                                 }
                             } label: {
                                 RoundedRectangle(cornerRadius: 12)
@@ -75,20 +73,20 @@ public struct SignUpMoodView: View {
             .onChange(of: viewModel.step) { _, newValue in
                 if newValue == 4 {
                     scrollProxy.scrollTo(0, anchor: .top)
+                    moodSelection.removeAll()
                 }
             }
-            .onChange(of: viewModel.moodList) { _, newValue in
-                if viewModel.step != 4 { return }
-                viewModel.canNextStep = newValue.count >= 1
+            .onChange(of: moodSelection) { _, newValue in
+                viewModel.moodDidSelect.send(newValue)
             }
         }
     }
     
     private func setButtonColor(_ mood: Mood) -> Color {
-        viewModel.moodList.contains(mood) ? .negguSecondaryAlt : .white
+        moodSelection.contains(mood) ? .negguSecondaryAlt : .white
     }
     
     private func setButtonBorderColor(_ mood: Mood) -> Color {
-        viewModel.moodList.contains(mood) ? .negguSecondary : .labelAlt
+        moodSelection.contains(mood) ? .negguSecondary : .labelAlt
     }
 }

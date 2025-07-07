@@ -12,16 +12,16 @@ import GoogleSignIn
 import KakaoSDKCommon
 import KakaoSDKAuth
 
-public struct LoginView: View {
+struct LoginView: View {
     @EnvironmentObject private var coordinator: AuthCoordinator
     
-    @ObservedObject private var viewModel: LoginViewModel
+    @StateObject private var viewModel: LoginViewModel
     
-    public init(viewModel: LoginViewModel) {
-        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    init(viewModel: LoginViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 100) {
             NegguImage.Logo.appLogo
                 .resizable()
@@ -97,7 +97,7 @@ public struct LoginView: View {
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 48)
         .background(.bgRNormal)
-        .onChange(of: viewModel.needEditNickname) { _, newValue in
+        .onChange(of: viewModel.isSignUpFlow) { _, newValue in
             if !newValue { return }
             coordinator.push(.signUp)
         }
