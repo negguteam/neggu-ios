@@ -57,6 +57,6 @@ public struct AlertView: View {
             } message: {
                 Text(alertManager.message)
             }
-            .tint(.orange)
+            .tint(.init(uiColor: .init(red: 1.0, green: 0.412, blue: 0.227, alpha: 1.0)))
     }
 }

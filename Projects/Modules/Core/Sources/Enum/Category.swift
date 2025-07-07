@@ -34,18 +34,6 @@ public enum Category: String, CaseIterable, Identifiable, Codable {
         }
     }
     
-    public var iconName: String {
-        switch self {
-        case .TOP: "shirt_fill"
-        case .BOTTOM: "pants"
-        case .OUTER: "outer"
-        case .DRESS: "one_piece"
-        case .SHOES: "shose"
-        case .UNKNOWN: ""
-        default: "hanger"
-        }
-    }
-    
     public init(from decoder: Decoder) throws {
         self = try Category(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .UNKNOWN
     }

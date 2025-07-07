@@ -66,10 +66,30 @@ struct ColleageItemView: View {
                         .rotationEffect(clothes.angle)
                     
                     Circle()
+                        .fill(.systemWarning)
+                        .frame(width: 30, height: 30)
+                        .overlay {
+                            NegguImage.Icon.delete
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 18, height: 18)
+                                .foregroundStyle(.white)
+                        }
+                        .position(x: size.width, y: 0)
+                        .rotationEffect(clothes.angle)
+                        .onTapGesture {
+                            selectedClothes.removeAll(where: { $0.id == clothes.id })
+                            editingClothes = ""
+                        }
+                    
+                    Circle()
                         .fill(.negguPrimary)
-                        .frame(width: 36, height: 36)
+                        .frame(width: 30, height: 30)
                         .overlay {
                             NegguImage.Icon.resize
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 20, height: 20)
                                 .foregroundStyle(.white)
                         }
                         .position(x: size.width, y: size.height)

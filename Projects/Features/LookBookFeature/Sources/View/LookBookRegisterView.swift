@@ -18,13 +18,7 @@ struct LookBookRegisterView: View {
     @StateObject private var viewModel: LookBookRegisterViewModel
     
     @State private var selectedClothes: [LookBookClothesItem] = []
-    
-    @State private var editingClothes: String = "" {
-        didSet {
-            isEditingMode = !editingClothes.isEmpty
-        }
-    }
-    
+    @State private var editingClothes: String = ""
     @State private var showCategoryList: Bool = false
     @State private var isEditingMode: Bool = false
     
@@ -43,6 +37,9 @@ struct LookBookRegisterView: View {
             ZStack {
                 collageView
                     .frame(width: size.width, height: size.height)
+                    .onChange(of: editingClothes) { _, newValue in
+                        isEditingMode = !newValue.isEmpty
+                    }
                 
                 VStack(spacing: 0) {
                     HStack {
@@ -55,22 +52,19 @@ struct LookBookRegisterView: View {
                         
                         Spacer()
                         
-                        Button(isEditingMode ? "확인하기" : "저장하기") {
-                            if isEditingMode {
-                                editingClothes = ""
-                            } else {
-                                if selectedClothes.isEmpty { return }
-                                
-                                guard let lookBookImage = collageView
-                                    .frame(width: size.width, height: size.height)
-                                    .snapshot(),
-                                      let pngData = lookBookImage.pngData()
-                                else { return }
-                                
-                                viewModel.registerButtonDidTap.send((pngData, selectedClothes))
-                            }
+                        Button("저장하기") {
+                            if selectedClothes.isEmpty { return }
+                            
+                            guard let lookBookImage = collageView
+                                .frame(width: size.width, height: size.height)
+                                .snapshot(),
+                                  let pngData = lookBookImage.pngData()
+                            else { return }
+                            
+                            viewModel.registerButtonDidTap.send((pngData, selectedClothes))
                         }
                         .foregroundStyle(selectedClothes.isEmpty ? .labelInactive : .labelNormal)
+                        .opacity(isEditingMode ? 0 : 1)
                         .disabled(selectedClothes.isEmpty)
                         .onChange(of: viewModel.registState) { _, newValue in
                             switch newValue {
@@ -89,57 +83,21 @@ struct LookBookRegisterView: View {
                     
                     Spacer()
                     
-                    if isEditingMode {
+                    HStack {
                         Button {
-                            selectedClothes.removeAll()
-                            editingClothes = ""
+                            showCategoryList = true
                         } label: {
-                            Circle()
-                                .fill(.systemWarning)
-                                .frame(width: 72)
-                                .overlay {
-                                    NegguImage.Icon.delete
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 36, height: 36)
-                                        .foregroundStyle(.labelRNormal)
-                                }
+                            CategoryCell(viewModel.filter.category, isSelected: true)
                         }
-                        .padding(.bottom, 28)
-                    } else {
-                        HStack {
-                            Button {
-                                showCategoryList = true
-                            } label: {
-                                HStack(spacing: 12) {
-                                    NegguImage.Icon.hanger
-//                                    Image(viewModel.output.selectedCategory.iconName)
-                                    
-                                    Text("내 옷장")
-                                    
-                                    if showCategoryList {
-                                        NegguImage.Icon.chevronDown
-                                    } else {
-                                        NegguImage.Icon.chevronUp
-                                    }
-                                }
-                                .negguFont(.body2b)
-                                .foregroundStyle(.negguSecondary)
-                                .frame(height: 44)
-                                .padding(.horizontal, 12)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 22)
-                                        .fill(.white)
-                                }
-                            }
-                            .disabled(isEditingMode)
-                            
-                            Spacer()
-                        }
-                        .frame(height: 44)
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
+                        .disabled(isEditingMode)
+                        
+                        Spacer()
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 20)
+                    .opacity(isEditingMode ? 0 : 1)
+                    .disabled(isEditingMode)
+                    .offset(y: isEditingMode ? 118 : 0)
                     
                     ScrollView(.horizontal) {
                         LazyHStack {
@@ -201,7 +159,8 @@ struct LookBookRegisterView: View {
                         UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
                             .fill(.white)
                     }
-                    .frame(height: isEditingMode ? 18 : 136)
+                    .frame(height: 136)
+                    .offset(y: isEditingMode ? 118 : 0)
                 }
                 .animation(.smooth, value: isEditingMode)
                 .overlay {
@@ -221,34 +180,10 @@ struct LookBookRegisterView: View {
                                     viewModel.categoryDidSelect.send(category)
                                     showCategoryList = false
                                 } label: {
-                                    HStack(spacing: 0) {
-                                        NegguImage.Icon.hanger
-//                                        Image(category.iconName)
-                                            .frame(width: 24, height: 24)
-                                            .padding(.horizontal, 12)
-                                        
-                                        Text(category.title)
-                                        
-                                        Spacer()
-                                        
-                                        if category == .NONE {
-                                            NegguImage.Icon.chevronUp
-                                                .frame(width: 44, height: 44)
-                                        } else {
-                                            Color.clear
-                                                .frame(width: 44, height: 44)
-                                        }
-                                    }
-                                    .frame(width: 171, height: 44)
-                                    .foregroundStyle(
-                                        viewModel.filter.category == category
-                                        ? .negguSecondary
-                                        : .labelInactive
-                                    )
+                                    CategoryCell(category, isSelected: viewModel.filter.category == category)
                                 }
                             }
                         }
-                        .negguFont(.body2b)
                         .background(.white)
                         .clipShape(.rect(cornerRadius: 22))
                         .padding(.leading, 20)
@@ -267,9 +202,6 @@ struct LookBookRegisterView: View {
         }
         .onAppear {
             viewModel.viewDidAppear.send(())
-        }
-        .task {
-            await convertUrlToImage()
         }
         .negguAlert(
             .needClothes,
@@ -314,13 +246,6 @@ struct LookBookRegisterView: View {
             }
             .frame(width: size.width, height: size.height)
             .clipped()
-        }
-    }
-    
-    private func convertUrlToImage() async {
-        for i in selectedClothes.indices {
-            guard let uiImage = await selectedClothes[i].imageUrl.toImage() else { continue }
-            selectedClothes[i].image = uiImage
         }
     }
 }
