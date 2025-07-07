@@ -106,10 +106,6 @@ public final class ClosetViewModel: ObservableObject {
             parameters["mood"] = filter.moodList[0].id
         }
         
-        if let color = filter.color {
-            parameters["colorGroup"] = color.id
-        }
-        
         closetUsecase.fetchClothesList(parameters: parameters)
     }
     

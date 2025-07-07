@@ -26,7 +26,6 @@ struct LookBookRegisterView: View {
     }
     
     @State private var showCategoryList: Bool = false
-    @State private var isColorEditMode: Bool = false
     @State private var isEditingMode: Bool = false
     
     init(coordinator: BaseCoordinator, viewModel: LookBookRegisterViewModel) {
@@ -56,12 +55,10 @@ struct LookBookRegisterView: View {
                         
                         Spacer()
                         
-                        if isEditingMode {
-                            Button("확인하기") {
+                        Button(isEditingMode ? "확인하기" : "저장하기") {
+                            if isEditingMode {
                                 editingClothes = ""
-                            }
-                        } else {
-                            Button("저장하기") {
+                            } else {
                                 if selectedClothes.isEmpty { return }
                                 
                                 guard let lookBookImage = collageView
@@ -72,16 +69,16 @@ struct LookBookRegisterView: View {
                                 
                                 viewModel.registerButtonDidTap.send((pngData, selectedClothes))
                             }
-                            .foregroundStyle(selectedClothes.isEmpty ? .labelInactive : .labelNormal)
-                            .disabled(selectedClothes.isEmpty)
-                            .onChange(of: viewModel.registState) { _, newValue in
-                                switch newValue {
-                                case .success:
-                                    coordinator.dismissFullScreen()
-                                case .failure:
-                                    AlertManager.shared.setAlert(message: "룩북 등록에 실패했습니다. 다시 시도해주세요.")
-                                default: return
-                                }
+                        }
+                        .foregroundStyle(selectedClothes.isEmpty ? .labelInactive : .labelNormal)
+                        .disabled(selectedClothes.isEmpty)
+                        .onChange(of: viewModel.registState) { _, newValue in
+                            switch newValue {
+                            case .success:
+                                coordinator.dismissFullScreen()
+                            case .failure:
+                                AlertManager.shared.setAlert(message: "룩북 등록에 실패했습니다. 다시 시도해주세요.")
+                            default: return
                             }
                         }
                     }
@@ -95,7 +92,6 @@ struct LookBookRegisterView: View {
                     if isEditingMode {
                         Button {
                             selectedClothes.removeAll()
-                            isColorEditMode = false
                             editingClothes = ""
                         } label: {
                             Circle()
@@ -112,172 +108,113 @@ struct LookBookRegisterView: View {
                         .padding(.bottom, 28)
                     } else {
                         HStack {
-                            HStack {
-                                if !isColorEditMode {
-                                    Button {
-                                        showCategoryList = true
-                                    } label: {
-                                        HStack(spacing: 12) {
-                                            NegguImage.Icon.hanger
-//                                            Image(viewModel.output.selectedCategory.iconName)
-                                                
-                                            Text("내 옷장")
-                                            
-                                            if showCategoryList {
-                                                NegguImage.Icon.chevronDown
-                                            } else {
-                                                NegguImage.Icon.chevronUp
-                                            }
-                                        }
-                                        .negguFont(.body2b)
-                                        .foregroundStyle(.negguSecondary)
-                                        .frame(height: 44)
-                                        .padding(.horizontal, 12)
-                                        .background {
-                                            RoundedRectangle(cornerRadius: 22)
-                                                .fill(.white)
-                                        }
+                            Button {
+                                showCategoryList = true
+                            } label: {
+                                HStack(spacing: 12) {
+                                    NegguImage.Icon.hanger
+//                                    Image(viewModel.output.selectedCategory.iconName)
+                                    
+                                    Text("내 옷장")
+                                    
+                                    if showCategoryList {
+                                        NegguImage.Icon.chevronDown
+                                    } else {
+                                        NegguImage.Icon.chevronUp
                                     }
                                 }
+                                .negguFont(.body2b)
+                                .foregroundStyle(.negguSecondary)
+                                .frame(height: 44)
+                                .padding(.horizontal, 12)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 22)
+                                        .fill(.white)
+                                }
                             }
-                            .animation(.smooth.delay(isColorEditMode ? 0 : 0.2), value: isColorEditMode)
+                            .disabled(isEditingMode)
                             
                             Spacer()
-                            
-                            HStack {
-                                if isColorEditMode {
-                                    ScrollView(.horizontal) {
-                                        HStack(spacing: 12) {
-                                            NegguImage.Icon.colorRainbow
-                                                .frame(width: 32)
-                                                .onTapGesture {
-                                                    viewModel.colorDidSelect.send(nil)
-                                                    isColorEditMode = false
-                                                }
-                                            
-                                            ForEach(ColorFilter.allCases) { color in
-                                                Circle()
-                                                    .stroke(.lineAlt)
-                                                    .fill(color.color)
-                                                    .frame(width: 32)
-                                                    .onTapGesture {
-                                                        viewModel.colorDidSelect.send(color)
-                                                        isColorEditMode = false
-                                                    }
-                                            }
-                                        }
-                                    }
-                                    .scrollIndicators(.hidden)
-                                    .opacity(isColorEditMode ? 1 : 0)
-                                } else {
-                                    if let selectedColor = viewModel.filter.color {
-                                        Circle()
-                                            .fill(selectedColor.color)
-                                            .strokeBorder(.lineAlt)
-                                            .frame(width: 24)
-                                            .opacity(isColorEditMode ? 0 : 1)
-                                    } else {
-                                        NegguImage.Icon.colorRainbow
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 24)
-                                            .opacity(isColorEditMode ? 0 : 1)
-                                    }
-                                }
-                                
-                                Button {
-                                    isColorEditMode.toggle()
-                                } label: {
-                                    NegguImage.Icon.chevronDown
-                                        .frame(width: 24, height: 24)
-                                        .foregroundStyle(.negguSecondary)
-                                        .rotationEffect(isColorEditMode ? Angle(degrees: 180.0) : Angle(degrees: 0.0))
-                                }
-                            }
-                            .frame(height: 44)
-                            .padding(.horizontal, 8)
-                            .background(.white)
-                            .clipShape(.rect(cornerRadius: 22))
-                            .animation(.smooth.delay(isColorEditMode ? 0.2 : 0), value: isColorEditMode)
                         }
                         .frame(height: 44)
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
                     }
                     
-                    UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
-                        .fill(.white)
-                        .frame(height: isEditingMode ? 18 : 136)
-                        .overlay(alignment: .top) {
-                            ScrollView(.horizontal) {
-                                LazyHStack {
-                                    if viewModel.clothesList.isEmpty {
-                                        SkeletonView()
-                                            .frame(width: 100, height: 100)
-                                            .clipShape(.rect(cornerRadius: 16))
-                                    }
-                                    
-                                    ForEach(viewModel.clothesList) { clothes in
-                                        let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
-                                        let isEditingClothes = editingClothes == clothes.id
+                    ScrollView(.horizontal) {
+                        LazyHStack {
+                            if viewModel.clothesList.isEmpty {
+                                SkeletonView()
+                                    .frame(width: 100, height: 100)
+                                    .clipShape(.rect(cornerRadius: 16))
+                            }
+                            
+                            ForEach(viewModel.clothesList) { clothes in
+                                let isSelected = selectedClothes.contains(where: { $0.id == clothes.id })
+                                let isEditingClothes = editingClothes == clothes.id
+                                
+                                Button {
+                                    if !isSelected {
+                                        guard selectedClothes.count < 15 else { return }
                                         
-                                        Button {
-                                            if !isSelected {
-                                                guard selectedClothes.count < 15 else { return }
-                                                
-                                                Task {
-                                                    guard let uiImage = await clothes.imageUrl.toImage() else { return }
-                                                    
-                                                    selectedClothes.append(clothes.toLookBookItem(
-                                                        image: uiImage,
-                                                        offset: .init(width: midX, height: midY),
-                                                        zIndex: Double(selectedClothes.count)
-                                                    ))
-                                                }
-                                            } else {
-                                                selectedClothes.removeAll(where: { $0.id == clothes.id })
-                                                
-                                                if isEditingClothes {
-                                                    editingClothes = ""
-                                                }
-                                            }
-                                        } label: {
-                                            CachedAsyncImage(clothes.imageUrl)
-                                                .frame(width: 100, height: 100)
-                                                .background(isSelected ? .negguSecondaryAlt : .bgNormal)
-                                                .overlay {
-                                                    RoundedRectangle(cornerRadius: 16)
-                                                        .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
-                                                }
-                                                .clipShape(.rect(cornerRadius: 16))
-                                        }
-                                        .onAppear {
-                                            guard let last = viewModel.clothesList.last,
-                                                  clothes.id == last.id
-                                            else { return }
+                                        Task {
+                                            guard let uiImage = await clothes.imageUrl.toImage() else { return }
                                             
-                                            viewModel.closetDidScroll.send(())
+                                            selectedClothes.append(clothes.toLookBookItem(
+                                                image: uiImage,
+                                                offset: .init(width: midX, height: midY),
+                                                zIndex: Double(selectedClothes.count)
+                                            ))
+                                        }
+                                    } else {
+                                        selectedClothes.removeAll(where: { $0.id == clothes.id })
+                                        
+                                        if isEditingClothes {
+                                            editingClothes = ""
                                         }
                                     }
+                                } label: {
+                                    CachedAsyncImage(clothes.imageUrl)
+                                        .frame(width: 100, height: 100)
+                                        .background(isSelected ? .negguSecondaryAlt : .bgNormal)
+                                        .overlay {
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .strokeBorder(isSelected ? .negguSecondary : .bgNormal)
+                                        }
+                                        .clipShape(.rect(cornerRadius: 16))
+                                }
+                                .onAppear {
+                                    guard let last = viewModel.clothesList.last,
+                                          clothes.id == last.id
+                                    else { return }
+                                    
+                                    viewModel.closetDidScroll.send(())
                                 }
                             }
-                            .scrollIndicators(.hidden)
-                            .padding(.horizontal, 22)
-                            .padding(.top, 24)
-                            .padding(.bottom, 12)
-                            .opacity(isEditingMode ? 0 : 1)
-                            .disabled(isEditingMode)
                         }
+                    }
+                    .scrollIndicators(.hidden)
+                    .padding(.horizontal, 22)
+                    .opacity(isEditingMode ? 0 : 1)
+                    .disabled(isEditingMode)
+                    .background {
+                        UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24)
+                            .fill(.white)
+                    }
+                    .frame(height: isEditingMode ? 18 : 136)
                 }
-                
-                if showCategoryList {
-                    ZStack(alignment: .bottomLeading) {
+                .animation(.smooth, value: isEditingMode)
+                .overlay {
+                    if showCategoryList {
                         Color.bgDimmed
                             .ignoresSafeArea()
                             .onTapGesture {
                                 showCategoryList = false
                             }
-                        
+                    }
+                }
+                .overlay(alignment: .bottomLeading) {
+                    if showCategoryList {
                         VStack(alignment: .leading, spacing: 0) {
                             ForEach(Category.allCases.filter { $0 != .UNKNOWN }) { category in
                                 Button {

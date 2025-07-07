@@ -112,13 +112,7 @@ public struct ClosetView: View {
                                     ))
                                 }
                                 
-                                FilterButton(title: filterSelection.colorTitle) {
-                                    coordinator.present(.colorSheet(
-                                        selection: $filterSelection.color
-                                    ))
-                                }
-                                
-                                if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty || filterSelection.color != nil {
+                                if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty {
                                     Button {
                                         filterSelection.reset()
                                     } label: {

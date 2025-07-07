@@ -19,7 +19,6 @@ final class LookBookRegisterViewModel: ObservableObject {
     let viewDidAppear = PassthroughSubject<Void, Never>()
     let closetDidScroll = PassthroughSubject<Void, Never>()
     let categoryDidSelect = PassthroughSubject<Core.Category, Never>()
-    let colorDidSelect = PassthroughSubject<ColorFilter?, Never>()
     let registerButtonDidTap = PassthroughSubject<(Data, [LookBookClothesItem]), Never>()
     
     // MARK: Output
@@ -72,14 +71,6 @@ final class LookBookRegisterViewModel: ObservableObject {
                 owner.fetchCloset()
             }.store(in: &bag)
         
-        colorDidSelect
-            .withUnretained(self)
-            .sink { owner, color in
-                owner.filter.color = color
-                owner.resetCloset()
-                owner.fetchCloset()
-            }.store(in: &bag)
-        
         registerButtonDidTap
             .throttle(for: .seconds(3), scheduler: RunLoop.main, latest: false)
             .withUnretained(self)
@@ -118,11 +109,7 @@ final class LookBookRegisterViewModel: ObservableObject {
             parameters["filterCategory"] = filter.category.id
         }
         
-        if let color = filter.color {
-            parameters["colorGroup"] = color.id
-        } else {
-            parameters["colorGroup"] = "ALL"
-        }
+        parameters["colorGroup"] = "ALL"
         
         lookBookUsecase.fetchLookBookCloset(parameters: parameters)
     }
