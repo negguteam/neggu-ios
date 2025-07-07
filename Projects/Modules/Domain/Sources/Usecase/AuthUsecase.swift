@@ -122,7 +122,9 @@ public final class MockAuthUsecase: AuthUsecase {
     }
     
     public func login(_ socialType: SocialType, idToken: String) {
-        
+        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+            self.isSignUpFlow.send(true)
+        }
     }
     
     public func register(
