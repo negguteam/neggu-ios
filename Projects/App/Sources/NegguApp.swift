@@ -14,6 +14,7 @@ import RootFeature
 
 import SwiftUI
 import KakaoSDKCommon
+import FirebaseCore
 
 @main
 struct NegguApp: App {
@@ -29,6 +30,7 @@ struct NegguApp: App {
         registerDependency()
         
         KakaoSDK.initSDK(appKey: NegguEnv.kakaoAppKey)
+        FirebaseApp.configure()
     }
     
     var body: some Scene {
@@ -36,13 +38,20 @@ struct NegguApp: App {
             if isLogined {
                 mainCoordinator.start()
             } else {
+                // TODO: Router 작업
                 NavigationStack(path: $authCoordinator.path) {
                     authCoordinator.buildScene(isFirstVisit ? .onboarding : .login)
                         .navigationDestination(for: AuthCoordinator.Destination.self) { scene in
-                            authCoordinator.buildScene(scene)
+                            if #available(iOS 18.0, *) {
+                                authCoordinator.buildScene(scene)
+                                    .toolbarVisibility(.hidden, for: .navigationBar)
+                            } else {
+                                authCoordinator.buildScene(scene)
+                                    .toolbar(.hidden, for: .navigationBar)
+                            }
                         }
-                        .environmentObject(authCoordinator)
                 }
+                .environmentObject(authCoordinator)
             }
         }
         .environmentObject(mainCoordinator)

@@ -148,6 +148,10 @@ struct RootView: View {
         }
         .animation(.smooth(duration: 0.2), value: mainCoordinator.isGnbOpened)
         .ignoresSafeArea(.keyboard)
+        .onAppear {
+            if mainCoordinator.showGnb { return }
+            mainCoordinator.showGnb = true
+        }
         .onReceive(NotificationCenter.default.publisher(for: .init("DeepLink"))) { notification in
             if let url = notification.userInfo?["url"] as? String {
                 let components = url.components(separatedBy: "/")

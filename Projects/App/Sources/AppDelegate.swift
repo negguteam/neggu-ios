@@ -1,4 +1,5 @@
 import UIKit
+import GoogleMobileAds
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -8,6 +9,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+//        MobileAds.shared.start()
+        
         userNotificationCenter.delegate = self
         
         userNotificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
