@@ -13,7 +13,6 @@ struct ClothesFilter: Equatable {
     var category: Core.Category = .UNKNOWN
     var subCategory: SubCategory = .UNKNOWN
     var moodList: [Mood] = []
-    var color: ColorFilter?
     
     var categoryTitle: String {
         if subCategory != .UNKNOWN {
@@ -33,14 +32,9 @@ struct ClothesFilter: Equatable {
         }
     }
     
-    var colorTitle: String {
-        color?.title ?? "색상"
-    }
-    
     mutating func reset() {
         category = .UNKNOWN
         subCategory = .UNKNOWN
         moodList.removeAll()
-        color = nil
     }
 }

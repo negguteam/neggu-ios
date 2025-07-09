@@ -10,7 +10,7 @@ import NegguDS
 
 import SwiftUI
 
-public enum NegguTab {
+public enum NegguTab: CaseIterable, Identifiable {
     case closet
     case lookbook
     
@@ -27,4 +27,6 @@ public enum NegguTab {
         case .lookbook: NegguDSAsset.Assets.closet.swiftUIImage
         }
     }
+    
+    public var id: String { "\(self)" }
 }

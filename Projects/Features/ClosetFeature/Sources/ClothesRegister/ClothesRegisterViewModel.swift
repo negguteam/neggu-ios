@@ -17,8 +17,6 @@ import Combine
 public final class ClothesRegisterViewModel: ObservableObject {
     
     // MARK: Input
-    let colorDidConfigure = PassthroughSubject<ColorFilter, Never>()
-    
     let nameDidEdit = PassthroughSubject<String, Never>()
     let linkDidEdit = PassthroughSubject<String, Never>()
     let memoDidEdit = PassthroughSubject<String, Never>()
@@ -40,7 +38,6 @@ public final class ClothesRegisterViewModel: ObservableObject {
     @Published private(set) var brandList: [BrandEntity] = []
     @Published private(set) var isValidCategory: Bool = true
     @Published private(set) var isValidMood: Bool = true
-    @Published private(set) var registState: RegistState = .idle
     
     var joinedClothesName: String {
         if registerClothes.name.isEmpty {
@@ -73,9 +70,14 @@ public final class ClothesRegisterViewModel: ObservableObject {
     
     private var bag = Set<AnyCancellable>()
     
+    private let router: any ClothesRegisterRoutable
     private let closetUsecase: any ClosetUsecase
     
-    public init(closetUsecase: any ClosetUsecase) {
+    public init(
+        router: any ClothesRegisterRoutable,
+        closetUsecase: any ClosetUsecase
+    ) {
+        self.router = router
         self.closetUsecase = closetUsecase
         
         bind()
@@ -132,13 +134,6 @@ public final class ClothesRegisterViewModel: ObservableObject {
             .assign(to: \.registerClothes.memo, on: self)
             .store(in: &bag)
         
-        colorDidConfigure
-            .withUnretained(self)
-            .sink { owner, color in
-                owner.clothesColorName = color.title
-                owner.registerClothes.colorCode = color.hexCode
-            }.store(in: &bag)
-        
         registerButtonDidTap
             .throttle(for: .seconds(3), scheduler: RunLoop.main, latest: false)
             .withUnretained(self)
@@ -168,7 +163,11 @@ public final class ClothesRegisterViewModel: ObservableObject {
         closetUsecase.registeredClothes
             .withUnretained(self)
             .sink { owner, clothes in
-                owner.registState = clothes != nil ? .success : .failure
+                if clothes != nil {
+                    owner.pop()
+                } else {
+                    AlertManager.shared.setAlert()
+                }
             }.store(in: &bag)
         
         closetUsecase.brandList
@@ -193,10 +192,8 @@ public final class ClothesRegisterViewModel: ObservableObject {
         }
     }
     
-    enum RegistState: Equatable {
-        case idle
-        case success
-        case failure
+    public func pop() {
+        router.pop()
     }
     
 }

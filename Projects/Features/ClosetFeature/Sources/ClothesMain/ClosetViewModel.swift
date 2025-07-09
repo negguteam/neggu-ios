@@ -9,8 +9,9 @@ import Core
 import Domain
 
 import BaseFeature
+import ClosetFeatureInterface
 
-import Foundation
+import UIKit
 import Combine
 import SwiftSoup
 
@@ -25,15 +26,19 @@ public final class ClosetViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var clothesList: [ClothesEntity] = []
-    @Published private(set) var parsingResult: HTMLParsingResult?
     
     private var filter: ClothesFilter = .init()
     
+    private let router: ClosetRoutable
     private let closetUsecase: any ClosetUsecase
     
     private var bag = Set<AnyCancellable>()
     
-    public init(closetUsecase: any ClosetUsecase) {
+    public init(
+        router: ClosetRoutable,
+        closetUsecase: any ClosetUsecase
+    ) {
+        self.router = router
         self.closetUsecase = closetUsecase
         
         bind()
@@ -83,7 +88,6 @@ public final class ClosetViewModel: ObservableObject {
             .withUnretained(self)
             .sink { owner, urlString in
                 owner.parseHTML(link: urlString)
-                owner.parsingResult = nil
             }.store(in: &bag)
         
         closetUsecase.clothesList
@@ -109,6 +113,14 @@ public final class ClosetViewModel: ObservableObject {
         closetUsecase.fetchClothesList(parameters: parameters)
     }
     
+    public func presentDetail(id: String) {
+        router.presentDetail(id: id)
+    }
+    
+    public func pushRegister(image: UIImage, clothes: ClothesRegisterEntity) {
+        router.routeToRegister(image, clothes)
+    }
+    
     private func parseHTML(link: String) {
         Task {
             do {
@@ -123,8 +135,13 @@ public final class ClosetViewModel: ObservableObject {
                     throw NSError(domain: "Failed to parse product.", code: 3)
                 }
                 
+                guard let image = await ImageAnalyzeManager.shared.segmentation(imageData)
+                else {
+                    throw NSError(domain: "No Image", code: 4)
+                }
+                
                 await MainActor.run {
-                    parsingResult = .init(clothes: convertedProduct, imageData: imageData)
+                    pushRegister(image: image, clothes: convertedProduct)
                 }
             } catch {
                 print(error.localizedDescription)

@@ -19,26 +19,24 @@ public final class ClosetFeatureBuilder: ClosetFeatureBuildable {
     
     private let closetUsecase: ClosetUsecase = DIContainer.shared.resolve(ClosetUsecase.self)
     
-    private lazy var mainViewModel = ClosetViewModel(closetUsecase: closetUsecase)
-    
     public init() { }
     
     
-    public func makeMain(_ coordinator: BaseCoordinator) -> AnyView {
-        let viewModel = mainViewModel
-        let closetView = ClosetView(coordinator: coordinator, viewModel: viewModel)
+    public func makeMain(_ router: any ClosetRoutable) -> AnyView {
+        let viewModel = ClosetViewModel(router: router, closetUsecase: closetUsecase)
+        let closetView = ClosetView(viewModel: viewModel)
         return closetView.eraseToAnyView()
     }
     
-    public func makeDetail(_ coordinator: BaseCoordinator, _ clothesID: String) -> AnyView {
-        let viewModel = ClothesDetailViewModel(closetUsecase: closetUsecase)
-        let clothesDetailView = ClothesDetailView(coordinator: coordinator, viewModel: viewModel, clothesId: clothesID)
+    public func makeDetail(_ router: any ClothesDetailRoutable, _ clothesID: String) -> AnyView {
+        let viewModel = ClothesDetailViewModel(router: router, closetUsecase: closetUsecase)
+        let clothesDetailView = ClothesDetailView(viewModel: viewModel, clothesId: clothesID)
         return clothesDetailView.eraseToAnyView()
     }
     
-    public func makeRegister(_ coordinator: BaseCoordinator, _ entry: ClothesEditType) -> AnyView {
-        let viewModel = ClothesRegisterViewModel(closetUsecase: closetUsecase)
-        let clothesRegisterView = ClothesRegisterView(coordinator: coordinator, viewModel: viewModel, entry: entry)
+    public func makeRegister(_ router: any ClothesRegisterRoutable, _ entry: ClothesEditType) -> AnyView {
+        let viewModel = ClothesRegisterViewModel(router: router, closetUsecase: closetUsecase)
+        let clothesRegisterView = ClothesRegisterView(viewModel: viewModel, entry: entry)
         return clothesRegisterView.eraseToAnyView()
     }
     
@@ -65,9 +63,13 @@ public final class ClosetFeatureBuilder: ClosetFeatureBuildable {
             .eraseToAnyView()
     }
     
-    public func makeColorSheet(selection: Binding<ColorFilter?>) -> AnyView {
-        ColorSheet(selection: selection)
-            .eraseToAnyView()
+    public func makeDetailRouter(rootRouter: any Coordinatable, builder: any ClosetFeatureBuildable, id: String) -> any ClothesDetailRoutable {
+        let router = ClothesDetailRouter(
+            rootRouter: rootRouter,
+            closetBuilder: builder,
+            clothesID: id
+        )
+        return router
     }
     
 }

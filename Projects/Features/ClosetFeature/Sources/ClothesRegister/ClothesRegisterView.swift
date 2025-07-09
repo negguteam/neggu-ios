@@ -14,8 +14,6 @@ import ClosetFeatureInterface
 import SwiftUI
 
 public struct ClothesRegisterView: View {
-    @ObservedObject private var coordinator: BaseCoordinator
-    
     @StateObject private var viewModel: ClothesRegisterViewModel
     
     @State private var categorySelection: Core.Category = .UNKNOWN
@@ -30,11 +28,9 @@ public struct ClothesRegisterView: View {
     private let entry: ClothesEditType
     
     public init(
-        coordinator: BaseCoordinator,
         viewModel: ClothesRegisterViewModel,
         entry: ClothesEditType
     ) {
-        self._coordinator = ObservedObject(wrappedValue: coordinator)
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.entry = entry
     }
@@ -78,10 +74,10 @@ public struct ClothesRegisterView: View {
                                 Section {
                                     TitleForm("어떤 종류의 옷인가요?", isNessesory: true) {
                                         Button {
-                                            coordinator.present(.categorySheet(
-                                                category: $categorySelection,
-                                                subCategory: $subCategorySelection
-                                            ))
+//                                            coordinator.present(.categorySheet(
+//                                                category: $categorySelection,
+//                                                subCategory: $subCategorySelection
+//                                            ))
                                         } label: {
                                             HStack {
                                                 Text(viewModel.categoryString)
@@ -106,7 +102,7 @@ public struct ClothesRegisterView: View {
                                         }
                                         
                                         Button {
-                                            coordinator.present(.moodSheet(selection: $moodSelection))
+//                                            coordinator.present(.moodSheet(selection: $moodSelection))
                                         } label: {
                                             HStack {
                                                 Text(viewModel.moodString)
@@ -134,10 +130,10 @@ public struct ClothesRegisterView: View {
                                     
                                     TitleForm("어느 브랜드인가요?") {
                                         Button {
-                                            coordinator.present(.brandSheet(
-                                                selection: $brandSelection,
-                                                brandList: viewModel.brandList
-                                            ))
+//                                            coordinator.present(.brandSheet(
+//                                                selection: $brandSelection,
+//                                                brandList: viewModel.brandList
+//                                            ))
                                         } label: {
                                             HStack {
                                                 Text(viewModel.brandString)
@@ -233,10 +229,10 @@ public struct ClothesRegisterView: View {
                                     if !viewModel.joinedClothesName.isEmpty {
                                         HStack {
                                             Button {
-                                                coordinator.sheet = .clothesNameSheet(name: Binding(
-                                                    get: { viewModel.registerClothes.name },
-                                                    set: { viewModel.nameDidEdit.send($0) }
-                                                ))
+//                                                coordinator.sheet = .clothesNameSheet(name: Binding(
+//                                                    get: { viewModel.registerClothes.name },
+//                                                    set: { viewModel.nameDidEdit.send($0) }
+//                                                ))
                                             } label: {
                                                 Text(viewModel.joinedClothesName)
                                                     .negguFont(.body1b)
@@ -303,16 +299,6 @@ public struct ClothesRegisterView: View {
                                     }
                             }
                             .padding(.horizontal, 48)
-                            .onChange(of: viewModel.registState) { _, newValue in
-                                switch newValue {
-                                case .success:
-                                    coordinator.pop()
-                                case .failure:
-                                    AlertManager.shared.setAlert(message: "의상 편집에 실패했습니다. 다시 시도해주세요.")
-                                default:
-                                    return
-                                }
-                            }
                         }
                     }
                 }
@@ -331,18 +317,14 @@ public struct ClothesRegisterView: View {
             }
         }
         .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
-            coordinator.pop()
+            viewModel.pop()
         }
         .onAppear {
             // 시트 -> 이름, 카테고리, 분위기, 브랜드
             // 옷 등록 -> 색, 이름, 브랜드
             // 옷 수정 -> 이름, 카테고리, 분위기, 브랜드
             switch entry {
-            case .register(let image, let clothes):
-                if let color = image.pixelColor() {
-                    viewModel.colorDidConfigure.send(.init(color: color))
-                }
-
+            case .register(_, let clothes):
                 viewModel.nameDidEdit.send(clothes.name)
                 viewModel.brandDidSelect.send(clothes.brand)
                 viewModel.linkDidEdit.send(clothes.link)

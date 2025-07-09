@@ -9,6 +9,7 @@ import Core
 import Domain
 
 import BaseFeature
+import ClosetFeatureInterface
 
 import Foundation
 import Combine
@@ -22,11 +23,16 @@ public final class ClothesDetailViewModel: ObservableObject {
     // MARK: Output
     @Published private(set) var clothes: ClothesEntity?
     
+    private let router: any ClothesDetailRoutable
     private let closetUsecase: any ClosetUsecase
     
     private var bag = Set<AnyCancellable>()
     
-    public init(closetUsecase: any ClosetUsecase) {
+    public init(
+        router: any ClothesDetailRoutable,
+        closetUsecase: any ClosetUsecase
+    ) {
+        self.router = router
         self.closetUsecase = closetUsecase
         
         bind()
@@ -58,6 +64,14 @@ public final class ClothesDetailViewModel: ObservableObject {
             .sink { owner, clothes in
                 owner.clothes = clothes
             }.store(in: &bag)
+    }
+    
+    public func pushToModify(_ clothes: ClothesEntity) {
+        router.routeToModify(clothes)
+    }
+    
+    public func dismiss() {
+        router.dismiss()
     }
     
 }

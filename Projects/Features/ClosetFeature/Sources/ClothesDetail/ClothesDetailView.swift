@@ -13,16 +13,13 @@ import BaseFeature
 import SwiftUI
 
 public struct ClothesDetailView: View {
-    @ObservedObject private var coordinator: BaseCoordinator
-    
     @StateObject private var viewModel: ClothesDetailViewModel
     
     @State private var showAlert: Bool = false
     
     private let clothesId: String
     
-    public init(coordinator: BaseCoordinator, viewModel: ClothesDetailViewModel, clothesId: String) {
-        self._coordinator = ObservedObject(wrappedValue: coordinator)
+    public init(viewModel: ClothesDetailViewModel, clothesId: String) {
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.clothesId = clothesId
     }
@@ -31,6 +28,14 @@ public struct ClothesDetailView: View {
         VStack(spacing: 0) {
             if let clothes = viewModel.clothes {
                 HStack {
+                    Button {
+                        viewModel.dismiss()
+                    } label: {
+                        NegguImage.Icon.smallX
+                            .frame(width: 44, height: 44)
+                            .foregroundStyle(.labelNormal)
+                    }
+                    
                     Spacer()
                     
                     Menu {
@@ -43,7 +48,8 @@ public struct ClothesDetailView: View {
                             .foregroundStyle(.black)
                     }
                 }
-                .padding([.horizontal, .top], 20)
+                .frame(height: 56)
+                .padding(.horizontal, 20)
                     
                 ScrollView {
                     VStack(spacing: 48) {
@@ -159,9 +165,9 @@ public struct ClothesDetailView: View {
                         
                         Button {
                             Task {
-                                coordinator.dismiss()
+                                viewModel.dismiss()
                                 try? await Task.sleep(for: .seconds(0.5))
-                                coordinator.push(.clothesRegister(entry: .modify(clothes)))
+                                viewModel.pushToModify(clothes)
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 16)
@@ -179,7 +185,7 @@ public struct ClothesDetailView: View {
                 }
                 .negguAlert(.delete(.clothes), showAlert: $showAlert) {
                     viewModel.deleteButtonDidTap.send(clothesId)
-                    coordinator.dismiss()
+                    viewModel.dismiss()
                 }
             } else {
                 ProgressView()
