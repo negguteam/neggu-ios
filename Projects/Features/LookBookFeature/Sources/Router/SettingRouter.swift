@@ -21,6 +21,10 @@ public final class SettingRouter: BaseRouter, SettingRoutable {
         self.builder = builder
     }
     
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
     
     public override func makeView() -> AnyView {
         builder.makeSetting(self)

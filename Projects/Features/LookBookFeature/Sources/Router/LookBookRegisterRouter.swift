@@ -21,6 +21,10 @@ public final class LookBookRegisterRouter: BaseRouter, LookBookRegisterRoutable 
         self.builder = builder
     }
     
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
     
     public override func makeView() -> AnyView {
         builder.makeRegister(self)

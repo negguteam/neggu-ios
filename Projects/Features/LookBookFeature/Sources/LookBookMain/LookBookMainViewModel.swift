@@ -43,19 +43,18 @@ final class LookBookMainViewModel: ObservableObject {
         self.userUsecase = userUsecase
 
         bind()
-        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     
     private func bind() {
         viewDidAppear
-            .filter { _ in self.lookBookList.isEmpty }
             .withUnretained(self)
+            .filter { owner, _ in owner.lookBookList.isEmpty }
             .sink { owner, _ in
                 owner.userUsecase.fetchProfile()
                 owner.lookBookUsecase.fetchLookBookList()

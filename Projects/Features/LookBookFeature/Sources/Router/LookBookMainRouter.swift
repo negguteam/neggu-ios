@@ -13,10 +13,13 @@ import LookBookFeatureInterface
 import ClosetFeatureInterface
 
 import SwiftUI
+import Combine
 
 public final class LookBookMainRouter: BaseCoordinator, LookBookMainRoutable {
     
-    private let tabRouter: any TabRoutable
+    private var bag = Set<AnyCancellable>()
+    
+    private weak var tabRouter: (any TabRoutable)?
     private let lookBookBuilder: any LookBookFeatureBuildable
     private let closetBuilder: any ClosetFeatureBuildable
     
@@ -28,7 +31,21 @@ public final class LookBookMainRouter: BaseCoordinator, LookBookMainRoutable {
         self.tabRouter = tabRouter
         self.lookBookBuilder = lookBookBuilder
         self.closetBuilder = closetBuilder
+        super.init()
+        
+        $routers
+            .receive(on: RunLoop.main)
+            .withUnretained(self)
+            .sink { owner, routers in
+                owner.tabRouter?.showGnb = routers.isEmpty
+            }.store(in: &bag)
     }
+    
+    deinit {
+        bag.removeAll()
+        debugPrint("\(self) deinit")
+    }
+    
     
     public func start() -> AnyView {
         lookBookBuilder.makeMain(self)
@@ -69,7 +86,7 @@ public final class LookBookMainRouter: BaseCoordinator, LookBookMainRoutable {
     }
     
     public func switchTab(_ tab: NegguTab) {
-        tabRouter.switchTab(tab)
+        tabRouter?.switchTab(tab)
     }
     
 }

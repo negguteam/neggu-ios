@@ -36,12 +36,11 @@ final class LookBookDetailViewModel: ObservableObject {
         self.lookBookUsecase = lookBookUsecase
         
         bind()
-        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     

@@ -27,6 +27,10 @@ public final class PolicyRouter: BaseRouter, PolicyRoutable {
         self.policyType = policyType
     }
     
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
     
     public override func makeView() -> AnyView {
         builder.makePolicy(self, policyType: policyType)

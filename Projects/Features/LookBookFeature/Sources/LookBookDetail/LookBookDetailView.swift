@@ -178,8 +178,8 @@ struct LookBookDetailView: View {
                     }
             }
             
-            BannerViewContainer()
-                .frame(height: 50)
+//            BannerViewContainer()
+//                .frame(height: 50)
         }
         .background(.bgNormal)
         .sheet(isPresented: $showDateSheet) {

@@ -31,6 +31,11 @@ public final class LookBookDetailRouter: BaseRouter, LookBookDetailRoutable {
         self.lookBookID = lookBookID
     }
     
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
+    
     public override func makeView() -> AnyView {
         lookBookBuilder.makeDetail(self, lookBookID)
     }
