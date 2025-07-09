@@ -36,12 +36,11 @@ public final class ClothesDetailViewModel: ObservableObject {
         self.closetUsecase = closetUsecase
         
         bind()
-        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     
@@ -66,8 +65,8 @@ public final class ClothesDetailViewModel: ObservableObject {
             }.store(in: &bag)
     }
     
-    public func pushToModify(_ clothes: ClothesEntity) {
-        router.routeToModify(clothes)
+    public func presentModify(_ clothes: ClothesEntity) {
+        router.presentModify(clothes)
     }
     
     public func dismiss() {

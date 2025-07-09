@@ -167,7 +167,7 @@ public struct ClothesDetailView: View {
                             Task {
                                 viewModel.dismiss()
                                 try? await Task.sleep(for: .seconds(0.5))
-                                viewModel.pushToModify(clothes)
+                                viewModel.presentModify(clothes)
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 16)
@@ -194,8 +194,8 @@ public struct ClothesDetailView: View {
                     }
             }
             
-            BannerViewContainer()
-                .frame(height: 50)
+//            BannerViewContainer()
+//                .frame(height: 50)
         }
         .background(.bgNormal)
     }

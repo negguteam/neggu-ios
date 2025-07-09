@@ -41,6 +41,8 @@ struct ClothesNameSheet: View {
                         .fill(.bgAlt)
                 }
                 
+                Spacer()
+                
                 Button {
                     clothesName = nameString.split(separator: " ").joined(separator: " ")
                     dismiss()
@@ -54,8 +56,7 @@ struct ClothesNameSheet: View {
                                 .foregroundStyle(.white)
                         }
                 }
-                
-                Spacer()
+                .padding(.bottom, 20)
             }
             .padding(.horizontal, 48)
         } header: {

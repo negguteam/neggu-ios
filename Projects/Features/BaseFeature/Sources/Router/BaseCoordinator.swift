@@ -18,31 +18,45 @@ open class BaseCoordinator: Coordinatable, ObservableObject {
     
     
     open func push(_ router: any Routable) {
-        routers.append(AnyRoutable(router))
+        DispatchQueue.main.async {
+            self.routers.append(AnyRoutable(router))
+        }
     }
     
     open func pop() {
-        routers.removeLast(routers.isEmpty ? 0 : 1)
+        DispatchQueue.main.async {
+            self.routers.removeLast(self.routers.isEmpty ? 0 : 1)
+        }
     }
     
     open func popToRoot() {
-        routers.removeLast(routers.count)
+        DispatchQueue.main.async {
+            self.routers.removeLast(self.routers.count)
+        }
     }
     
     open func present(_ router: any Routable) {
-        sheet = AnyRoutable(router)
+        DispatchQueue.main.async {
+            self.sheet = AnyRoutable(router)
+        }
     }
     
     open func dismiss() {
-        sheet = nil
+        DispatchQueue.main.async {
+            self.sheet = nil
+        }
     }
     
     open func fullScreen(_ router: any Routable) {
-        fullScreen = AnyRoutable(router)
+        DispatchQueue.main.async {
+            self.fullScreen = AnyRoutable(router)
+        }
     }
     
     open func dismissFullScreen() {
-        fullScreen = nil
+        DispatchQueue.main.async {
+            self.fullScreen = nil
+        }
     }
     
 }

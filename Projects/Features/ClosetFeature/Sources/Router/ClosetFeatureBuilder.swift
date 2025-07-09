@@ -31,6 +31,7 @@ public final class ClosetFeatureBuilder: ClosetFeatureBuildable {
     public func makeDetail(_ router: any ClothesDetailRoutable, _ clothesID: String) -> AnyView {
         let viewModel = ClothesDetailViewModel(router: router, closetUsecase: closetUsecase)
         let clothesDetailView = ClothesDetailView(viewModel: viewModel, clothesId: clothesID)
+            .presentationDetents([.fraction(0.9)])
         return clothesDetailView.eraseToAnyView()
     }
     
@@ -38,29 +39,6 @@ public final class ClosetFeatureBuilder: ClosetFeatureBuildable {
         let viewModel = ClothesRegisterViewModel(router: router, closetUsecase: closetUsecase)
         let clothesRegisterView = ClothesRegisterView(viewModel: viewModel, entry: entry)
         return clothesRegisterView.eraseToAnyView()
-    }
-    
-    public func makeNameSheet(clothesName: Binding<String>) -> AnyView {
-        ClothesNameSheet(clothesName: clothesName)
-            .eraseToAnyView()
-    }
-    
-    public func makeCategorySheet(
-        category: Binding<Core.Category>,
-        subCategory: Binding<Core.SubCategory>
-    ) -> AnyView {
-        CategorySheet(categorySelection: category, subCategorySelection: subCategory)
-            .eraseToAnyView()
-    }
-    
-    public func makeMoodSheet(selection: Binding<[Mood]>, isSingle: Bool) -> AnyView {
-        MoodSheet(selection: selection, isSingleSelection: isSingle)
-            .eraseToAnyView()
-    }
-    
-    public func makeBrandSheet(selection: Binding<String>, brandList: [BrandEntity]) -> AnyView {
-        BrandSheet(selectedBrand: selection, brandList: brandList)
-            .eraseToAnyView()
     }
     
     public func makeDetailRouter(rootRouter: any Coordinatable, builder: any ClosetFeatureBuildable, id: String) -> any ClothesDetailRoutable {

@@ -12,13 +12,34 @@ import BaseFeature
 import ClosetFeatureInterface
 
 import SwiftUI
+import Combine
 
 public final class ClosetRouter: BaseCoordinator, ClosetRoutable {
     
+    private var bag = Set<AnyCancellable>()
+    
+    private let tabRouter: any TabRoutable
     private let closetBuilder: any ClosetFeatureBuildable
     
-    public init(closetBuilder: any ClosetFeatureBuildable) {
+    public init(
+        tabRouter: any TabRoutable,
+        closetBuilder: any ClosetFeatureBuildable
+    ) {
+        self.tabRouter = tabRouter
         self.closetBuilder = closetBuilder
+        super.init()
+        
+        $routers
+            .receive(on: RunLoop.main)
+            .withUnretained(self)
+            .sink { owner, routers in
+                owner.tabRouter.showGnb = routers.isEmpty
+            }.store(in: &bag)
+    }
+    
+    deinit {
+        bag.removeAll()
+        debugPrint("\(self) deinit")
     }
     
     
@@ -35,13 +56,13 @@ public final class ClosetRouter: BaseCoordinator, ClosetRoutable {
         present(router)
     }
     
-    public func routeToRegister(_ image: UIImage, _ clothes: ClothesRegisterEntity) {
+    public func presentRegister(_ image: UIImage, _ clothes: ClothesRegisterEntity) {
         let router = ClothesRegisterRouter(
             rootRouter: self,
             closetBuilder: closetBuilder,
             entry: .register(image, clothes)
         )
-        push(router)
+        fullScreen(router)
     }
     
 }

@@ -17,7 +17,9 @@ public struct ClosetView: View {
     
     @State private var clothesLink: String = ""
     @State private var filterSelection: ClothesFilter = .init()
-    @State private var ctaButtonExpanded: Bool = false
+    
+    @State private var showCategorySheet: Bool = false
+    @State private var showMoodSheet: Bool = false
     
     @FocusState private var isFocused: Bool
     
@@ -98,17 +100,26 @@ public struct ClosetView: View {
                             
                             HStack {
                                 FilterButton(title: filterSelection.categoryTitle) {
-//                                    coordinator.present(.categorySheet(
-//                                        category: $filterSelection.category,
-//                                        subCategory: $filterSelection.subCategory
-//                                    ))
+                                    showCategorySheet = true
+                                }
+                                .sheet(isPresented: $showCategorySheet) {
+                                    CategorySheet(
+                                        categorySelection: $filterSelection.category,
+                                        subCategorySelection: $filterSelection.subCategory
+                                    )
+                                    .presentationCornerRadius(20)
+                                    .presentationBackground(.bgNormal)
+                                    .presentationDetents([.fraction(0.85)])
                                 }
                                 
                                 FilterButton(title: filterSelection.moodTitle) {
-//                                    coordinator.present(.moodSheet(
-//                                        selection: $filterSelection.moodList,
-//                                        isSingleSelection: true
-//                                    ))
+                                    showMoodSheet = true
+                                }
+                                .sheet(isPresented: $showMoodSheet) {
+                                    MoodSheet(selection: $filterSelection.moodList, isSingleSelection: true)
+                                        .presentationCornerRadius(20)
+                                        .presentationBackground(.bgNormal)
+                                        .presentationDetents([.fraction(0.85)])
                                 }
                                 
                                 if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty {

@@ -27,13 +27,26 @@ public final class ClothesRegisterRouter: BaseRouter, ClothesRegisterRoutable {
         self.entry = entry
     }
     
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
     
     public override func makeView() -> AnyView {
         closetBuilder.makeRegister(self, entry)
     }
     
-    public func pop() {
-        rootRouter.pop()
+    public func presentDetail(id: String) {
+        let router = ClothesDetailRouter(
+            rootRouter: rootRouter,
+            closetBuilder: closetBuilder,
+            clothesID: id
+        )
+        rootRouter.present(router)
+    }
+    
+    public func dismiss() {
+        rootRouter.dismissFullScreen()
     }
     
 }

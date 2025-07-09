@@ -29,17 +29,22 @@ public final class ClothesDetailRouter: BaseRouter, ClothesDetailRoutable {
         self.clothesID = clothesID
     }
     
+    deinit {
+        debugPrint("\(self) deinit")
+    }
+    
+    
     public override func makeView() -> AnyView {
         closetBuilder.makeDetail(self, clothesID)
     }
     
-    public func routeToModify(_ clothes: ClothesEntity) {
+    public func presentModify(_ clothes: ClothesEntity) {
         let router = ClothesRegisterRouter(
             rootRouter: rootRouter,
             closetBuilder: closetBuilder,
             entry: .modify(clothes)
         )
-        rootRouter.push(router)
+        rootRouter.fullScreen(router)
     }
     
     public func dismiss() {

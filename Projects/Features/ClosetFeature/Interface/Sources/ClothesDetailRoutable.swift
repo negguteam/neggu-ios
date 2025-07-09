@@ -11,6 +11,6 @@ import Domain
 import BaseFeature
 
 public protocol ClothesDetailRoutable: Routable {
-    func routeToModify(_ clothes: ClothesEntity)
+    func presentModify(_ clothes: ClothesEntity)
     func dismiss()
 }

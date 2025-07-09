@@ -81,12 +81,11 @@ public final class ClothesRegisterViewModel: ObservableObject {
         self.closetUsecase = closetUsecase
         
         bind()
-        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     
@@ -163,8 +162,12 @@ public final class ClothesRegisterViewModel: ObservableObject {
         closetUsecase.registeredClothes
             .withUnretained(self)
             .sink { owner, clothes in
-                if clothes != nil {
-                    owner.pop()
+                if let clothes {
+                    Task {
+                        owner.dismiss()
+                        try? await Task.sleep(for: .seconds(0.5))
+                        owner.presentDetail(id: clothes.id)
+                    }
                 } else {
                     AlertManager.shared.setAlert()
                 }
@@ -192,8 +195,12 @@ public final class ClothesRegisterViewModel: ObservableObject {
         }
     }
     
-    public func pop() {
-        router.pop()
+    public func presentDetail(id: String) {
+        router.presentDetail(id: id)
+    }
+    
+    public func dismiss() {
+        router.dismiss()
     }
     
 }

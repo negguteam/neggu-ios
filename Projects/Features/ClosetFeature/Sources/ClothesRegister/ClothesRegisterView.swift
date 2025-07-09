@@ -21,6 +21,10 @@ public struct ClothesRegisterView: View {
     @State private var moodSelection: [Core.Mood] = []
     @State private var brandSelection: String = ""
     
+    @State private var showNameSheet: Bool = false
+    @State private var showCategorySheet: Bool = false
+    @State private var showMoodSheet: Bool = false
+    @State private var showBrandSheet: Bool = false
     @State private var showAlert: Bool = false
     
     @FocusState private var focusedField: FocusField?
@@ -48,7 +52,7 @@ public struct ClothesRegisterView: View {
                         .foregroundStyle(.labelNormal)
                 }
             }
-            .frame(height: 44)
+            .frame(height: 56)
             .padding(.horizontal, 20)
             
             GeometryReader { proxy in
@@ -74,10 +78,7 @@ public struct ClothesRegisterView: View {
                                 Section {
                                     TitleForm("어떤 종류의 옷인가요?", isNessesory: true) {
                                         Button {
-//                                            coordinator.present(.categorySheet(
-//                                                category: $categorySelection,
-//                                                subCategory: $subCategorySelection
-//                                            ))
+                                            showCategorySheet = true
                                         } label: {
                                             HStack {
                                                 Text(viewModel.categoryString)
@@ -94,6 +95,15 @@ public struct ClothesRegisterView: View {
                                                     .strokeBorder(!viewModel.isValidCategory ? .systemWarning : .lineAlt)
                                             }
                                         }
+                                        .sheet(isPresented: $showCategorySheet) {
+                                            CategorySheet(
+                                                categorySelection: $categorySelection,
+                                                subCategorySelection: $subCategorySelection
+                                            )
+                                            .presentationCornerRadius(20)
+                                            .presentationBackground(.bgNormal)
+                                            .presentationDetents([.fraction(0.85)])
+                                        }
                                         
                                         if !viewModel.isValidCategory {
                                             Text("옷의 종류를 알려주세요!")
@@ -102,7 +112,7 @@ public struct ClothesRegisterView: View {
                                         }
                                         
                                         Button {
-//                                            coordinator.present(.moodSheet(selection: $moodSelection))
+                                            showMoodSheet = true
                                         } label: {
                                             HStack {
                                                 Text(viewModel.moodString)
@@ -119,6 +129,12 @@ public struct ClothesRegisterView: View {
                                                     .strokeBorder(!viewModel.isValidMood ? .systemWarning : .lineAlt)
                                             }
                                         }
+                                        .sheet(isPresented: $showMoodSheet) {
+                                            MoodSheet(selection: $moodSelection)
+                                                .presentationCornerRadius(20)
+                                                .presentationBackground(.bgNormal)
+                                                .presentationDetents([.fraction(0.85)])
+                                        }
                                         
                                         if !viewModel.isValidMood {
                                             Text("옷의 분위기를 알려주세요!")
@@ -130,10 +146,7 @@ public struct ClothesRegisterView: View {
                                     
                                     TitleForm("어느 브랜드인가요?") {
                                         Button {
-//                                            coordinator.present(.brandSheet(
-//                                                selection: $brandSelection,
-//                                                brandList: viewModel.brandList
-//                                            ))
+                                            showBrandSheet = true
                                         } label: {
                                             HStack {
                                                 Text(viewModel.brandString)
@@ -149,6 +162,12 @@ public struct ClothesRegisterView: View {
                                                 RoundedRectangle(cornerRadius: 16)
                                                     .strokeBorder(.lineAlt)
                                             }
+                                        }
+                                        .sheet(isPresented: $showBrandSheet) {
+                                            BrandSheet(selectedBrand: $brandSelection, brandList: viewModel.brandList)
+                                                .presentationCornerRadius(20)
+                                                .presentationBackground(.bgNormal)
+                                                .presentationDetents([.fraction(0.85)])
                                         }
                                     }
                                     
@@ -229,10 +248,7 @@ public struct ClothesRegisterView: View {
                                     if !viewModel.joinedClothesName.isEmpty {
                                         HStack {
                                             Button {
-//                                                coordinator.sheet = .clothesNameSheet(name: Binding(
-//                                                    get: { viewModel.registerClothes.name },
-//                                                    set: { viewModel.nameDidEdit.send($0) }
-//                                                ))
+                                                showNameSheet = true
                                             } label: {
                                                 Text(viewModel.joinedClothesName)
                                                     .negguFont(.body1b)
@@ -240,6 +256,15 @@ public struct ClothesRegisterView: View {
                                                 
                                                 NegguImage.Icon.edit
                                                     .frame(width: 24, height: 24)
+                                            }
+                                            .sheet(isPresented: $showNameSheet) {
+                                                ClothesNameSheet(clothesName: Binding(
+                                                    get: { viewModel.registerClothes.name },
+                                                    set: { viewModel.nameDidEdit.send($0) }
+                                                ))
+                                                .presentationCornerRadius(20)
+                                                .presentationBackground(.bgNormal)
+                                                .presentationDetents([.height(260)])
                                             }
                                             
                                             Spacer()
@@ -307,17 +332,19 @@ public struct ClothesRegisterView: View {
         .background(.bgNormal)
         .ignoresSafeArea(.keyboard)
         .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                
-                Button("완료") {
-                    focusedField = nil
+            if focusedField == .link || focusedField == .memo {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    
+                    Button("완료") {
+                        focusedField = nil
+                    }
+                    .foregroundStyle(.negguSecondary)
                 }
-                .foregroundStyle(.negguSecondary)
             }
         }
         .negguAlert(.cancelRegister(.clothes), showAlert: $showAlert) {
-            viewModel.pop()
+            viewModel.dismiss()
         }
         .onAppear {
             // 시트 -> 이름, 카테고리, 분위기, 브랜드

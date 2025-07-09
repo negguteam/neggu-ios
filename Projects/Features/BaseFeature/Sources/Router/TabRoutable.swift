@@ -6,8 +6,9 @@
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
+import Combine
 
-public protocol TabRoutable {
+public protocol TabRoutable: ObservableObject {
     var activeTab: NegguTab { get set }
     var gnbState: GnbState { get set }
     var showGnb: Bool { get set }

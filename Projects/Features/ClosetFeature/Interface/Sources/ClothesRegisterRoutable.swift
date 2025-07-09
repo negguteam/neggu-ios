@@ -9,5 +9,6 @@
 import BaseFeature
 
 public protocol ClothesRegisterRoutable: Routable {
-    func pop()
+    func presentDetail(id: String)
+    func dismiss()
 }

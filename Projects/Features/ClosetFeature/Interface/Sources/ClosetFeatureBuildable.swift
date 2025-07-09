@@ -18,10 +18,5 @@ public protocol ClosetFeatureBuildable {
     func makeDetail(_ router: any ClothesDetailRoutable, _ clothesID: String) -> AnyView
     func makeRegister(_ coordinator: any ClothesRegisterRoutable, _ entry: ClothesEditType) -> AnyView
     
-    func makeNameSheet(clothesName: Binding<String>) -> AnyView
-    func makeCategorySheet(category: Binding<Core.Category>, subCategory: Binding<Core.SubCategory>) -> AnyView
-    func makeMoodSheet(selection: Binding<[Mood]>, isSingle: Bool) -> AnyView
-    func makeBrandSheet(selection: Binding<String>, brandList: [BrandEntity]) -> AnyView
-    
     func makeDetailRouter(rootRouter: any Coordinatable, builder: any ClosetFeatureBuildable, id: String) -> any ClothesDetailRoutable
 }

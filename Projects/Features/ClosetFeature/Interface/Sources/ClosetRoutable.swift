@@ -17,5 +17,5 @@ public protocol ClosetRoutable: Coordinatable {
     
     func start() -> AnyView
     func presentDetail(id: String)
-    func routeToRegister(_ image: UIImage, _ clothes: ClothesRegisterEntity)
+    func presentRegister(_ image: UIImage, _ clothes: ClothesRegisterEntity)
 }

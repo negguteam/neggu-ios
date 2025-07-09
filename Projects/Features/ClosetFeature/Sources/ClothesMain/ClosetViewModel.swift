@@ -42,19 +42,18 @@ public final class ClosetViewModel: ObservableObject {
         self.closetUsecase = closetUsecase
         
         bind()
-        print("\(self) init")
     }
     
     deinit {
         bag.removeAll()
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     
     private func bind() {
         viewDidAppear
-            .filter { _ in self.clothesList.isEmpty }
             .withUnretained(self)
+            .filter { owner, _ in owner.clothesList.isEmpty }
             .sink { owner, _ in
                 owner.fetchClothes()
             }.store(in: &bag)
@@ -117,8 +116,8 @@ public final class ClosetViewModel: ObservableObject {
         router.presentDetail(id: id)
     }
     
-    public func pushRegister(image: UIImage, clothes: ClothesRegisterEntity) {
-        router.routeToRegister(image, clothes)
+    public func presentRegister(image: UIImage, clothes: ClothesRegisterEntity) {
+        router.presentRegister(image, clothes)
     }
     
     private func parseHTML(link: String) {
@@ -141,7 +140,7 @@ public final class ClosetViewModel: ObservableObject {
                 }
                 
                 await MainActor.run {
-                    pushRegister(image: image, clothes: convertedProduct)
+                    presentRegister(image: image, clothes: convertedProduct)
                 }
             } catch {
                 print(error.localizedDescription)
