@@ -14,9 +14,7 @@ import BaseFeature
 import SwiftUI
 
 struct LookBookDetailView: View {
-    @EnvironmentObject private var coordinator: LookBookCoordinator
-
-    @ObservedObject private var viewModel: LookBookDetailViewModel
+    @StateObject private var viewModel: LookBookDetailViewModel
     
     @State private var selectedDate: Date?
     
@@ -30,7 +28,7 @@ struct LookBookDetailView: View {
         viewModel: LookBookDetailViewModel,
         lookBookID: String
     ) {
-        self._viewModel = ObservedObject(wrappedValue: viewModel)
+        self._viewModel = StateObject(wrappedValue: viewModel)
         self.lookBookID = lookBookID
     }
     
@@ -38,7 +36,7 @@ struct LookBookDetailView: View {
         VStack(spacing: 0) {
             HStack {
                 Button {
-                    coordinator.pop()
+                    viewModel.pop()
                 } label: {
                     NegguImage.Icon.chevronLeft
                         .foregroundStyle(.labelNormal)
@@ -107,7 +105,7 @@ struct LookBookDetailView: View {
                             LazyVGrid(columns: [GridItem](repeating: GridItem(.flexible()), count: 4)) {
                                 ForEach(lookBook.lookBookClothes) { clothes in
                                     Button {
-                                        coordinator.present(.clothesDetail(clothesId: clothes.id))
+                                        viewModel.presentClothesDetail(clothes.id)
                                     } label: {
                                         CachedAsyncImage(clothes.imageUrl)
                                             .aspectRatio(5/6, contentMode: .fit)
@@ -137,16 +135,6 @@ struct LookBookDetailView: View {
                                 .background {
                                     RoundedRectangle(cornerRadius: 16)
                                         .fill(.white)
-                                }
-                            }
-                            .onChange(of: viewModel.deleteState) { _, newValue in
-                                switch newValue {
-                                case .success:
-                                    coordinator.dismissFullScreen()
-                                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [lookBookID])
-                                case .failure:
-                                    AlertManager.shared.setAlert(message: "코디 삭제에 실패했습니다. 다시 시도해주세요.")
-                                default: return
                                 }
                             }
                             

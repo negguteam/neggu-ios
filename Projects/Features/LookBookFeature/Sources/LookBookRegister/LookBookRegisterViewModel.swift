@@ -9,6 +9,7 @@ import Core
 import Domain
 
 import BaseFeature
+import LookBookFeatureInterface
 
 import Foundation
 import Combine
@@ -23,7 +24,6 @@ final class LookBookRegisterViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var clothesList: [ClothesEntity] = []
-    @Published private(set) var registState: RegistState = .idle
     @Published private(set) var filter: ClothesFilter = .init()
     @Published var isEmptyCloset: Bool = false
 
@@ -32,9 +32,14 @@ final class LookBookRegisterViewModel: ObservableObject {
     
     private var bag = Set<AnyCancellable>()
     
+    private let router: any LookBookRegisterRoutable
     private let lookBookUsecase: any LookBookUsecase
     
-    init(lookBookUsecase: any LookBookUsecase) {
+    init(
+        router: any LookBookRegisterRoutable,
+        lookBookUsecase: any LookBookUsecase
+    ) {
+        self.router = router
         self.lookBookUsecase = lookBookUsecase
         
         bind()
@@ -98,7 +103,11 @@ final class LookBookRegisterViewModel: ObservableObject {
         lookBookUsecase.registeredLookBook
             .withUnretained(self)
             .sink { owner, lookBook in
-                owner.registState = lookBook != nil ? .success : .failure
+                if lookBook != nil {
+                    owner.dismiss()
+                } else {
+                    AlertManager.shared.setAlert(message: "룩북 등록에 실패했습니다. 다시 시도해주세요.")
+                }
             }.store(in: &bag)
     }
     
@@ -120,15 +129,12 @@ final class LookBookRegisterViewModel: ObservableObject {
         isLoading = false
     }
     
-    enum RegistState: Equatable {
-        case idle
-        case success
-        case failure
+    func dismiss() {
+        router.dismiss()
     }
     
 }
 
 struct ClothesFilter {
     var category: Core.Category = .NONE
-    var color: ColorFilter?
 }

@@ -8,10 +8,13 @@
 import Core
 import Domain
 
+import BaseFeature
+import LookBookFeatureInterface
+
 import Foundation
 import Combine
 
-public final class LookBookMainViewModel: ObservableObject {
+final class LookBookMainViewModel: ObservableObject {
      
     // MARK: Input
     let viewDidAppear = PassthroughSubject<Void, Never>()
@@ -20,20 +23,22 @@ public final class LookBookMainViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var userProfile: UserProfileEntity?
-    @Published private(set) var lookBookState: UserLookBookState = .initial
     @Published private(set) var lookBookCalenar: [LookBookCalendarItem] = []
     @Published private(set) var lookBookList: [LookBookEntity] = []
     
     private var bag = Set<AnyCancellable>()
     
+    private let router: any LookBookMainRoutable
     private let lookBookUsecase: any LookBookUsecase
     private let userUsecase: any UserUsecase
     
     
     public init(
+        router: any LookBookMainRoutable,
         lookBookUsecase: any LookBookUsecase,
         userUsecase: any UserUsecase
     ) {
+        self.router = router
         self.lookBookUsecase = lookBookUsecase
         self.userUsecase = userUsecase
 
@@ -54,7 +59,6 @@ public final class LookBookMainViewModel: ObservableObject {
             .sink { owner, _ in
                 owner.userUsecase.fetchProfile()
                 owner.lookBookUsecase.fetchLookBookList()
-//                owner.lookBookUsecase.fetchRecentLookBook()
             }.store(in: &bag)
         
         lookBookDidScroll
@@ -86,39 +90,23 @@ public final class LookBookMainViewModel: ObservableObject {
                 owner.lookBookList = lookBookList
             }.store(in: &bag)
         
-        lookBookUsecase.recentLookBook
-            .withUnretained(self)
-            .sink { owner, lookBook in
-                owner.lookBookState = .available(lookBook)
-            }.store(in: &bag)
-        
         userUsecase.userProfile
             .withUnretained(self)
             .sink { owner, profile in
                 owner.userProfile = profile
-                
-                if profile.clothes.isEmpty {
-                    owner.lookBookState = .needClothes
-                } else if profile.lookBooks.isEmpty {
-                    owner.lookBookState = .needLookBook
-                }
             }.store(in: &bag)
     }
     
-}
-
-extension LookBookMainViewModel {
-        
-    enum ProfileState {
-        case initial
-        case loaded(UserProfileEntity)
+    func pushDetail(id: String) {
+        router.routeToDetail(id: id)
     }
     
-}
-
-enum UserLookBookState {
-    case initial
-    case needClothes
-    case needLookBook
-    case available(LookBookEntity)
+    func pushSetting() {
+        router.routeToSetting()
+    }
+    
+    func switchTab(_ tab: NegguTab) {
+        router.switchTab(tab)
+    }
+    
 }

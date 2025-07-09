@@ -13,8 +13,6 @@ import BaseFeature
 import SwiftUI
 
 struct LookBookRegisterView: View {
-    @ObservedObject private var coordinator: BaseCoordinator
-    
     @StateObject private var viewModel: LookBookRegisterViewModel
     
     @State private var selectedClothes: [LookBookClothesItem] = []
@@ -22,8 +20,7 @@ struct LookBookRegisterView: View {
     @State private var showCategoryList: Bool = false
     @State private var isEditingMode: Bool = false
     
-    init(coordinator: BaseCoordinator, viewModel: LookBookRegisterViewModel) {
-        self._coordinator = ObservedObject(wrappedValue: coordinator)
+    init(viewModel: LookBookRegisterViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -44,7 +41,7 @@ struct LookBookRegisterView: View {
                 VStack(spacing: 0) {
                     HStack {
                         Button {
-                            coordinator.dismissFullScreen()
+                            viewModel.dismiss()
                         } label: {
                             NegguImage.Icon.largeX
                                 .frame(width: 44, height: 44)
@@ -66,15 +63,6 @@ struct LookBookRegisterView: View {
                         .foregroundStyle(selectedClothes.isEmpty ? .labelInactive : .labelNormal)
                         .opacity(isEditingMode ? 0 : 1)
                         .disabled(selectedClothes.isEmpty)
-                        .onChange(of: viewModel.registState) { _, newValue in
-                            switch newValue {
-                            case .success:
-                                coordinator.dismissFullScreen()
-                            case .failure:
-                                AlertManager.shared.setAlert(message: "룩북 등록에 실패했습니다. 다시 시도해주세요.")
-                            default: return
-                            }
-                        }
                     }
                     .frame(height: 44)
                     .padding(.horizontal, 20)
@@ -207,7 +195,7 @@ struct LookBookRegisterView: View {
             .needClothes,
             showAlert: $viewModel.isEmptyCloset,
             rightAction: {
-                coordinator.dismissFullScreen()
+                viewModel.dismiss()
             }
         )
     }

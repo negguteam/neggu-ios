@@ -8,8 +8,11 @@
 import Core
 import Domain
 
+import LookBookFeatureInterface
+
 import Foundation
 import Combine
+import UserNotifications
 
 final class LookBookDetailViewModel: ObservableObject {
     
@@ -19,13 +22,17 @@ final class LookBookDetailViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var lookBookDetail: LookBookEntity?
-    @Published private(set) var deleteState: DeleteState = .idle
     
     private var bag = Set<AnyCancellable>()
     
+    private let router: any LookBookDetailRoutable
     private let lookBookUsecase: any LookBookUsecase
     
-    init(lookBookUsecase: any LookBookUsecase) {
+    init(
+        router: any LookBookDetailRoutable,
+        lookBookUsecase: any LookBookUsecase
+    ) {
+        self.router = router
         self.lookBookUsecase = lookBookUsecase
         
         bind()
@@ -62,17 +69,20 @@ final class LookBookDetailViewModel: ObservableObject {
             .sink { owner, lookBook in
                 if let lookBook {
                     LookBookCalendarManager.shared.removeLookBook(id: lookBook.id)
-                    owner.deleteState = .success
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [lookBook.id])
+                    owner.pop()
                 } else {
-                    owner.deleteState = .failure
+                    AlertManager.shared.setAlert(message: "코디 삭제에 실패했습니다. 다시 시도해주세요.")
                 }
             }.store(in: &bag)
     }
     
-    enum DeleteState: Equatable {
-        case idle
-        case success
-        case failure
+    func presentClothesDetail(_ id: String) {
+        router.presentClothesDetail(id: id)
+    }
+    
+    func pop() {
+        router.pop()
     }
     
 }

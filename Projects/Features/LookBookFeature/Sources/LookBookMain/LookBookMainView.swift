@@ -12,8 +12,6 @@ import NegguDS
 import SwiftUI
 
 struct LookBookMainView: View {
-    @EnvironmentObject private var coordinator: LookBookCoordinator
-    
     @StateObject private var viewModel: LookBookMainViewModel
     
     init(viewModel: LookBookMainViewModel) {
@@ -26,7 +24,7 @@ struct LookBookMainView: View {
                 Spacer()
                 
                 Button {
-                    coordinator.push(.setting)
+                    viewModel.pushSetting()
                 } label: {
                     NegguImage.Icon.setting
                         .foregroundStyle(.labelNormal)
@@ -45,7 +43,7 @@ struct LookBookMainView: View {
                                 
                                 HStack(spacing: 14) {
                                     Button {
-                                        coordinator.rootCoordinator?.activeTab = .closet
+                                        viewModel.switchTab(.closet)
                                     } label: {
                                         HStack {
                                             NegguImage.Icon.shirtFill
@@ -150,7 +148,7 @@ struct LookBookMainView: View {
                         
                     ForEach(viewModel.lookBookCalenar) { item in
                         Button {
-                            coordinator.push(.lookBookDetail(id: item.id))
+                            viewModel.pushDetail(id: item.id)
                         } label: {
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(.white)
@@ -204,7 +202,7 @@ struct LookBookMainView: View {
             ) {
                 ForEach(viewModel.lookBookList) { lookBook in
                     Button {
-                        coordinator.push(.lookBookDetail(id: lookBook.id))
+                        viewModel.pushDetail(id: lookBook.id)
                     } label: {
                         LookBookCell(lookBook: lookBook)
                     }
@@ -247,4 +245,36 @@ struct LookBookMainView: View {
             return (date.monthDayFormatted(), NegguDSAsset.Colors.gray50.swiftUIColor)
         }
     }
+}
+
+public extension Date {
+    
+    func generateLookBookDate() -> (String, Color) {
+        let twoDaysAfter = Calendar.current.date(byAdding: .day, value: 2, to: Date.now.yearMonthDay())!
+        
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2
+        let today = calendar.startOfDay(for: Date.now)
+        var week: [Date] = []
+        
+        if let weekInterval = calendar.dateInterval(of: .weekOfYear, for: today) {
+            for i in 0...6 {
+                if let day = calendar.date(byAdding: .day, value: i, to: weekInterval.start) {
+                    week += [day]
+                }
+            }
+        }
+        
+        if self.yearMonthDay() == Date.now.yearMonthDay() {
+            return ("오늘", .negguSecondary)
+        } else if self.yearMonthDay() <= twoDaysAfter {
+            let dayString = self.yearMonthDay().toRelativeFormatString()
+            return (dayString, .labelNormal)
+        } else if week.contains(self.yearMonthDay()) {
+            return (self.daySymbol(), .labelNormal)
+        } else {
+            return (self.monthDayFormatted(), NegguDSAsset.Colors.gray50.swiftUIColor)
+        }
+    }
+    
 }

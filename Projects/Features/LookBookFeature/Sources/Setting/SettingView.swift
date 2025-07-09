@@ -10,22 +10,31 @@ import NegguDS
 import Domain
 
 import BaseFeature
+import LookBookFeatureInterface
 
 import SwiftUI
 
 struct SettingView: View {
-    @EnvironmentObject private var coordinator: LookBookCoordinator
+    @StateObject private var router: SettingRouter
     
     @State private var showLogoutAlert: Bool = false
     @State private var showWithdrawAlert: Bool = false
     
-    private let usecase = DIContainer.shared.resolve(UserUsecase.self)
+    private let usecase: any UserUsecase
+    
+    init(
+        router: SettingRouter,
+        usecase: any UserUsecase
+    ) {
+        self._router = StateObject(wrappedValue: router)
+        self.usecase = usecase
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             HStack {
                 Button {
-                    coordinator.pop()
+                    router.pop()
                 } label: {
                     NegguImage.Icon.chevronLeft
                         .frame(width: 44, height: 44)
@@ -49,7 +58,7 @@ struct SettingView: View {
             List {
                 Section {
                     Button {
-                        coordinator.push(.policy(.privacyPolicy))
+                        router.routeToPolicy(.privacyPolicy)
                     } label: {
                         HStack {
                             Text("개인정보 처리방침")
@@ -64,7 +73,7 @@ struct SettingView: View {
                     .listRowSeparator(.hidden)
                     
                     Button {
-                        coordinator.push(.policy(.termsOfUse))
+                        router.routeToPolicy(.termsOfUse)
                     } label: {
                         HStack {
                             Text("서비스 이용약관")
@@ -125,19 +134,17 @@ struct SettingView: View {
             .negguFont(.body2b)
             .foregroundStyle(.labelNormal)
             
-            BannerViewContainer()
-                .frame(height: 50)
+//            BannerViewContainer()
+//                .frame(height: 50)
         }
         .background(.bgNormal)
         .negguAlert(.logout, showAlert: $showLogoutAlert) {
             usecase.logout()
+            router.popToRoot()
         }
         .negguAlert(.withdraw, showAlert: $showWithdrawAlert) {
             usecase.withdraw()
+            router.popToRoot()
         }
     }
-}
-
-#Preview {
-    SettingView()
 }

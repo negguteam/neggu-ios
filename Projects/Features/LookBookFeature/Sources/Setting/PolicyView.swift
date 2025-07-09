@@ -13,11 +13,12 @@ import BaseFeature
 import SwiftUI
 
 struct PolicyView: View {
-    @EnvironmentObject private var coordinator: LookBookCoordinator
+    @StateObject private var router: PolicyRouter
     
     private let policyType: PolicyType
     
-    init(_ policyType: PolicyType) {
+    init(router: PolicyRouter, _ policyType: PolicyType) {
+        self._router = StateObject(wrappedValue: router)
         self.policyType = policyType
     }
     
@@ -25,7 +26,7 @@ struct PolicyView: View {
         VStack(spacing: 0) {
             HStack {
                 Button {
-                    coordinator.pop()
+                    router.pop()
                 } label: {
                     NegguImage.Icon.chevronLeft
                 }
@@ -55,8 +56,4 @@ struct PolicyView: View {
             .padding(.horizontal, 48)
         }
     }
-}
-
-#Preview {
-    PolicyView(.privacyPolicy)
 }
