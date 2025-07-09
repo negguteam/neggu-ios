@@ -15,85 +15,80 @@ import LookBookFeature
 
 import SwiftUI
 
-struct RootView: View {
-    @ObservedObject private var mainCoordinator: MainCoordinator
-    
-    @StateObject private var closetCoordinator: ClosetCoordinator
-    @StateObject private var lookBookCoordinator: LookBookCoordinator
+public struct RootView: View {
+    @StateObject private var tabRouter: TabRouter
+    @StateObject private var closetRouter: ClosetRouter
+    @StateObject private var lookBookRouter: LookBookMainRouter
     
     @State private var isTabBarHidden: Bool = false
     
-    init(mainCoordinator: MainCoordinator) {
-        self._mainCoordinator = ObservedObject(wrappedValue: mainCoordinator)
-        self._closetCoordinator = StateObject(wrappedValue: mainCoordinator.makeClosetCoordinator())
-        self._lookBookCoordinator = StateObject(wrappedValue: mainCoordinator.makeLookBookCoordinator())
+    public init(tabRouter: TabRouter) {
+        self._tabRouter = StateObject(wrappedValue: tabRouter)
+        self._closetRouter = StateObject(wrappedValue: tabRouter.startClosetFlow())
+        self._lookBookRouter = StateObject(wrappedValue: tabRouter.startLookBookFlow())
     }
     
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .bottom) {
             if #available(iOS 18.0, *) {
-                TabView(selection: $mainCoordinator.activeTab) {
+                TabView(selection: $tabRouter.activeTab) {
                     Tab.init(value: NegguTab.closet) {
-                        NavigationStack(path: $closetCoordinator.path) {
-                            closetCoordinator.buildScene(.clothesMain)
+                        NavigationStack(path: $closetRouter.routers) {
+                            closetRouter.start()
                                 .toolbar(.hidden, for: .navigationBar)
-                                .navigationDestination(for: MainScene.self) { scene in
-                                    closetCoordinator.buildScene(scene)
+                                .navigationDestination(for: AnyRoutable.self) { router in
+                                    router.makeView()
                                         .toolbarVisibility(.hidden, for: .navigationBar)
                                 }
                         }
                         .toolbarVisibility(.hidden, for: .tabBar)
-                        .sheet(item: $closetCoordinator.sheet) { scene in
-                            closetCoordinator.buildScene(scene)
+                        .sheet(item: $closetRouter.sheet) { router in
+                            router.makeView()
                                 .presentationCornerRadius(20)
                                 .presentationBackground(.bgNormal)
                         }
-                        .fullScreenCover(item: $closetCoordinator.fullScreenCover) { scene in
-                            closetCoordinator.buildScene(scene)
-                                .presentationBackground(.bgNormal)
+                        .fullScreenCover(item: $closetRouter.fullScreen) { router in
+                            router.makeView()
                         }
                     }
                     
                     Tab.init(value: NegguTab.lookbook) {
-                        NavigationStack(path: $lookBookCoordinator.path) {
-                            lookBookCoordinator.buildScene(.lookBookMain)
-                                .navigationDestination(for: MainScene.self) { scene in
-                                    lookBookCoordinator.buildScene(scene)
+                        NavigationStack(path: $lookBookRouter.routers) {
+                            lookBookRouter.start()
+                                .navigationDestination(for: AnyRoutable.self) { router in
+                                    router.makeView()
                                         .toolbarVisibility(.hidden, for: .navigationBar)
                                 }
                         }
                         .toolbarVisibility(.hidden, for: .tabBar)
-                        .sheet(item: $lookBookCoordinator.sheet) { scene in
-                            lookBookCoordinator.buildScene(scene)
+                        .sheet(item: $lookBookRouter.sheet) { router in
+                            router.makeView()
                                 .presentationCornerRadius(20)
                                 .presentationBackground(.bgNormal)
                         }
-                        .fullScreenCover(item: $lookBookCoordinator.fullScreenCover) { scene in
-                            lookBookCoordinator.buildScene(scene)
+                        .fullScreenCover(item: $lookBookRouter.fullScreen) { router in
+                            router.makeView()
                         }
                     }
                 }
-                .environmentObject(closetCoordinator)
-                .environmentObject(lookBookCoordinator)
             } else {
-                TabView(selection: $mainCoordinator.activeTab) {
-                    NavigationStack(path: $closetCoordinator.path) {
-                        closetCoordinator.buildScene(.clothesMain)
-                            .navigationDestination(for: MainScene.self) { scene in
-                                closetCoordinator.buildScene(scene)
+                TabView(selection: $tabRouter.activeTab) {
+                    NavigationStack(path: $closetRouter.routers) {
+                        closetRouter.start()
+                            .navigationDestination(for: AnyRoutable.self) { router in
+                                router.makeView()
                                     .toolbar(.hidden, for: .navigationBar)
                             }
                     }
                     .tag(NegguTab.closet)
-                    .sheet(item: $closetCoordinator.sheet) { scene in
-                        closetCoordinator.buildScene(scene)
+                    .sheet(item: $closetRouter.sheet) { router in
+                        router.makeView()
                             .presentationCornerRadius(20)
                             .presentationBackground(.bgNormal)
                     }
-                    .fullScreenCover(item: $closetCoordinator.fullScreenCover) { scene in
-                        closetCoordinator.buildScene(scene)
+                    .fullScreenCover(item: $closetRouter.fullScreen) { router in
+                        router.makeView()
                     }
-                    .environmentObject(closetCoordinator)
                     .background {
                         if !isTabBarHidden {
                             HideTabBar {
@@ -102,56 +97,44 @@ struct RootView: View {
                         }
                     }
                     
-                    NavigationStack(path: $lookBookCoordinator.path) {
-                        lookBookCoordinator.buildScene(.lookBookMain)
-                            .navigationDestination(for: MainScene.self) { scene in
-                                lookBookCoordinator.buildScene(scene)
+                    NavigationStack(path: $lookBookRouter.routers) {
+                        lookBookRouter.start()
+                            .navigationDestination(for: AnyRoutable.self) { router in
+                                router.makeView()
                                     .toolbar(.hidden, for: .navigationBar)
                             }
                     }
                     .tag(NegguTab.lookbook)
-                    .sheet(item: $lookBookCoordinator.sheet) { scene in
-                        lookBookCoordinator.buildScene(scene)
+                    .sheet(item: $lookBookRouter.sheet) { router in
+                        router.makeView()
                             .presentationCornerRadius(20)
                             .presentationBackground(.bgNormal)
                     }
-                    .fullScreenCover(item: $lookBookCoordinator.fullScreenCover) { scene in
-                        lookBookCoordinator.buildScene(scene)
+                    .fullScreenCover(item: $lookBookRouter.fullScreen) { router in
+                        router.makeView()
                     }
-                    .environmentObject(lookBookCoordinator)
                 }
             }
             
-            if mainCoordinator.isGnbOpened {
+            if tabRouter.isGnbOpened {
                 Color.bgDimmed
                     .ignoresSafeArea()
                     .onTapGesture {
-                        mainCoordinator.isGnbOpened = false
+                        tabRouter.isGnbOpened = false
                     }
             }
-            
-            if mainCoordinator.showGnb {
+
+            if tabRouter.showGnb {
                 BottomNavigationBar()
-                    .environmentObject(closetCoordinator)
-                    .environmentObject(lookBookCoordinator)
+                    .environmentObject(tabRouter)
+                    .environmentObject(closetRouter)
+                    .environmentObject(lookBookRouter)
             }
             
             AlertView()
         }
-        .sheet(item: $mainCoordinator.sheet) { scene in
-            mainCoordinator.buildScene(scene)
-                .presentationCornerRadius(20)
-                .presentationBackground(.bgNormal)
-        }
-        .fullScreenCover(item: $mainCoordinator.fullScreenCover) { scene in
-            mainCoordinator.buildScene(scene)
-        }
-        .animation(.smooth(duration: 0.2), value: mainCoordinator.isGnbOpened)
+        .animation(.smooth(duration: 0.2), value: tabRouter.isGnbOpened)
         .ignoresSafeArea(.keyboard)
-        .onAppear {
-            if mainCoordinator.showGnb { return }
-            mainCoordinator.showGnb = true
-        }
         .onReceive(NotificationCenter.default.publisher(for: .init("DeepLink"))) { notification in
             if let url = notification.userInfo?["url"] as? String {
                 let components = url.components(separatedBy: "/")
@@ -160,9 +143,9 @@ struct RootView: View {
                     guard let lookBookID = components.last else { return }
                     
                     Task { @MainActor in
-                        mainCoordinator.activeTab = .lookbook
+                        tabRouter.activeTab = .lookbook
                         try? await Task.sleep(for: .seconds(0.5))
-                        lookBookCoordinator.push(.lookBookDetail(id: lookBookID))
+                        lookBookRouter.routeToDetail(id: lookBookID)
                     }
                 }
             }

@@ -15,10 +15,10 @@ import LookBookFeature
 import SwiftUI
 import PhotosUI
 
-public struct BottomNavigationBar: View {
-    @EnvironmentObject private var coordinator: MainCoordinator
-    @EnvironmentObject private var closetCoordinator: ClosetCoordinator
-    @EnvironmentObject private var lookBookCoordinator: LookBookCoordinator
+struct BottomNavigationBar: View {
+    @EnvironmentObject private var tabRouter: TabRouter
+    @EnvironmentObject private var closetRouter: ClosetRouter
+    @EnvironmentObject private var lookBookRouter: LookBookMainRouter
     
     @State private var selectedCameraPhoto: UIImage?
     @State private var selectedAlbumPhoto: PhotosPickerItem?
@@ -28,29 +28,29 @@ public struct BottomNavigationBar: View {
     
     @Namespace private var namespace
     
-    public init() { }
+    init() { }
     
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 14) {
-            if coordinator.isGnbOpened {
+            if tabRouter.isGnbOpened {
                 bottomNavigationOpenedView
             }
             
             HStack(spacing: 16) {
                 BottomNavigationBarItem(
-                    $coordinator.activeTab,
+                    $tabRouter.activeTab,
                     tab: .closet,
                     namespace: namespace
                 ) {
-                    if coordinator.isGnbOpened { coordinator.isGnbOpened = false }
-                    if coordinator.activeTab != .closet { coordinator.activeTab = .closet }
+                    if tabRouter.isGnbOpened { tabRouter.isGnbOpened = false }
+                    if tabRouter.activeTab != .closet { tabRouter.activeTab = .closet }
                 }
                 
                 Button {
-                    coordinator.isGnbOpened.toggle()
+                    tabRouter.isGnbOpened.toggle()
                 } label: {
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(coordinator.isGnbOpened ? .negguSecondary : NegguDSAsset.Colors.gray70.swiftUIColor)
+                        .fill(tabRouter.isGnbOpened ? .negguSecondary : NegguDSAsset.Colors.gray70.swiftUIColor)
                         .frame(width: 48, height: 48)
                         .overlay {
                             NegguImage.Icon.plus
@@ -60,12 +60,12 @@ public struct BottomNavigationBar: View {
                 .zIndex(10)
                 
                 BottomNavigationBarItem(
-                    $coordinator.activeTab,
+                    $tabRouter.activeTab,
                     tab: .lookbook,
                     namespace: namespace
                 ) {
-                    if coordinator.isGnbOpened { coordinator.isGnbOpened = false }
-                    if coordinator.activeTab != .lookbook { coordinator.activeTab = .lookbook }
+                    if tabRouter.isGnbOpened { tabRouter.isGnbOpened = false }
+                    if tabRouter.activeTab != .lookbook { tabRouter.activeTab = .lookbook }
                 }
             }
             .padding(4)
@@ -81,9 +81,9 @@ public struct BottomNavigationBar: View {
                 .background(.black)
         }
         .photosPicker(isPresented: $showAlbumSheet, selection: $selectedAlbumPhoto, matching: .images)
-        .onChange(of: coordinator.isGnbOpened) { _, newValue in
+        .onChange(of: tabRouter.isGnbOpened) { _, newValue in
             if newValue { return }
-            coordinator.gnbState = .main
+            tabRouter.gnbState = .main
         }
         .onChange(of: selectedCameraPhoto) { _, newValue in
             if newValue == nil { return }
@@ -95,13 +95,13 @@ public struct BottomNavigationBar: View {
                 else { return }
                 
                 await MainActor.run {
-                    coordinator.activeTab = .closet
+                    tabRouter.activeTab = .closet
                 }
                 
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    closetCoordinator.push(.clothesRegister(entry: .register(segmentedImage, .emptyData)))
+                    closetRouter.presentRegister(segmentedImage, .emptyData)
                     selectedCameraPhoto = nil
                 }
             }
@@ -117,13 +117,13 @@ public struct BottomNavigationBar: View {
                 else { return }
                 
                 await MainActor.run {
-                    coordinator.activeTab = .closet
+                    tabRouter.activeTab = .closet
                 }
                 
                 try await Task.sleep(for: .seconds(0.5))
                 
                 await MainActor.run {
-                    closetCoordinator.push(.clothesRegister(entry: .register(segmentedImage, .emptyData)))
+                    closetRouter.presentRegister(segmentedImage, .emptyData)
                     selectedAlbumPhoto = nil
                 }
             }
@@ -133,7 +133,7 @@ public struct BottomNavigationBar: View {
     @ViewBuilder
     private var bottomNavigationOpenedView: some View {
         Group {
-            switch coordinator.gnbState {
+            switch tabRouter.gnbState {
             case .main:
                 VStack(spacing: 16) {
                     expandedGnbRowItem(
@@ -141,7 +141,7 @@ public struct BottomNavigationBar: View {
                         leftIcon: NegguImage.Icon.shirtFill,
                         rightIcon: NegguImage.Icon.chevronRight
                     ) {
-                        coordinator.gnbState = .clothes
+                        tabRouter.gnbState = .clothes
                     }
                     .frame(height: 32)
                     
@@ -154,8 +154,9 @@ public struct BottomNavigationBar: View {
                         leftIcon: NegguImage.Icon.closetFill,
                         rightIcon: NegguImage.Icon.chevronRight
                     ) {
-                        coordinator.isGnbOpened = false
-                        coordinator.presentFullScreen(.lookBookRegister)
+                        tabRouter.isGnbOpened = false
+                        tabRouter.activeTab = .lookbook
+                        lookBookRouter.fullScreenRegister()
                     }
                     .frame(height: 32)
                 }
@@ -163,7 +164,7 @@ public struct BottomNavigationBar: View {
             case .clothes:
                 HStack(alignment: .top, spacing: 20) {
                     Button {
-                        coordinator.gnbState = .main
+                        tabRouter.gnbState = .main
                     } label: {
                         NegguImage.Icon.chevronLeft
                             .frame(width: 24, height: 24)
@@ -171,8 +172,8 @@ public struct BottomNavigationBar: View {
                     
                     VStack(alignment: .leading, spacing: 16) {
                         expandedGnbRowItem("링크로 등록하기", leftIcon: NegguImage.Icon.link) {
-                            coordinator.isGnbOpened = false
-                            coordinator.activeTab = .closet
+                            tabRouter.isGnbOpened = false
+                            tabRouter.activeTab = .closet
                         }
                         
                         Rectangle()
@@ -180,7 +181,7 @@ public struct BottomNavigationBar: View {
                             .frame(height: 1)
                         
                         expandedGnbRowItem("지금 촬영하고 등록하기", leftIcon: NegguImage.Icon.camera) {
-                            coordinator.isGnbOpened = false
+                            tabRouter.isGnbOpened = false
                             showCameraSheet = true
                         }
                         
@@ -189,7 +190,7 @@ public struct BottomNavigationBar: View {
                             .frame(height: 1)
                         
                         expandedGnbRowItem("갤러리에서 등록하기", leftIcon: NegguImage.Icon.gallery) {
-                            coordinator.isGnbOpened = false
+                            tabRouter.isGnbOpened = false
                             showAlbumSheet = true
                         }
                     }
