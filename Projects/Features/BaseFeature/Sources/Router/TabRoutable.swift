@@ -1,21 +1,17 @@
 //
-//  MainCoordinatorable.swift
+//  TabRoutable.swift
 //  BaseFeature
 //
-//  Created by 유지호 on 6/30/25.
+//  Created by 유지호 on 7/10/25.
 //  Copyright © 2025 Neggu. All rights reserved.
 //
 
-import SwiftUI
 
-public protocol MainCoordinatorable: Coordinator {
+public protocol TabRoutable {
     var activeTab: NegguTab { get set }
     var gnbState: GnbState { get set }
     var showGnb: Bool { get set }
     var isGnbOpened: Bool { get set }
-}
-
-public enum GnbState {
-    case main
-    case clothes
+    
+    func switchTab(_ tab: NegguTab)
 }
