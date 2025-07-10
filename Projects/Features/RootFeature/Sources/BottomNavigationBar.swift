@@ -170,8 +170,12 @@ struct BottomNavigationBar: View {
                     
                     VStack(alignment: .leading, spacing: 16) {
                         expandedGnbRowItem("링크로 등록하기", leftIcon: NegguImage.Icon.link) {
-                            tabRouter.isGnbOpened = false
-                            tabRouter.activeTab = .closet
+                            Task { @MainActor in
+                                tabRouter.isGnbOpened = false
+                                tabRouter.activeTab = .closet
+                                try? await Task.sleep(for: .seconds(0.5))
+                                closetRouter.isFocused.send(true)
+                            }
                         }
                         
                         Rectangle()

@@ -36,131 +36,143 @@ public struct ClosetView: View {
     }
     
     public var body: some View {
-        ScrollView {
-            VStack {
-                LinkBanner(urlString: $clothesLink) {
-                    if clothesLink.isEmpty { return }
-                    clothesLink = clothesLink.split(separator: " ").filter { $0.contains("https://") }.joined()
-                    viewModel.urlDidParse.send(clothesLink)
-                    clothesLink.removeAll()
-                    isFocused = false
-                }
-                .padding(.vertical, 28)
-                .focused($isFocused)
-                .onTapGesture {
-                    isFocused = false
-                }
-                
-                LazyVGrid(
-                    columns: [GridItem](repeating: GridItem(.flexible(), spacing: 14), count: 3),
-                    spacing: 12,
-                    pinnedViews: [.sectionHeaders]
-                ) {
-                    Section {
-                        if viewModel.clothesList.isEmpty {
-                            ForEach(0..<6) { _ in
-                                Rectangle()
-                                    .fill(.clear)
-                                    .aspectRatio(5/6, contentMode: .fit)
-                            }
-                        } else {
-                            ForEach(viewModel.clothesList) { clothes in
-                                Button {
-                                    viewModel.presentDetail(id: clothes.id)
-                                } label: {
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                VStack {
+                    LinkBanner(urlString: $clothesLink) {
+                        if clothesLink.isEmpty { return }
+                        clothesLink = clothesLink.split(separator: " ").filter { $0.contains("https://") }.joined()
+                        viewModel.urlDidParse.send(clothesLink)
+                        clothesLink.removeAll()
+                        isFocused = false
+                    }
+                    .padding(.vertical, 28)
+                    .id("LinkField")
+                    .focused($isFocused)
+                    .onTapGesture {
+                        isFocused = false
+                    }
+                    .onChange(of: viewModel.isFocused) { _, newValue in
+                        if !newValue { return }
+                        withAnimation(.smooth(duration: 0.2)) {
+                            scrollProxy.scrollTo("LinkField", anchor: .top)
+                        }
+                        
+                        isFocused = newValue
+                        viewModel.resetFocused()
+                    }
+                    
+                    LazyVGrid(
+                        columns: [GridItem](repeating: GridItem(.flexible(), spacing: 14), count: 3),
+                        spacing: 12,
+                        pinnedViews: [.sectionHeaders]
+                    ) {
+                        Section {
+                            if viewModel.clothesList.isEmpty {
+                                ForEach(0..<6) { _ in
                                     Rectangle()
                                         .fill(.clear)
                                         .aspectRatio(5/6, contentMode: .fit)
-                                        .overlay {
-//                                            CachedAsyncImage(clothes.imageUrl)
-                                            AsyncImage(url: URL(string: clothes.imageUrl)) { image in
-                                                image
-                                                    .resizable()
-                                                    .scaledToFit()
-                                            } placeholder: {
-                                                SkeletonView()
-                                            }
-                                        }
                                 }
-                                .onAppear {
-                                    guard let last = viewModel.clothesList.last,
-                                          clothes.id == last.id
-                                    else { return }
-                                    
-                                    viewModel.closetDidScroll.send(())
+                            } else {
+                                ForEach(viewModel.clothesList) { clothes in
+                                    Button {
+                                        viewModel.presentDetail(id: clothes.id)
+                                    } label: {
+                                        Rectangle()
+                                            .fill(.clear)
+                                            .aspectRatio(5/6, contentMode: .fit)
+                                            .overlay {
+                                                //                                            CachedAsyncImage(clothes.imageUrl)
+                                                AsyncImage(url: URL(string: clothes.imageUrl)) { image in
+                                                    image
+                                                        .resizable()
+                                                        .scaledToFit()
+                                                } placeholder: {
+                                                    SkeletonView()
+                                                }
+                                            }
+                                    }
+                                    .onAppear {
+                                        guard let last = viewModel.clothesList.last,
+                                              clothes.id == last.id
+                                        else { return }
+                                        
+                                        viewModel.closetDidScroll.send(())
+                                    }
                                 }
                             }
-                        }
-                    } header: {
-                        VStack(alignment: .leading, spacing: 0) {
-                            Text(userNickname + " 옷장")
-                                .negguFont(.title3)
-                                .foregroundStyle(.labelNormal)
-                                .lineLimit(1)
-                            
-                            HStack {
-                                FilterButton(title: filterSelection.categoryTitle) {
-                                    showCategorySheet = true
-                                }
-                                .sheet(isPresented: $showCategorySheet) {
-                                    CategorySheet(
-                                        categorySelection: $filterSelection.category,
-                                        subCategorySelection: $filterSelection.subCategory
-                                    )
-                                    .presentationCornerRadius(20)
-                                    .presentationBackground(.bgNormal)
-                                    .presentationDetents([.fraction(0.85)])
-                                }
+                        } header: {
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(userNickname + " 옷장")
+                                    .negguFont(.title3)
+                                    .foregroundStyle(.labelNormal)
+                                    .lineLimit(1)
                                 
-                                FilterButton(title: filterSelection.moodTitle) {
-                                    showMoodSheet = true
-                                }
-                                .sheet(isPresented: $showMoodSheet) {
-                                    MoodSheet(selection: $filterSelection.moodList, isSingleSelection: true)
+                                HStack {
+                                    FilterButton(title: filterSelection.categoryTitle) {
+                                        showCategorySheet = true
+                                    }
+                                    .sheet(isPresented: $showCategorySheet) {
+                                        CategorySheet(
+                                            categorySelection: $filterSelection.category,
+                                            subCategorySelection: $filterSelection.subCategory
+                                        )
                                         .presentationCornerRadius(20)
                                         .presentationBackground(.bgNormal)
                                         .presentationDetents([.fraction(0.85)])
-                                }
-                                
-                                if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty {
-                                    Button {
-                                        filterSelection.reset()
-                                    } label: {
-                                        NegguImage.Icon.refresh
-                                            .frame(width: 24, height: 24)
-                                            .foregroundStyle(.labelAssistive)
                                     }
-                                    .padding(.leading, 4)
+                                    
+                                    FilterButton(title: filterSelection.moodTitle) {
+                                        showMoodSheet = true
+                                    }
+                                    .sheet(isPresented: $showMoodSheet) {
+                                        MoodSheet(selection: $filterSelection.moodList, isSingleSelection: true)
+                                            .presentationCornerRadius(20)
+                                            .presentationBackground(.bgNormal)
+                                            .presentationDetents([.fraction(0.85)])
+                                    }
+                                    
+                                    if filterSelection.category != .UNKNOWN || !filterSelection.moodList.isEmpty {
+                                        Button {
+                                            filterSelection.reset()
+                                        } label: {
+                                            NegguImage.Icon.refresh
+                                                .frame(width: 24, height: 24)
+                                                .foregroundStyle(.labelAssistive)
+                                        }
+                                        .padding(.leading, 4)
+                                    }
+                                }
+                                .padding(.vertical)
+                                .onChange(of: filterSelection) { oldValue, newValue in
+                                    guard oldValue != newValue else { return }
+                                    viewModel.filterDidSelect.send(newValue)
                                 }
                             }
-                            .padding(.vertical)
-                            .onChange(of: filterSelection) { oldValue, newValue in
-                                guard oldValue != newValue else { return }
-                                viewModel.filterDidSelect.send(newValue)
-                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(.bgNormal)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(.bgNormal)
+                    }
+                    .background {
+                        ListEmptyView(
+                            title: "등록된 옷이 없어요!",
+                            description: "갖고 있는 옷을 등록해보세요!"
+                        )
+                        .opacity(viewModel.clothesList.isEmpty ? 1 : 0)
+                    }
+                    .onTapGesture {
+                        isFocused = false
                     }
                 }
-                .background {
-                    ListEmptyView(
-                        title: "등록된 옷이 없어요!",
-                        description: "갖고 있는 옷을 등록해보세요!"
-                    )
-                    .opacity(viewModel.clothesList.isEmpty ? 1 : 0)
-                }
-                .onTapGesture {
-                    isFocused = false
-                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 80)
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 80)
+            .scrollDismissesKeyboard(.immediately)
+            .ignoresSafeArea(.keyboard)
+            .padding(.top, 1)
+            .background(.bgNormal)
         }
-        .scrollDismissesKeyboard(.immediately)
-        .ignoresSafeArea(.keyboard)
-        .padding(.top, 1)
-        .background(.bgNormal)
         .refreshable {
             filterSelection = .init()
             viewModel.closetDidRefresh.send(())

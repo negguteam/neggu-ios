@@ -11,8 +11,10 @@ import Domain
 import BaseFeature
 
 import SwiftUI
+import Combine
 
 public protocol ClosetRoutable: Coordinatable {
+    var isFocused: PassthroughSubject<Bool, Never> { get }
     var routers: NavigationPath { get set }
     
     func start() -> AnyView

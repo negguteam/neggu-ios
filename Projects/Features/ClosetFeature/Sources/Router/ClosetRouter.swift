@@ -16,6 +16,8 @@ import Combine
 
 public final class ClosetRouter: BaseCoordinator, ClosetRoutable {
     
+    public let isFocused = PassthroughSubject<Bool, Never>()
+    
     private var bag = Set<AnyCancellable>()
     
     private weak var tabRouter: (any TabRoutable)?

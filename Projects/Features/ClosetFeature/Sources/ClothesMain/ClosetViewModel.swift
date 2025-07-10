@@ -26,6 +26,7 @@ public final class ClosetViewModel: ObservableObject {
     
     // MARK: Output
     @Published private(set) var clothesList: [ClothesEntity] = []
+    @Published private(set) var isFocused: Bool = false
     
     private var filter: ClothesFilter = .init()
     
@@ -92,6 +93,16 @@ public final class ClosetViewModel: ObservableObject {
         closetUsecase.clothesList
             .assign(to: \.clothesList, on: self)
             .store(in: &bag)
+        
+        router.isFocused
+            .withUnretained(self)
+            .sink { owner, isFocused in
+                owner.isFocused = isFocused
+            }.store(in: &bag)
+    }
+    
+    public func resetFocused() {
+        isFocused = false
     }
     
     private func fetchClothes() {
