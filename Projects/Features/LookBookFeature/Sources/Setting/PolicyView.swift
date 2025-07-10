@@ -47,13 +47,12 @@ struct PolicyView: View {
             .padding(.horizontal, 20)
             
             ScrollView {
+                Text(policyType.content)
+                    .negguFont(.body2)
+                    .foregroundStyle(.labelNormal)
+                    .padding(20)
 //                Markdown(policyType.content)
-//                    .negguFont(.body2)
-//                    .foregroundStyle(.labelNormal)
-//                    .padding(.vertical, 20)
             }
-            .scrollIndicators(.hidden)
-            .padding(.horizontal, 48)
         }
     }
 }
