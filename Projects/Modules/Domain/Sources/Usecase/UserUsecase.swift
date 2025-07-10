@@ -64,6 +64,7 @@ public final class DefaultUserUsecase: UserUsecase {
             } receiveValue: { owner, _ in
                 UserDefaultsKey.clearUserData()
                 UserDefaultsKey.Auth.isLogined = false
+                UserDefaultsKey.Auth.isFirstVisit = true
                 Messaging.messaging().deleteToken { _ in }
             }.store(in: &bag)
     }
@@ -107,6 +108,7 @@ public final class MockUserUsecase: UserUsecase {
     public func withdraw() {
         UserDefaultsKey.clearUserData()
         UserDefaultsKey.Auth.isLogined = false
+        UserDefaultsKey.Auth.isFirstVisit = true
 //        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     

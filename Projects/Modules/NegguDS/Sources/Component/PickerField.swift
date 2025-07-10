@@ -39,7 +39,7 @@ public struct PickerField: UIViewRepresentable {
     private let textField: PickerTextField
 }
 
-class PickerTextField: UITextField {
+final class PickerTextField: UITextField {
     // MARK: - Public properties
     var data: [String]
     @Binding var selectionIndex: Int
@@ -66,7 +66,6 @@ class PickerTextField: UITextField {
         let pickerView = UIPickerView()
         pickerView.delegate = self
         pickerView.dataSource = self
-        
         return pickerView
     }()
 
