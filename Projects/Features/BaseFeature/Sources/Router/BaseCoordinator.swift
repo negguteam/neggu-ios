@@ -35,6 +35,12 @@ open class BaseCoordinator: Coordinatable, ObservableObject {
         }
     }
     
+    open func switchRoot(_ router: any Routable) {
+        DispatchQueue.main.async {
+            self.routers = .init([AnyRoutable(router)])
+        }
+    }
+    
     open func present(_ router: any Routable) {
         DispatchQueue.main.async {
             self.sheet = AnyRoutable(router)

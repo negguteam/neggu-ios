@@ -10,8 +10,6 @@ import NegguDS
 import SwiftUI
 
 struct SignUpView: View {
-    @EnvironmentObject private var coordinator: AuthCoordinator
-    
     @StateObject private var viewModel: SignUpViewModel
     
     init(viewModel: SignUpViewModel) {
@@ -44,20 +42,20 @@ struct SignUpView: View {
             
             GeometryReader { proxy in
                 ZStack {
-                    SignUpNicknameView()
+                    SignUpNicknameView(viewModel: viewModel)
                         .offset(y: viewModel.step == 1 ? 0 : viewModel.step > 1 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 1 ? 1 : 0)
                     
-                    SignUpAgeView()
+                    SignUpAgeView(viewModel: viewModel)
                         .offset(y: viewModel.step == 2 ? 0 : viewModel.step > 2 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 2 ? 1 : 0)
                     
-                    SignUpGenderView()
+                    SignUpGenderView(viewModel: viewModel)
                         .frame(height: proxy.size.height)
                         .offset(y: viewModel.step == 3 ? 0 : viewModel.step > 3 ? -proxy.size.height : proxy.size.height)
                         .opacity(viewModel.step == 3 ? 1 : 0)
                     
-                    SignUpMoodView()
+                    SignUpMoodView(viewModel: viewModel)
                         .frame(height: proxy.size.height)
                         .offset(y: viewModel.step == 4 ? 0 : proxy.size.height)
                         .opacity(viewModel.step == 4 ? 1 : 0)
@@ -103,13 +101,8 @@ struct SignUpView: View {
                     .contentShape(.rect)
                 }
             }
-            .environmentObject(viewModel)
         }
         .padding(.horizontal, 20)
         .background(.bgNormal)
-        .onChange(of: viewModel.isRegistered) { _, newValue in
-            coordinator.switchRoot(.complete)
-            viewModel.reset()
-        }
     }
 }

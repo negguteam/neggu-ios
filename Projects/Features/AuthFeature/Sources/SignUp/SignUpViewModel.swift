@@ -8,6 +8,8 @@
 import Core
 import Domain
 
+import AuthFeatureInterface
+
 import Foundation
 import Combine
 
@@ -27,22 +29,25 @@ public final class SignUpViewModel: NSObject, ObservableObject {
     @Published private(set) var mood: [Mood] = []
     @Published private(set) var step: Int = 1
     @Published private(set) var nicknameFieldState: InputFieldState = .empty
-    @Published private(set) var isRegistered: Bool = false
     
     private var bag = Set<AnyCancellable>()
     
+    private let router: any SignUpRoutable
     private let authUsecase: any AuthUsecase
     
-    public init(authUsecase: any AuthUsecase) {
+    public init(
+        router: any SignUpRoutable,
+        authUsecase: any AuthUsecase
+    ) {
+        self.router = router
         self.authUsecase = authUsecase
         super.init()
         
         bind()
-        print("\(self) init")
     }
     
     deinit {
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     
@@ -107,25 +112,19 @@ public final class SignUpViewModel: NSObject, ObservableObject {
             }.store(in: &bag)
         
         authUsecase.isRegistered
-            .receive(on: RunLoop.main)
             .withUnretained(self)
             .sink { owner, isRegistered in
-                owner.isRegistered = isRegistered
+                if isRegistered {
+                    owner.router.routeToComplete()
+                } else {
+                    AlertManager.shared.setAlert(message: "회원가입에 실패했습니다.\n다시 시도해주세요.")
+                }
             }.store(in: &bag)
     }
     
     func tapBackButton() {
         if step < 1 { return }
         step -= 1
-    }
-    
-    func reset() {
-        nickname = ""
-        age = 19
-        gender = .UNKNOWN
-        mood.removeAll()
-        step = 1
-        isRegistered = false
     }
         
 }

@@ -16,6 +16,7 @@ public protocol Coordinatable {
     func push(_ router: any Routable)
     func pop()
     func popToRoot()
+    func switchRoot(_ router: any Routable)
     
     func present(_ router: any Routable)
     func dismiss()

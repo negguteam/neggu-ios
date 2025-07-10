@@ -11,11 +11,15 @@ import NegguDS
 import SwiftUI
 
 struct SignUpNicknameView: View {
-    @EnvironmentObject private var viewModel: SignUpViewModel
+    @ObservedObject private var viewModel: SignUpViewModel
     
     @State private var fieldState: InputFieldState = .empty
     
     @FocusState private var isFocused: Bool
+    
+    init(viewModel: SignUpViewModel) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack(spacing: 12) {

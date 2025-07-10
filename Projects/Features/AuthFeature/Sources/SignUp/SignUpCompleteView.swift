@@ -10,7 +10,11 @@ import Core
 import SwiftUI
 
 struct SignUpCompleteView: View {
-    @EnvironmentObject private var authCoordinator: AuthCoordinator
+    @StateObject private var router: SignUpCompleteRouter
+    
+    init(router: SignUpCompleteRouter) {
+        self._router = StateObject(wrappedValue: router)
+    }
     
     var body: some View {
         GeometryReader {
@@ -34,7 +38,7 @@ struct SignUpCompleteView: View {
                 VStack(spacing: 24) {
                     Button {
                         UserDefaultsKey.Auth.isLogined = true
-                        authCoordinator.popToRoot()
+                        router.popToRoot()
                     } label: {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(.negguSecondary)

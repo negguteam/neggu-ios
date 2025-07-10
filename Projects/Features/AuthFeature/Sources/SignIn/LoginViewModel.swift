@@ -9,6 +9,8 @@
 import Core
 import Domain
 
+import AuthFeatureInterface
+
 import Foundation
 import Combine
 import GoogleSignIn
@@ -24,26 +26,32 @@ final class LoginViewModel: NSObject, ObservableObject {
     
     private var bag = Set<AnyCancellable>()
     
+    private let router: any AuthRoutable
     private let authUsecase: any AuthUsecase
     
-    init(authUsecase: any AuthUsecase) {
+    init(
+        router: any AuthRoutable,
+        authUsecase: any AuthUsecase
+    ) {
+        self.router = router
         self.authUsecase = authUsecase
         super.init()
         
         bind()
-        print("\(self) init")
     }
     
     deinit {
-        print("\(self) deinit")
+        debugPrint("\(self) deinit")
     }
     
     
     private func bind() {
         authUsecase.isSignUpFlow
-            .receive(on: RunLoop.main)
-            .assign(to: \.isSignUpFlow, on: self)
-            .store(in: &bag)
+            .filter { $0 }
+            .withUnretained(self)
+            .sink { owner, _ in
+                owner.router.routeToSignUp()
+            }.store(in: &bag)
     }
     
     private func login(_ socialType: SocialType, idToken: String) {

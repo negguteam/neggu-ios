@@ -21,25 +21,24 @@ public final class AuthFeatureBuilder: AuthFeatureBuildable {
     
     
     public func makeOnboarding() -> AnyView {
-        OnboardingView()
-            .eraseToAnyView()
+        OnboardingView().eraseToAnyView()
     }
     
-    public func makeLogin() -> AnyView {
-        let viewModel = LoginViewModel(authUsecase: authUsecase)
+    public func makeLogin(router: any AuthRoutable) -> AnyView {
+        let viewModel = LoginViewModel(router: router, authUsecase: authUsecase)
         let view = LoginView(viewModel: viewModel)
         return view.eraseToAnyView()
     }
     
-    public func makeSignUp() -> AnyView {
-        let viewModel = SignUpViewModel(authUsecase: authUsecase)
+    public func makeSignUp(router: any SignUpRoutable) -> AnyView {
+        let viewModel = SignUpViewModel(router: router, authUsecase: authUsecase)
         let view = SignUpView(viewModel: viewModel)
         return view.eraseToAnyView()
     }
     
-    public func makeSignUpComplete() -> AnyView {
-        SignUpCompleteView()
-            .eraseToAnyView()
+    public func makeSignUpComplete(router: any SignUpCompleteRoutable) -> AnyView {
+        guard let router = router as? SignUpCompleteRouter else { return AnyView(EmptyView()) }
+        return SignUpCompleteView(router: router).eraseToAnyView()
     }
     
 }

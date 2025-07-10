@@ -140,9 +140,11 @@ struct SettingView: View {
         .background(.bgNormal)
         .negguAlert(.logout, showAlert: $showLogoutAlert) {
             usecase.logout()
+            router.popToRoot()
         }
         .negguAlert(.withdraw, showAlert: $showWithdrawAlert) {
             usecase.withdraw()
+            router.popToRoot()
         }
     }
 }

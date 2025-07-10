@@ -19,11 +19,7 @@ import FirebaseCore
 @main
 struct NegguApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
-    @StateObject private var mainCoordinator = MainCoordinator()
-    @StateObject private var authCoordinator = AuthCoordinator()
-    
-    @AppStorage("isFirstVisit") private var isFirstVisit: Bool = true
+        
     @AppStorage("isLogined") private var isLogined: Bool = false
     
     init() {
@@ -36,24 +32,10 @@ struct NegguApp: App {
     var body: some Scene {
         WindowGroup {
             if isLogined {
-                mainCoordinator.start()
+                RootView(tabRouter: .init())
             } else {
-                // TODO: Router 작업
-                NavigationStack(path: $authCoordinator.path) {
-                    authCoordinator.buildScene(isFirstVisit ? .onboarding : .login)
-                        .navigationDestination(for: AuthCoordinator.Destination.self) { scene in
-                            if #available(iOS 18.0, *) {
-                                authCoordinator.buildScene(scene)
-                                    .toolbarVisibility(.hidden, for: .navigationBar)
-                            } else {
-                                authCoordinator.buildScene(scene)
-                                    .toolbar(.hidden, for: .navigationBar)
-                            }
-                        }
-                }
-                .environmentObject(authCoordinator)
+                AuthView(router: .init())
             }
         }
-        .environmentObject(mainCoordinator)
     }
 }

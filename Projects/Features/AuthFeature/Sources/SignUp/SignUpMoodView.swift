@@ -11,9 +11,13 @@ import NegguDS
 import SwiftUI
 
 struct SignUpMoodView: View {
-    @EnvironmentObject private var viewModel: SignUpViewModel
+    @ObservedObject private var viewModel: SignUpViewModel
     
     @State private var moodSelection: [Mood] = []
+    
+    init(viewModel: SignUpViewModel) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ScrollViewReader { scrollProxy in

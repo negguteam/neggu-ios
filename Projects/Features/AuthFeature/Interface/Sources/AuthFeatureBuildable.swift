@@ -10,7 +10,7 @@ import SwiftUI
 
 public protocol AuthFeatureBuildable {
     func makeOnboarding() -> AnyView
-    func makeLogin() -> AnyView
-    func makeSignUp() -> AnyView
-    func makeSignUpComplete() -> AnyView
+    func makeLogin(router: any AuthRoutable) -> AnyView
+    func makeSignUp(router: any SignUpRoutable) -> AnyView
+    func makeSignUpComplete(router: any SignUpCompleteRoutable) -> AnyView
 }

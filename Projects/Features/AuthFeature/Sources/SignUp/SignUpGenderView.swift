@@ -11,7 +11,11 @@ import NegguDS
 import SwiftUI
 
 struct SignUpGenderView: View {
-    @EnvironmentObject private var viewModel: SignUpViewModel
+    @ObservedObject private var viewModel: SignUpViewModel
+    
+    init(viewModel: SignUpViewModel) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack(spacing: 24) {

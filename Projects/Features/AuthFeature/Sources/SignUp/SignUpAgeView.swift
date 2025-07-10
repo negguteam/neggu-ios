@@ -10,9 +10,15 @@ import NegguDS
 import SwiftUI
 
 struct SignUpAgeView: View {
-    @EnvironmentObject private var viewModel: SignUpViewModel
+    @ObservedObject private var viewModel: SignUpViewModel
+    
+    @State private var selectedIndex: Int = 19
     
     @FocusState private var isFocused: Bool
+    
+    init(viewModel: SignUpViewModel) {
+        self._viewModel = ObservedObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack(spacing: 24) {
@@ -28,12 +34,12 @@ struct SignUpAgeView: View {
                         PickerField(
                             "",
                             data: Array(1...99).map { "\($0)" },
-                            selectionIndex: Binding(
-                                get: { viewModel.age },
-                                set: { viewModel.ageDidSelect.send($0) }
-                            )
+                            selectionIndex: $selectedIndex
                         )
                         .focused($isFocused)
+                        .onChange(of: selectedIndex) { _, newValue in
+                            viewModel.ageDidSelect.send(newValue)
+                        }
                     }
                 
                 Text("살")

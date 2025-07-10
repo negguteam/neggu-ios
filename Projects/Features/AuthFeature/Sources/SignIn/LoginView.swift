@@ -13,8 +13,6 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 
 struct LoginView: View {
-    @EnvironmentObject private var coordinator: AuthCoordinator
-    
     @StateObject private var viewModel: LoginViewModel
     
     init(viewModel: LoginViewModel) {
@@ -97,10 +95,6 @@ struct LoginView: View {
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 48)
         .background(.bgRNormal)
-        .onChange(of: viewModel.isSignUpFlow) { _, newValue in
-            if !newValue { return }
-            coordinator.push(.signUp)
-        }
         .onOpenURL { url in
             if AuthApi.isKakaoTalkLoginUrl(url) {
                 _ = AuthController.handleOpenUrl(url: url)
