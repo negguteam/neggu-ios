@@ -18,7 +18,7 @@ public final class ClosetRouter: BaseCoordinator, ClosetRoutable {
     
     private var bag = Set<AnyCancellable>()
     
-    private let tabRouter: any TabRoutable
+    private weak var tabRouter: (any TabRoutable)?
     private let closetBuilder: any ClosetFeatureBuildable
     
     public init(
@@ -33,7 +33,7 @@ public final class ClosetRouter: BaseCoordinator, ClosetRoutable {
             .receive(on: RunLoop.main)
             .withUnretained(self)
             .sink { owner, routers in
-                owner.tabRouter.showGnb = routers.isEmpty
+                owner.tabRouter?.showGnb = routers.isEmpty
             }.store(in: &bag)
     }
     

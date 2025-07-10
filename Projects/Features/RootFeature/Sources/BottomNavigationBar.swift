@@ -28,8 +28,6 @@ struct BottomNavigationBar: View {
     
     @Namespace private var namespace
     
-    init() { }
-    
     var body: some View {
         VStack(spacing: 14) {
             if tabRouter.isGnbOpened {

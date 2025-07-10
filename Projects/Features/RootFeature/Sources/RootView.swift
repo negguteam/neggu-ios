@@ -35,7 +35,6 @@ public struct RootView: View {
                     Tab.init(value: NegguTab.closet) {
                         NavigationStack(path: $closetRouter.routers) {
                             closetRouter.start()
-                                .toolbar(.hidden, for: .navigationBar)
                                 .navigationDestination(for: AnyRoutable.self) { router in
                                     router.makeView()
                                         .toolbarVisibility(.hidden, for: .navigationBar)
