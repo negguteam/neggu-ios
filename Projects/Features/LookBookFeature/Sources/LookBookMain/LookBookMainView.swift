@@ -78,7 +78,7 @@ struct LookBookMainView: View {
                                                 .frame(width: 24, height: 24)
                                                 .foregroundStyle(.labelNormal)
                                             
-                                            Text("룩북")
+                                            Text("코디")
                                                 .negguFont(.body3)
                                                 .foregroundStyle(.labelNormal)
                                             

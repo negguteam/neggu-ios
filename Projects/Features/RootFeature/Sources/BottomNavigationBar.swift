@@ -148,7 +148,7 @@ struct BottomNavigationBar: View {
                         .frame(height: 1)
                     
                     expandedGnbRowItem(
-                        "룩북 등록하기",
+                        "코디 등록하기",
                         leftIcon: NegguImage.Icon.closetFill,
                         rightIcon: NegguImage.Icon.chevronRight
                     ) {
