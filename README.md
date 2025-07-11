@@ -65,6 +65,34 @@
 ## 📚 스킬
 
 ### Clean Architecture + MVVM(I/O)
+```mermaid
+graph LR
+subgraph Presentation
+	A(View)
+	B(ViewModel)
+	A -.Input.-> B
+	B -.Output.-> A
+end
+   
+subgraph Domain
+	C(Usecase<br>Protocol)
+	D(Usecase)
+	E(Service<br>Protocol)
+	B ---> C
+  D --> C
+  D --> E
+end
+    
+subgraph Networks
+  F(Service)
+  G(Server)
+  E --> F
+	F -.Request.-> G
+	G -.Response.-> F
+end
+```
+
+
 - Feature, Domain, Network Layer를 분리하여 각 Layer의 역할을 나누었습니다.
 - MVVM 패턴으로 UI 로직과 비즈니스 로직을 분리했습니다.
 - ViewModel에서 사용자의 이벤트와 화면에 보여질 데이터를 Input Output 구조로 정의했습니다.
@@ -80,6 +108,49 @@
 <br>
 
 ### Router + Builder(Factory)
+```mermaid
+graph TD
+App(App)
+A(AuthRouter)
+A1(Onboarding)
+A2(SignIn)
+A3(SignUpRouter)
+A4(SignUpCompleteRouter)
+
+T(TabRouter)
+C(ClosetRouter)
+C1(ClothesDetailRouter)
+C2(ClothesRegisterRouter)
+
+L(LookBookRouter)
+L1(LookBookDetailRouter)
+L2(LookBookRegisterRouter)
+
+App --> X1{로그인 여부}
+X1 -- 예 ---> T
+
+T --> C
+ClosetBuilder -.-> C
+C --> C1
+C --> C2
+C1 --> C2
+
+T --> L
+LookBookBuilder -.-> L
+L --> L1
+L --> L2
+L --> SettingRouter
+L1 --> C1
+
+AuthBuilder -.-> A
+X1 -- 아니요 --> A
+A --> X2{앱 처음 시작?}
+X2 -- 예 --> A1
+X2 -- 아니요 --> A2
+A2 --SignUp Flow--> A3
+A3 --> A4
+```
+
 - 화면 전환을 Router 객체가 담당합니다.
 - Router는 Routable 프로토콜을 따르며, Routable 타입을 사용하여 NavigationPath를 관리합니다. 
 - 추가된 Router만 연결하면 화면 전환이 이루어지도록 확장에 대비했습니다.
