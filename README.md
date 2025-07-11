@@ -57,7 +57,7 @@
 
 |룩북 보기|코디 상세 보기|코디 등록하기|
 |:-:|:-:|:-:|
-|<img width="200" src="https://github.com/user-attachments/assets/1a6395d5-dbfe-41f0-b57e-f073583a7c77" /><img width="200" src="https://github.com/user-attachments/assets/0d33cf58-23de-4755-85ce-72d537fc2fe2" />|<img width="200" src="https://github.com/user-attachments/assets/554092a0-c9cc-4640-99fa-7717f58063e4" />|<img width="200" src="https://github.com/user-attachments/assets/f994505d-68e7-466b-b029-a54d386de8fc" />|
+|<img width="180" src="https://github.com/user-attachments/assets/1a6395d5-dbfe-41f0-b57e-f073583a7c77" /><img width="180" src="https://github.com/user-attachments/assets/0d33cf58-23de-4755-85ce-72d537fc2fe2" />|<img width="180" src="https://github.com/user-attachments/assets/554092a0-c9cc-4640-99fa-7717f58063e4" />|<img width="180" src="https://github.com/user-attachments/assets/f994505d-68e7-466b-b029-a54d386de8fc" />|
 
 <br><br>
 
@@ -101,7 +101,7 @@ end
 
 ### Modular Architecture (Tuist)
 ![alt text](graph.png)
-- 추후 확장 가능성이 높아서 Modular Architecture를 도입했습니다.
+- 네꾸는 추후 서비스 확장 가능성이 높아서 Modular Architecture를 도입했습니다.
 - Tuist를 활용하여 각 모듈로 분리하여 응집도가 높고 결합도가 낮은 코드를 구현하도록 했습니다.
 - 각 Feature는 독립적이어서 Feature 간 참조가 필요할 경우 Feature Interface를 활용합니다.
 
@@ -166,4 +166,4 @@ A3 --> A4
 
 `v1.0.0` - 2025.07
 - 옷 등록, 코디 등록 및 조회 기능 구현
-- 등록되 코디의 일정 설정 기능 구현
+- 등록된 코디의 일정 설정 기능 구현
